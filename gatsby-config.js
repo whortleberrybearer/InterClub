@@ -1,8 +1,9 @@
 module.exports = {
   siteMetadata: {
-    title: `Gatsby Default Starter`,
+    title: `Inter Club`,
+    // title: `Inter Club - Road Grand Prix and Fell Championship`,
     description: `Kick off your next, great Gatsby project with this default starter. This barebones starter ships with the main Gatsby configuration files you might need.`,
-    author: `@gatsbyjs`,
+    author: `Barry Wheeler`,
     siteUrl: `https://gatsbystarterdefaultsource.gatsbyjs.io/`,
   },
   plugins: [
@@ -30,5 +31,18 @@ module.exports = {
         icon: `src/images/gatsby-icon.png`, // This path is relative to the root of the site.
       },
     },
+    {
+      resolve: `gatsby-source-sqlite`,
+      options: {
+        fileName: 'C:/Users/wheel/source/repos/InterClub/database/InterClub.db',
+        queries: [
+          {
+            statement: 'SELECT * FROM runner',
+            idFieldName: 'RunnerId',
+            name: 'runner'
+          }
+        ]
+      }
+    }
   ],
 }
