@@ -37,7 +37,7 @@ module.exports = {
         fileName: 'C:/Users/wheel/source/repos/InterClub/database/InterClub.db',
         queries: [
           {
-            statement: 'SELECT * FROM runner',
+            statement: `SELECT *, FirstName || ' ' || LastName AS Name FROM runner`,
             idFieldName: 'RunnerId',
             name: 'runner'
           }
