@@ -34,13 +34,40 @@ module.exports = {
     {
       resolve: `gatsby-source-sqlite`,
       options: {
-        fileName: 'C:/Users/wheel/source/repos/InterClub/database/InterClub.db',
+        fileName: 'C:\\Users\\Barry\\source\\repos\\InterClub\\database\\InterClub.db',
         queries: [
           {
-            statement: `SELECT *, FirstName || ' ' || LastName AS Name FROM runner`,
+            statement: `SELECT *, FirstName || ' ' || LastName AS Name FROM Runner`,
             idFieldName: 'RunnerId',
             name: 'runner'
-          }
+          },
+          // This does not work because it is a compount pk.
+          {
+            statement: 'SELECT * FROM RunnerClub',
+            idFieldName: 'RunnerClubId',
+            name: 'runnerClub',
+            parentName: 'runner',
+            foreignKey: 'RunnerId',
+            cardinality: 'OneToMany'
+          },
+          {
+            statement: 'SELECT DISTINCT(Year) FROM Competition',
+            idFieldName: 'Year',
+            name: 'competitionYear'
+          },
+          {
+            statement: 'SELECT * FROM Competition c INNER JOIN CompetitionType ct on ct.CompetitionTypeId = c.CompetitionTypeId',
+            idFieldName: 'CompetitionId',
+            name: 'competition'
+          },
+          {
+            statement: 'SELECT * FROM Race r INNER JOIN Event e ON e.EventId = r.EventId',
+            idFieldName: 'RaceId',
+            name: 'competitionRace',
+            parentName: 'competition',
+            foreignKey: 'CompetitionId',
+            cardinality: 'OneToMany'
+          },
         ]
       }
     }
