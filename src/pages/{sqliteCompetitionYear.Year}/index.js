@@ -19,14 +19,14 @@ const CompetitionYearPage = ({ data, pageContext }) =>  (
                 <p>
                   {race.StartDateTime} {race.Name}
 
-                  {race.ResultsAvailable && <span>Results</span>}
-                  {race.TeamResultsAvailable && <span>Club Results</span>}
+                  {race.ResultsAvailable && <Link to={`${slugify(race.Name)}/results`}>Results</Link>}
+                  {race.TeamResultsAvailable && <Link to={`${race.Name}/clubresults`}>Club Results</Link>}
                 </p>
               ))}
             </ul>
             <p>
-              {node.StandingsAvailable && <span>Standings</span>}
-              {node.TeamStandingsAvailable && <span>Club Standings</span>}
+              {node.StandingsAvailable && <Link to={`/${pageContext.Year}/standings`}>Standings</Link>}
+              {node.TeamStandingsAvailable && <Link to={`/${pageContext.Year}/clubstandings`}>Club Standings</Link>}
             </p>
           </li>
         ))
