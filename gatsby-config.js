@@ -34,7 +34,7 @@ module.exports = {
     {
       resolve: `gatsby-source-sqlite`,
       options: {
-        fileName: 'C:\\Users\\Barry\\source\\repos\\InterClub\\database\\InterClub.db',
+        fileName: 'C:\\Users\\wheel\\source\\repos\\InterClub\\database\\InterClub.db',
         queries: [
           {
             statement: `SELECT *, FirstName || ' ' || LastName AS Name FROM Runner`,
@@ -56,7 +56,7 @@ module.exports = {
             name: 'competitionYear'
           },
           {
-            statement: 'SELECT * FROM Competition c INNER JOIN CompetitionType ct on ct.CompetitionTypeId = c.CompetitionTypeId',
+            statement: 'SELECT * FROM Competition c INNER JOIN CompetitionType ct ON ct.CompetitionTypeId = c.CompetitionTypeId',
             idFieldName: 'CompetitionId',
             name: 'competition'
           },

@@ -1,5 +1,6 @@
 import * as React from 'react'
 import { graphql, Link } from 'gatsby'
+import slugify from '@sindresorhus/slugify';
 
 import Layout from "../../components/layout"
 import Seo from "../../components/seo"
@@ -19,14 +20,16 @@ const CompetitionYearPage = ({ data, pageContext }) =>  (
                 <p>
                   {race.StartDateTime} {race.Name}
 
-                  {race.ResultsAvailable && <Link to={`${slugify(race.Name)}/results`}>Results</Link>}
-                  {race.TeamResultsAvailable && <Link to={`${race.Name}/clubresults`}>Club Results</Link>}
+                  
+                  {race.ResultsAvailable && <Link to={`${slugify(node.ShortName)}/${slugify(race.Name)}/results`}>Results</Link>}
+                  {race.TeamResultsAvailable && <Link to={`${slugify(node.ShortName)}/${slugify(race.Name)}/clubresults`}>Club Results</Link>}
                 </p>
               ))}
             </ul>
+
             <p>
-              {node.StandingsAvailable && <Link to={`/${pageContext.Year}/standings`}>Standings</Link>}
-              {node.TeamStandingsAvailable && <Link to={`/${pageContext.Year}/clubstandings`}>Club Standings</Link>}
+              {node.StandingsAvailable && <Link to={`${slugify(node.ShortName)}/standings`}>Standings</Link>}
+              {node.TeamStandingsAvailable && <Link to={`${slugify(node.ShortName)}/clubstandings`}>Club Standings</Link>}
             </p>
           </li>
         ))
@@ -49,6 +52,7 @@ export const query = graphql`
         CompetitionTypeId
         CompetitionId
         Name
+        ShortName
         competitionRaces {
           RaceId
           ResultsAvailable
