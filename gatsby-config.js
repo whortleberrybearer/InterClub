@@ -41,10 +41,9 @@ module.exports = {
             idFieldName: 'RunnerId',
             name: 'runner'
           },
-          // This does not work because it is a compount pk.
           {
             statement: 'SELECT * FROM RunnerClub rc INNER JOIN Club c ON c.ClubId = rc.ClubId',
-            idFieldName: 'RunnerClubId',
+            idFieldName: 'RunnerClubId',  // This key does not exist, so this might not work, but it seems to.
             name: 'runnerClub',
             parentName: 'runner',
             foreignKey: 'RunnerId',
@@ -87,6 +86,45 @@ module.exports = {
             foreignKey: 'RunnerId',
             cardinality: 'OneToMany'
           },
+          {
+            statement: 
+              `SELECT *, r.Position AS ResultPosition, rn.FirstName || ' ' || rn.LastName AS RunnerName, c.Name AS ClubName  
+              FROM Result r 
+              LEFT OUTER JOIN CompetitionRunner cr
+              ON cr.CompetitionRunnerId = r.CompetitionRunnerId 
+              LEFT OUTER JOIN Runner rn 
+              ON rn.RunnerId = cr.RunnerId
+              LEFT OUTER JOIN CompetitionClub cc
+              ON cc.CompetitionClubId = r.CompetitionClubId
+              LEFT OUTER JOIN Club c
+              ON c.ClubId = cc.ClubId
+              ORDER BY Position`,
+            idFieldName: 'ResultId',
+            name: 'raceResults',
+            parentName: 'competitionRace',
+            foreignKey: 'RaceId',
+            cardinality: 'OneToMany'
+          },
+          {
+            statement:
+              `SELECT *
+              FROM CompetitionCategory cc
+              INNER JOIN Category c
+              ON c.CategoryId = cc.CategoryId`,
+            idFieldName: 'CompetitionCategoryId',
+            name: 'competitionCategories',
+            parentName: 'competition',
+            foreignKey: 'CompetitionId',
+            cardinality: 'OneToMany'
+          },
+          {
+            statement: `SELECT * FROM CompetitionCategoryResult`,
+            idFieldName: 'CompetitionCategoryResultId',
+            name: 'competitionCategoryResults',
+            parentName: 'raceResults',
+            foreignKey: 'ResultId',
+            cardinality: 'OneToMany'
+          }
         ]
       }
     }
