@@ -43,7 +43,7 @@ module.exports = {
           },
           // This does not work because it is a compount pk.
           {
-            statement: 'SELECT * FROM RunnerClub',
+            statement: 'SELECT * FROM RunnerClub rc INNER JOIN Club c ON c.ClubId = rc.ClubId',
             idFieldName: 'RunnerClubId',
             name: 'runnerClub',
             parentName: 'runner',
@@ -66,6 +66,25 @@ module.exports = {
             name: 'competitionRace',
             parentName: 'competition',
             foreignKey: 'CompetitionId',
+            cardinality: 'OneToMany'
+          },
+          {
+            statement: 
+              `SELECT *, e.Name AS RaceName FROM Result r
+              INNER JOIN CompetitionRunner cr
+              ON cr.CompetitionRunnerId = r.CompetitionRunnerId
+              INNER JOIN Race rc
+              ON r.RaceId = rc.RaceId
+              INNER JOIN Event e
+              ON e.EventId = rc.EventId
+              INNER JOIN Competition c
+              ON c.CompetitionId = rc.CompetitionId
+              INNER JOIN CompetitionType ct
+              ON ct.CompetitionTypeId = c.CompetitionTypeId`,
+            idFieldName: 'ResultId',
+            name: 'runnerResults',
+            parentName: 'runner',
+            foreignKey: 'RunnerId',
             cardinality: 'OneToMany'
           },
         ]

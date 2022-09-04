@@ -56,7 +56,7 @@ export const query = graphql`
         competitionRaces {
           RaceId
           ResultsAvailable
-          StartDateTime(formatString: "DD MMM")
+          StartDateTime(formatString: "DD/MM/YY")
           TeamResultsAvailable
           Name
         }
