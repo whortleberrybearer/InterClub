@@ -1,8 +1,7 @@
 module.exports = {
   siteMetadata: {
     title: `Inter Club`,
-    // title: `Inter Club - Road Grand Prix and Fell Championship`,
-    description: `Kick off your next, great Gatsby project with this default starter. This barebones starter ships with the main Gatsby configuration files you might need.`,
+    description: `Road Grand Prix and Fell Championship`,
     author: `Barry Wheeler`,
     siteUrl: `https://gatsbystarterdefaultsource.gatsbyjs.io/`,
   },

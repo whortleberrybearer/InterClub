@@ -3,27 +3,22 @@ import { graphql, Link } from 'gatsby'
 import Layout from '../../components/layout'
 import Seo from '../../components/seo'
 import slugify from '@sindresorhus/slugify';
+import { buildCategory } from '../../functions/category';
+import RunnerResults from '../../components/runnerResults'
 
-const BlogPost = ({ data, children }) => {
+const RunnerPage = ({ data }) => {
   return (
-    <Layout pageTitle={data.sqliteRunner.Name}>
-      <p>{data.sqliteRunner.Name}</p>
-      <p>{data.sqliteRunner.Sex}</p>
-      <p>{data.sqliteRunner.AgeCategory}</p>
+    <Layout>
+      <h2>{data.sqliteRunner.Name}</h2>
+      <p>Category: {buildCategory(data.sqliteRunner.Sex, data.sqliteRunner.AgeCategory)}</p>
+      <p>Clubs: TODO: Need to get this working </p>
       {
         data.sqliteRunner.runnerClubs.map(club =>
           <p>{club.Name}</p>
         )
       }
 
-      <ul>
-      {
-        data.sqliteRunner.runnerResults.map(result =>
-          <p>{result.StartDateTime} <Link to={`/${result.Year}/${slugify(result.ShortName)}/${slugify(result.RaceName)}/results`}>{result.RaceName}</Link> {result.Distance} {result.Time}</p>
-        )
-      }
-      </ul>
-      {children}
+      <RunnerResults results={data.sqliteRunner.runnerResults}></RunnerResults>
     </Layout>
   )
 }
@@ -39,10 +34,11 @@ export const query = graphql`
         Name
       }
       runnerResults {
+        EventId
         RaceName
         Distance
         Time
-        StartDateTime(formatString: "DD/MM/YY")
+        StartDateTime(formatString: "DD/MM/YYYY")
         Year
         ShortName
       }
@@ -50,6 +46,13 @@ export const query = graphql`
   }
 `
 
-export const Head = ({ data }) => <Seo title={data.sqliteRunner.Name} />
+export const Head = ({ data }) => {
+  // TODO: Try and return the club
+  return (
+    <Seo 
+      title={data.sqliteRunner.Name} 
+      description={`Runner details for ${data.sqliteRunner.Name}, Category: ${buildCategory(data.sqliteRunner.Sex, data.sqliteRunner.AgeCategory)}`} />
+  )
+}
 
-export default BlogPost
+export default RunnerPage
