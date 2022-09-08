@@ -1,25 +1,18 @@
 import * as React from "react"
 import { graphql, Link } from 'gatsby'
-import slugify from '@sindresorhus/slugify';
-
+import RaceResults from "../../../../components/raceResults"
 import Layout from "../../../../components/layout"
 import Seo from "../../../../components/seo"
 
-const SecondPage = ({ data }) => (
+const RaceResultsPage = ({ data }) => (
   <Layout>     
     
-    <h1>{data.sqliteCompetitionRace.Name} Results</h1>
-    <p>{data.sqliteCompetitionRace.StartDateTime}</p>
-    <p>{data.sqliteCompetitionRace.Distance}</p>
-    <p>{data.sqliteCompetitionRace.Ascent}</p>
+    <h2>{data.sqliteCompetitionRace.Name} Results</h2>
+    <p>Date: {data.sqliteCompetitionRace.StartDateTime}</p>
+    <p>Distance: {data.sqliteCompetitionRace.Distance}</p>
+    <p>Ascent: {data.sqliteCompetitionRace.Ascent}</p>
     
-    <ul>
-      {
-        data.sqliteCompetitionRace.raceResults.map(result =>
-          <p>{result.ResultPosition} <Link to={`/runners/${result.RunnerId}-${slugify(result.RunnerName ?? '')}`}>{result.FirstName} {result.LastName}</Link> {result.ClubName} {result.Time}</p>
-          )
-      }
-    </ul>
+    <RaceResults results={data.sqliteCompetitionRace.raceResults}></RaceResults>
   </Layout>
 )
 
@@ -59,6 +52,6 @@ export const query = graphql`
   }
 `
 
-export const Head = ({ data }) => <Seo title={`${data.sqliteCompetitionRace.Name} Results`} />
+export const Head = ({ data }) => <Seo title={`${data.sqliteCompetitionRace.Name} Results (${data.sqliteCompetitionRace.StartDateTime})`} />
 
-export default SecondPage
+export default RaceResultsPage

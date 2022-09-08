@@ -1,4 +1,8 @@
 export const buildCategory = (sex, ageCategory) => {
+    if (sex === null && ageCategory === null) {
+        return "";
+    }
+
     const sexValue = sex === 1 ? "M" : "F";
 
     if (ageCategory === 2) {
