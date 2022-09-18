@@ -4,6 +4,7 @@ import slugify from '@sindresorhus/slugify';
 import { Link } from "gatsby"
 import { buildCategory } from "../functions/category";
 import moment from "moment";
+import { Table, Form, Row, Col } from "react-bootstrap"
 
 const RaceResults = ({ results }) => {
   const distinct = (value, index, self) => {
@@ -15,13 +16,31 @@ const RaceResults = ({ results }) => {
 
   return (
     <>
-      <label for="name-filter">Name</label>
-      <input id="name-filter"></input>
-      <label for="club-filter">Club</label>
-      <select id="club-filter">
-      </select>
+      <Form>
+        <Form.Group as={Row} className="mb-3" controlId="nameFilter">
+          <Form.Label column sm="2">
+            Name
+          </Form.Label>
+          <Col sm="10">
+            <Form.Control type="text" />
+          </Col>
+        </Form.Group>
+        <Form.Group as={Row} className="mb-3" controlId="clubFilter">
+          <Form.Label column sm="2">
+            Club
+          </Form.Label>
+          <Col sm="10">
+            <Form.Select aria-label="Race filter">
+              <option></option>
+              {
+                //distinctRaces.map(raceName => <option>{raceName}</option>)
+              }
+            </Form.Select>
+          </Col>
+        </Form.Group>
+      </Form>
 
-      <table>
+      <Table striped>
         <thead>
           <tr>
             <th>Position</th>
@@ -44,7 +63,7 @@ const RaceResults = ({ results }) => {
             )
           }
         </tbody>
-      </table>
+      </Table>
     </>
   )
 }

@@ -5,9 +5,8 @@ import Layout from "../../../../components/layout"
 import Seo from "../../../../components/seo"
 
 const RaceResultsPage = ({ data }) => (
-  <Layout>     
+  <Layout title={`${data.sqliteCompetitionRace.Name} Results`}>
     
-    <h2>{data.sqliteCompetitionRace.Name} Results</h2>
     <p>Date: {data.sqliteCompetitionRace.StartDateTime}</p>
     <p>Distance: {data.sqliteCompetitionRace.Distance}</p>
     <p>Ascent: {data.sqliteCompetitionRace.Ascent}</p>

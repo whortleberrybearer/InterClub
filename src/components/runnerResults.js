@@ -3,6 +3,7 @@ import PropTypes from "prop-types"
 import slugify from '@sindresorhus/slugify';
 import { Link } from "gatsby"
 import moment from "moment";
+import { Table, Form, Row, Col } from "react-bootstrap"
 
 const RunnerResults = ({ results }) => {
   const distinct = (value, index, self) => {
@@ -15,19 +16,36 @@ const RunnerResults = ({ results }) => {
   return (
     <>
       <h3>Results</h3>
-      <label for="year-filter">Year</label>
-      <select id="year-filter">
-        {
-          distinctYears.map(year => <option>{year}</option>)
-        }
-      </select>
-      <label for="race-filter">Race</label>
-      <select id="race-filter">
-        {
-          distinctRaces.map(raceName => <option>{raceName}</option>)
-        }
-      </select>
-      <table>
+      <Form>
+        <Form.Group as={Row} className="mb-3" controlId="yearFilter">
+          <Form.Label column sm="2">
+            Year
+          </Form.Label>
+          <Col sm="10">
+            <Form.Select aria-label="Year filter">
+              <option></option>
+              {
+                distinctYears.map(year => <option>{year}</option>)
+              }
+            </Form.Select>
+          </Col>
+        </Form.Group>
+        <Form.Group as={Row} className="mb-3" controlId="raceFilter">
+          <Form.Label column sm="2">
+            Race
+          </Form.Label>
+          <Col sm="10">
+            <Form.Select aria-label="Race filter">
+              <option></option>
+              {
+                distinctRaces.map(raceName => <option>{raceName}</option>)
+              }
+            </Form.Select>
+          </Col>
+        </Form.Group>
+      </Form>
+
+      <Table striped>
         <thead>
           <tr>
             <th>Date</th>
@@ -48,7 +66,7 @@ const RunnerResults = ({ results }) => {
             )
           }
         </tbody>
-      </table>
+      </Table>
     </>
   )
 }

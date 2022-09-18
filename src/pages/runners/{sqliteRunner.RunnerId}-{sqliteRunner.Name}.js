@@ -2,14 +2,12 @@ import * as React from 'react'
 import { graphql, Link } from 'gatsby'
 import Layout from '../../components/layout'
 import Seo from '../../components/seo'
-import slugify from '@sindresorhus/slugify';
 import { buildCategory } from '../../functions/category';
 import RunnerResults from '../../components/runnerResults'
 
 const RunnerPage = ({ data }) => {
   return (
-    <Layout>
-      <h2>{data.sqliteRunner.Name}</h2>
+    <Layout title={data.sqliteRunner.Name}>
       <p>Category: {buildCategory(data.sqliteRunner.Sex, data.sqliteRunner.AgeCategory)}</p>
       <p>Clubs: TODO: Need to get this working </p>
       {

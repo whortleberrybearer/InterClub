@@ -1,41 +1,19 @@
 import * as React from 'react'
 import { graphql, Link } from 'gatsby'
-import slugify from '@sindresorhus/slugify';
-
+import CompetitionRaces from '../../components/competitionRaces';
 import Layout from "../../components/layout"
 import Seo from "../../components/seo"
 
 const CompetitionYearPage = ({ data, pageContext }) =>  (
-  <Layout>
-    <h1>The year: {pageContext.Year}</h1>
-    <p>Welcome to page 2</p>
-    <ul>
+  <Layout title={`History ${pageContext.Year}`}>
       {
         data.allSqliteCompetition.nodes.map(node => (
-          <li key={node.CompetitionId}>
-            {node.CompetitionId} {node.CompetitionTypeId} {node.Name}
-
-            <ul>
-              {node.competitionRaces.map(race => (
-                <p>
-                  {race.StartDateTime} {race.Name}
-
-                  
-                  {race.ResultsAvailable && <Link to={`${slugify(node.ShortName)}/${slugify(race.Name)}/results`}>Results</Link>}
-                  {race.TeamResultsAvailable && <Link to={`${slugify(node.ShortName)}/${slugify(race.Name)}/clubresults`}>Club Results</Link>}
-                </p>
-              ))}
-            </ul>
-
-            <p>
-              {node.StandingsAvailable && <Link to={`${slugify(node.ShortName)}/standings`}>Standings</Link>}
-              {node.TeamStandingsAvailable && <Link to={`${slugify(node.ShortName)}/clubstandings`}>Club Standings</Link>}
-            </p>
-          </li>
+          <>
+            <h2>{node.Name}</h2>
+            <CompetitionRaces competition={node}></CompetitionRaces>
+          </>
         ))
       }
-      </ul>
-    <Link to="/">Go back to the homepage</Link>
   </Layout>
 )
 
@@ -65,6 +43,6 @@ export const query = graphql`
   }
 `
 
-export const Head = () => <Seo title="Competion year" />
+export const Head = ({ pageContext }) => <Seo title={`History ${pageContext.Year}`} />
 
 export default CompetitionYearPage

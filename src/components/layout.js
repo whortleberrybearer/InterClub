@@ -8,13 +8,12 @@
 import * as React from "react"
 import PropTypes from "prop-types"
 import { useStaticQuery, graphql } from "gatsby"
-
+import { Container } from "react-bootstrap"
 import Header from "./header"
 import "./layout.css"
+import PageTitle from '../components/pageTitle';
 
-import { container, animalElephant } from './layout.module.css'
-
-const Layout = ({ children }) => {
+const Layout = ({ title, children }) => {
   const data = useStaticQuery(graphql`
     query SiteTitleQuery {
       site {
@@ -27,18 +26,17 @@ const Layout = ({ children }) => {
 
   return (
     <>
-      <div className={container}>
+      <div id="wrapper">
         <Header siteTitle={data.site.siteMetadata?.title || `Title`} />
-        <h1 className={animalElephant}>Hello giraffe</h1>
-        <div
-          style={{
-            margin: `0 auto`,
-            maxWidth: `var(--size-content)`,
-            padding: `var(--size-gutter)`,
-          }}
-        >
-          <main>{children}</main>
-          <footer
+        <PageTitle title={title}></PageTitle>
+        <main className="section pt-0">
+          <Container>
+            <div class="article-format p-4 p-lg-5 shadow-sm rounded">
+              {children}
+            </div>
+          </Container>
+        </main>
+        <footer
             style={{
               marginTop: `var(--space-5)`,
               fontSize: `var(--font-sm)`,
@@ -48,7 +46,6 @@ const Layout = ({ children }) => {
             {` `}
             <a href="https://www.gatsbyjs.com">Gatsby</a>
           </footer>
-        </div>
       </div>
     </>
   )
