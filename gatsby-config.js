@@ -117,13 +117,63 @@ module.exports = {
             cardinality: 'OneToMany'
           },
           {
+            statement:
+              `SELECT *
+              FROM CompetitionRunnerCategory crc`,
+            idFieldName: 'CompetitionRunnerCategoryId',
+            name: 'competitionRunnerCategories',
+            parentName: 'competition',
+            foreignKey: 'CompetitionId',
+            cardinality: 'OneToMany'
+          },
+          {
             statement: `SELECT * FROM CompetitionCategoryResult`,
             idFieldName: 'CompetitionCategoryResultId',
             name: 'competitionCategoryResults',
             parentName: 'raceResults',
             foreignKey: 'ResultId',
             cardinality: 'OneToMany'
-          }
+          },
+          {
+            statement:
+              `SELECT *
+              FROM CompetitionRunnerCategoryStanding crcs
+              INNER JOIN CompetitionRunner cr
+              ON cr.CompetitionRunnerId = crcs.CompetitionRunnerId
+              INNER JOIN CompetitionClub cc
+              ON cc.CompetitionClubId = cr.CompetitionClubId
+              INNER JOIN Club c
+              ON c.ClubId = cc.ClubId`,
+            idFieldName: 'CompetitionRunnerCategoryStandingId',
+            name: 'competitionRunnerCategoryStandings',
+            parentName: 'competitionRunnerCategories',
+            foreignKey: 'CompetitionRunnerCategoryId',
+            cardinality: 'OneToMany'
+          },
+          {
+            statement: 
+              `SELECT *, cr.FirstName || ' ' || cr.LastName AS RunnerName
+              FROM CompetitionRunner cr
+              INNER JOIN CompetitionClub cc
+              ON cc.CompetitionClubId = cr.CompetitionClubId
+              INNER JOIN Club c
+              ON c.ClubId = cc.ClubId`,
+            idFieldName: 'CompetitionRunnerId',
+            name: 'competitionRunners',
+            parentName: 'competition',
+            foreignKey: 'CompetitionId',
+            cardinality: 'OneToMany'
+          },
+          {
+            statement: 
+              `SELECT *
+              FROM Result r`,
+            idFieldName: 'ResultId',
+            name: 'competitionRunnerResults',
+            parentName: 'competitionRunners',
+            foreignKey: 'CompetitionRunnerId',
+            cardinality: 'OneToMany'
+          },
         ]
       }
     }
