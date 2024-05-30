@@ -1,8 +1,8 @@
 ﻿public record RaceResult
 {
-    public int? RunnerNumber { get; init; }
-    
     public required int Position { get; init; }
+
+    public int? RunnerNumber { get; init; }
     
     public string? Name { get; init; }
     
