@@ -8,7 +8,7 @@ public interface IClubStandingsRepository
 
 public class ClubStandingsRepository : IClubStandingsRepository
 {
-    private static readonly ISerializer _serializer = new SerializerBuilder().Build();
+    private static readonly ISerializer _serializer = new SerializerBuilder().ConfigureDefaultValuesHandling(DefaultValuesHandling.OmitNull).Build();
     private readonly string _basePath;
 
     public ClubStandingsRepository(string basePath)
