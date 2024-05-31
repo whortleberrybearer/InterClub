@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Link, PageProps } from 'gatsby'
+import { Link, graphql, useStaticQuery } from 'gatsby'
 import { ReactNode } from 'react';
 
 interface MyProps {
@@ -8,6 +8,16 @@ interface MyProps {
  }
  
 const Layout: React.FC<MyProps> = ({ pageTitle, children }) => {
+  const data = useStaticQuery(graphql`
+    query {
+      site {
+        siteMetadata {
+          title
+        }
+      }
+    }
+  `)
+  
   return (
     <div>
       <nav>
@@ -17,7 +27,7 @@ const Layout: React.FC<MyProps> = ({ pageTitle, children }) => {
         </ul>
       </nav>
       <main>
-        <h1>{pageTitle}</h1>
+        <h1>{data.site.siteMetadata.title} - {pageTitle}</h1>
         {children}
       </main>
     </div>
