@@ -24,7 +24,7 @@ const config: GatsbyConfig = {
         path: "../../data/",
       },
     }
-  ]
+  ],
 };
 
 export default config;

@@ -25,7 +25,7 @@ const ResultsPage: React.FC<PageProps> = () => {
   `);
 
     return (
-        <Layout pageTitle="Results Page">
+        <Layout pageTitle="Results Page Again">
             <table>
                 <thead>
                     <th>Pos</th>
