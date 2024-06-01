@@ -238,6 +238,7 @@ internal class ExcelRoadExtractor2024 : IResultsExtractor
                 Position = position,
                 Name = raceResult.Name,
                 Surname = raceResult.Surname,
+                Result = raceResult,
             };
 
             teamScorers.Add(teamScorer);
