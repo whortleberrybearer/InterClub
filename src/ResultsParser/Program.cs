@@ -16,19 +16,25 @@ CoconaApp.Run(([Option("i")] string inputFile, [Option("o")] string outputPath, 
 
         using (SqliteTransaction transaction = connection.BeginTransaction())
         {
-            int raceId = connection.QuerySingle<int>(
-                "SELECT RaceId " +
-                "FROM Race r " +
-                "INNER JOIN Competition c " +
-                "ON r.CompetitionId = c.CompetitionId " +
-                "WHERE r.Name = @name " +
-                "AND c.Competition = @competition " +
-                "AND c.Year = @year;",
+            int competitionId = connection.QuerySingle<int>(
+                "SELECT CompetitionId " +
+                "FROM Competition " +
+                "WHERE Competition = @competition " +
+                "AND Year = @year;",
                 new
                 {
                     competition,
                     year,
+                });
+            int raceId = connection.QuerySingle<int>(
+                "SELECT RaceId " +
+                "FROM Race " +
+                "WHERE Name = @name " +
+                "AND CompetitionId = @competitionId;",
+                new
+                {
                     name = race,
+                    competitionId,
                 });
 
             if (extractedResults.RaceResults is not null)
@@ -43,9 +49,7 @@ CoconaApp.Run(([Option("i")] string inputFile, [Option("o")] string outputPath, 
 
             if (extractedResults.ClubStandings is not null)
             {
-                IClubStandingsRepository clubStandingsRepository = new ClubStandingsRepository(outputPath);
-
-                clubStandingsRepository.Save(year, competition, extractedResults.ClubStandings);
+                SaveClubStandings(competitionId, raceId, race, extractedResults.ClubStandings, connection, transaction);
             }
 
             transaction.Commit();
@@ -130,7 +134,45 @@ void SaveClubResults(int raceId, IEnumerable<ClubResults> clubResults, SqliteCon
     }
 }
 
+void SaveClubStandings(int competitionId, int raceId, string race, IEnumerable<ClubStandings> clubStandings, SqliteConnection connection, SqliteTransaction transaction)
+{
+    foreach (ClubStandings clubStanding in clubStandings)
+    {
+        for (int i = 0; i < clubStanding.Standings.Count(); i++)
+        {
+            ClubStanding standing = clubStanding.Standings.ElementAt(i);
 
+            int clubStandingId = connection.QuerySingle<int>(
+                "INSERT INTO ClubStanding (CompetitionId, Category, Club, Position, Total) " +
+                "VALUES (@competitionId, @category, @club, @position, @total);" +
+                "SELECT last_insert_rowid();",
+                new
+                {
+                    competitionId,
+                    category = clubStanding.Category,
+                    club = standing.Club,
+                    position = i + 1,
+                    total = standing.Total,
+                },
+                transaction);
+
+            foreach (ClubStandingResult result in standing.Results.Where(r => r.Race == race))
+            {
+                connection.Execute(
+                    "INSERT INTO ClubStandingResult (ClubStandingId, RaceId, Points) " +
+                    "VALUES (@clubStandingId, @raceId, @points)",
+                    new
+                    {
+                        clubStandingId,
+                        raceId,
+                        points = result.Points,
+                    },
+                    transaction);
+            }
+        }
+    }
+}
+ 
 ExtractedResults ExtractResults(string inputFile)
 {
     IResultsExtractor resultsExtractor = new ExcelRoadExtractor2024();

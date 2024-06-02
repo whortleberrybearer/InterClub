@@ -4,5 +4,5 @@
 
     public required int Total { get; init; }
     
-    public required IEnumerable<int> Points { get; init; }
+    public required IEnumerable<ClubStandingResult> Results { get; init; }
 }

@@ -280,7 +280,7 @@ internal class ExcelRoadExtractor2024 : IResultsExtractor
 
     private static ClubStanding ExtractClubStanding(ExcelWorksheet seasonTotalsWorksheet, int rowIndex)
     {
-        List<int> points = new List<int>();
+        List<ClubStandingResult> results = new List<ClubStandingResult>();
 
         for (int columnIndex = 2; columnIndex <= 8; columnIndex++)
         {
@@ -292,14 +292,18 @@ internal class ExcelRoadExtractor2024 : IResultsExtractor
                 break;
             }
 
-            points.Add(point.Value);
+            results.Add(new ClubStandingResult()
+            {
+                Race = ExcelParser.ParseString(seasonTotalsWorksheet.Cells[1, columnIndex])!,
+                Points = point.Value,
+            });
         }
 
         return new ClubStanding()
         {
             Club = ExcelParser.ParseString(seasonTotalsWorksheet.Cells[rowIndex, 1])!,
             Total = ExcelParser.ParseNumber(seasonTotalsWorksheet.Cells[rowIndex, 9]).GetValueOrDefault(),
-            Points = points,
+            Results = results,
         };
     }
 }
