@@ -38,7 +38,7 @@ WHERE Competition = "Road"
 AND Year = 2024;
 
 INSERT INTO Race (Name, CompetitionId)
-SELECT "Lytham", CompetitionId
+SELECT "Red Rose", CompetitionId
 FROM Competition 
 WHERE Competition = "Road"
 AND Year = 2024;
