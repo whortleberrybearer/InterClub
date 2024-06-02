@@ -1,4 +1,4 @@
-﻿public record ClubCategoryResult
+﻿public class ClubCategoryResult
 {
     public required string Category { get; init; }
 

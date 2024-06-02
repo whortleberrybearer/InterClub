@@ -1,4 +1,4 @@
-﻿public record RaceResult
+﻿public class RaceResult
 {
     public required int Position { get; init; }
 
@@ -19,4 +19,6 @@
     public string? Comments { get; init; }
     
     public required IEnumerable<ClubCategoryResult> ClubCategoryResults { get; init; }
+
+    public int RaceResultId { get; set; }
 }

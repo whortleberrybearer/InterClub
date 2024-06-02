@@ -6,7 +6,10 @@ internal class ExcelRoadExtractor2024 : IResultsExtractor
     {
         using (ExcelPackage excelPackage = new ExcelPackage(stream))
         {
-            ExcelWorksheet positionsWorksheet = excelPackage.Workbook.Worksheets["Positions"] ?? throw new Exception("Positions worksheet missing");
+            ExcelWorksheet positionsWorksheet =
+                excelPackage.Workbook.Worksheets["Positions."] ??  // Some docs have it named differently becasue a duplicate tab.
+                excelPackage.Workbook.Worksheets["Positions"] ?? 
+                throw new Exception("Positions worksheet missing");
             ExcelWorksheet teamPositionsWorksheet = excelPackage.Workbook.Worksheets["Team Positions"] ?? throw new Exception("Team Positions worksheet missing");
             ExcelWorksheet teamScorersWorksheet = excelPackage.Workbook.Worksheets["Team Scorers"] ?? throw new Exception("Team Scorers worksheet missing");
             ExcelWorksheet seasonTotalsWorksheet = excelPackage.Workbook.Worksheets["Season Totals"] ?? throw new Exception("Season Totals worksheet missing");
@@ -238,6 +241,7 @@ internal class ExcelRoadExtractor2024 : IResultsExtractor
                 Position = position,
                 Name = raceResult.Name,
                 Surname = raceResult.Surname,
+                Result = raceResult,
             };
 
             teamScorers.Add(teamScorer);
@@ -279,7 +283,7 @@ internal class ExcelRoadExtractor2024 : IResultsExtractor
 
     private static ClubStanding ExtractClubStanding(ExcelWorksheet seasonTotalsWorksheet, int rowIndex)
     {
-        List<int> points = new List<int>();
+        List<ClubStandingResult> results = new List<ClubStandingResult>();
 
         for (int columnIndex = 2; columnIndex <= 8; columnIndex++)
         {
@@ -291,14 +295,18 @@ internal class ExcelRoadExtractor2024 : IResultsExtractor
                 break;
             }
 
-            points.Add(point.Value);
+            results.Add(new ClubStandingResult()
+            {
+                Race = ExcelParser.ParseString(seasonTotalsWorksheet.Cells[1, columnIndex])!,
+                Points = point.Value,
+            });
         }
 
         return new ClubStanding()
         {
             Club = ExcelParser.ParseString(seasonTotalsWorksheet.Cells[rowIndex, 1])!,
             Total = ExcelParser.ParseNumber(seasonTotalsWorksheet.Cells[rowIndex, 9]).GetValueOrDefault(),
-            Points = points,
+            Results = results,
         };
     }
 }
