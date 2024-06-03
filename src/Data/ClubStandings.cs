@@ -1,4 +1,4 @@
-﻿public record ClubStandings
+﻿public class ClubStandings
 {
     public required string Category { get; init; }
 
