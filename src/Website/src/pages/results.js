@@ -4,7 +4,7 @@ import { graphql } from "gatsby"
 const ResultsPage = ({data}) => {
   return (
     <main>
-      <h1>These are the results again</h1>
+      <h1>{data.sqliteRaces.Name} Results</h1>
       <table>
                 <thead>
                     <tr>
@@ -37,6 +37,9 @@ export const Head = () => <title>Results</title>
 
 export const query = graphql`
   query Query($id: Int) {
+    sqliteRaces(RaceId: {eq: $id}) {
+      Name
+    }
     allSqliteRaceResults(filter: {RaceId: {eq: $id}}, sort: {Position: ASC}) {
       edges {
         node {
