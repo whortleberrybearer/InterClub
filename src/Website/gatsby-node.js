@@ -6,19 +6,22 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
   const { createPage } = actions;
 
   // Query for markdown nodes to use in creating pages.
-  const raceResultsFiles = await graphql(
+  const racesWithResults = await graphql(
     `{
-        allFile(filter: {name: {eq: "RaceResults"}}) {
-          edges {
-            node {
-              id
-              relativeDirectory
-            }
+      allSqliteRaces(filter: {NumberOfResults: {gt: 0}}) {
+        edges {
+          node {
+            Competition
+            Name
+            NumberOfResults
+            RaceId
+            Year
           }
         }
-      }`);
+      }
+    }`);
 
-  if (raceResultsFiles.errors) {
+  if (racesWithResults.errors) {
     reporter.panicOnBuild(`Error while running GraphQL query.`);
     
     return;
@@ -26,14 +29,12 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
 
   const resultsTemplate = path.resolve(`src/pages/results.js`);
   
-  raceResultsFiles.data.allFile.edges.forEach(({ node }) => {
+  racesWithResults.data.allSqliteRaces.edges.forEach(({ node }) => {
     createPage({
-      path: node.relativeDirectory.toLowerCase() + "/results",
+      path: `${node.Year}/${node.Competition}/${node.Name}/results`,
       component: resultsTemplate,
-      // In your blog post template's graphql query, you can use pagePath
-      // as a GraphQL variable to query for data from the markdown file.
       context: {
-        id: node.id,
+        id: node.RaceId,
       },
     })
   });

@@ -15,7 +15,8 @@ module.exports = {
       }
     },
     "gatsby-plugin-sharp",
-    "gatsby-transformer-sharp", {
+    "gatsby-transformer-sharp", 
+    {
       resolve: 'gatsby-source-filesystem',
       options: {
         "name": "images",
@@ -23,12 +24,38 @@ module.exports = {
       },
       __key: "images"
     },
-    "gatsby-transformer-yaml",
     {
-      resolve: "gatsby-source-filesystem",
+      resolve: `gatsby-source-sqlite`,
       options: {
-        path: "../../data/",
-      },
-    },
+        fileName: '../../data/Database.db',
+        queries: [
+          {
+            statement: 'SELECT * FROM RaceResult',
+            idFieldName: 'RaceResultId',
+            name: 'RaceResults'
+          },
+          {
+            statement: `
+              SELECT 
+                r.RaceId,
+                r.Name,
+                c.Year,
+                c.Competition,
+                rr.NumberOfResults
+              FROM Race r
+              INNER JOIN Competition c
+              ON r.CompetitionId = c.CompetitionId
+              LEFT OUTER JOIN 
+                (SELECT RaceId, COUNT(*) NumberOfResults
+                FROM RaceResult
+                GROUP BY RaceId) rr
+              ON r.RaceId = rr.RaceId;
+            }`,
+            idFieldName: 'RaceId',
+            name: 'Races'
+          }
+        ]
+      }
+    }
   ]
 };

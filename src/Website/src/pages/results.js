@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { useStaticQuery, graphql } from "gatsby"
+import { graphql } from "gatsby"
 
 const ResultsPage = ({data}) => {
   return (
@@ -17,7 +17,7 @@ const ResultsPage = ({data}) => {
                     </tr>
                 </thead>
                 <tbody>
-                    {data.allRaceResultsYaml.edges.map((edge) => (
+                    {data.allSqliteRaceResults.edges.map((edge) => (
                         <tr key={edge.node.id}>
                             <td>{edge.node.Position}</td>
                             <td>{edge.node.RunnerNumber}</td>
@@ -36,30 +36,22 @@ const ResultsPage = ({data}) => {
 export const Head = () => <title>Results</title>
 
 export const query = graphql`
-query MyQuery($id: String) {
-  allRaceResultsYaml(filter: {parent: {id: {eq: $id}}}) {
-    edges {
-      node {
-        id
-        Position
-        RunnerNumber
-        Name
-        Surname
-        Sex
-        Category
-        Club
-        Time
-        ClubCategoryResults {
+  query Query($id: Int) {
+    allSqliteRaceResults(filter: {RaceId: {eq: $id}}, sort: {Position: ASC}) {
+      edges {
+        node {
+          RaceResultId
           Position
+          RunnerNumber
+          Name
+          Surname
+          Sex
           Category
-        }
-        parent {
-          id
+          Club
+          Time
         }
       }
     }
-  }
-}
-`
+  }`;
 
 export default ResultsPage
