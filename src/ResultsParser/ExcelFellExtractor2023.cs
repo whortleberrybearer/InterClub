@@ -24,7 +24,6 @@ internal class ExcelFellExtractor2023 : IResultsExtractor
                     ExtractClubResults(ClubCategoryNames.Open, teamPositionsWorksheet, 1, 3, 9, teamScorersWorksheet, 2, raceResults),
                     ExtractClubResults(ClubCategoryNames.Female, teamPositionsWorksheet, 1, 23, 29, teamScorersWorksheet, 15, raceResults),
                     ExtractClubResults(ClubCategoryNames.Vet, teamPositionsWorksheet, 4, 3, 9, teamScorersWorksheet, 31, raceResults),
-                    ExtractClubResults(ClubCategoryNames.FemaleVet40, teamPositionsWorksheet, 4, 23, 29, teamScorersWorksheet, 23, raceResults),
                     ExtractClubResults(ClubCategoryNames.Vet50, teamPositionsWorksheet, 1, 13, 19, teamScorersWorksheet, 40, raceResults),
                     ExtractClubResults(ClubCategoryNames.Vet60, teamPositionsWorksheet, 4, 13, 19, teamScorersWorksheet, 47, raceResults)
                 },
@@ -33,7 +32,6 @@ internal class ExcelFellExtractor2023 : IResultsExtractor
                     ExtractClubStandings(ClubCategoryNames.Open, seasonTotalsWorksheet, 4),
                     ExtractClubStandings(ClubCategoryNames.Female, seasonTotalsWorksheet, 13),
                     ExtractClubStandings(ClubCategoryNames.Vet, seasonTotalsWorksheet, 31),
-                    ExtractClubStandings(ClubCategoryNames.FemaleVet40, seasonTotalsWorksheet, 22),
                     ExtractClubStandings(ClubCategoryNames.Vet50, seasonTotalsWorksheet, 40),
                     ExtractClubStandings(ClubCategoryNames.Vet60, seasonTotalsWorksheet, 49)
                 }
@@ -61,14 +59,43 @@ internal class ExcelFellExtractor2023 : IResultsExtractor
 
     private static RaceResult ExtractRaceResult(ExcelWorksheet positionsWorksheet, int rowIndex)
     {
+        string? sexAndCategory = ExcelParser.ParseString(positionsWorksheet.Cells[rowIndex, 11]);
+        string? sex = null;
+        string? category = null;
+
+        if (sexAndCategory is not null)
+        {
+            if (sexAndCategory.StartsWith("M", StringComparison.InvariantCultureIgnoreCase))
+            {
+                sex = "M";
+            }
+            else if (sexAndCategory.StartsWith("F", StringComparison.InvariantCultureIgnoreCase))
+            {
+                sex = "F";
+            }
+
+            sexAndCategory = sexAndCategory
+                .Replace("M", string.Empty, StringComparison.InvariantCultureIgnoreCase)
+                .Replace("F", string.Empty, StringComparison.InvariantCultureIgnoreCase);
+
+            if (string.IsNullOrWhiteSpace(sexAndCategory))
+            {
+                category = "SEN";
+            }
+            else if (int.TryParse(sexAndCategory, out int result)) 
+            {
+                 category = result.ToString();
+            }
+        }
+
         return new RaceResult()
         {
             RunnerNumber = ExcelParser.ParseNumber(positionsWorksheet.Cells[rowIndex, 1]),
             Position = ExcelParser.ParseNumber(positionsWorksheet.Cells[rowIndex, 2]).GetValueOrDefault(),
             Name = ExcelParser.ParseString(positionsWorksheet.Cells[rowIndex, 9]),
             Surname = ExcelParser.ParseString(positionsWorksheet.Cells[rowIndex, 10]),
-            Category = ExcelParser.ParseString(positionsWorksheet.Cells[rowIndex, 11]),
-            Sex = ExcelParser.ParseString(positionsWorksheet.Cells[rowIndex, 12]),
+            Category = category,
+            Sex = sex,
             Club = ExcelParser.ParseString(positionsWorksheet.Cells[rowIndex, 14]),
             Time = ExcelParser.ParseTime(positionsWorksheet.Cells[rowIndex, 15]),
             Comments = ExcelParser.ParseString(positionsWorksheet.Cells[rowIndex, 16]),
@@ -110,17 +137,6 @@ internal class ExcelFellExtractor2023 : IResultsExtractor
                     Category = ClubCategoryNames.Vet,
                     Position = vetPosition.Value,
                 });
-
-                int? femaleVet40Position = ExcelParser.ParseNumber(positionsWorksheet.Cells[rowIndex, 8]);
-
-                if (femaleVet40Position.HasValue)
-                {
-                    clubCategoryResults.Add(new ClubCategoryResult()
-                    {
-                        Category = ClubCategoryNames.FemaleVet40,
-                        Position = femaleVet40Position.Value,
-                    });
-                }
 
                 int? vet50Position = ExcelParser.ParseNumber(positionsWorksheet.Cells[rowIndex, 5]);
 
@@ -230,10 +246,9 @@ internal class ExcelFellExtractor2023 : IResultsExtractor
 
             RaceResult? raceResult = FindRaceResult(category, position, raceResults);
 
-            if ((raceResult is null) || !raceResult.Surname!.Equals(name.Split('.', StringSplitOptions.TrimEntries).Last(), StringComparison.InvariantCultureIgnoreCase))
+            if (raceResult is null)
             {
-                // Little validation check to make sure the correct runner has been found.
-                throw new Exception($"Scorer \"{name}\" does not match \"{raceResult?.Surname}\"");
+                throw new Exception("Result not found");
             }
 
             TeamScorer teamScorer = new TeamScorer()
