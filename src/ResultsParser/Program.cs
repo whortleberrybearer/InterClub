@@ -8,7 +8,7 @@ ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
 
 CoconaApp.Run(([Option("i")] string inputFile, [Option("o")] string outputPath, int year, string competition, string race) =>
 {
-    ExtractedResults extractedResults = ExtractResults(inputFile);
+    ExtractedResults extractedResults = ExtractResults(inputFile, competition, year);
 
     using (SqliteConnection connection = new SqliteConnection($"Data Source={Path.Combine(outputPath, "Database.db")}"))
     {
@@ -173,9 +173,22 @@ void SaveClubStandings(int competitionId, int raceId, string race, IEnumerable<C
     }
 }
  
-ExtractedResults ExtractResults(string inputFile)
+ExtractedResults ExtractResults(string inputFile, string competition, int year)
 {
-    IResultsExtractor resultsExtractor = new ExcelRoadExtractor2024();
+    IResultsExtractor resultsExtractor;
+
+    if (competition.Equals("Road", StringComparison.InvariantCultureIgnoreCase))
+    {
+        resultsExtractor = new ExcelRoadExtractor2024();
+    }
+    else if (competition.Equals("Fell", StringComparison.InvariantCultureIgnoreCase))
+    {
+        resultsExtractor = new ExcelFellExtractor2023();
+    }
+    else
+    {
+        throw new Exception("Unknown competition");
+    }
 
     using (Stream fileStream = File.OpenRead(inputFile))
     {
