@@ -81,7 +81,7 @@ internal class ExcelFellExtractor2017 : IStandingsExtractor
             Surname = name.Substring(name.IndexOf(" ") + 1),
             Sex = sex,
             Category = category,
-            Club = ExcelParser.ParseString(worksheet.Cells[rowIndex, 4])!,
+            Club = ExcelParser.ParseString(worksheet.Cells[rowIndex, 3])!,
             Total = ExcelParser.ParseNumber(worksheet.Cells[rowIndex, 9]).GetValueOrDefault(),
             Qualified = null,
             Results = ExtractResults(worksheet, rowIndex),
