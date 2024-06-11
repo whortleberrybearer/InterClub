@@ -36,7 +36,7 @@ internal static class ExcelParser
         }
 
         // Times are often in the format 23:45, so check these time first.
-        string[] formats = new string[] { @"hh\:mm\:ss", @"mm\:ss", @"mm\.ss" };
+        string[] formats = new string[] { @"hh\:mm\:ss", @"mm\:ss", @"mm\.ss", @"h\.mm\.ss" };
 
         if (TimeSpan.TryParseExact(cell.Text.Trim(), formats, DateTimeFormatInfo.CurrentInfo, out TimeSpan time))
         {

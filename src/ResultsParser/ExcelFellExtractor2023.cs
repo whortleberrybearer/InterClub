@@ -16,6 +16,15 @@ internal class ExcelFellExtractor2023 : IResultsExtractor
 
             IEnumerable<RaceResult> raceResults = ExtractRaceResults(positionsWorksheet);
 
+            ClubStandings[] clubStandings = new ClubStandings[]
+            {
+                ExtractClubStandings(ClubCategoryNames.Open, seasonTotalsWorksheet, 4),
+                ExtractClubStandings(ClubCategoryNames.Female, seasonTotalsWorksheet, 13),
+                ExtractClubStandings(ClubCategoryNames.Vet, seasonTotalsWorksheet, 31),
+                ExtractClubStandings(ClubCategoryNames.Vet50, seasonTotalsWorksheet, 40),
+                ExtractClubStandings(ClubCategoryNames.Vet60, seasonTotalsWorksheet, 49)
+            };
+
             return new ExtractedResults()
             {
                 RaceResults = raceResults,
@@ -27,14 +36,7 @@ internal class ExcelFellExtractor2023 : IResultsExtractor
                     ExtractClubResults(ClubCategoryNames.Vet50, teamPositionsWorksheet, 1, 13, 19, teamScorersWorksheet, 40, raceResults),
                     ExtractClubResults(ClubCategoryNames.Vet60, teamPositionsWorksheet, 4, 13, 19, teamScorersWorksheet, 47, raceResults)
                 },
-                ClubStandings = new ClubStandings[]
-                {
-                    ExtractClubStandings(ClubCategoryNames.Open, seasonTotalsWorksheet, 4),
-                    ExtractClubStandings(ClubCategoryNames.Female, seasonTotalsWorksheet, 13),
-                    ExtractClubStandings(ClubCategoryNames.Vet, seasonTotalsWorksheet, 31),
-                    ExtractClubStandings(ClubCategoryNames.Vet50, seasonTotalsWorksheet, 40),
-                    ExtractClubStandings(ClubCategoryNames.Vet60, seasonTotalsWorksheet, 49)
-                }
+                ClubStandings = clubStandings.Any(cs => cs is not null) ? clubStandings : null,
             };
         }
     }
@@ -46,7 +48,8 @@ internal class ExcelFellExtractor2023 : IResultsExtractor
         for (int rowIndex = 4; rowIndex <= positionsWorksheet.Dimension.End.Row; rowIndex++)
         {
             // If the position is not set, this must be the end of the file.
-            if (string.IsNullOrWhiteSpace(positionsWorksheet.Cells[rowIndex, 2].Value?.ToString()))
+            if (string.IsNullOrWhiteSpace(positionsWorksheet.Cells[rowIndex, 2].Value?.ToString()) &&
+                string.IsNullOrWhiteSpace(positionsWorksheet.Cells[rowIndex + 1, 2].Value?.ToString()))
             {
                 break;
             }
@@ -84,7 +87,7 @@ internal class ExcelFellExtractor2023 : IResultsExtractor
             }
             else if (int.TryParse(sexAndCategory, out int result)) 
             {
-                 category = result.ToString();
+                 category = "V" + result.ToString();
             }
         }
 
@@ -233,18 +236,15 @@ internal class ExcelFellExtractor2023 : IResultsExtractor
         // The largest team size is 10, so only scan that may rows.
         for (int rowIndex = teamScorersRowIndex; rowIndex <= teamScorersRowIndex + 10; rowIndex++)
         {
-            string name = teamScorersWorksheet.Cells[rowIndex, teamScorersColumnIndex].Text;
+            // The names in the sheet are initial + surname, so need to split that out and re-popular the name at a later point.
+            int? position = ExcelParser.ParseNumber(teamScorersWorksheet.Cells[rowIndex, teamScorersColumnIndex - 1]);
 
-            // If we find an blank cell, or "Incomplete Team", can stop checking.
-            if (string.IsNullOrWhiteSpace(name) || name.Equals("Incomplete Team", StringComparison.InvariantCultureIgnoreCase))
+            if (!position.HasValue)
             {
                 break;
             }
 
-            // The names in the sheet are initial + surname, so need to split that out and re-popular the name at a later point.
-            int position = ExcelParser.ParseNumber(teamScorersWorksheet.Cells[rowIndex, teamScorersColumnIndex - 1]).GetValueOrDefault();
-
-            RaceResult? raceResult = FindRaceResult(category, position, raceResults);
+            RaceResult? raceResult = FindRaceResult(category, position.Value, raceResults);
 
             if (raceResult is null)
             {
@@ -253,7 +253,7 @@ internal class ExcelFellExtractor2023 : IResultsExtractor
 
             TeamScorer teamScorer = new TeamScorer()
             {
-                Position = position,
+                Position = position.Value,
                 Name = raceResult.Name,
                 Surname = raceResult.Surname,
                 Result = raceResult,
@@ -280,12 +280,18 @@ internal class ExcelFellExtractor2023 : IResultsExtractor
         return null;
     }
 
-    private static ClubStandings ExtractClubStandings(string category, ExcelWorksheet seasonTotalsWorksheet, int startRowIndex)
+    private static ClubStandings? ExtractClubStandings(string category, ExcelWorksheet seasonTotalsWorksheet, int startRowIndex)
     {
         List<ClubStanding> clubStandings = new List<ClubStanding>();
 
         for (int rowIndex = startRowIndex; rowIndex < startRowIndex + 7; rowIndex++)
         {
+            // If there are no details, no standings are populated.
+            if (ExcelParser.ParseString(seasonTotalsWorksheet.Cells[rowIndex, 1]) is null)
+            {
+                return null;
+            }
+
             clubStandings.Add(ExtractClubStanding(seasonTotalsWorksheet, rowIndex));
         }
 
