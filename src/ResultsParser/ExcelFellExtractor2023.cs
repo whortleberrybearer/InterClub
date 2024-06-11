@@ -7,7 +7,7 @@ internal class ExcelFellExtractor2023 : IResultsExtractor
         using (ExcelPackage excelPackage = new ExcelPackage(stream))
         {
             ExcelWorksheet positionsWorksheet =
-                excelPackage.Workbook.Worksheets["Positions."] ??  // Some docs have it named differently becasue a duplicate tab.
+                excelPackage.Workbook.Worksheets["Positions."] ??  // Some docs have it named differently because a duplicate tab.
                 excelPackage.Workbook.Worksheets["Positions"] ?? 
                 throw new Exception("Positions worksheet missing");
             ExcelWorksheet teamPositionsWorksheet = excelPackage.Workbook.Worksheets["Team Positions"] ?? throw new Exception("Team Positions worksheet missing");
@@ -16,7 +16,7 @@ internal class ExcelFellExtractor2023 : IResultsExtractor
 
             IEnumerable<RaceResult> raceResults = ExtractRaceResults(positionsWorksheet);
 
-            ClubStandings[] clubStandings = new ClubStandings[]
+            ClubStandings?[] clubStandings = new ClubStandings?[]
             {
                 ExtractClubStandings(ClubCategoryNames.Open, seasonTotalsWorksheet, 4),
                 ExtractClubStandings(ClubCategoryNames.Female, seasonTotalsWorksheet, 13),
@@ -36,7 +36,7 @@ internal class ExcelFellExtractor2023 : IResultsExtractor
                     ExtractClubResults(ClubCategoryNames.Vet50, teamPositionsWorksheet, 1, 13, 19, teamScorersWorksheet, 40, raceResults),
                     ExtractClubResults(ClubCategoryNames.Vet60, teamPositionsWorksheet, 4, 13, 19, teamScorersWorksheet, 47, raceResults)
                 },
-                ClubStandings = clubStandings.Any(cs => cs is not null) ? clubStandings : null,
+                ClubStandings = clubStandings.Any(cs => cs is not null) ? clubStandings.Select(cs => cs!) : null,
             };
         }
     }
