@@ -2,6 +2,8 @@
 using Dapper;
 using Microsoft.Data.Sqlite;
 using OfficeOpenXml;
+using System.Diagnostics;
+using System.Xml.Linq;
 
 // Needs to be set to avoid license exception.
 ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
@@ -27,9 +29,18 @@ CoconaApp.Run(([Option("i")] string inputFile, [Option("o")] string outputPath, 
                     year,
                 });
 
+            IEnumerable<Race> races = connection.Query<Race>(
+                "SELECT RaceId, Name " +
+                "FROM Race" +
+                "WHERE CompetitionId = @competitionId",
+                new
+                { 
+                    competitionId 
+                });
+
             if (extractedStandings.RunnerStandings is not null)
             {
-                SaveRunnerStandings(competitionId, extractedStandings.RunnerStandings, connection, transaction);
+                SaveRunnerStandings(competitionId, extractedStandings.RunnerStandings, connection, transaction, races);
             }
 
             transaction.Commit();
@@ -47,7 +58,45 @@ ExtractedStandings ExtractStandings(string inputFile, string competition, int ye
     }
 }
 
-void SaveRunnerStandings(int competitionId, IEnumerable<RunnerStandings> runnerStandings, SqliteConnection connection, SqliteTransaction transaction)
+void SaveRunnerStandings(int competitionId, IEnumerable<RunnerStandings> runnerStandings, SqliteConnection connection, SqliteTransaction transaction, IEnumerable<Race> races)
 {
-    throw new NotImplementedException();
+    foreach (RunnerStandings runnerStanding in runnerStandings)
+    {
+        foreach (RunnerStanding standing in runnerStanding.Standings)
+        {
+            int runnerStandingId = connection.QuerySingle<int>(
+                "INSERT INTO RunnerStanding (CompetitionId, RunnerCategory, Name, Surname, Category, Sex, Club, Position, Total, Qualified) " +
+                "VALUES (@competitionId, @runnerCategory, @name, @surname, @category, @sex, @club, @position, @total, @qualified);" +
+                "SELECT last_insert_rowid();",
+                new
+                {
+                    competitionId,
+                    runnerCategory = runnerStanding.Category,
+                    name = standing.Category,
+                    surname = standing.Surname,
+                    category = standing.Category,
+                    sex = standing.Sex,
+                    club = standing.Club,
+                    position = standing.Position,
+                    total = standing.Total,
+                    qualified = standing.Qualified,
+                },
+            transaction);
+
+            foreach (RunnerStandingResult result in standing.Results)
+            {
+                connection.Execute(
+                    "INSERT INTO RunnerStandingResult (RunnerStandingId, RaceId, Points, Scoring) " +
+                    "VALUES (@runnerStandingId, @raceId, @points, @scoring)",
+                    new
+                    {
+                        runnerStandingId,
+                        raceId = races.First(r => r.Name.Equals(result.Race, StringComparison.InvariantCultureIgnoreCase)).RaceId,
+                        points = result.Points,
+                        scoring = result.Scoring,
+                    },
+                    transaction);
+            }
+        }
+    }
 }
