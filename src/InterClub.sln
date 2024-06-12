@@ -5,7 +5,9 @@ VisualStudioVersion = 17.7.34221.43
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ResultsParser", "ResultsParser\ResultsParser.csproj", "{947C2DF6-145C-48A9-8D04-AD2589B0267A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data", "Data\Data.csproj", "{21CEB823-0B9E-4574-B197-709A3321FF1C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Data", "Data\Data.csproj", "{21CEB823-0B9E-4574-B197-709A3321FF1C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StandingsParser", "StandingsParser\StandingsParser.csproj", "{EA6459AE-33DB-421C-89E2-E45F6ED7D59C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{21CEB823-0B9E-4574-B197-709A3321FF1C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{21CEB823-0B9E-4574-B197-709A3321FF1C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{21CEB823-0B9E-4574-B197-709A3321FF1C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EA6459AE-33DB-421C-89E2-E45F6ED7D59C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EA6459AE-33DB-421C-89E2-E45F6ED7D59C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EA6459AE-33DB-421C-89E2-E45F6ED7D59C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EA6459AE-33DB-421C-89E2-E45F6ED7D59C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
