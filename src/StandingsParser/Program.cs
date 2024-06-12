@@ -31,7 +31,7 @@ CoconaApp.Run(([Option("i")] string inputFile, [Option("o")] string outputPath, 
 
             IEnumerable<Race> races = connection.Query<Race>(
                 "SELECT RaceId, Name " +
-                "FROM Race" +
+                "FROM Race " +
                 "WHERE CompetitionId = @competitionId",
                 new
                 { 
@@ -72,7 +72,7 @@ void SaveRunnerStandings(int competitionId, IEnumerable<RunnerStandings> runnerS
                 {
                     competitionId,
                     runnerCategory = runnerStanding.Category,
-                    name = standing.Category,
+                    name = standing.Name,
                     surname = standing.Surname,
                     category = standing.Category,
                     sex = standing.Sex,
