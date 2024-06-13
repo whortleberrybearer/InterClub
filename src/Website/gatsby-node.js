@@ -1,4 +1,5 @@
 const path = require("path")
+const slugify = require('slugify')
 
 // Implement the Gatsby API “createPages”. This is called once the
 // data layer is bootstrapped to let plugins create pages from data.
@@ -27,11 +28,11 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
     return;
   }
 
-  const resultsTemplate = path.resolve(`src/pages/results.js`);
+  const resultsTemplate = path.resolve(`src/templates/results.js`);
   
   racesWithResults.data.allSqliteRaces.edges.forEach(({ node }) => {
     createPage({
-      path: `${node.Year}/${node.Competition}/${node.Name}/results`,
+      path: `${node.Year}/${slugify(node.Competition, { lower: true })}/${slugify(node.Name, { lower: true })}/results`,
       component: resultsTemplate,
       context: {
         id: node.RaceId,
