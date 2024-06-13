@@ -1,9 +1,11 @@
 import * as React from 'react'
 import { graphql } from "gatsby"
+import Layout from '../organisms/layout'
 
 const ResultsPage = ({data}) => {
   return (
-    <main>
+    <Layout>
+      <main class="container">
       <h1>{data.sqliteRaces.Name} Results</h1>
       <table>
                 <thead>
@@ -29,7 +31,8 @@ const ResultsPage = ({data}) => {
                     ))}
                 </tbody>
             </table>
-    </main>
+      </main>
+    </Layout>
   )
 }
 
