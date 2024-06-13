@@ -1,6 +1,5 @@
-/*ALTER TABLE Race
+ALTER TABLE Race
 ADD StartDateTime VARCHAR(20) NULL;
-*/
 
 UPDATE Race
 SET StartDateTime = "2024-04-10 19:00"
