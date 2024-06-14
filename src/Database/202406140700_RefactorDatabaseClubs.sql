@@ -1,4 +1,4 @@
-DROP TABLE IF EXISTS Club;
+/*DROP TABLE IF EXISTS Club;
 DROP TABLE IF EXISTS YearClub;
 
 CREATE TABLE Club (
@@ -193,3 +193,76 @@ ON yc.YearId = y.YearId
 INNER JOIN Club c
 ON yc.ClubId = c.ClubId
 ORDER BY Year, c.Name;
+
+ALTER TABLE ClubWinner 
+RENAME TO OldClubWinner;
+
+CREATE TABLE ClubWinner (
+    ClubWinnerId INTEGER PRIMARY KEY AUTOINCREMENT,
+    CompetitionId INTEGER NOT NULL,
+    Category VARCHAR(25) NOT NULL,
+    ClubId INTEGER NOT NULL, 
+    FOREIGN KEY (CompetitionId) REFERENCES Competition (CompetitionId),
+    FOREIGN KEY (ClubId) REFERENCES Club (ClubId), 
+    UNIQUE(CompetitionId, Category)
+);
+
+UPDATE OldClubWinner
+SET Club = "Blackpool"
+WHERE Club = "Blackpool and Fylde";
+
+DROP TABLE ClubWinner;
+CREATE TABLE ClubWinner (
+    ClubWinnerId INTEGER PRIMARY KEY AUTOINCREMENT,
+    CompetitionId INTEGER NOT NULL,
+    Category VARCHAR(25) NOT NULL,
+    YearClubId INTEGER NOT NULL, 
+    FOREIGN KEY (CompetitionId) REFERENCES Competition (CompetitionId),
+    FOREIGN KEY (YearClubId) REFERENCES YearClub (YearClubId), 
+    UNIQUE(CompetitionId, Category)
+);
+
+UPDATE OldClubWinner
+SET CompetitionId = (SELECT CompetitionId FROM CompetitionsView WHERE Year = 1989 AND CompetitionType = "Road")
+WHERE ClubWinnerId IN (112, 113, 114);
+
+UPDATE OldClubWinner
+SET CompetitionId = (SELECT CompetitionId FROM CompetitionsView WHERE Year = 1990 AND CompetitionType = "Road")
+WHERE ClubWinnerId IN (115, 116);
+
+UPDATE OldClubWinner
+SET CompetitionId = (SELECT CompetitionId FROM CompetitionsView WHERE Year = 1991 AND CompetitionType = "Road")
+WHERE ClubWinnerId IN (117, 118);
+
+UPDATE OldClubWinner
+SET Club = "Chorley"
+WHERE Club = "Chorely";
+
+DROP TABLE ClubWinner;
+CREATE TABLE ClubWinner (
+    ClubWinnerId INTEGER PRIMARY KEY AUTOINCREMENT,
+    CompetitionId INTEGER NOT NULL,
+    Category VARCHAR(25) NOT NULL,
+    YearClubId INTEGER NOT NULL, 
+    FOREIGN KEY (CompetitionId) REFERENCES Competition (CompetitionId),
+    FOREIGN KEY (YearClubId) REFERENCES YearClub (YearClubId), 
+    UNIQUE(CompetitionId, Category, YearClubId)
+);
+
+INSERT INTO ClubWinner (ClubWinnerId, CompetitionId, Category, YearClubId)
+SELECT 
+    ocw.ClubWinnerId,
+    ocw.CompetitionId,
+    ocw.Category,
+    yc.YearClubId
+FROM OldClubWinner ocw
+INNER JOIN Competition co
+ON co.CompetitionId = ocw.CompetitionId
+INNER JOIN Club cl
+ON cl.ShortName = ocw.Club
+INNER JOIN YearClub yc
+ON yc.ClubId = cl.ClubId
+AND yc.YearId = co.YearId;
+
+DROP TABLE OldClubWinner;
+*/
