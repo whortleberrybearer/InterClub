@@ -76,3 +76,39 @@ UPDATE Year
 SET Cancelled = 1,
     Comment = "Cancelled due to Covid"
 WHERE Year IN (2020, 2021);
+
+INSERT INTO Competition (CompetitionTypeId, YearId)
+SELECT CompetitionTypeId, YearId
+FROM CompetitionType, Year
+WHERE CompetitionType = "Fell"
+AND Year >= 2010 AND Year < 2023;
+
+INSERT INTO Year (Year)
+VALUES (1989), (1990), (1991);
+
+INSERT INTO Competition (CompetitionTypeId, YearId)
+SELECT CompetitionTypeId, YearId
+FROM CompetitionType, Year
+WHERE CompetitionType = "Road"
+AND Year >= 1989 AND Year < 1992;
+
+DELETE FROM Competition
+WHERE YearId IN (
+    SELECT YearId
+    FROM Year
+    WHERE Cancelled = 1);
+
+DROP VIEW CompetitionsView;
+CREATE VIEW CompetitionsView
+AS
+SELECT 
+    c.CompetitionId,
+    ct.CompetitionTypeId,
+    ct.CompetitionType,
+    y.YearId,
+    y.Year
+FROM Competition c
+INNER JOIN CompetitionType ct
+ON c.CompetitionTypeId = ct.CompetitionTypeId
+INNER JOIN Year y
+ON c.YearId = y.YearId;
