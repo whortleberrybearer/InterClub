@@ -20,8 +20,8 @@ CoconaApp.Run(([Option("i")] string inputFile, [Option("o")] string outputPath, 
         {
             int competitionId = connection.QuerySingle<int>(
                 "SELECT CompetitionId " +
-                "FROM Competition " +
-                "WHERE Competition = @competition " +
+                "FROM CompetitionsView " +
+                "WHERE CompetitionType = @competition " +
                 "AND Year = @year;",
                 new
                 {
