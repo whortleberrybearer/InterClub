@@ -487,4 +487,58 @@ ON yc.ClubId = cl.ClubId
 AND yc.YearId = co.YearId;
 
 DROP TABLE OldClubResult;
+
+DROP View ClubSTandingsView;
+CREATE VIEW ClubStandingsView
+AS
+SELECT 
+    cs.ClubStandingId,
+    co.CompetitionId,
+    ct.CompetitionTypeId,
+    ct.CompetitionType,
+    y.YearId,
+    y.Year,
+    cs.Category,
+    cs.Position,
+    yc.YearClubId,
+    cl.ClubId,
+    cl.ShortName,
+    cs.Total
+FROM ClubStanding cs
+INNER JOIN Competition co
+ON co.CompetitionId = cs.CompetitionId
+INNER JOIN CompetitionType ct
+ON ct.CompetitionTypeId = co.CompetitionTypeId
+INNER JOIN Year y
+ON y.YearId = co.YearId
+INNER JOIN YearClub yc
+ON yc.YearClubId = cs.YearClubId
+INNER JOIN Club cl
+ON cl.ClubId = yc.ClubId;
+
+CREATE VIEW ClubResultsView
+AS
+SELECT 
+    cr.ClubResultId,
+    y.YearId,
+    y.Year,
+    r.RaceId,
+    r.Name RaceName,
+    cr.Category,
+    cr.Position,
+    yc.YearClubId,
+    cl.ClubId,
+    cl.ShortName,
+    cr.Score
+FROM ClubResult cr
+INNER JOIN Race r
+ON r.RaceId = cr.RaceId
+INNER JOIN Competition co
+ON co.CompetitionId = r.CompetitionId
+INNER JOIN Year y
+ON y.YearId = co.YearId
+INNER JOIN YearClub yc
+ON yc.YearClubId = cr.YearClubId
+INNER JOIN Club cl
+ON cl.ClubId = yc.ClubId;
 */
