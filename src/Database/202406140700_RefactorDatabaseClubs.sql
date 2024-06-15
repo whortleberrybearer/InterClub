@@ -582,5 +582,36 @@ ON yc.ClubId = cl.ClubId
 AND yc.YearId = co.YearId;
 
 DROP TABLE OldRunnerStanding;
-*/
 
+CREATE VIEW RunnerStandingsView
+AS
+SELECT 
+    rs.RunnerStandingId,
+    co.CompetitionId,
+    ct.CompetitionTypeId,
+    ct.CompetitionType,
+    y.YearId,
+    y.Year,
+    rs.RunnerCategory,
+    rs.Position,
+    rs.Name,
+    rs.Surname,
+    rs.Sex,
+    rs.Category,
+    yc.YearClubId,
+    cl.ClubId,
+    cl.ShortName ClubShortName,
+    rs.Total,
+    rs.Qualified
+FROM RunnerStanding rs
+INNER JOIN Competition co
+ON co.CompetitionId = rs.CompetitionId
+INNER JOIN CompetitionType ct
+ON ct.CompetitionTypeId = co.CompetitionTypeId
+INNER JOIN Year y
+ON y.YearId = co.YearId
+INNER JOIN YearClub yc
+ON yc.YearClubId = rs.YearClubId
+INNER JOIN Club cl
+ON cl.ClubId = yc.ClubId;
+*/
