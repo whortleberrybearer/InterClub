@@ -383,4 +383,72 @@ INNER JOIN YearClub yc
 ON yc.YearClubId = rw.YearClubId
 INNER JOIN Club cl
 ON cl.ClubId = yc.ClubId;
+
+ALTER TABLE ClubStanding 
+RENAME TO OldClubStanding;
+
+CREATE TABLE ClubStanding (
+    ClubStandingId INTEGER PRIMARY KEY AUTOINCREMENT,
+    CompetitionId INTEGER NOT NULL,
+    Category VARCHAR(25) NOT NULL,
+    YearClubId INTEGER NOT NULL, 
+    Position INTEGER NOT NULL,
+    Total INTEGER NOT NULL,
+    FOREIGN KEY (CompetitionId) REFERENCES Competition (CompetitionId),
+    FOREIGN KEY (YearClubId) REFERENCES YearClub (YearClubId), 
+    UNIQUE(CompetitionId, Category, Position)
+);
+
+DELETE FROM OldClubStanding
+WHERE ClubStandingId NOT IN (
+    SELECT MAX(ClubStandingId)
+    FROM OldClubStanding
+    GROUP BY CompetitionId, Category, Position);
+
+INSERT INTO ClubStanding (ClubStandingId, CompetitionId, Category, YearClubId, Position, Total)
+SELECT 
+    ocs.ClubStandingId,
+    ocs.CompetitionId,
+    ocs.Category,
+    yc.YearClubId,
+    ocs.Position,
+    ocs.Total
+FROM OldClubStanding ocs
+INNER JOIN Competition co
+ON co.CompetitionId = ocs.CompetitionId
+INNER JOIN Club cl
+ON cl.ShortName = ocs.Club
+INNER JOIN YearClub yc
+ON yc.ClubId = cl.ClubId
+AND yc.YearId = co.YearId
+GROUP BY ocs.CompetitionId, ocs.Category, ocs.Position;
+
+DROP TABLE OldClubStanding;
+
+CREATE VIEW ClubSTandingsView
+AS
+SELECT 
+    cs.ClubStandingId,
+    co.CompetitionId,
+    ct.CompetitionTypeId,
+    ct.CompetitionType,
+    y.YearId,
+    y.Year,
+    cs.Category,
+    cs.Position,
+    yc.YearClubId,
+    cl.ClubId,
+    cl.ShortName,
+    cs.Total
+FROM ClubStanding cs
+INNER JOIN Competition co
+ON co.CompetitionId = cs.CompetitionId
+INNER JOIN CompetitionType ct
+ON ct.CompetitionTypeId = co.CompetitionTypeId
+INNER JOIN Year y
+ON y.YearId = co.YearId
+INNER JOIN YearClub yc
+ON yc.YearClubId = cs.YearClubId
+INNER JOIN Club cl
+ON cl.ClubId = yc.ClubId;
 */
