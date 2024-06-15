@@ -290,10 +290,97 @@ INNER JOIN YearClub yc
 ON yc.YearClubId = cw.YearClubId
 INNER JOIN Club cl
 ON cl.ClubId = yc.ClubId;
-*/
 
+-- There are some errors in the population based on the details in the interclub history document.
 INSERT INTO ClubWinner (CompetitionId, Category, YearClubId)
 VALUES (
     (SELECT CompetitionId FROM CompetitionsView WHERE CompetitionType = "Road" AND Year = 1998),
     "Female",
-    (SELECT YearClubId FROM YearClubsView WHERE ShortName = "Red Rose" AND Year = 1998);
+    (SELECT YearClubId FROM YearClubsView WHERE ShortName = "Red Rose" AND Year = 1998));
+
+UPDATE ClubWinner
+SET YearClubId =  (SELECT YearClubId FROM YearClubsView WHERE ShortName = "Red Rose" AND Year = 2014)
+WHERE CompetitionId = (SELECT CompetitionId FROM CompetitionsView WHERE CompetitionType = "Road" AND Year = 2014)
+AND Category = "Vet 50";
+
+ALTER TABLE RunnerWinner 
+RENAME TO OldRunnerWinner;
+
+CREATE TABLE RunnerWinner (
+    RunnerWinnerId INTEGER PRIMARY KEY AUTOINCREMENT,
+    CompetitionId INTEGER NOT NULL,
+    Category VARCHAR(25) NOT NULL,
+    Name VARCHAR(50),
+    Surname VARCHAR(50),
+    YearClubId INTEGER NOT NULL, 
+    Position INTEGER NOT NULL,
+    FOREIGN KEY (CompetitionId) REFERENCES Competition (CompetitionId),
+    FOREIGN KEY (YearClubId) REFERENCES YearClub (YearClubId), 
+    UNIQUE(CompetitionId, Category, Position)
+);
+
+UPDATE OldRunnerWinner
+SET Club = "Blackpool"
+WHERE Club = "Blackpool and Fylde";
+
+UPDATE OldRunnerWinner
+SET  Club = "Blackpool"
+WHERE CompetitionId = (SELECT CompetitionId FROM CompetitionsView WHERE CompetitionType = "Road" AND Year = 2007)
+AND Category = "Female"
+AND Position = 1;
+
+UPDATE OldRunnerWinner
+SET CompetitionId = (SELECT CompetitionId FROM CompetitionsView WHERE CompetitionType = "Road" AND Year = 2006)
+WHERE Name = "A"
+AND Surname = "Sutton"
+AND Category = "Open"
+AND CompetitionId = (SELECT CompetitionId FROM CompetitionsView WHERE CompetitionType = "Road" AND Year = 2005);
+
+INSERT INTO RunnerWinner (RunnerWinnerId, CompetitionId, Category, Name, Surname, YearClubId, Position)
+SELECT 
+    orw.RunnerWinnerId,
+    orw.CompetitionId,
+    orw.Category,
+    orw.Name,
+    orw.Surname,
+    yc.YearClubId,
+    orw.Position
+FROM OldRunnerWinner orw
+INNER JOIN Competition co
+ON co.CompetitionId = orw.CompetitionId
+INNER JOIN Club cl
+ON cl.ShortName = orw.Club
+INNER JOIN YearClub yc
+ON yc.ClubId = cl.ClubId
+AND yc.YearId = co.YearId;
+
+DROP TABLE OldRunnerWinner;
+
+CREATE VIEW RunnerWinnersView
+AS
+SELECT 
+    rw.RunnerWinnerId,
+    co.CompetitionId,
+    ct.CompetitionTypeId,
+    ct.CompetitionType,
+    y.YearId,
+    y.Year,
+    rw.Category,
+    rw.Position,
+    rw.Name,
+    rw.Surname,
+    yc.YearClubId,
+    cl.ClubId,
+    cl.ShortName
+FROM RunnerWinner rw
+INNER JOIN Competition co
+ON co.CompetitionId = rw.CompetitionId
+INNER JOIN CompetitionType ct
+ON ct.CompetitionTypeId = co.CompetitionTypeId
+INNER JOIN Year y
+ON y.YearId = co.YearId
+INNER JOIN YearClub yc
+ON yc.YearClubId = rw.YearClubId
+INNER JOIN Club cl
+ON cl.ClubId = yc.ClubId;
+*/
