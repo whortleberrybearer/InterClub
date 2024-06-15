@@ -541,4 +541,46 @@ INNER JOIN YearClub yc
 ON yc.YearClubId = cr.YearClubId
 INNER JOIN Club cl
 ON cl.ClubId = yc.ClubId;
+
+ALTER TABLE RunnerStanding 
+RENAME TO OldRunnerStanding;
+
+CREATE TABLE RunnerStanding (
+    RunnerStandingId INTEGER PRIMARY KEY AUTOINCREMENT,
+    CompetitionId INTEGER NOT NULL,
+    RunnerCategory VARCHAR(25) NOT NULL,
+    Name VARCHAR(50) NULL,
+    Surname VARCHAR(50) NULL,
+    Category VARCHAR(5) NULL,
+    Sex VARCHAR(1) NULL,
+    YearClubId INTEGER NOT NULL, 
+    Position INTEGER NOT NULL,
+    Total INTEGER NOT NULL,
+    Qualified INTEGER NULL
+);
+
+INSERT INTO RunnerStanding (RunnerStandingId, CompetitionId, RunnerCategory, Name, Surname, Category, Sex, YearClubId, Position, Total, Qualified)
+SELECT 
+    ors.RunnerStandingId, 
+    ors.CompetitionId, 
+    ors.RunnerCategory, 
+    ors.Name, 
+    ors.Surname, 
+    ors.Category, 
+    ors.Sex, 
+    yc.YearClubId, 
+    ors.Position, 
+    ors.Total, 
+    ors.Qualified
+FROM OldRunnerStanding ors
+INNER JOIN Competition co
+ON co.CompetitionId = ors.CompetitionId
+INNER JOIN Club cl
+ON cl.ShortName = ors.Club
+INNER JOIN YearClub yc
+ON yc.ClubId = cl.ClubId
+AND yc.YearId = co.YearId;
+
+DROP TABLE OldRunnerStanding;
 */
+
