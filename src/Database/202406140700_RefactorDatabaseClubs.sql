@@ -614,4 +614,64 @@ INNER JOIN YearClub yc
 ON yc.YearClubId = rs.YearClubId
 INNER JOIN Club cl
 ON cl.ClubId = yc.ClubId;
+
+ALTER TABLE RaceResult 
+RENAME TO OldRaceResult;
+
+CREATE TABLE RaceResult (
+    RaceResultId INTEGER PRIMARY KEY AUTOINCREMENT,
+    RaceId INTEGER NOT NULL,
+    Position INTEGER NULL,
+    RunnerNumber INTEGER NULL,
+    Name VARCHAR(50) NULL,
+    Surname VARCHAR(50) NULL,
+    Category VARCHAR(5) NULL,
+    Sex VARCHAR(1) NULL,
+    Club VARCHAR(25) NULL,
+    YearClubId INTEGER NULL, 
+    Time VARCHAR(8) NULL,
+    Comments VARCHAR(50) NULL,
+    FOREIGN KEY (RaceId) REFERENCES Race (RaceId),
+    FOREIGN KEY (YearClubId) REFERENCES YearClub (YearClubId)
+);
+
+INSERT INTO RaceResult (
+    RaceResultId,
+    RaceId,
+    Position,
+    RunnerNumber,
+    Name,
+    Surname,
+    Category,
+    Sex,
+    Club,
+    YearClubId,
+    Time,
+    Comments)
+SELECT 
+    orr.RaceResultId, 
+    orr.RaceId, 
+    orr.Position, 
+    orr.RunnerNumber,
+    orr.Name, 
+    orr.Surname, 
+    orr.Category, 
+    orr.Sex, 
+    orr.Club, 
+    (SELECT YearClubId FROM YearClubsView WHERE YearId = c.YearId AND ShortName = orr.Club),
+    orr.Time, 
+    orr.Comments
+FROM OldRaceResult orr
+INNER JOIN Race r
+ON r.RaceId = orr.RaceId
+INNER JOIN Competition c
+ON c.CompetitionId = r.CompetitionId;
+
+DROP TABLE OldRaceResult;
+*/
+
+/*
+SELECT *
+FROM OldRaceResult
+WHERE Club IN ("Guest", "Harlow", "Lancaster And Morecambe");
 */
