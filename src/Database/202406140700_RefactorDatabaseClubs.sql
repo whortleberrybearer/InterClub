@@ -265,4 +265,29 @@ ON yc.ClubId = cl.ClubId
 AND yc.YearId = co.YearId;
 
 DROP TABLE OldClubWinner;
+
+CREATE VIEW ClubWinnersView
+AS
+SELECT 
+    cw.ClubWinnerId,
+    co.CompetitionId,
+    ct.CompetitionTypeId,
+    ct.CompetitionType,
+    y.YearId,
+    y.Year,
+    cw.Category,
+    yc.YearClubId,
+    cl.ClubId,
+    cl.ShortName
+FROM ClubWinner cw
+INNER JOIN Competition co
+ON co.CompetitionId = cw.CompetitionId
+INNER JOIN CompetitionType ct
+ON ct.CompetitionTypeId = co.CompetitionTypeId
+INNER JOIN Year y
+ON y.YearId = co.YearId
+INNER JOIN YearClub yc
+ON yc.YearClubId = cw.YearClubId
+INNER JOIN Club cl
+ON cl.ClubId = yc.ClubId;
 */
