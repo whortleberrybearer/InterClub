@@ -1,4 +1,4 @@
-/*DROP TABLE IF EXISTS Club;
+DROP TABLE IF EXISTS Club;
 DROP TABLE IF EXISTS YearClub;
 
 CREATE TABLE Club (
@@ -753,4 +753,151 @@ SELECT
 FROM OldRunnerStanding;
 
 DROP TABLE OldRunnerStanding;
-*/
+
+DROP VIEW ClubResultsView;
+CREATE VIEW ClubResultsView
+AS
+SELECT 
+    cr.ClubResultId,
+    co.CompetitionId,
+    ct.CompetitionTypeId,
+    ct.CompetitionType,
+    y.YearId,
+    y.Year,
+    r.RaceId,
+    r.Name RaceName,
+    cr.Category,
+    cr.Position,
+    yc.YearClubId,
+    cl.ClubId,
+    cl.ShortName ClubShortName,
+    cr.Score
+FROM ClubResult cr
+INNER JOIN Race r
+ON r.RaceId = cr.RaceId
+INNER JOIN Competition co
+ON co.CompetitionId = r.CompetitionId
+INNER JOIN CompetitionType ct
+ON ct.CompetitionTypeId = co.CompetitionTypeId
+INNER JOIN Year y
+ON y.YearId = co.YearId
+INNER JOIN YearClub yc
+ON yc.YearClubId = cr.YearClubId
+INNER JOIN Club cl
+ON cl.ClubId = yc.ClubId;
+
+DROP VIEW ClubStandingsView;
+CREATE VIEW ClubStandingsView
+AS
+SELECT 
+    cs.ClubStandingId,
+    co.CompetitionId,
+    ct.CompetitionTypeId,
+    ct.CompetitionType,
+    y.YearId,
+    y.Year,
+    cs.Category,
+    cs.Position,
+    yc.YearClubId,
+    cl.ClubId,
+    cl.ShortName ClubShortName,
+    cs.Total
+FROM ClubStanding cs
+INNER JOIN Competition co
+ON co.CompetitionId = cs.CompetitionId
+INNER JOIN CompetitionType ct
+ON ct.CompetitionTypeId = co.CompetitionTypeId
+INNER JOIN Year y
+ON y.YearId = co.YearId
+INNER JOIN YearClub yc
+ON yc.YearClubId = cs.YearClubId
+INNER JOIN Club cl
+ON cl.ClubId = yc.ClubId;
+
+DROP VIEW ClubWinnersView;
+CREATE VIEW ClubWinnersView
+AS
+SELECT 
+    cw.ClubWinnerId,
+    co.CompetitionId,
+    ct.CompetitionTypeId,
+    ct.CompetitionType,
+    y.YearId,
+    y.Year,
+    cw.Category,
+    yc.YearClubId,
+    cl.ClubId,
+    cl.ShortName ClubShortName
+FROM ClubWinner cw
+INNER JOIN Competition co
+ON co.CompetitionId = cw.CompetitionId
+INNER JOIN CompetitionType ct
+ON ct.CompetitionTypeId = co.CompetitionTypeId
+INNER JOIN Year y
+ON y.YearId = co.YearId
+INNER JOIN YearClub yc
+ON yc.YearClubId = cw.YearClubId
+INNER JOIN Club cl
+ON cl.ClubId = yc.ClubId;
+
+DROP VIEW RunnerStandingsView;
+CREATE VIEW RunnerStandingsView
+AS
+SELECT 
+    rs.RunnerStandingId,
+    co.CompetitionId,
+    ct.CompetitionTypeId,
+    ct.CompetitionType,
+    y.YearId,
+    y.Year,
+    rs.RunnerCategory,
+    rs.Position,
+    rs.Name,
+    rs.Surname,
+    rs.Sex,
+    rs.Category,
+    yc.YearClubId,
+    cl.ClubId,
+    cl.ShortName ClubShortName,
+    rs.Total,
+    rs.Qualified
+FROM RunnerStanding rs
+INNER JOIN Competition co
+ON co.CompetitionId = rs.CompetitionId
+INNER JOIN CompetitionType ct
+ON ct.CompetitionTypeId = co.CompetitionTypeId
+INNER JOIN Year y
+ON y.YearId = co.YearId
+INNER JOIN YearClub yc
+ON yc.YearClubId = rs.YearClubId
+INNER JOIN Club cl
+ON cl.ClubId = yc.ClubId;
+
+DROP VIEW RunnerWinnersView;
+CREATE VIEW RunnerWinnersView
+AS
+SELECT 
+    rw.RunnerWinnerId,
+    co.CompetitionId,
+    ct.CompetitionTypeId,
+    ct.CompetitionType,
+    y.YearId,
+    y.Year,
+    rw.Category,
+    rw.Position,
+    rw.Name,
+    rw.Surname,
+    yc.YearClubId,
+    cl.ClubId,
+    cl.ShortName ClubShortName
+FROM RunnerWinner rw
+INNER JOIN Competition co
+ON co.CompetitionId = rw.CompetitionId
+INNER JOIN CompetitionType ct
+ON ct.CompetitionTypeId = co.CompetitionTypeId
+INNER JOIN Year y
+ON y.YearId = co.YearId
+INNER JOIN YearClub yc
+ON yc.YearClubId = rw.YearClubId
+INNER JOIN Club cl
+ON cl.ClubId = yc.ClubId;
