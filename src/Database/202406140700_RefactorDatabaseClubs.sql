@@ -291,3 +291,9 @@ ON yc.YearClubId = cw.YearClubId
 INNER JOIN Club cl
 ON cl.ClubId = yc.ClubId;
 */
+
+INSERT INTO ClubWinner (CompetitionId, Category, YearClubId)
+VALUES (
+    (SELECT CompetitionId FROM CompetitionsView WHERE CompetitionType = "Road" AND Year = 1998),
+    "Female",
+    (SELECT YearClubId FROM YearClubsView WHERE ShortName = "Red Rose" AND Year = 1998);
