@@ -28,7 +28,14 @@ CoconaApp.Run(([Option("i")] string inputFile, [Option("o")] string outputPath, 
                     competition,
                     year,
                 });
-
+            IEnumerable<YearClub> yearClubs = connection.Query<YearClub>(
+                "SELECT YearClubId, ShortName " +
+                "FROM YearClubsView " +
+                "WHERE Year = @year;",
+                new
+                {
+                    year,
+                });
             IEnumerable<Race> races = connection.Query<Race>(
                 "SELECT RaceId, Name " +
                 "FROM Race " +
@@ -40,7 +47,7 @@ CoconaApp.Run(([Option("i")] string inputFile, [Option("o")] string outputPath, 
 
             if (extractedStandings.RunnerStandings is not null)
             {
-                SaveRunnerStandings(competitionId, extractedStandings.RunnerStandings, connection, transaction, races);
+                SaveRunnerStandings(competitionId, extractedStandings.RunnerStandings, connection, transaction, races, yearClubs);
             }
 
             transaction.Commit();
@@ -58,15 +65,21 @@ ExtractedStandings ExtractStandings(string inputFile, string competition, int ye
     }
 }
 
-void SaveRunnerStandings(int competitionId, IEnumerable<RunnerStandings> runnerStandings, SqliteConnection connection, SqliteTransaction transaction, IEnumerable<Race> races)
+void SaveRunnerStandings(
+    int competitionId,
+    IEnumerable<RunnerStandings> runnerStandings,
+    SqliteConnection connection,
+    SqliteTransaction transaction,
+    IEnumerable<Race> races,
+    IEnumerable<YearClub> yearClubs)
 {
     foreach (RunnerStandings runnerStanding in runnerStandings)
     {
         foreach (RunnerStanding standing in runnerStanding.Standings)
         {
             int runnerStandingId = connection.QuerySingle<int>(
-                "INSERT INTO RunnerStanding (CompetitionId, RunnerCategory, Name, Surname, Category, Sex, Club, Position, Total, Qualified) " +
-                "VALUES (@competitionId, @runnerCategory, @name, @surname, @category, @sex, @club, @position, @total, @qualified);" +
+                "INSERT INTO RunnerStanding (CompetitionId, RunnerCategory, Name, Surname, Category, Sex, YearClubId, Position, Total, Qualified) " +
+                "VALUES (@competitionId, @runnerCategory, @name, @surname, @category, @sex, @yearClubId, @position, @total, @qualified);" +
                 "SELECT last_insert_rowid();",
                 new
                 {
@@ -76,7 +89,7 @@ void SaveRunnerStandings(int competitionId, IEnumerable<RunnerStandings> runnerS
                     surname = standing.Surname,
                     category = standing.Category,
                     sex = standing.Sex,
-                    club = standing.Club,
+                    yearClubId = yearClubs.First(yc => yc.ShortName.Equals(standing.Club, StringComparison.InvariantCultureIgnoreCase)).YearClubId,
                     position = standing.Position,
                     total = standing.Total,
                     qualified = standing.Qualified,
