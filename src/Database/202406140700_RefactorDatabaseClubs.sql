@@ -668,10 +668,41 @@ INNER JOIN Competition c
 ON c.CompetitionId = r.CompetitionId;
 
 DROP TABLE OldRaceResult;
-*/
 
-/*
-SELECT *
-FROM OldRaceResult
-WHERE Club IN ("Guest", "Harlow", "Lancaster And Morecambe");
+CREATE VIEW RaceResultsView
+AS
+SELECT 
+    rr.RaceResultId, 
+    co.CompetitionId,
+    ct.CompetitionTypeId,
+    ct.CompetitionType,
+    y.YearId,
+    y.Year,
+    r.RaceId,
+    r.Name RaceName,
+    rr.Position,
+    rr.RunnerNumber,
+    rr.Name,
+    rr.Surname,
+    rr.Category,
+    rr.Sex, 
+    rr.Club, 
+    yc.YearClubId,
+    cl.ClubId,
+    cl.ShortName ClubShortName,
+    rr.Time,
+    rr.Comments
+FROM RaceResult rr
+INNER JOIN Race r
+ON r.RaceId = rr.RaceId
+INNER JOIN Competition co
+ON co.CompetitionId = r.CompetitionId
+INNER JOIN CompetitionType ct
+ON ct.CompetitionTypeId = co.CompetitionTypeId
+INNER JOIN Year y
+ON y.YearId = co.YearId
+INNER JOIN YearClub yc
+ON yc.YearClubId = rr.YearClubId
+INNER JOIN Club cl
+ON cl.ClubId = yc.ClubId;
 */
