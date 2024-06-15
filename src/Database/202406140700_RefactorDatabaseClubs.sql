@@ -451,4 +451,40 @@ INNER JOIN YearClub yc
 ON yc.YearClubId = cs.YearClubId
 INNER JOIN Club cl
 ON cl.ClubId = yc.ClubId;
+
+ALTER TABLE ClubResult 
+RENAME TO OldClubResult;
+
+CREATE TABLE ClubResult (
+    ClubResultId INTEGER PRIMARY KEY AUTOINCREMENT,
+    RaceId INTEGER NOT NULL,
+    Category VARCHAR(25) NOT NULL,
+    YearClubId INTEGER NOT NULL, 
+    Position INTEGER NOT NULL,
+    Score INTEGER NOT NULL,
+    FOREIGN KEY (RaceId) REFERENCES Race (RaceId),
+    FOREIGN KEY (YearClubId) REFERENCES YearClub (YearClubId), 
+    UNIQUE(RaceId, Category, Position)
+);
+
+INSERT INTO ClubResult (ClubResultId, RaceId, Category, YearClubId, Position, Score)
+SELECT 
+    ocr.ClubResultId, 
+    ocr.RaceId, 
+    ocr.Category, 
+    yc.YearClubId,
+    ocr.Position, 
+    ocr.Score
+FROM OldClubResult ocr
+INNER JOIN Race r
+ON r.RaceId = ocr.RaceId
+INNER JOIN Competition co
+ON co.CompetitionId = r.CompetitionId
+INNER JOIN Club cl
+ON cl.ShortName = ocr.Club
+INNER JOIN YearClub yc
+ON yc.ClubId = cl.ClubId
+AND yc.YearId = co.YearId;
+
+DROP TABLE OldClubResult;
 */
