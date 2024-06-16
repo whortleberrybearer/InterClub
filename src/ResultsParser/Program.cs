@@ -26,6 +26,14 @@ CoconaApp.Run(([Option("i")] string inputFile, [Option("o")] string outputPath, 
                     competition,
                     year,
                 });
+            IEnumerable<YearClub> yearClubs = connection.Query<YearClub>(
+                "SELECT YearClubId, ShortName " +
+                "FROM YearClubsView " +
+                "WHERE Year = @year;",
+                new
+                {
+                    year,
+                });
             int raceId = connection.QuerySingle<int>(
                 "SELECT RaceId " +
                 "FROM Race " +
@@ -39,17 +47,17 @@ CoconaApp.Run(([Option("i")] string inputFile, [Option("o")] string outputPath, 
 
             if (extractedResults.RaceResults is not null)
             {
-                SaveRaceResults(raceId, extractedResults.RaceResults, connection, transaction);
+                SaveRaceResults(raceId, extractedResults.RaceResults, yearClubs, connection, transaction);
             }
 
             if (extractedResults.ClubResults is not null)
             {
-                SaveClubResults(raceId, extractedResults.ClubResults, connection, transaction);
+                SaveClubResults(raceId, extractedResults.ClubResults, yearClubs, connection, transaction);
             }
 
             if (extractedResults.ClubStandings is not null)
             {
-                SaveClubStandings(competitionId, raceId, race, extractedResults.ClubStandings, connection, transaction);
+                SaveClubStandings(competitionId, raceId, race, extractedResults.ClubStandings, yearClubs, connection, transaction);
             }
 
             transaction.Commit();
@@ -57,12 +65,17 @@ CoconaApp.Run(([Option("i")] string inputFile, [Option("o")] string outputPath, 
     }
 });
 
-void SaveRaceResults(int raceId, IEnumerable<RaceResult> raceResults, SqliteConnection connection, SqliteTransaction transaction)
+void SaveRaceResults(
+    int raceId, 
+    IEnumerable<RaceResult> raceResults, 
+    IEnumerable<YearClub> yearClubs, 
+    SqliteConnection connection, 
+    SqliteTransaction transaction)
 {
     foreach (RaceResult raceResult in raceResults)
     {
         raceResult.RaceResultId = connection.QuerySingle<int>(
-            "INSERT INTO RaceResult (RaceId, Position, RunnerNumber, Name, Surname, Category, Sex, Club, Time, Comments) " +
+            "INSERT INTO RaceResult (RaceId, Position, RunnerNumber, Name, Surname, Category, Sex, Club, YearClubId, Time, Comments) " +
             "VALUES (@raceId, @position, @runnerNumber, @name, @surname, @category, @sex, @club, @time, @comments);" +
             "SELECT last_insert_rowid();",
             new
@@ -75,6 +88,7 @@ void SaveRaceResults(int raceId, IEnumerable<RaceResult> raceResults, SqliteConn
                 category = raceResult.Category,
                 sex = raceResult.Sex,
                 club = raceResult.Club,
+                yearClubId = yearClubs.FirstOrDefault(yc => yc.ShortName.Equals(raceResult.Club, StringComparison.InvariantCultureIgnoreCase))?.YearClubId,
                 time = raceResult.Time,
                 comments = raceResult.Comments,
             },
@@ -96,7 +110,7 @@ void SaveRaceResults(int raceId, IEnumerable<RaceResult> raceResults, SqliteConn
     }
 }
 
-void SaveClubResults(int raceId, IEnumerable<ClubResults> clubResults, SqliteConnection connection, SqliteTransaction transaction)
+void SaveClubResults(int raceId, IEnumerable<ClubResults> clubResults, IEnumerable<YearClub> yearClubs, SqliteConnection connection, SqliteTransaction transaction)
 {
     foreach (ClubResults clubResult in clubResults)
     {
@@ -105,14 +119,14 @@ void SaveClubResults(int raceId, IEnumerable<ClubResults> clubResults, SqliteCon
             ClubResult result = clubResult.Results.ElementAt(i);
 
             result.ClubResultId = connection.QuerySingle<int>(
-                "INSERT INTO ClubResult (RaceId, Category, Club, Position, Score) " +
+                "INSERT INTO ClubResult (RaceId, Category, YearClubId, Position, Score) " +
                 "VALUES (@raceId, @category, @club, @position, @score);" +
                 "SELECT last_insert_rowid();",
                 new
                 {
                     raceId,
                     category = clubResult.Category,
-                    club = result.Club,
+                    yearClubId = yearClubs.First(yc => yc.ShortName.Equals(result.Club, StringComparison.InvariantCultureIgnoreCase)).YearClubId,
                     position = i + 1,
                     score = result.Score,
                 },
@@ -134,7 +148,14 @@ void SaveClubResults(int raceId, IEnumerable<ClubResults> clubResults, SqliteCon
     }
 }
 
-void SaveClubStandings(int competitionId, int raceId, string race, IEnumerable<ClubStandings> clubStandings, SqliteConnection connection, SqliteTransaction transaction)
+void SaveClubStandings(
+    int competitionId,
+    int raceId,
+    string race,
+    IEnumerable<ClubStandings> clubStandings,
+    IEnumerable<YearClub> yearClubs,
+    SqliteConnection connection,
+    SqliteTransaction transaction)
 {
     foreach (ClubStandings clubStanding in clubStandings)
     {
@@ -143,14 +164,14 @@ void SaveClubStandings(int competitionId, int raceId, string race, IEnumerable<C
             ClubStanding standing = clubStanding.Standings.ElementAt(i);
 
             int clubStandingId = connection.QuerySingle<int>(
-                "INSERT INTO ClubStanding (CompetitionId, Category, Club, Position, Total) " +
+                "INSERT INTO ClubStanding (CompetitionId, Category, YearClubId, Position, Total) " +
                 "VALUES (@competitionId, @category, @club, @position, @total);" +
                 "SELECT last_insert_rowid();",
                 new
                 {
                     competitionId,
                     category = clubStanding.Category,
-                    club = standing.Club,
+                    yearClubId = yearClubs.First(yc => yc.ShortName.Equals(standing.Club, StringComparison.InvariantCultureIgnoreCase)).YearClubId,
                     position = i + 1,
                     total = standing.Total,
                 },
