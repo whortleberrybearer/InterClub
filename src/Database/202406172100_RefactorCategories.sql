@@ -321,4 +321,44 @@ SELECT
 FROM OldClubStandingResult ocsr;
 
 DROP TABLE OldClubStandingResult;
+
+ALTER TABLE ClubCategoryResult
+RENAME TO OldClubCategoryResult;
+
+CREATE TABLE ClubCategoryResult (
+    ClubCategoryResult INTEGER PRIMARY KEY AUTOINCREMENT,
+    RaceResultId INTEGER NOT NULL,
+    ClubCategoryId INTEGER NOT NULL,
+    Position INTEGER NOT NULL,
+    FOREIGN KEY (RaceResultId) REFERENCES RaceResult (RaceResultId),
+    FOREIGN KEY (ClubCategoryId) REFERENCES ClubCategory (ClubCategoryId), 
+    UNIQUE(RaceResultId, ClubCategoryId, Position)
+);
+*/
+/*
+INSERT INTO ClubCategoryResult (
+    ClubCategoryResult,
+    RaceResultId,
+    ClubCategoryId,
+    Position)
+SELECT 
+    occr.ClubCategoryResult,
+    occr.RaceResultId,
+    cc.ClubCategoryId,
+    occr.Position
+FROM OldClubCategoryResult occr
+INNER JOIN RaceResult rr
+ON rr.RaceResultId = occr.RaceResultId
+INNER JOIN Race r
+ON r.RaceId = rr.RaceId
+INNER JOIN ClubCategory cc
+ON cc.CompetitionId = r.CompetitionId
+INNER JOIN Category c
+ON c.CategoryId = cc.CategoryId
+AND c.Category = occr.Category;
+
+ALTER TABLE ClubCategoryResult
+RENAME COLUMN ClubCategoryResult TO ClubCategoryResultId;
+
+DROP TABLE OldClubCategoryResult;
 */
