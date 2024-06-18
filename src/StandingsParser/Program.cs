@@ -44,10 +44,20 @@ CoconaApp.Run(([Option("i")] string inputFile, [Option("o")] string outputPath, 
                 { 
                     competitionId 
                 });
+            IEnumerable<CompetitionCategory> competitionCategories = connection.Query<CompetitionCategory>(
+                "SELECT rc.RunnerCategoryId CompetitionCategoryId, c.Category " +
+                "FROM RunnerCategory rc " +
+                "INNER JOIN Category c " +
+                "ON c.CategoryId = rc.Category" +
+                "WHERE rc.CompetitionId = @competitionId",
+                new
+                {
+                    competitionId
+                });
 
             if (extractedStandings.RunnerStandings is not null)
             {
-                SaveRunnerStandings(competitionId, extractedStandings.RunnerStandings, connection, transaction, races, yearClubs);
+                SaveRunnerStandings(competitionId, extractedStandings.RunnerStandings, connection, transaction, races, yearClubs, competitionCategories);
             }
 
             transaction.Commit();
@@ -71,20 +81,20 @@ void SaveRunnerStandings(
     SqliteConnection connection,
     SqliteTransaction transaction,
     IEnumerable<Race> races,
-    IEnumerable<YearClub> yearClubs)
+    IEnumerable<YearClub> yearClubs,
+    IEnumerable<CompetitionCategory> competitionCategories)
 {
     foreach (RunnerStandings runnerStanding in runnerStandings)
     {
         foreach (RunnerStanding standing in runnerStanding.Standings)
         {
             int runnerStandingId = connection.QuerySingle<int>(
-                "INSERT INTO RunnerStanding (CompetitionId, RunnerCategory, Name, Surname, Category, Sex, YearClubId, Position, Total, Qualified) " +
-                "VALUES (@competitionId, @runnerCategory, @name, @surname, @category, @sex, @yearClubId, @position, @total, @qualified);" +
+                "INSERT INTO RunnerStanding (RunnerCategoryId, Name, Surname, Category, Sex, YearClubId, Position, Total, Qualified) " +
+                "VALUES (@runnerCategoryId, @name, @surname, @category, @sex, @yearClubId, @position, @total, @qualified);" +
                 "SELECT last_insert_rowid();",
                 new
                 {
-                    competitionId,
-                    runnerCategory = runnerStanding.Category,
+                    runnerCategoryId = competitionCategories.First(cc => cc.Category.Equals(runnerStanding.Category, StringComparison.InvariantCultureIgnoreCase)),
                     name = standing.Name,
                     surname = standing.Surname,
                     category = standing.Category,

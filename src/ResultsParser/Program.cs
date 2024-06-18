@@ -44,20 +44,30 @@ CoconaApp.Run(([Option("i")] string inputFile, [Option("o")] string outputPath, 
                     name = race,
                     competitionId,
                 });
+            IEnumerable<CompetitionCategory> competitionCategories = connection.Query<CompetitionCategory>(
+                "SELECT rc.RunnerCategoryId CompetitionCategoryId, c.Category " +
+                "FROM ClubCategory cc " +
+                "INNER JOIN Category c " +
+                "ON c.CategoryId = cc.Category" +
+                "WHERE cc.CompetitionId = @competitionId",
+                new
+                {
+                    competitionId
+                });
 
             if (extractedResults.RaceResults is not null)
             {
-                SaveRaceResults(raceId, extractedResults.RaceResults, yearClubs, connection, transaction);
+                SaveRaceResults(raceId, extractedResults.RaceResults, yearClubs, competitionCategories, connection, transaction);
             }
 
             if (extractedResults.ClubResults is not null)
             {
-                SaveClubResults(raceId, extractedResults.ClubResults, yearClubs, connection, transaction);
+                SaveClubResults(raceId, extractedResults.ClubResults, yearClubs, competitionCategories, connection, transaction);
             }
 
             if (extractedResults.ClubStandings is not null)
             {
-                SaveClubStandings(competitionId, raceId, race, extractedResults.ClubStandings, yearClubs, connection, transaction);
+                SaveClubStandings(competitionId, raceId, race, extractedResults.ClubStandings, yearClubs, competitionCategories, connection, transaction);
             }
 
             transaction.Commit();
@@ -68,7 +78,8 @@ CoconaApp.Run(([Option("i")] string inputFile, [Option("o")] string outputPath, 
 void SaveRaceResults(
     int raceId, 
     IEnumerable<RaceResult> raceResults, 
-    IEnumerable<YearClub> yearClubs, 
+    IEnumerable<YearClub> yearClubs,
+    IEnumerable<CompetitionCategory> competitionCategories,
     SqliteConnection connection, 
     SqliteTransaction transaction)
 {
@@ -97,12 +108,12 @@ void SaveRaceResults(
         foreach (ClubCategoryResult clubCategoryResult in raceResult.ClubCategoryResults)
         {
             connection.Execute(
-                "INSERT INTO ClubCategoryResult(RaceResultId, Category, Position) " +
-                "VALUES(@raceResultId, @category, @position);",
+                "INSERT INTO ClubCategoryResult(RaceResultId, ClubCategoryId, Position) " +
+                "VALUES(@raceResultId, @clubCategoryId, @position);",
                 new
                 {
                     raceResultId = raceResult.RaceResultId,
-                    category = clubCategoryResult.Category,
+                    clubCategoryId = competitionCategories.First(cc => cc.Category.Equals(clubCategoryResult.Category, StringComparison.InvariantCultureIgnoreCase)),
                     position = clubCategoryResult.Position,
                 },
                 transaction);
@@ -110,7 +121,13 @@ void SaveRaceResults(
     }
 }
 
-void SaveClubResults(int raceId, IEnumerable<ClubResults> clubResults, IEnumerable<YearClub> yearClubs, SqliteConnection connection, SqliteTransaction transaction)
+void SaveClubResults(
+    int raceId,
+    IEnumerable<ClubResults> clubResults,
+    IEnumerable<YearClub> yearClubs,
+    IEnumerable<CompetitionCategory> competitionCategories,
+    SqliteConnection connection,
+    SqliteTransaction transaction)
 {
     foreach (ClubResults clubResult in clubResults)
     {
@@ -119,13 +136,13 @@ void SaveClubResults(int raceId, IEnumerable<ClubResults> clubResults, IEnumerab
             ClubResult result = clubResult.Results.ElementAt(i);
 
             result.ClubResultId = connection.QuerySingle<int>(
-                "INSERT INTO ClubResult (RaceId, Category, YearClubId, Position, Score) " +
-                "VALUES (@raceId, @category, @club, @position, @score);" +
+                "INSERT INTO ClubResult (RaceId, ClubCategoryId, YearClubId, Position, Score) " +
+                "VALUES (@raceId, @clubCategoryId, @club, @position, @score);" +
                 "SELECT last_insert_rowid();",
                 new
                 {
                     raceId,
-                    category = clubResult.Category,
+                    clubCategoryId = competitionCategories.First(cc => cc.Category.Equals(clubResult.Category, StringComparison.InvariantCultureIgnoreCase)),
                     yearClubId = yearClubs.First(yc => yc.ShortName.Equals(result.Club, StringComparison.InvariantCultureIgnoreCase)).YearClubId,
                     position = i + 1,
                     score = result.Score,
@@ -154,6 +171,7 @@ void SaveClubStandings(
     string race,
     IEnumerable<ClubStandings> clubStandings,
     IEnumerable<YearClub> yearClubs,
+    IEnumerable<CompetitionCategory> competitionCategories,
     SqliteConnection connection,
     SqliteTransaction transaction)
 {
@@ -164,13 +182,12 @@ void SaveClubStandings(
             ClubStanding standing = clubStanding.Standings.ElementAt(i);
 
             int clubStandingId = connection.QuerySingle<int>(
-                "INSERT INTO ClubStanding (CompetitionId, Category, YearClubId, Position, Total) " +
-                "VALUES (@competitionId, @category, @club, @position, @total);" +
+                "INSERT INTO ClubStanding (ClubCategoryId, YearClubId, Position, Total) " +
+                "VALUES (@clubCategoryId, @club, @position, @total);" +
                 "SELECT last_insert_rowid();",
                 new
                 {
-                    competitionId,
-                    category = clubStanding.Category,
+                    clubCategoryId = competitionCategories.First(cc => cc.Category.Equals(clubStanding.Category, StringComparison.InvariantCultureIgnoreCase)),
                     yearClubId = yearClubs.First(yc => yc.ShortName.Equals(standing.Club, StringComparison.InvariantCultureIgnoreCase)).YearClubId,
                     position = i + 1,
                     total = standing.Total,
