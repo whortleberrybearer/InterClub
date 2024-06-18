@@ -12,9 +12,9 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
       allSqliteRaces(filter: {NumberOfResults: {gt: 0}}) {
         edges {
           node {
-            Competition
+            CompetitionId
+            CompetitionType
             Name
-            NumberOfResults
             RaceId
             Year
           }
@@ -32,10 +32,11 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
   
   racesWithResults.data.allSqliteRaces.edges.forEach(({ node }) => {
     createPage({
-      path: `${node.Year}/${slugify(node.Competition, { lower: true })}/${slugify(node.Name, { lower: true })}/results`,
+      path: `${node.Year}/${slugify(node.CompetitionType, { lower: true })}/${slugify(node.Name, { lower: true })}/results`,
       component: resultsTemplate,
       context: {
-        id: node.RaceId,
+        competitionId: node.CompetitionId,
+        raceId: node.RaceId,
       },
     })
   });
