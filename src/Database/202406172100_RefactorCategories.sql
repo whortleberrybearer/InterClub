@@ -361,4 +361,31 @@ ALTER TABLE ClubCategoryResult
 RENAME COLUMN ClubCategoryResult TO ClubCategoryResultId;
 
 DROP TABLE OldClubCategoryResult;
+
+ALTER TABLE ClubStandingResult
+RENAME TO OldClubStandingResult;
+
+CREATE TABLE ClubStandingResult (
+    ClubStandingResultId INTEGER PRIMARY KEY AUTOINCREMENT,
+    ClubStandingId INTEGER NOT NULL,
+    RaceId INTEGER NOT NULL,
+    Points INTEGER NOT NULL,
+    FOREIGN KEY (ClubStandingId) REFERENCES ClubStanding (ClubStandingId),
+    FOREIGN KEY (RaceId) REFERENCES Race (RaceId), 
+    UNIQUE(ClubStandingId, RaceId)
+);
+
+INSERT INTO ClubStandingResult (
+    ClubStandingResultId,
+    ClubStandingId,
+    RaceId,
+    Points)
+SELECT 
+    ocsr.ClubStandingResultId,
+    ocsr.ClubStandingId,
+    ocsr.RaceId,
+    ocsr.Points
+FROM OldClubStandingResult ocsr;
+
+DROP TABLE OldClubStandingResult;
 */
