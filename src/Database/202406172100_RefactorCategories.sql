@@ -567,4 +567,35 @@ INNER JOIN YearClub yc
 ON yc.YearClubId = rs.YearClubId
 INNER JOIN Club cl
 ON cl.ClubId = yc.ClubId;
+
+ALTER TABLE RunnerStandingResult
+RENAME TO OldRunnerStandingResult;
+
+CREATE TABLE RunnerStandingResult (
+    RunnerStandingResultId INTEGER PRIMARY KEY AUTOINCREMENT,
+    RunnerStandingId INTEGER NOT NULL,
+    RaceId INTEGER NOT NULL,
+    Points INTEGER NOT NULL,
+    Scoring INTEGER NULL,
+    FOREIGN KEY (RunnerStandingId) REFERENCES RunnerStanding (RunnerStandingId),
+    FOREIGN KEY (RaceId) REFERENCES Race (RaceId),
+    UNIQUE (RunnerStandingId, RaceId)
+);
+
+INSERT INTO RunnerStandingResult (
+    RunnerStandingResultId, 
+    RunnerStandingId, 
+    RaceId, 
+    Points, 
+    Scoring)
+SELECT 
+    orsr.RunnerStandingResultId, 
+    orsr.RunnerStandingId, 
+    orsr.RaceId, 
+    orsr.Points, 
+    orsr.Scoring
+FROM OldRunnerStandingResult orsr;
+
+DROP TABLE OldRunnerStanding;
+DROP TABLE OldRunnerStandingResult;
 */
