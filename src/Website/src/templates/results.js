@@ -10,6 +10,11 @@ function findClubCategoryResult(clubCategoryId, clubCategoryResults) {
 }
 
 const ResultsPage = ({data}) => {
+  const categoryOrder = [ "Open", "Female", "Vet", "Female Vet 40", "Vet 50", "Vet 60" ];
+  const clubCategories = data.allSqliteClubCategories.edges.sort((a, b) => {
+    return categoryOrder.indexOf(a.node.Category) - categoryOrder.indexOf(b.node.Category);
+  });
+
   return (
     <Layout>
       <main className="container">
@@ -21,7 +26,7 @@ const ResultsPage = ({data}) => {
               <th>Number</th>
               <th>Pos</th>
 
-              {data.allSqliteClubCategories.edges.map((clubCategory) => (
+              {clubCategories.map((clubCategory) => (
                 <th key={clubCategory.node.ClubCategoryId}>{clubCategory.node.Category}</th>
               ))}
 
@@ -37,7 +42,7 @@ const ResultsPage = ({data}) => {
                   <td>{raceResult.node.RunnerNumber}</td>
                   <td>{raceResult.node.Position}</td>
                   
-                  {data.allSqliteClubCategories.edges.map((clubCategory) => (
+                  {clubCategories.map((clubCategory) => (
                     <td key={`${raceResult.node.RaceResultId}-${clubCategory.node.ClubCategoryId}`}>
                       {findClubCategoryResult(clubCategory.node.ClubCategoryId, raceResult.node.ClubCategoryResults)}
                     </td>
