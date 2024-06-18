@@ -19,7 +19,7 @@ const ResultsPage = ({data}) => {
     <Layout>
       <main className="container">
         <h1>{data.sqliteRaces.Name} Results</h1>
-        <p>{data.sqliteRaces.StartDateTime}</p>
+        <p>{new Date(data.sqliteRaces.StartDateTime).toLocaleDateString()}</p>
         <table>
           <thead>
             <tr>
@@ -61,7 +61,16 @@ const ResultsPage = ({data}) => {
   )
 }
 
-export const Head = () => <title>Results</title>
+export const Head =  ({data}) => {
+  const raceDate = new Date(data.sqliteRaces.StartDateTime);
+
+  return (
+    <>
+      <title>{data.sqliteRaces.Name} Results ({raceDate.toLocaleDateString()})</title>
+      <meta name="description" content={`${data.sqliteRaces.Name} results. Race Date: ${raceDate.toLocaleDateString()}.`} />
+    </>
+  );
+}
 
 export const query = graphql`
   query Query($raceId: Int, $competitionId: Int) {

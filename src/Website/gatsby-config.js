@@ -30,7 +30,7 @@ module.exports = {
         fileName: '../../data/Database.db',
         queries: [
           {
-            statement: 'SELECT * FROM RaceResult;',
+            statement: 'SELECT * FROM RaceResultsView;',
             idFieldName: 'RaceResultId',
             name: 'RaceResults'
           },
