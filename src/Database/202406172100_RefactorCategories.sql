@@ -1,4 +1,3 @@
-/*
 DROP TABLE IF EXISTS Category;
 
 CREATE TABLE Category (
@@ -598,4 +597,3 @@ FROM OldRunnerStandingResult orsr;
 
 DROP TABLE OldRunnerStanding;
 DROP TABLE OldRunnerStandingResult;
-*/
