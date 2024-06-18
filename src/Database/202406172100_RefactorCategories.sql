@@ -166,9 +166,52 @@ CREATE TABLE ClubWinner (
     FOREIGN KEY (YearClubId) REFERENCES YearClub (YearClubId), 
     UNIQUE(ClubCategoryId, YearClubId)
 );
-*/
 
+INSERT OR IGNORE INTO ClubCategory (CompetitionId, CategoryId)
 SELECT ocw.CompetitionId, c.CategoryId
 FROM OldClubWinner ocw
 INNER JOIN Category c
-ON c.Category = ocw.Category;
+ON c.Category = ocw.Category
+GROUP BY ocw.CompetitionId, c.CategoryId;
+
+INSERT INTO ClubWinner (ClubWinnerId, ClubCategoryId, YearClubId)
+SELECT ocw.ClubWinnerId, cc.ClubCategoryId, ocw.YearClubId
+FROM OldClubWinner ocw
+INNER JOIN ClubCategory cc
+ON cc.CompetitionId = ocw.CompetitionId
+INNER JOIN Category c
+ON c.CategoryId = cc.CategoryId
+AND c.Category = ocw.Category;
+
+DROP VIEW ClubWinnersView;
+CREATE VIEW ClubWinnersView
+AS
+SELECT 
+    cw.ClubWinnerId,
+    co.CompetitionId,
+    ct.CompetitionTypeId,
+    ct.CompetitionType,
+    y.YearId,
+    y.Year,
+    cc.ClubCategoryId,
+    ca.CategoryId,
+    ca.Category,
+    yc.YearClubId,
+    cl.ClubId,
+    cl.ShortName ClubShortName
+FROM ClubWinner cw
+INNER JOIN ClubCategory cc
+ON cc.ClubCategoryId = cw.ClubCategoryId
+INNER JOIN Competition co
+ON co.CompetitionId = cc.CompetitionId
+INNER JOIN Category ca
+ON ca.CategoryId = cc.CategoryId
+INNER JOIN CompetitionType ct
+ON ct.CompetitionTypeId = co.CompetitionTypeId
+INNER JOIN Year y
+ON y.YearId = co.YearId
+INNER JOIN YearClub yc
+ON yc.YearClubId = cw.YearClubId
+INNER JOIN Club cl
+ON cl.ClubId = yc.ClubId;
+*/
