@@ -294,4 +294,31 @@ INNER JOIN ClubCategory cc
 ON cc.ClubCategoryId = cr.ClubCategoryId
 INNER JOIN Category ca
 ON ca.CategoryId = cc.CategoryId;
+
+DROP TABLE OldClubResult;
+
+ALTER TABLE ClubStandingResult
+RENAME TO OldClubStandingResult;
+
+CREATE TABLE ClubStandingResult (
+    ClubStandingResultId INTEGER PRIMARY KEY AUTOINCREMENT,
+    ClubStandingId INTEGER NOT NULL,
+    RaceId INTEGER NOT NULL,
+    Points INTEGER NOT NULL,
+    UNIQUE(ClubStandingId, RaceId)
+);
+
+INSERT INTO ClubStandingResult (
+    ClubStandingResultId,
+    ClubStandingId,
+    RaceId,
+    Points)
+SELECT 
+    ocsr.ClubStandingResultId,
+    ocsr.ClubStandingId,
+    ocsr.RaceId,
+    ocsr.Points
+FROM OldClubStandingResult ocsr;
+
+DROP TABLE OldClubStandingResult;
 */
