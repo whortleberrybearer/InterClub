@@ -109,4 +109,66 @@ INNER JOIN YearClub yc
 ON yc.YearClubId = cs.YearClubId
 INNER JOIN Club cl
 ON cl.ClubId = yc.ClubId;
+
+ALTER TABLE CompetitionClubCategory 
+RENAME TO ClubCategory;
+
+ALTER TABLE ClubCategory 
+RENAME COLUMN CompetitionClubCategoryId TO ClubCategoryId;
+
+ALTER TABLE ClubStanding 
+RENAME COLUMN CompetitionClubCategoryId TO ClubCategoryId;
+
+DROP VIEW ClubStandingsView;
+CREATE VIEW ClubStandingsView
+AS
+SELECT 
+    cs.ClubStandingId,
+    co.CompetitionId,
+    ct.CompetitionTypeId,
+    ct.CompetitionType,
+    y.YearId,
+    y.Year,
+    cs.ClubCategoryId,
+    ca.CategoryId,
+    ca.Category,
+    cs.Position,
+    yc.YearClubId,
+    cl.ClubId,
+    cl.ShortName ClubShortName,
+    cs.Total
+FROM ClubStanding cs
+INNER JOIN ClubCategory cc
+ON cc.ClubCategoryId = cs.ClubCategoryId
+INNER JOIN Competition co
+ON co.CompetitionId = cc.CompetitionId
+INNER JOIN Category ca
+ON ca.CategoryId = cc.CategoryId
+INNER JOIN CompetitionType ct
+ON ct.CompetitionTypeId = co.CompetitionTypeId
+INNER JOIN Year y
+ON y.YearId = co.YearId
+INNER JOIN YearClub yc
+ON yc.YearClubId = cs.YearClubId
+INNER JOIN Club cl
+ON cl.ClubId = yc.ClubId;
+
+DROP TABLE OldClubStanding;
+
+ALTER TABLE ClubWinner 
+RENAME TO OldClubWinner;
+
+CREATE TABLE ClubWinner (
+    ClubWinnerId INTEGER PRIMARY KEY AUTOINCREMENT,
+    ClubCategoryId INTEGER NOT NULL,
+    YearClubId INTEGER NOT NULL, 
+    FOREIGN KEY (ClubCategoryId) REFERENCES ClubCategory (ClubCategoryId),
+    FOREIGN KEY (YearClubId) REFERENCES YearClub (YearClubId), 
+    UNIQUE(ClubCategoryId, YearClubId)
+);
 */
+
+SELECT ocw.CompetitionId, c.CategoryId
+FROM OldClubWinner ocw
+INNER JOIN Category c
+ON c.Category = ocw.Category;
