@@ -30,29 +30,36 @@ module.exports = {
         fileName: '../../data/Database.db',
         queries: [
           {
-            statement: 'SELECT * FROM RaceResult',
+            statement: 'SELECT * FROM RaceResultsView;',
             idFieldName: 'RaceResultId',
             name: 'RaceResults'
           },
           {
             statement: `
               SELECT 
-                r.RaceId,
-                r.Name,
-                c.Year,
-                c.Competition,
+                r.*,
                 rr.NumberOfResults
-              FROM Race r
-              INNER JOIN Competition c
-              ON r.CompetitionId = c.CompetitionId
+              FROM RacesView r
               LEFT OUTER JOIN 
                 (SELECT RaceId, COUNT(*) NumberOfResults
                 FROM RaceResult
                 GROUP BY RaceId) rr
-              ON r.RaceId = rr.RaceId;
-            }`,
+              ON r.RaceId = rr.RaceId;`,
             idFieldName: 'RaceId',
             name: 'Races'
+          },
+          {
+            statement: `SELECT * FROM ClubCategoriesView;`,
+            idFieldName: 'ClubCategoryId',
+            name: 'ClubCategories'
+          },
+          {
+            statement: `SELECT * FROM ClubCategoryResult;`,
+            idFieldName: 'ClubCategoryResultId',
+            name: 'ClubCategoryResults',
+            parentName: 'RaceResults',
+            foreignKey: 'RaceResultId',
+            cardinality: 'OneToMany'
           }
         ]
       }
