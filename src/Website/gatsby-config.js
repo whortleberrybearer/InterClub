@@ -38,13 +38,19 @@ module.exports = {
             statement: `
               SELECT 
                 r.*,
-                rr.NumberOfResults
+                rr.NumberOfResults NumberOfRaceResults,
+                cr.NumberOfResults NumberOfClubResults
               FROM RacesView r
               LEFT OUTER JOIN 
                 (SELECT RaceId, COUNT(*) NumberOfResults
                 FROM RaceResult
                 GROUP BY RaceId) rr
-              ON r.RaceId = rr.RaceId;`,
+              ON rr.RaceId = r.RaceId
+              LEFT OUTER JOIN 
+                (SELECT RaceId, COUNT(*) NumberOfResults
+                FROM ClubResult
+                GROUP BY RaceId) cr
+              ON cr.RaceId = r.RaceId;`,
             idFieldName: 'RaceId',
             name: 'Races'
           },
@@ -60,7 +66,23 @@ module.exports = {
             parentName: 'RaceResults',
             foreignKey: 'RaceResultId',
             cardinality: 'OneToMany'
-          }
+          },
+          {
+            statement: `SELECT * FROM ClubResultsView;`,
+            idFieldName: 'ClubResultId',
+            name: 'ClubResults',
+            parentName: 'ClubCategories',
+            foreignKey: 'ClubCategoryId',
+            cardinality: 'OneToMany'
+          },
+          {
+            statement: `SELECT * FROM TeamScorersView;`,
+            idFieldName: 'TeamScorerId',
+            name: 'TeamScorers',
+            parentName: 'ClubResults',
+            foreignKey: 'ClubResultId',
+            cardinality: 'OneToMany'
+          },
         ]
       }
     }
