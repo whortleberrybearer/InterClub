@@ -10,8 +10,8 @@ function findAndSortClubResultsForCategory(clubCategoryId, clubResults) {
 
 const ClubResultsPage = ({data}) => {
   const categoryOrder = [ "Open", "Female", "Vet", "Female Vet 40", "Vet 50", "Vet 60" ];
-  const clubCategories = data.allSqliteClubCategories.edges.sort((a, b) => {
-    return categoryOrder.indexOf(a.node.Category) - categoryOrder.indexOf(b.node.Category);
+  const clubCategories = data.allSqliteClubCategories.nodes.sort((a, b) => {
+    return categoryOrder.indexOf(a.Category) - categoryOrder.indexOf(b.Category);
   });
 
   return (
@@ -21,12 +21,12 @@ const ClubResultsPage = ({data}) => {
         <p>{new Date(data.sqliteRaces.StartDateTime).toLocaleDateString()}</p>
 
         {clubCategories.map((clubCategory) => (
-            <div key={clubCategory.node.ClubCategoryId}>
-              <h2>{clubCategory.node.Category}</h2>
+            <div key={clubCategory.ClubCategoryId}>
+              <h2>{clubCategory.Category}</h2>
 
               <table>
                 <tbody>
-                  {findAndSortClubResultsForCategory(clubCategory.node.ClubCategoryId, data.allSqliteClubResults.nodes).map((clubResult) => (
+                  {findAndSortClubResultsForCategory(clubCategory.ClubCategoryId, data.allSqliteClubResults.nodes).map((clubResult) => (
                     <tr key={clubResult.ClubResultId}>
                       <td>{clubResult.ClubShortName}</td>
                       <td>{clubResult.Score}</td>
@@ -68,11 +68,9 @@ export const query = graphql`
       }
     }
     allSqliteClubCategories(filter: {CompetitionId: {eq: $competitionId}}) {
-      edges {
-        node {
-          Category
-          ClubCategoryId
-        }
+      nodes {
+        Category
+        ClubCategoryId
       }
     }
 }`;
