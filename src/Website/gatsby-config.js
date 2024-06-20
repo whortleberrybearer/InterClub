@@ -66,7 +66,15 @@ module.exports = {
             parentName: 'RaceResults',
             foreignKey: 'RaceResultId',
             cardinality: 'OneToMany'
-          }
+          },
+          {
+            statement: `SELECT * FROM ClubResultsView;`,
+            idFieldName: 'ClubResultId',
+            name: 'ClubResults',
+            parentName: 'ClubCategories',
+            foreignKey: 'ClubCategoryId',
+            cardinality: 'OneToMany'
+          },
         ]
       }
     }

@@ -1,7 +1,13 @@
 import * as React from 'react'
 import { graphql } from "gatsby"
 import Layout from '../organisms/layout'
-  
+
+function findAndSortClubResultsForCategory(clubCategoryId, clubResults) {
+    return clubResults
+        .filter((cr) => cr.ClubCategoryId === clubCategoryId)
+        .sort((a, b) => a.Position - b.Position);
+}
+
 const ClubResultsPage = ({data}) => {
   const categoryOrder = [ "Open", "Female", "Vet", "Female Vet 40", "Vet 50", "Vet 60" ];
   const clubCategories = data.allSqliteClubCategories.edges.sort((a, b) => {
@@ -15,7 +21,20 @@ const ClubResultsPage = ({data}) => {
         <p>{new Date(data.sqliteRaces.StartDateTime).toLocaleDateString()}</p>
 
         {clubCategories.map((clubCategory) => (
-            <h2>{clubCategory.node.Category}</h2>
+            <div key={clubCategory.node.ClubCategoryId}>
+              <h2>{clubCategory.node.Category}</h2>
+
+              <table>
+                <tbody>
+                  {findAndSortClubResultsForCategory(clubCategory.node.ClubCategoryId, data.allSqliteClubResults.nodes).map((clubResult) => (
+                    <tr key={clubResult.ClubResultId}>
+                      <td>{clubResult.ClubShortName}</td>
+                      <td>{clubResult.Score}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
         ))}
       </main>
     </Layout>
@@ -38,6 +57,15 @@ export const query = graphql`
     sqliteRaces(RaceId: {eq: $raceId}) {
       Name
       StartDateTime
+    }
+    allSqliteClubResults(filter: {RaceId: {eq: $raceId}}) {
+      nodes {
+        ClubCategoryId
+        ClubResultId
+        ClubShortName
+        Position
+        Score
+      }
     }
     allSqliteClubCategories(filter: {CompetitionId: {eq: $competitionId}}) {
       edges {
