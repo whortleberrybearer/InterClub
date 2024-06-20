@@ -28,7 +28,20 @@ const ClubResultsPage = ({data}) => {
                 <tbody>
                   {findAndSortClubResultsForCategory(clubCategory.ClubCategoryId, data.allSqliteClubResults.nodes).map((clubResult) => (
                     <tr key={clubResult.ClubResultId}>
-                      <td>{clubResult.ClubShortName}</td>
+                      <td>
+                        {clubResult.ClubShortName}
+
+                        <table>
+                            <tbody>
+                                {clubResult.TeamScorers.map((teamScorer) => (
+                                    <tr key={teamScorer.TeamScorerId}>
+                                        <td>{teamScorer.Position}</td>
+                                        <td>{teamScorer.Name} {teamScorer.Surname}</td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                      </td>
                       <td>{clubResult.Score}</td>
                     </tr>
                   ))}
@@ -65,6 +78,12 @@ export const query = graphql`
         ClubShortName
         Position
         Score
+        TeamScorers {
+          Name
+          Surname
+          Position
+          TeamScorerId
+        }
       }
     }
     allSqliteClubCategories(filter: {CompetitionId: {eq: $competitionId}}) {
@@ -75,4 +94,4 @@ export const query = graphql`
     }
 }`;
 
-export default ClubResultsPage
+export default ClubResultsPage;

@@ -75,6 +75,14 @@ module.exports = {
             foreignKey: 'ClubCategoryId',
             cardinality: 'OneToMany'
           },
+          {
+            statement: `SELECT * FROM TeamScorersView;`,
+            idFieldName: 'TeamScorerId',
+            name: 'TeamScorers',
+            parentName: 'ClubResults',
+            foreignKey: 'ClubResultId',
+            cardinality: 'OneToMany'
+          },
         ]
       }
     }
