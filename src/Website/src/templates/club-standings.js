@@ -8,6 +8,14 @@ function findAndSortClubStandingsForCategory(clubCategoryId, clubStandings) {
       .sort((a, b) => a.Position - b.Position);
 }
 
+function findClubStandingResult(raceId, clubStandingResults) { 
+  const clubCategoryResult = 
+  clubStandingResults.find((csr) => csr.RaceId === raceId);
+
+    return clubCategoryResult?.Points;
+}
+
+
 const ClubStandingsPage = ({data}) => {
   const categoryOrder = [ "Open", "Female", "Vet", "Female Vet 40", "Vet 50", "Vet 60" ];
   const clubCategories = data.allSqliteClubCategories.nodes.sort((a, b) => {
@@ -39,6 +47,13 @@ const ClubStandingsPage = ({data}) => {
               {findAndSortClubStandingsForCategory(clubCategory.ClubCategoryId, data.allSqliteClubStandings.nodes).map((clubStanding) => (
                 <tr key={clubStanding.ClubStandingId}>
                   <td>{clubStanding.ClubShortName}</td>
+
+                  {data.allSqliteRaces.nodes.map((race) => (
+                    <td key={`${clubStanding.ClubStandingId}-${race.RaceId}`}>
+                      {findClubStandingResult(race.RaceId, clubStanding.ClubStandingResults)}
+                    </td>
+                  ))}
+
                   <td>{clubStanding.Total}</td>
                 </tr>
               ))}
@@ -92,6 +107,11 @@ export const query = graphql`
         ClubStandingId
         Position
         Total
+        ClubStandingResults {
+          Points
+          RaceId
+          ClubStandingResultId
+        }
       }
     }
 }`;

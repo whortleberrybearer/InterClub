@@ -104,6 +104,14 @@ module.exports = {
             idFieldName: 'ClubStandingId',
             name: 'ClubStandings'
           },
+          {
+            statement: `SELECT * FROM ClubStandingResult;`,
+            idFieldName: 'ClubStandingResultId',
+            name: 'ClubStandingResults',
+            parentName: 'ClubStandings',
+            foreignKey: 'ClubStandingId',
+            cardinality: 'OneToMany'
+          },
         ]
       }
     }
