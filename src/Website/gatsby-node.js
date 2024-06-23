@@ -4,7 +4,6 @@ const slugify = require('slugify')
 async function createResultPages(graphql, actions, reporter) {
   const { createPage } = actions;
 
-  // Query for markdown nodes to use in creating pages.
   const racesWithResults = await graphql(
     `{
       allSqliteRaces(filter: {NumberOfRaceResults: {gt: 0}}) {
@@ -43,8 +42,7 @@ async function createResultPages(graphql, actions, reporter) {
 async function createClubResultPages(graphql, actions, reporter) {
   const { createPage } = actions;
 
-  // Query for markdown nodes to use in creating pages.
-  const racesWithResults = await graphql(
+  const racesWithClubResults = await graphql(
     `{
       allSqliteRaces(filter: {NumberOfClubResults: {gt: 0}}) {
         edges {
@@ -59,7 +57,7 @@ async function createClubResultPages(graphql, actions, reporter) {
       }
     }`);
 
-  if (racesWithResults.errors) {
+  if (racesWithClubResults.errors) {
     reporter.panicOnBuild(`Error while running GraphQL query.`);
     
     return;
@@ -67,7 +65,7 @@ async function createClubResultPages(graphql, actions, reporter) {
 
   const clubResultsTemplate = path.resolve(`src/templates/club-results.js`);
   
-  racesWithResults.data.allSqliteRaces.edges.forEach(({ node }) => {
+  racesWithClubResults.data.allSqliteRaces.edges.forEach(({ node }) => {
     createPage({
       path: `${node.Year}/${slugify(node.CompetitionType, { lower: true })}/${slugify(node.Name, { lower: true })}/club-results`,
       component: clubResultsTemplate,
@@ -79,8 +77,44 @@ async function createClubResultPages(graphql, actions, reporter) {
   });
 }
 
+async function createClubStandingPages(graphql, actions, reporter) {
+  const { createPage } = actions;
+
+  const competitionsWithStandings = await graphql(
+    `{
+      allSqliteCompetitions(filter: {NumberOfClubStandings: {gt: 0}}) {
+        edges {
+          node {
+            CompetitionId
+            CompetitionType
+            Year
+          }
+        }
+      }
+    }`);
+
+  if (competitionsWithStandings.errors) {
+    reporter.panicOnBuild(`Error while running GraphQL query.`);
+    
+    return;
+  }
+
+  const clubStandingsTemplate = path.resolve(`src/templates/club-standings.js`);
+  
+  competitionsWithStandings.data.allSqliteCompetitions.edges.forEach(({ node }) => {
+    createPage({
+      path: `${node.Year}/${slugify(node.CompetitionType, { lower: true })}/club-standings`,
+      component: clubStandingsTemplate,
+      context: {
+        competitionId: node.CompetitionId
+      },
+    })
+  });
+}
+
 exports.createPages = async ({ graphql, actions, reporter }) => {
   
   await createResultPages(graphql, actions, reporter);
   await createClubResultPages(graphql, actions, reporter);
+  await createClubStandingPages(graphql, actions, reporter);
 }

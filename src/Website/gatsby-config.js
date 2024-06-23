@@ -83,6 +83,35 @@ module.exports = {
             foreignKey: 'ClubResultId',
             cardinality: 'OneToMany'
           },
+          {
+            statement: `
+              SELECT 
+                cv.*,
+                cs.NumberOfStandings NumberOfClubStandings
+              FROM CompetitionsView cv
+              LEFT OUTER JOIN
+                (SELECT ca.CompetitionId, COUNT(*) NumberOfStandings
+                FROM ClubStanding cs
+                INNER JOIN ClubCategory ca
+                ON ca.ClubCategoryId = cs.ClubCategoryId
+                GROUP BY CompetitionId) cs
+              ON cs.CompetitionId = cv.CompetitionId;`,
+            idFieldName: 'CompetitionId',
+            name: 'Competitions'
+          },
+          {
+            statement: `SELECT * FROM ClubStandingsView;`,
+            idFieldName: 'ClubStandingId',
+            name: 'ClubStandings'
+          },
+          {
+            statement: `SELECT * FROM ClubStandingResult;`,
+            idFieldName: 'ClubStandingResultId',
+            name: 'ClubStandingResults',
+            parentName: 'ClubStandings',
+            foreignKey: 'ClubStandingId',
+            cardinality: 'OneToMany'
+          },
         ]
       }
     }
