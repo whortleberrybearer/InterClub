@@ -1,4 +1,4 @@
-/*DELETE FROM ClubStandingResult
+DELETE FROM ClubStandingResult
 WHERE ClubStandingResultId IN (
     SELECT csr.ClubStandingResultId
     FROM ClubStandingResult csr
@@ -3827,4 +3827,738 @@ VALUES (
     (SELECT RaceId FROM RacesView WHERE CompetitionType = "Road" AND Year = "2023" AND Name = "Chorley"),
     5
 );
-*/
+
+INSERT INTO ClubStandingResult (ClubStandingId, RaceId, Points)
+VALUES (
+    (SELECT ClubStandingId FROM ClubStandingsView WHERE CompetitionType = "Fell" AND Year = "2023" AND Category = "Open" AND ClubShortName = "Blackpool"),
+    (SELECT RaceId FROM RacesView WHERE CompetitionType = "Fell" AND Year = "2023" AND Name = "Wardle Skyline"),
+    0
+);
+
+INSERT INTO ClubStandingResult (ClubStandingId, RaceId, Points)
+VALUES (
+    (SELECT ClubStandingId FROM ClubStandingsView WHERE CompetitionType = "Fell" AND Year = "2023" AND Category = "Open" AND ClubShortName = "Blackpool"),
+    (SELECT RaceId FROM RacesView WHERE CompetitionType = "Fell" AND Year = "2023" AND Name = "Aggies Staircase"),
+    3
+);
+
+INSERT INTO ClubStandingResult (ClubStandingId, RaceId, Points)
+VALUES (
+    (SELECT ClubStandingId FROM ClubStandingsView WHERE CompetitionType = "Fell" AND Year = "2023" AND Category = "Open" AND ClubShortName = "Blackpool"),
+    (SELECT RaceId FROM RacesView WHERE CompetitionType = "Fell" AND Year = "2023" AND Name = "Beetham Sports"),
+    3
+);
+
+INSERT INTO ClubStandingResult (ClubStandingId, RaceId, Points)
+VALUES (
+    (SELECT ClubStandingId FROM ClubStandingsView WHERE CompetitionType = "Fell" AND Year = "2023" AND Category = "Open" AND ClubShortName = "Chorley"),
+    (SELECT RaceId FROM RacesView WHERE CompetitionType = "Fell" AND Year = "2023" AND Name = "Wardle Skyline"),
+    5
+);
+
+INSERT INTO ClubStandingResult (ClubStandingId, RaceId, Points)
+VALUES (
+    (SELECT ClubStandingId FROM ClubStandingsView WHERE CompetitionType = "Fell" AND Year = "2023" AND Category = "Open" AND ClubShortName = "Chorley"),
+    (SELECT RaceId FROM RacesView WHERE CompetitionType = "Fell" AND Year = "2023" AND Name = "Aggies Staircase"),
+    7
+);
+
+INSERT INTO ClubStandingResult (ClubStandingId, RaceId, Points)
+VALUES (
+    (SELECT ClubStandingId FROM ClubStandingsView WHERE CompetitionType = "Fell" AND Year = "2023" AND Category = "Open" AND ClubShortName = "Chorley"),
+    (SELECT RaceId FROM RacesView WHERE CompetitionType = "Fell" AND Year = "2023" AND Name = "Beetham Sports"),
+    7
+);
+
+INSERT INTO ClubStandingResult (ClubStandingId, RaceId, Points)
+VALUES (
+    (SELECT ClubStandingId FROM ClubStandingsView WHERE CompetitionType = "Fell" AND Year = "2023" AND Category = "Open" AND ClubShortName = "Lytham"),
+    (SELECT RaceId FROM RacesView WHERE CompetitionType = "Fell" AND Year = "2023" AND Name = "Wardle Skyline"),
+    3
+);
+
+INSERT INTO ClubStandingResult (ClubStandingId, RaceId, Points)
+VALUES (
+    (SELECT ClubStandingId FROM ClubStandingsView WHERE CompetitionType = "Fell" AND Year = "2023" AND Category = "Open" AND ClubShortName = "Lytham"),
+    (SELECT RaceId FROM RacesView WHERE CompetitionType = "Fell" AND Year = "2023" AND Name = "Aggies Staircase"),
+    2
+);
+
+INSERT INTO ClubStandingResult (ClubStandingId, RaceId, Points)
+VALUES (
+    (SELECT ClubStandingId FROM ClubStandingsView WHERE CompetitionType = "Fell" AND Year = "2023" AND Category = "Open" AND ClubShortName = "Lytham"),
+    (SELECT RaceId FROM RacesView WHERE CompetitionType = "Fell" AND Year = "2023" AND Name = "Beetham Sports"),
+    2
+);
+
+INSERT INTO ClubStandingResult (ClubStandingId, RaceId, Points)
+VALUES (
+    (SELECT ClubStandingId FROM ClubStandingsView WHERE CompetitionType = "Fell" AND Year = "2023" AND Category = "Open" AND ClubShortName = "Preston"),
+    (SELECT RaceId FROM RacesView WHERE CompetitionType = "Fell" AND Year = "2023" AND Name = "Wardle Skyline"),
+    4
+);
+
+INSERT INTO ClubStandingResult (ClubStandingId, RaceId, Points)
+VALUES (
+    (SELECT ClubStandingId FROM ClubStandingsView WHERE CompetitionType = "Fell" AND Year = "2023" AND Category = "Open" AND ClubShortName = "Preston"),
+    (SELECT RaceId FROM RacesView WHERE CompetitionType = "Fell" AND Year = "2023" AND Name = "Aggies Staircase"),
+    6
+);
+
+INSERT INTO ClubStandingResult (ClubStandingId, RaceId, Points)
+VALUES (
+    (SELECT ClubStandingId FROM ClubStandingsView WHERE CompetitionType = "Fell" AND Year = "2023" AND Category = "Open" AND ClubShortName = "Preston"),
+    (SELECT RaceId FROM RacesView WHERE CompetitionType = "Fell" AND Year = "2023" AND Name = "Beetham Sports"),
+    4
+);
+
+INSERT INTO ClubStandingResult (ClubStandingId, RaceId, Points)
+VALUES (
+    (SELECT ClubStandingId FROM ClubStandingsView WHERE CompetitionType = "Fell" AND Year = "2023" AND Category = "Open" AND ClubShortName = "Thornton"),
+    (SELECT RaceId FROM RacesView WHERE CompetitionType = "Fell" AND Year = "2023" AND Name = "Wardle Skyline"),
+    0
+);
+
+INSERT INTO ClubStandingResult (ClubStandingId, RaceId, Points)
+VALUES (
+    (SELECT ClubStandingId FROM ClubStandingsView WHERE CompetitionType = "Fell" AND Year = "2023" AND Category = "Open" AND ClubShortName = "Thornton"),
+    (SELECT RaceId FROM RacesView WHERE CompetitionType = "Fell" AND Year = "2023" AND Name = "Aggies Staircase"),
+    1
+);
+
+INSERT INTO ClubStandingResult (ClubStandingId, RaceId, Points)
+VALUES (
+    (SELECT ClubStandingId FROM ClubStandingsView WHERE CompetitionType = "Fell" AND Year = "2023" AND Category = "Open" AND ClubShortName = "Thornton"),
+    (SELECT RaceId FROM RacesView WHERE CompetitionType = "Fell" AND Year = "2023" AND Name = "Beetham Sports"),
+    1
+);
+
+INSERT INTO ClubStandingResult (ClubStandingId, RaceId, Points)
+VALUES (
+    (SELECT ClubStandingId FROM ClubStandingsView WHERE CompetitionType = "Fell" AND Year = "2023" AND Category = "Open" AND ClubShortName = "Red Rose"),
+    (SELECT RaceId FROM RacesView WHERE CompetitionType = "Fell" AND Year = "2023" AND Name = "Wardle Skyline"),
+    6
+);
+
+INSERT INTO ClubStandingResult (ClubStandingId, RaceId, Points)
+VALUES (
+    (SELECT ClubStandingId FROM ClubStandingsView WHERE CompetitionType = "Fell" AND Year = "2023" AND Category = "Open" AND ClubShortName = "Red Rose"),
+    (SELECT RaceId FROM RacesView WHERE CompetitionType = "Fell" AND Year = "2023" AND Name = "Aggies Staircase"),
+    5
+);
+
+INSERT INTO ClubStandingResult (ClubStandingId, RaceId, Points)
+VALUES (
+    (SELECT ClubStandingId FROM ClubStandingsView WHERE CompetitionType = "Fell" AND Year = "2023" AND Category = "Open" AND ClubShortName = "Red Rose"),
+    (SELECT RaceId FROM RacesView WHERE CompetitionType = "Fell" AND Year = "2023" AND Name = "Beetham Sports"),
+    5
+);
+
+INSERT INTO ClubStandingResult (ClubStandingId, RaceId, Points)
+VALUES (
+    (SELECT ClubStandingId FROM ClubStandingsView WHERE CompetitionType = "Fell" AND Year = "2023" AND Category = "Open" AND ClubShortName = "Wesham"),
+    (SELECT RaceId FROM RacesView WHERE CompetitionType = "Fell" AND Year = "2023" AND Name = "Wardle Skyline"),
+    7
+);
+
+INSERT INTO ClubStandingResult (ClubStandingId, RaceId, Points)
+VALUES (
+    (SELECT ClubStandingId FROM ClubStandingsView WHERE CompetitionType = "Fell" AND Year = "2023" AND Category = "Open" AND ClubShortName = "Wesham"),
+    (SELECT RaceId FROM RacesView WHERE CompetitionType = "Fell" AND Year = "2023" AND Name = "Aggies Staircase"),
+    4
+);
+
+INSERT INTO ClubStandingResult (ClubStandingId, RaceId, Points)
+VALUES (
+    (SELECT ClubStandingId FROM ClubStandingsView WHERE CompetitionType = "Fell" AND Year = "2023" AND Category = "Open" AND ClubShortName = "Wesham"),
+    (SELECT RaceId FROM RacesView WHERE CompetitionType = "Fell" AND Year = "2023" AND Name = "Beetham Sports"),
+    6
+);
+
+INSERT INTO ClubStandingResult (ClubStandingId, RaceId, Points)
+VALUES (
+    (SELECT ClubStandingId FROM ClubStandingsView WHERE CompetitionType = "Fell" AND Year = "2023" AND Category = "Vet 50 50 50 50 50 50" AND ClubShortName = "Blackpool"),
+    (SELECT RaceId FROM RacesView WHERE CompetitionType = "Fell" AND Year = "2023" AND Name = "Wardle Skyline"),
+    0
+);
+
+INSERT INTO ClubStandingResult (ClubStandingId, RaceId, Points)
+VALUES (
+    (SELECT ClubStandingId FROM ClubStandingsView WHERE CompetitionType = "Fell" AND Year = "2023" AND Category = "Vet 50 50 50 50 50 50" AND ClubShortName = "Blackpool"),
+    (SELECT RaceId FROM RacesView WHERE CompetitionType = "Fell" AND Year = "2023" AND Name = "Aggies Staircase"),
+    4
+);
+
+INSERT INTO ClubStandingResult (ClubStandingId, RaceId, Points)
+VALUES (
+    (SELECT ClubStandingId FROM ClubStandingsView WHERE CompetitionType = "Fell" AND Year = "2023" AND Category = "Vet 50 50 50 50 50 50" AND ClubShortName = "Blackpool"),
+    (SELECT RaceId FROM RacesView WHERE CompetitionType = "Fell" AND Year = "2023" AND Name = "Beetham Sports"),
+    5
+);
+
+INSERT INTO ClubStandingResult (ClubStandingId, RaceId, Points)
+VALUES (
+    (SELECT ClubStandingId FROM ClubStandingsView WHERE CompetitionType = "Fell" AND Year = "2023" AND Category = "Vet 50 50 50 50 50 50" AND ClubShortName = "Chorley"),
+    (SELECT RaceId FROM RacesView WHERE CompetitionType = "Fell" AND Year = "2023" AND Name = "Wardle Skyline"),
+    6
+);
+
+INSERT INTO ClubStandingResult (ClubStandingId, RaceId, Points)
+VALUES (
+    (SELECT ClubStandingId FROM ClubStandingsView WHERE CompetitionType = "Fell" AND Year = "2023" AND Category = "Vet 50 50 50 50 50 50" AND ClubShortName = "Chorley"),
+    (SELECT RaceId FROM RacesView WHERE CompetitionType = "Fell" AND Year = "2023" AND Name = "Aggies Staircase"),
+    7
+);
+
+INSERT INTO ClubStandingResult (ClubStandingId, RaceId, Points)
+VALUES (
+    (SELECT ClubStandingId FROM ClubStandingsView WHERE CompetitionType = "Fell" AND Year = "2023" AND Category = "Vet 50 50 50 50 50 50" AND ClubShortName = "Chorley"),
+    (SELECT RaceId FROM RacesView WHERE CompetitionType = "Fell" AND Year = "2023" AND Name = "Beetham Sports"),
+    7
+);
+
+INSERT INTO ClubStandingResult (ClubStandingId, RaceId, Points)
+VALUES (
+    (SELECT ClubStandingId FROM ClubStandingsView WHERE CompetitionType = "Fell" AND Year = "2023" AND Category = "Vet 50 50 50 50 50 50" AND ClubShortName = "Lytham"),
+    (SELECT RaceId FROM RacesView WHERE CompetitionType = "Fell" AND Year = "2023" AND Name = "Wardle Skyline"),
+    3
+);
+
+INSERT INTO ClubStandingResult (ClubStandingId, RaceId, Points)
+VALUES (
+    (SELECT ClubStandingId FROM ClubStandingsView WHERE CompetitionType = "Fell" AND Year = "2023" AND Category = "Vet 50 50 50 50 50 50" AND ClubShortName = "Lytham"),
+    (SELECT RaceId FROM RacesView WHERE CompetitionType = "Fell" AND Year = "2023" AND Name = "Aggies Staircase"),
+    2
+);
+
+INSERT INTO ClubStandingResult (ClubStandingId, RaceId, Points)
+VALUES (
+    (SELECT ClubStandingId FROM ClubStandingsView WHERE CompetitionType = "Fell" AND Year = "2023" AND Category = "Vet 50 50 50 50 50 50" AND ClubShortName = "Lytham"),
+    (SELECT RaceId FROM RacesView WHERE CompetitionType = "Fell" AND Year = "2023" AND Name = "Beetham Sports"),
+    2
+);
+
+INSERT INTO ClubStandingResult (ClubStandingId, RaceId, Points)
+VALUES (
+    (SELECT ClubStandingId FROM ClubStandingsView WHERE CompetitionType = "Fell" AND Year = "2023" AND Category = "Vet 50 50 50 50 50 50" AND ClubShortName = "Preston"),
+    (SELECT RaceId FROM RacesView WHERE CompetitionType = "Fell" AND Year = "2023" AND Name = "Wardle Skyline"),
+    4
+);
+
+INSERT INTO ClubStandingResult (ClubStandingId, RaceId, Points)
+VALUES (
+    (SELECT ClubStandingId FROM ClubStandingsView WHERE CompetitionType = "Fell" AND Year = "2023" AND Category = "Vet 50 50 50 50 50 50" AND ClubShortName = "Preston"),
+    (SELECT RaceId FROM RacesView WHERE CompetitionType = "Fell" AND Year = "2023" AND Name = "Aggies Staircase"),
+    6
+);
+
+INSERT INTO ClubStandingResult (ClubStandingId, RaceId, Points)
+VALUES (
+    (SELECT ClubStandingId FROM ClubStandingsView WHERE CompetitionType = "Fell" AND Year = "2023" AND Category = "Vet 50 50 50 50 50 50" AND ClubShortName = "Preston"),
+    (SELECT RaceId FROM RacesView WHERE CompetitionType = "Fell" AND Year = "2023" AND Name = "Beetham Sports"),
+    3
+);
+
+INSERT INTO ClubStandingResult (ClubStandingId, RaceId, Points)
+VALUES (
+    (SELECT ClubStandingId FROM ClubStandingsView WHERE CompetitionType = "Fell" AND Year = "2023" AND Category = "Vet 50 50 50 50 50 50" AND ClubShortName = "Thornton"),
+    (SELECT RaceId FROM RacesView WHERE CompetitionType = "Fell" AND Year = "2023" AND Name = "Wardle Skyline"),
+    0
+);
+
+INSERT INTO ClubStandingResult (ClubStandingId, RaceId, Points)
+VALUES (
+    (SELECT ClubStandingId FROM ClubStandingsView WHERE CompetitionType = "Fell" AND Year = "2023" AND Category = "Vet 50 50 50 50 50 50" AND ClubShortName = "Thornton"),
+    (SELECT RaceId FROM RacesView WHERE CompetitionType = "Fell" AND Year = "2023" AND Name = "Aggies Staircase"),
+    1
+);
+
+INSERT INTO ClubStandingResult (ClubStandingId, RaceId, Points)
+VALUES (
+    (SELECT ClubStandingId FROM ClubStandingsView WHERE CompetitionType = "Fell" AND Year = "2023" AND Category = "Vet 50 50 50 50 50 50" AND ClubShortName = "Thornton"),
+    (SELECT RaceId FROM RacesView WHERE CompetitionType = "Fell" AND Year = "2023" AND Name = "Beetham Sports"),
+    1
+);
+
+INSERT INTO ClubStandingResult (ClubStandingId, RaceId, Points)
+VALUES (
+    (SELECT ClubStandingId FROM ClubStandingsView WHERE CompetitionType = "Fell" AND Year = "2023" AND Category = "Vet 50 50 50 50 50 50" AND ClubShortName = "Red Rose"),
+    (SELECT RaceId FROM RacesView WHERE CompetitionType = "Fell" AND Year = "2023" AND Name = "Wardle Skyline"),
+    7
+);
+
+INSERT INTO ClubStandingResult (ClubStandingId, RaceId, Points)
+VALUES (
+    (SELECT ClubStandingId FROM ClubStandingsView WHERE CompetitionType = "Fell" AND Year = "2023" AND Category = "Vet 50 50 50 50 50 50" AND ClubShortName = "Red Rose"),
+    (SELECT RaceId FROM RacesView WHERE CompetitionType = "Fell" AND Year = "2023" AND Name = "Aggies Staircase"),
+    5
+);
+
+INSERT INTO ClubStandingResult (ClubStandingId, RaceId, Points)
+VALUES (
+    (SELECT ClubStandingId FROM ClubStandingsView WHERE CompetitionType = "Fell" AND Year = "2023" AND Category = "Vet 50 50 50 50 50 50" AND ClubShortName = "Red Rose"),
+    (SELECT RaceId FROM RacesView WHERE CompetitionType = "Fell" AND Year = "2023" AND Name = "Beetham Sports"),
+    4
+);
+
+INSERT INTO ClubStandingResult (ClubStandingId, RaceId, Points)
+VALUES (
+    (SELECT ClubStandingId FROM ClubStandingsView WHERE CompetitionType = "Fell" AND Year = "2023" AND Category = "Vet 50 50 50 50 50 50" AND ClubShortName = "Wesham"),
+    (SELECT RaceId FROM RacesView WHERE CompetitionType = "Fell" AND Year = "2023" AND Name = "Wardle Skyline"),
+    5
+);
+
+INSERT INTO ClubStandingResult (ClubStandingId, RaceId, Points)
+VALUES (
+    (SELECT ClubStandingId FROM ClubStandingsView WHERE CompetitionType = "Fell" AND Year = "2023" AND Category = "Vet 50 50 50 50 50 50" AND ClubShortName = "Wesham"),
+    (SELECT RaceId FROM RacesView WHERE CompetitionType = "Fell" AND Year = "2023" AND Name = "Aggies Staircase"),
+    3
+);
+
+INSERT INTO ClubStandingResult (ClubStandingId, RaceId, Points)
+VALUES (
+    (SELECT ClubStandingId FROM ClubStandingsView WHERE CompetitionType = "Fell" AND Year = "2023" AND Category = "Vet 50 50 50 50 50 50" AND ClubShortName = "Wesham"),
+    (SELECT RaceId FROM RacesView WHERE CompetitionType = "Fell" AND Year = "2023" AND Name = "Beetham Sports"),
+    6
+);
+
+INSERT INTO ClubStandingResult (ClubStandingId, RaceId, Points)
+VALUES (
+    (SELECT ClubStandingId FROM ClubStandingsView WHERE CompetitionType = "Fell" AND Year = "2023" AND Category = "Vet 50" AND ClubShortName = "Blackpool"),
+    (SELECT RaceId FROM RacesView WHERE CompetitionType = "Fell" AND Year = "2023" AND Name = "Wardle Skyline"),
+    0
+);
+
+INSERT INTO ClubStandingResult (ClubStandingId, RaceId, Points)
+VALUES (
+    (SELECT ClubStandingId FROM ClubStandingsView WHERE CompetitionType = "Fell" AND Year = "2023" AND Category = "Vet 50" AND ClubShortName = "Blackpool"),
+    (SELECT RaceId FROM RacesView WHERE CompetitionType = "Fell" AND Year = "2023" AND Name = "Aggies Staircase"),
+    2
+);
+
+INSERT INTO ClubStandingResult (ClubStandingId, RaceId, Points)
+VALUES (
+    (SELECT ClubStandingId FROM ClubStandingsView WHERE CompetitionType = "Fell" AND Year = "2023" AND Category = "Vet 50" AND ClubShortName = "Blackpool"),
+    (SELECT RaceId FROM RacesView WHERE CompetitionType = "Fell" AND Year = "2023" AND Name = "Beetham Sports"),
+    4
+);
+
+INSERT INTO ClubStandingResult (ClubStandingId, RaceId, Points)
+VALUES (
+    (SELECT ClubStandingId FROM ClubStandingsView WHERE CompetitionType = "Fell" AND Year = "2023" AND Category = "Vet 50" AND ClubShortName = "Chorley"),
+    (SELECT RaceId FROM RacesView WHERE CompetitionType = "Fell" AND Year = "2023" AND Name = "Wardle Skyline"),
+    6
+);
+
+INSERT INTO ClubStandingResult (ClubStandingId, RaceId, Points)
+VALUES (
+    (SELECT ClubStandingId FROM ClubStandingsView WHERE CompetitionType = "Fell" AND Year = "2023" AND Category = "Vet 50" AND ClubShortName = "Chorley"),
+    (SELECT RaceId FROM RacesView WHERE CompetitionType = "Fell" AND Year = "2023" AND Name = "Aggies Staircase"),
+    7
+);
+
+INSERT INTO ClubStandingResult (ClubStandingId, RaceId, Points)
+VALUES (
+    (SELECT ClubStandingId FROM ClubStandingsView WHERE CompetitionType = "Fell" AND Year = "2023" AND Category = "Vet 50" AND ClubShortName = "Chorley"),
+    (SELECT RaceId FROM RacesView WHERE CompetitionType = "Fell" AND Year = "2023" AND Name = "Beetham Sports"),
+    7
+);
+
+INSERT INTO ClubStandingResult (ClubStandingId, RaceId, Points)
+VALUES (
+    (SELECT ClubStandingId FROM ClubStandingsView WHERE CompetitionType = "Fell" AND Year = "2023" AND Category = "Vet 50" AND ClubShortName = "Lytham"),
+    (SELECT RaceId FROM RacesView WHERE CompetitionType = "Fell" AND Year = "2023" AND Name = "Wardle Skyline"),
+    3
+);
+
+INSERT INTO ClubStandingResult (ClubStandingId, RaceId, Points)
+VALUES (
+    (SELECT ClubStandingId FROM ClubStandingsView WHERE CompetitionType = "Fell" AND Year = "2023" AND Category = "Vet 50" AND ClubShortName = "Lytham"),
+    (SELECT RaceId FROM RacesView WHERE CompetitionType = "Fell" AND Year = "2023" AND Name = "Aggies Staircase"),
+    3
+);
+
+INSERT INTO ClubStandingResult (ClubStandingId, RaceId, Points)
+VALUES (
+    (SELECT ClubStandingId FROM ClubStandingsView WHERE CompetitionType = "Fell" AND Year = "2023" AND Category = "Vet 50" AND ClubShortName = "Lytham"),
+    (SELECT RaceId FROM RacesView WHERE CompetitionType = "Fell" AND Year = "2023" AND Name = "Beetham Sports"),
+    0
+);
+
+INSERT INTO ClubStandingResult (ClubStandingId, RaceId, Points)
+VALUES (
+    (SELECT ClubStandingId FROM ClubStandingsView WHERE CompetitionType = "Fell" AND Year = "2023" AND Category = "Vet 50" AND ClubShortName = "Preston"),
+    (SELECT RaceId FROM RacesView WHERE CompetitionType = "Fell" AND Year = "2023" AND Name = "Wardle Skyline"),
+    5
+);
+
+INSERT INTO ClubStandingResult (ClubStandingId, RaceId, Points)
+VALUES (
+    (SELECT ClubStandingId FROM ClubStandingsView WHERE CompetitionType = "Fell" AND Year = "2023" AND Category = "Vet 50" AND ClubShortName = "Preston"),
+    (SELECT RaceId FROM RacesView WHERE CompetitionType = "Fell" AND Year = "2023" AND Name = "Aggies Staircase"),
+    6
+);
+
+INSERT INTO ClubStandingResult (ClubStandingId, RaceId, Points)
+VALUES (
+    (SELECT ClubStandingId FROM ClubStandingsView WHERE CompetitionType = "Fell" AND Year = "2023" AND Category = "Vet 50" AND ClubShortName = "Preston"),
+    (SELECT RaceId FROM RacesView WHERE CompetitionType = "Fell" AND Year = "2023" AND Name = "Beetham Sports"),
+    3
+);
+
+INSERT INTO ClubStandingResult (ClubStandingId, RaceId, Points)
+VALUES (
+    (SELECT ClubStandingId FROM ClubStandingsView WHERE CompetitionType = "Fell" AND Year = "2023" AND Category = "Vet 50" AND ClubShortName = "Thornton"),
+    (SELECT RaceId FROM RacesView WHERE CompetitionType = "Fell" AND Year = "2023" AND Name = "Wardle Skyline"),
+    0
+);
+
+INSERT INTO ClubStandingResult (ClubStandingId, RaceId, Points)
+VALUES (
+    (SELECT ClubStandingId FROM ClubStandingsView WHERE CompetitionType = "Fell" AND Year = "2023" AND Category = "Vet 50" AND ClubShortName = "Thornton"),
+    (SELECT RaceId FROM RacesView WHERE CompetitionType = "Fell" AND Year = "2023" AND Name = "Aggies Staircase"),
+    1
+);
+
+INSERT INTO ClubStandingResult (ClubStandingId, RaceId, Points)
+VALUES (
+    (SELECT ClubStandingId FROM ClubStandingsView WHERE CompetitionType = "Fell" AND Year = "2023" AND Category = "Vet 50" AND ClubShortName = "Thornton"),
+    (SELECT RaceId FROM RacesView WHERE CompetitionType = "Fell" AND Year = "2023" AND Name = "Beetham Sports"),
+    2
+);
+
+INSERT INTO ClubStandingResult (ClubStandingId, RaceId, Points)
+VALUES (
+    (SELECT ClubStandingId FROM ClubStandingsView WHERE CompetitionType = "Fell" AND Year = "2023" AND Category = "Vet 50" AND ClubShortName = "Red Rose"),
+    (SELECT RaceId FROM RacesView WHERE CompetitionType = "Fell" AND Year = "2023" AND Name = "Wardle Skyline"),
+    7
+);
+
+INSERT INTO ClubStandingResult (ClubStandingId, RaceId, Points)
+VALUES (
+    (SELECT ClubStandingId FROM ClubStandingsView WHERE CompetitionType = "Fell" AND Year = "2023" AND Category = "Vet 50" AND ClubShortName = "Red Rose"),
+    (SELECT RaceId FROM RacesView WHERE CompetitionType = "Fell" AND Year = "2023" AND Name = "Aggies Staircase"),
+    5
+);
+
+INSERT INTO ClubStandingResult (ClubStandingId, RaceId, Points)
+VALUES (
+    (SELECT ClubStandingId FROM ClubStandingsView WHERE CompetitionType = "Fell" AND Year = "2023" AND Category = "Vet 50" AND ClubShortName = "Red Rose"),
+    (SELECT RaceId FROM RacesView WHERE CompetitionType = "Fell" AND Year = "2023" AND Name = "Beetham Sports"),
+    6
+);
+
+INSERT INTO ClubStandingResult (ClubStandingId, RaceId, Points)
+VALUES (
+    (SELECT ClubStandingId FROM ClubStandingsView WHERE CompetitionType = "Fell" AND Year = "2023" AND Category = "Vet 50" AND ClubShortName = "Wesham"),
+    (SELECT RaceId FROM RacesView WHERE CompetitionType = "Fell" AND Year = "2023" AND Name = "Wardle Skyline"),
+    4
+);
+
+INSERT INTO ClubStandingResult (ClubStandingId, RaceId, Points)
+VALUES (
+    (SELECT ClubStandingId FROM ClubStandingsView WHERE CompetitionType = "Fell" AND Year = "2023" AND Category = "Vet 50" AND ClubShortName = "Wesham"),
+    (SELECT RaceId FROM RacesView WHERE CompetitionType = "Fell" AND Year = "2023" AND Name = "Aggies Staircase"),
+    4
+);
+
+INSERT INTO ClubStandingResult (ClubStandingId, RaceId, Points)
+VALUES (
+    (SELECT ClubStandingId FROM ClubStandingsView WHERE CompetitionType = "Fell" AND Year = "2023" AND Category = "Vet 50" AND ClubShortName = "Wesham"),
+    (SELECT RaceId FROM RacesView WHERE CompetitionType = "Fell" AND Year = "2023" AND Name = "Beetham Sports"),
+    5
+);
+
+INSERT INTO ClubStandingResult (ClubStandingId, RaceId, Points)
+VALUES (
+    (SELECT ClubStandingId FROM ClubStandingsView WHERE CompetitionType = "Fell" AND Year = "2023" AND Category = "Vet 60" AND ClubShortName = "Blackpool"),
+    (SELECT RaceId FROM RacesView WHERE CompetitionType = "Fell" AND Year = "2023" AND Name = "Wardle Skyline"),
+    0
+);
+
+INSERT INTO ClubStandingResult (ClubStandingId, RaceId, Points)
+VALUES (
+    (SELECT ClubStandingId FROM ClubStandingsView WHERE CompetitionType = "Fell" AND Year = "2023" AND Category = "Vet 60" AND ClubShortName = "Blackpool"),
+    (SELECT RaceId FROM RacesView WHERE CompetitionType = "Fell" AND Year = "2023" AND Name = "Aggies Staircase"),
+    0
+);
+
+INSERT INTO ClubStandingResult (ClubStandingId, RaceId, Points)
+VALUES (
+    (SELECT ClubStandingId FROM ClubStandingsView WHERE CompetitionType = "Fell" AND Year = "2023" AND Category = "Vet 60" AND ClubShortName = "Blackpool"),
+    (SELECT RaceId FROM RacesView WHERE CompetitionType = "Fell" AND Year = "2023" AND Name = "Beetham Sports"),
+    6
+);
+
+INSERT INTO ClubStandingResult (ClubStandingId, RaceId, Points)
+VALUES (
+    (SELECT ClubStandingId FROM ClubStandingsView WHERE CompetitionType = "Fell" AND Year = "2023" AND Category = "Vet 60" AND ClubShortName = "Chorley"),
+    (SELECT RaceId FROM RacesView WHERE CompetitionType = "Fell" AND Year = "2023" AND Name = "Wardle Skyline"),
+    7
+);
+
+INSERT INTO ClubStandingResult (ClubStandingId, RaceId, Points)
+VALUES (
+    (SELECT ClubStandingId FROM ClubStandingsView WHERE CompetitionType = "Fell" AND Year = "2023" AND Category = "Vet 60" AND ClubShortName = "Chorley"),
+    (SELECT RaceId FROM RacesView WHERE CompetitionType = "Fell" AND Year = "2023" AND Name = "Aggies Staircase"),
+    5
+);
+
+INSERT INTO ClubStandingResult (ClubStandingId, RaceId, Points)
+VALUES (
+    (SELECT ClubStandingId FROM ClubStandingsView WHERE CompetitionType = "Fell" AND Year = "2023" AND Category = "Vet 60" AND ClubShortName = "Chorley"),
+    (SELECT RaceId FROM RacesView WHERE CompetitionType = "Fell" AND Year = "2023" AND Name = "Beetham Sports"),
+    4
+);
+
+INSERT INTO ClubStandingResult (ClubStandingId, RaceId, Points)
+VALUES (
+    (SELECT ClubStandingId FROM ClubStandingsView WHERE CompetitionType = "Fell" AND Year = "2023" AND Category = "Vet 60" AND ClubShortName = "Lytham"),
+    (SELECT RaceId FROM RacesView WHERE CompetitionType = "Fell" AND Year = "2023" AND Name = "Wardle Skyline"),
+    6
+);
+
+INSERT INTO ClubStandingResult (ClubStandingId, RaceId, Points)
+VALUES (
+    (SELECT ClubStandingId FROM ClubStandingsView WHERE CompetitionType = "Fell" AND Year = "2023" AND Category = "Vet 60" AND ClubShortName = "Lytham"),
+    (SELECT RaceId FROM RacesView WHERE CompetitionType = "Fell" AND Year = "2023" AND Name = "Aggies Staircase"),
+    4
+);
+
+INSERT INTO ClubStandingResult (ClubStandingId, RaceId, Points)
+VALUES (
+    (SELECT ClubStandingId FROM ClubStandingsView WHERE CompetitionType = "Fell" AND Year = "2023" AND Category = "Vet 60" AND ClubShortName = "Lytham"),
+    (SELECT RaceId FROM RacesView WHERE CompetitionType = "Fell" AND Year = "2023" AND Name = "Beetham Sports"),
+    2
+);
+
+INSERT INTO ClubStandingResult (ClubStandingId, RaceId, Points)
+VALUES (
+    (SELECT ClubStandingId FROM ClubStandingsView WHERE CompetitionType = "Fell" AND Year = "2023" AND Category = "Vet 60" AND ClubShortName = "Preston"),
+    (SELECT RaceId FROM RacesView WHERE CompetitionType = "Fell" AND Year = "2023" AND Name = "Wardle Skyline"),
+    0
+);
+
+INSERT INTO ClubStandingResult (ClubStandingId, RaceId, Points)
+VALUES (
+    (SELECT ClubStandingId FROM ClubStandingsView WHERE CompetitionType = "Fell" AND Year = "2023" AND Category = "Vet 60" AND ClubShortName = "Preston"),
+    (SELECT RaceId FROM RacesView WHERE CompetitionType = "Fell" AND Year = "2023" AND Name = "Aggies Staircase"),
+    6
+);
+
+INSERT INTO ClubStandingResult (ClubStandingId, RaceId, Points)
+VALUES (
+    (SELECT ClubStandingId FROM ClubStandingsView WHERE CompetitionType = "Fell" AND Year = "2023" AND Category = "Vet 60" AND ClubShortName = "Preston"),
+    (SELECT RaceId FROM RacesView WHERE CompetitionType = "Fell" AND Year = "2023" AND Name = "Beetham Sports"),
+    5
+);
+
+INSERT INTO ClubStandingResult (ClubStandingId, RaceId, Points)
+VALUES (
+    (SELECT ClubStandingId FROM ClubStandingsView WHERE CompetitionType = "Fell" AND Year = "2023" AND Category = "Vet 60" AND ClubShortName = "Thornton"),
+    (SELECT RaceId FROM RacesView WHERE CompetitionType = "Fell" AND Year = "2023" AND Name = "Wardle Skyline"),
+    0
+);
+
+INSERT INTO ClubStandingResult (ClubStandingId, RaceId, Points)
+VALUES (
+    (SELECT ClubStandingId FROM ClubStandingsView WHERE CompetitionType = "Fell" AND Year = "2023" AND Category = "Vet 60" AND ClubShortName = "Thornton"),
+    (SELECT RaceId FROM RacesView WHERE CompetitionType = "Fell" AND Year = "2023" AND Name = "Aggies Staircase"),
+    0
+);
+
+INSERT INTO ClubStandingResult (ClubStandingId, RaceId, Points)
+VALUES (
+    (SELECT ClubStandingId FROM ClubStandingsView WHERE CompetitionType = "Fell" AND Year = "2023" AND Category = "Vet 60" AND ClubShortName = "Thornton"),
+    (SELECT RaceId FROM RacesView WHERE CompetitionType = "Fell" AND Year = "2023" AND Name = "Beetham Sports"),
+    0
+);
+
+INSERT INTO ClubStandingResult (ClubStandingId, RaceId, Points)
+VALUES (
+    (SELECT ClubStandingId FROM ClubStandingsView WHERE CompetitionType = "Fell" AND Year = "2023" AND Category = "Vet 60" AND ClubShortName = "Red Rose"),
+    (SELECT RaceId FROM RacesView WHERE CompetitionType = "Fell" AND Year = "2023" AND Name = "Wardle Skyline"),
+    5
+);
+
+INSERT INTO ClubStandingResult (ClubStandingId, RaceId, Points)
+VALUES (
+    (SELECT ClubStandingId FROM ClubStandingsView WHERE CompetitionType = "Fell" AND Year = "2023" AND Category = "Vet 60" AND ClubShortName = "Red Rose"),
+    (SELECT RaceId FROM RacesView WHERE CompetitionType = "Fell" AND Year = "2023" AND Name = "Aggies Staircase"),
+    7
+);
+
+INSERT INTO ClubStandingResult (ClubStandingId, RaceId, Points)
+VALUES (
+    (SELECT ClubStandingId FROM ClubStandingsView WHERE CompetitionType = "Fell" AND Year = "2023" AND Category = "Vet 60" AND ClubShortName = "Red Rose"),
+    (SELECT RaceId FROM RacesView WHERE CompetitionType = "Fell" AND Year = "2023" AND Name = "Beetham Sports"),
+    7
+);
+
+INSERT INTO ClubStandingResult (ClubStandingId, RaceId, Points)
+VALUES (
+    (SELECT ClubStandingId FROM ClubStandingsView WHERE CompetitionType = "Fell" AND Year = "2023" AND Category = "Vet 60" AND ClubShortName = "Wesham"),
+    (SELECT RaceId FROM RacesView WHERE CompetitionType = "Fell" AND Year = "2023" AND Name = "Wardle Skyline"),
+    0
+);
+
+INSERT INTO ClubStandingResult (ClubStandingId, RaceId, Points)
+VALUES (
+    (SELECT ClubStandingId FROM ClubStandingsView WHERE CompetitionType = "Fell" AND Year = "2023" AND Category = "Vet 60" AND ClubShortName = "Wesham"),
+    (SELECT RaceId FROM RacesView WHERE CompetitionType = "Fell" AND Year = "2023" AND Name = "Aggies Staircase"),
+    0
+);
+
+INSERT INTO ClubStandingResult (ClubStandingId, RaceId, Points)
+VALUES (
+    (SELECT ClubStandingId FROM ClubStandingsView WHERE CompetitionType = "Fell" AND Year = "2023" AND Category = "Vet 60" AND ClubShortName = "Wesham"),
+    (SELECT RaceId FROM RacesView WHERE CompetitionType = "Fell" AND Year = "2023" AND Name = "Beetham Sports"),
+    3
+);
+
+INSERT INTO ClubStandingResult (ClubStandingId, RaceId, Points)
+VALUES (
+    (SELECT ClubStandingId FROM ClubStandingsView WHERE CompetitionType = "Fell" AND Year = "2023" AND Category = "Female" AND ClubShortName = "Blackpool"),
+    (SELECT RaceId FROM RacesView WHERE CompetitionType = "Fell" AND Year = "2023" AND Name = "Wardle Skyline"),
+    0
+);
+
+INSERT INTO ClubStandingResult (ClubStandingId, RaceId, Points)
+VALUES (
+    (SELECT ClubStandingId FROM ClubStandingsView WHERE CompetitionType = "Fell" AND Year = "2023" AND Category = "Female" AND ClubShortName = "Blackpool"),
+    (SELECT RaceId FROM RacesView WHERE CompetitionType = "Fell" AND Year = "2023" AND Name = "Aggies Staircase"),
+    5
+);
+
+INSERT INTO ClubStandingResult (ClubStandingId, RaceId, Points)
+VALUES (
+    (SELECT ClubStandingId FROM ClubStandingsView WHERE CompetitionType = "Fell" AND Year = "2023" AND Category = "Female" AND ClubShortName = "Blackpool"),
+    (SELECT RaceId FROM RacesView WHERE CompetitionType = "Fell" AND Year = "2023" AND Name = "Beetham Sports"),
+    4
+);
+
+INSERT INTO ClubStandingResult (ClubStandingId, RaceId, Points)
+VALUES (
+    (SELECT ClubStandingId FROM ClubStandingsView WHERE CompetitionType = "Fell" AND Year = "2023" AND Category = "Female" AND ClubShortName = "Chorley"),
+    (SELECT RaceId FROM RacesView WHERE CompetitionType = "Fell" AND Year = "2023" AND Name = "Wardle Skyline"),
+    0
+);
+
+INSERT INTO ClubStandingResult (ClubStandingId, RaceId, Points)
+VALUES (
+    (SELECT ClubStandingId FROM ClubStandingsView WHERE CompetitionType = "Fell" AND Year = "2023" AND Category = "Female" AND ClubShortName = "Chorley"),
+    (SELECT RaceId FROM RacesView WHERE CompetitionType = "Fell" AND Year = "2023" AND Name = "Aggies Staircase"),
+    7
+);
+
+INSERT INTO ClubStandingResult (ClubStandingId, RaceId, Points)
+VALUES (
+    (SELECT ClubStandingId FROM ClubStandingsView WHERE CompetitionType = "Fell" AND Year = "2023" AND Category = "Female" AND ClubShortName = "Chorley"),
+    (SELECT RaceId FROM RacesView WHERE CompetitionType = "Fell" AND Year = "2023" AND Name = "Beetham Sports"),
+    7
+);
+
+INSERT INTO ClubStandingResult (ClubStandingId, RaceId, Points)
+VALUES (
+    (SELECT ClubStandingId FROM ClubStandingsView WHERE CompetitionType = "Fell" AND Year = "2023" AND Category = "Female" AND ClubShortName = "Lytham"),
+    (SELECT RaceId FROM RacesView WHERE CompetitionType = "Fell" AND Year = "2023" AND Name = "Wardle Skyline"),
+    5
+);
+
+INSERT INTO ClubStandingResult (ClubStandingId, RaceId, Points)
+VALUES (
+    (SELECT ClubStandingId FROM ClubStandingsView WHERE CompetitionType = "Fell" AND Year = "2023" AND Category = "Female" AND ClubShortName = "Lytham"),
+    (SELECT RaceId FROM RacesView WHERE CompetitionType = "Fell" AND Year = "2023" AND Name = "Aggies Staircase"),
+    2
+);
+
+INSERT INTO ClubStandingResult (ClubStandingId, RaceId, Points)
+VALUES (
+    (SELECT ClubStandingId FROM ClubStandingsView WHERE CompetitionType = "Fell" AND Year = "2023" AND Category = "Female" AND ClubShortName = "Lytham"),
+    (SELECT RaceId FROM RacesView WHERE CompetitionType = "Fell" AND Year = "2023" AND Name = "Beetham Sports"),
+    2
+);
+
+INSERT INTO ClubStandingResult (ClubStandingId, RaceId, Points)
+VALUES (
+    (SELECT ClubStandingId FROM ClubStandingsView WHERE CompetitionType = "Fell" AND Year = "2023" AND Category = "Female" AND ClubShortName = "Preston"),
+    (SELECT RaceId FROM RacesView WHERE CompetitionType = "Fell" AND Year = "2023" AND Name = "Wardle Skyline"),
+    4
+);
+
+INSERT INTO ClubStandingResult (ClubStandingId, RaceId, Points)
+VALUES (
+    (SELECT ClubStandingId FROM ClubStandingsView WHERE CompetitionType = "Fell" AND Year = "2023" AND Category = "Female" AND ClubShortName = "Preston"),
+    (SELECT RaceId FROM RacesView WHERE CompetitionType = "Fell" AND Year = "2023" AND Name = "Aggies Staircase"),
+    4
+);
+
+INSERT INTO ClubStandingResult (ClubStandingId, RaceId, Points)
+VALUES (
+    (SELECT ClubStandingId FROM ClubStandingsView WHERE CompetitionType = "Fell" AND Year = "2023" AND Category = "Female" AND ClubShortName = "Preston"),
+    (SELECT RaceId FROM RacesView WHERE CompetitionType = "Fell" AND Year = "2023" AND Name = "Beetham Sports"),
+    3
+);
+
+INSERT INTO ClubStandingResult (ClubStandingId, RaceId, Points)
+VALUES (
+    (SELECT ClubStandingId FROM ClubStandingsView WHERE CompetitionType = "Fell" AND Year = "2023" AND Category = "Female" AND ClubShortName = "Thornton"),
+    (SELECT RaceId FROM RacesView WHERE CompetitionType = "Fell" AND Year = "2023" AND Name = "Wardle Skyline"),
+    0
+);
+
+INSERT INTO ClubStandingResult (ClubStandingId, RaceId, Points)
+VALUES (
+    (SELECT ClubStandingId FROM ClubStandingsView WHERE CompetitionType = "Fell" AND Year = "2023" AND Category = "Female" AND ClubShortName = "Thornton"),
+    (SELECT RaceId FROM RacesView WHERE CompetitionType = "Fell" AND Year = "2023" AND Name = "Aggies Staircase"),
+    1
+);
+
+INSERT INTO ClubStandingResult (ClubStandingId, RaceId, Points)
+VALUES (
+    (SELECT ClubStandingId FROM ClubStandingsView WHERE CompetitionType = "Fell" AND Year = "2023" AND Category = "Female" AND ClubShortName = "Thornton"),
+    (SELECT RaceId FROM RacesView WHERE CompetitionType = "Fell" AND Year = "2023" AND Name = "Beetham Sports"),
+    1
+);
+
+INSERT INTO ClubStandingResult (ClubStandingId, RaceId, Points)
+VALUES (
+    (SELECT ClubStandingId FROM ClubStandingsView WHERE CompetitionType = "Fell" AND Year = "2023" AND Category = "Female" AND ClubShortName = "Red Rose"),
+    (SELECT RaceId FROM RacesView WHERE CompetitionType = "Fell" AND Year = "2023" AND Name = "Wardle Skyline"),
+    7
+);
+
+INSERT INTO ClubStandingResult (ClubStandingId, RaceId, Points)
+VALUES (
+    (SELECT ClubStandingId FROM ClubStandingsView WHERE CompetitionType = "Fell" AND Year = "2023" AND Category = "Female" AND ClubShortName = "Red Rose"),
+    (SELECT RaceId FROM RacesView WHERE CompetitionType = "Fell" AND Year = "2023" AND Name = "Aggies Staircase"),
+    6
+);
+
+INSERT INTO ClubStandingResult (ClubStandingId, RaceId, Points)
+VALUES (
+    (SELECT ClubStandingId FROM ClubStandingsView WHERE CompetitionType = "Fell" AND Year = "2023" AND Category = "Female" AND ClubShortName = "Red Rose"),
+    (SELECT RaceId FROM RacesView WHERE CompetitionType = "Fell" AND Year = "2023" AND Name = "Beetham Sports"),
+    6
+);
+
+INSERT INTO ClubStandingResult (ClubStandingId, RaceId, Points)
+VALUES (
+    (SELECT ClubStandingId FROM ClubStandingsView WHERE CompetitionType = "Fell" AND Year = "2023" AND Category = "Female" AND ClubShortName = "Wesham"),
+    (SELECT RaceId FROM RacesView WHERE CompetitionType = "Fell" AND Year = "2023" AND Name = "Wardle Skyline"),
+    6
+);
+
+INSERT INTO ClubStandingResult (ClubStandingId, RaceId, Points)
+VALUES (
+    (SELECT ClubStandingId FROM ClubStandingsView WHERE CompetitionType = "Fell" AND Year = "2023" AND Category = "Female" AND ClubShortName = "Wesham"),
+    (SELECT RaceId FROM RacesView WHERE CompetitionType = "Fell" AND Year = "2023" AND Name = "Aggies Staircase"),
+    3
+);
+
+INSERT INTO ClubStandingResult (ClubStandingId, RaceId, Points)
+VALUES (
+    (SELECT ClubStandingId FROM ClubStandingsView WHERE CompetitionType = "Fell" AND Year = "2023" AND Category = "Female" AND ClubShortName = "Wesham"),
+    (SELECT RaceId FROM RacesView WHERE CompetitionType = "Fell" AND Year = "2023" AND Name = "Beetham Sports"),
+    5
+);
