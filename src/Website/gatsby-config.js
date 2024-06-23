@@ -120,6 +120,24 @@ module.exports = {
             foreignKey: 'ClubStandingId',
             cardinality: 'OneToMany'
           },
+          {
+            statement: `SELECT * FROM RunnerCategoriesView;`,
+            idFieldName: 'RunnerCategoryId',
+            name: 'RunnerCategories'
+          },
+          {
+            statement: `SELECT * FROM RunnerStandingsView;`,
+            idFieldName: 'RunnerStandingId',
+            name: 'RunnerStandings'
+          },
+          {
+            statement: `SELECT * FROM RunnerStandingResult;`,
+            idFieldName: 'RunnerStandingResultId',
+            name: 'RunnerStandingResults',
+            parentName: 'RunnerStandings',
+            foreignKey: 'RunnerStandingId',
+            cardinality: 'OneToMany'
+          },
         ]
       }
     }

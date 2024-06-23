@@ -2,38 +2,39 @@ import * as React from 'react'
 import { graphql } from "gatsby"
 import Layout from '../organisms/layout'
 
-function findAndSortClubStandingsForCategory(clubCategoryId, clubStandings) {
-  return clubStandings
-      .filter((cs) => cs.ClubCategoryId === clubCategoryId)
+function findAndSortRunnerStandingsForCategory(runnerCategoryId, standings) {
+  return standings
+      .filter((s) => s.RunnerCategoryId === runnerCategoryId)
       .sort((a, b) => a.Position - b.Position);
 }
 
-function findClubStandingResult(raceId, clubStandingResults) { 
-  const clubCategoryResult = 
-  clubStandingResults.find((csr) => csr.RaceId === raceId);
+function findRunnerStandingResult(raceId, standingResults) { 
+  const runnerCategoryResult = standingResults.find((sr) => sr.RaceId === raceId);
 
-    return clubCategoryResult?.Points;
+  return runnerCategoryResult?.Points;
 }
 
 
 const StandingsPage = ({data}) => {
-  const categoryOrder = [ "Open", "Female", "Vet", "Female Vet 40", "Vet 50", "Vet 60" ];
-  const clubCategories = data.allSqliteClubCategories.nodes.sort((a, b) => {
+  const categoryOrder = [ "Open", "Male", "Female", "Male Vet 40", "Female Vet 40", "Male Vet 50", "Female Vet 50", "Male Vet 60", "Female Vet 60" ];
+  const runnerCategories = data.allSqliteRunnerCategories.nodes.sort((a, b) => {
     return categoryOrder.indexOf(a.Category) - categoryOrder.indexOf(b.Category);
   });
 
   return (
     <Layout>
       <main className="container">
-      <h1>{data.sqliteCompetitions.CompetitionType} Club Standings {data.sqliteCompetitions.Year}</h1>
+      <h1>{data.sqliteCompetitions.CompetitionType} Standings {data.sqliteCompetitions.Year}</h1>
       
-      {clubCategories.map((clubCategory) => (
-        <div key={clubCategory.ClubCategoryId}>
-          <h2>{clubCategory.Category}</h2>
+      {runnerCategories.map((runnerCategory) => (
+        <div key={runnerCategory.RunnerCategoryId}>
+          <h2>{runnerCategory.Category}</h2>
 
           <table>
             <thead>
               <tr>
+                <th>Name</th>
+                <th>Category</th>
                 <th>Club</th>
 
                 {data.allSqliteRaces.nodes.map((race) => (
@@ -44,17 +45,19 @@ const StandingsPage = ({data}) => {
               </tr>
             </thead>
             <tbody>
-              {findAndSortClubStandingsForCategory(clubCategory.ClubCategoryId, data.allSqliteClubStandings.nodes).map((clubStanding) => (
-                <tr key={clubStanding.ClubStandingId}>
-                  <td>{clubStanding.ClubShortName}</td>
+              {findAndSortRunnerStandingsForCategory(runnerCategory.RunnerCategoryId, data.allSqliteRunnerStandings.nodes).map((runnerStanding) => (
+                <tr key={runnerStanding.RunnerStandingId}>
+                  <td>{runnerStanding.Name} {runnerStanding.Surname}</td>
+                  <td>{runnerStanding.Sex}{runnerStanding.AgeCategory}</td>
+                  <td>{runnerStanding.ClubShortName}</td>
 
                   {data.allSqliteRaces.nodes.map((race) => (
-                    <td key={`${clubStanding.ClubStandingId}-${race.RaceId}`}>
-                      {findClubStandingResult(race.RaceId, clubStanding.ClubStandingResults)}
+                    <td key={`${runnerStanding.RunnerStandingId}-${race.RaceId}`}>
+                      {findRunnerStandingResult(race.RaceId, runnerStanding.RunnerStandingResults)}
                     </td>
                   ))}
 
-                  <td>{clubStanding.Total}</td>
+                  <td>{runnerStanding.Total}</td>
                 </tr>
               ))}
             </tbody>
@@ -84,9 +87,9 @@ export const query = graphql`
       Year
       YearId
     }
-    allSqliteClubCategories(filter: {CompetitionId: {eq: $competitionId}}) {
+    allSqliteRunnerCategories(filter: {CompetitionId: {eq: $competitionId}}) {
       nodes {
-        ClubCategoryId
+        RunnerCategoryId
         CategoryId
         Category
       }
@@ -98,19 +101,23 @@ export const query = graphql`
         StartDateTime
       }
     }
-    allSqliteClubStandings(filter: {CompetitionId: {eq: $competitionId}}) {
+    allSqliteRunnerStandings(filter: {CompetitionId: {eq: $competitionId}}) {
       nodes {
-        ClubCategoryId
+        RunnerCategoryId
         CategoryId
         ClubId
         ClubShortName
-        ClubStandingId
+        RunnerStandingId
         Position
+        Name
+        Surname
+        Sex
+        AgeCategory
         Total
-        ClubStandingResults {
+        RunnerStandingResults {
           Points
           RaceId
-          ClubStandingResultId
+          RunnerStandingResultId
         }
       }
     }
