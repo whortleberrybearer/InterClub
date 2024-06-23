@@ -87,15 +87,23 @@ module.exports = {
             statement: `
               SELECT 
                 cv.*,
-                cs.NumberOfStandings NumberOfClubStandings
+                cs.NumberOfStandings NumberOfClubStandings,
+                rs.NumberOfStandings NumberOfStandings
               FROM CompetitionsView cv
               LEFT OUTER JOIN
-                (SELECT ca.CompetitionId, COUNT(*) NumberOfStandings
+                (SELECT cc.CompetitionId, COUNT(*) NumberOfStandings
                 FROM ClubStanding cs
-                INNER JOIN ClubCategory ca
-                ON ca.ClubCategoryId = cs.ClubCategoryId
-                GROUP BY CompetitionId) cs
-              ON cs.CompetitionId = cv.CompetitionId;`,
+                INNER JOIN ClubCategory cc
+                ON cc.ClubCategoryId = cs.ClubCategoryId
+                GROUP BY cc.CompetitionId) cs
+              ON cs.CompetitionId = cv.CompetitionId
+              LEFT OUTER JOIN
+                (SELECT rc.CompetitionId, COUNT(*) NumberOfStandings
+                FROM RunnerStanding rs
+                INNER JOIN RunnerCategory rc
+                ON rc.RunnerCategoryId = rs.RunnerCategoryId
+                GROUP BY rc.CompetitionId) rs
+              ON rs.CompetitionId = cv.CompetitionId;`,
             idFieldName: 'CompetitionId',
             name: 'Competitions'
           },
