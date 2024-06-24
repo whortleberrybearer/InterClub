@@ -138,6 +138,11 @@ module.exports = {
             foreignKey: 'RunnerStandingId',
             cardinality: 'OneToMany'
           },
+          {
+            statement: `SELECT * FROM Year;`,
+            idFieldName: 'YearId',
+            name: 'Years'
+          },
         ]
       }
     }
