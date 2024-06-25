@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { graphql } from "gatsby"
 import Layout from '../organisms/layout'
+import CompetitionSummary from '../organisms/competition-summary';
 
 const YearPage = ({data}) => {
   const competitionOrder = [ "Road", "Fell" ];
@@ -14,9 +15,7 @@ const YearPage = ({data}) => {
         <h1>{data.sqliteYears.Year}</h1>
 
         {competitions.map((competition) => (
-          <div key={competition.CompetitionId}>
-            <h2>{competition.CompetitionType}</h2>
-          </div>
+          <CompetitionSummary key={competition.CompetitionId} competition={competition}></CompetitionSummary>
         ))} 
       </main>
     </Layout>
@@ -42,6 +41,13 @@ export const query = graphql`
       nodes {
         CompetitionId
         CompetitionType
+        Races {
+          Name
+          RaceId
+          StartDateTime
+          NumberOfClubResults
+          NumberOfRaceResults
+        }
       }
     }
   }`;

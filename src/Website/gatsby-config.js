@@ -52,7 +52,10 @@ module.exports = {
                 GROUP BY RaceId) cr
               ON cr.RaceId = r.RaceId;`,
             idFieldName: 'RaceId',
-            name: 'Races'
+            name: 'Races',
+            parentName: 'Competitions',
+            foreignKey: 'CompetitionId',
+            cardinality: 'OneToMany'
           },
           {
             statement: `SELECT * FROM ClubCategoriesView;`,
@@ -105,7 +108,10 @@ module.exports = {
                 GROUP BY rc.CompetitionId) rs
               ON rs.CompetitionId = cv.CompetitionId;`,
             idFieldName: 'CompetitionId',
-            name: 'Competitions'
+            name: 'Competitions',
+            parentName: 'Years',
+            foreignKey: 'YearId',
+            cardinality: 'OneToMany'
           },
           {
             statement: `SELECT * FROM ClubStandingsView;`,
