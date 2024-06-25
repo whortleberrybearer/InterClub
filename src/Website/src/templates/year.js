@@ -50,6 +50,25 @@ export const query = graphql`
           NumberOfClubResults
           NumberOfRaceResults
         }
+        ClubWinners {
+          Category
+          CategoryId
+          ClubCategoryId
+          ClubId
+          ClubShortName
+          ClubWinnerId
+        }
+        RunnerWinners {
+          Category
+          CategoryId
+          RunnerCategoryId
+          ClubId
+          ClubShortName
+          RunnerWinnerId
+          Position
+          Name
+          Surname
+        }
       }
     }
   }`;

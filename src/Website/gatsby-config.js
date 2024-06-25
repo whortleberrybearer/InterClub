@@ -149,6 +149,22 @@ module.exports = {
             idFieldName: 'YearId',
             name: 'Years'
           },
+          {
+            statement: `SELECT * FROM ClubWinnersView;`,
+            idFieldName: 'ClubWinnerId',
+            name: 'ClubWinners',
+            parentName: 'Competitions',
+            foreignKey: 'CompetitionId',
+            cardinality: 'OneToMany'
+          },
+          {
+            statement: `SELECT * FROM RunnerWinnersView;`,
+            idFieldName: 'RunnerWinnerId',
+            name: 'RunnerWinners',
+            parentName: 'Competitions',
+            foreignKey: 'CompetitionId',
+            cardinality: 'OneToMany'
+          },
         ]
       }
     }
