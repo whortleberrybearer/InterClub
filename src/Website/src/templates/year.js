@@ -41,6 +41,8 @@ export const query = graphql`
       nodes {
         CompetitionId
         CompetitionType
+        NumberOfStandings
+        NumberOfClubStandings
         Races {
           Name
           RaceId
