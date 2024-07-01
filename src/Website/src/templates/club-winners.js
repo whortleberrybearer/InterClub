@@ -20,7 +20,7 @@ const ClubWinnersPage = ({data}) => {
         <table>
           <thead>
             <tr>
-              <ht></ht>
+              <th></th>
               {clubCategories.map((clubCategory) => (
                 <th key={clubCategory.CompetitionTypeClubCategoryId}>{clubCategory.Category}</th>
               ))}
@@ -33,7 +33,7 @@ const ClubWinnersPage = ({data}) => {
                 {year.Cancelled 
                   ? <td colSpan={clubCategories.length}>{year.Comment}</td>
                   : clubCategories.map((clubCategory) => (
-                      <td key={`${year.YearId}-${clubCategory.ClubCategoryId}`}>
+                      <td key={`${year.YearId}-${clubCategory.CategoryId}`}>
                         {findClubWinner(year.YearId, clubCategory.CategoryId, data.allSqliteClubWinners.nodes)?.ClubShortName}
                       </td>
                     ))
