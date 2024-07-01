@@ -165,6 +165,27 @@ module.exports = {
             foreignKey: 'CompetitionId',
             cardinality: 'OneToMany'
           },
+          {
+            statement: `SELECT * FROM CompetitionType;`,
+            idFieldName: 'CompetitionTypeId',
+            name: 'CompetitionTypes'
+          },
+          {
+            statement: `
+              SELECT 
+                co.CompetitionTypeId || "-" || ca.CategoryId CompetitionTypeClubCategoryId,
+                co.CompetitionTypeId,
+                ca.CategoryId,
+                ca.Category
+              FROM ClubCategory cc
+              INNER JOIN Competition co
+              ON co.CompetitionId = cc.CompetitionId
+              INNER JOIN Category ca
+              ON ca.CategoryId = cc.CategoryId
+              GROUP BY co.CompetitionTypeId, cc.CategoryId;`,
+            idFieldName: 'CompetitionTypeClubCategoryId',
+            name: 'CompetitionTypeClubCategories'
+          },
         ]
       }
     }
