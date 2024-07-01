@@ -2,7 +2,17 @@ import * as React from 'react'
 import { graphql } from "gatsby"
 import Layout from '../organisms/layout'
 
+function findClubWinner(yearId, categoryId, clubWinners) {
+  return clubWinners
+      .find((cw) => cw.YearId === yearId && cw.CategoryId === categoryId);
+}
+
 const ClubWinnersPage = ({data}) => {
+  const categoryOrder = [ "Open", "Female", "Vet", "Female Vet 40", "Vet 50", "Vet 60" ];
+  const clubCategories = data.allSqliteCompetitionTypeClubCategories.nodes.sort((a, b) => {
+    return categoryOrder.indexOf(a.Category) - categoryOrder.indexOf(b.Category);
+  });
+
   return (
     <Layout>
       <main className="container">
@@ -10,13 +20,23 @@ const ClubWinnersPage = ({data}) => {
         <table>
           <thead>
             <tr>
-              <td></td>
-              {data.allSqliteCompetitionTypeClubCategories.nodes.map((clubCategory) => (
-                <td key={clubCategory.CompetitionTypeClubCategoryId}>{clubCategory.Category}</td>
+              <ht></ht>
+              {clubCategories.map((clubCategory) => (
+                <th key={clubCategory.CompetitionTypeClubCategoryId}>{clubCategory.Category}</th>
               ))}
             </tr>
           </thead>
           <tbody>
+            {data.allSqliteYears.nodes.map((year) => (
+              <tr key={year.YearId}>
+                <td>{year.Year}</td>
+                {clubCategories.map((clubCategory) => (
+                  <td key={`${year.YearId}-${clubCategory.ClubCategoryId}`}>
+                    {findClubWinner(year.YearId, clubCategory.CategoryId, data.allSqliteClubWinners.nodes)?.ClubShortName}
+                  </td>
+                ))}
+              </tr>
+            ))}
           </tbody>
         </table>
       </main>
@@ -38,6 +58,14 @@ export const query = graphql`
     sqliteCompetitionTypes(CompetitionTypeId: {eq: $competitionTypeId}) {
       CompetitionType
       CompetitionTypeId
+    }
+    allSqliteYears(sort: {Year: ASC}) {
+      nodes {
+        Year
+        YearId
+        Cancelled
+        Comment
+      }
     }
     allSqliteClubWinners(filter: {CompetitionTypeId: {eq: $competitionTypeId}}) {
       nodes {
