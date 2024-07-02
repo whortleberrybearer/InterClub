@@ -3,9 +3,6 @@ import { graphql } from "gatsby"
 import Layout from '../organisms/layout'
 
 function findRunnerWinner(yearId, categoryId, runnerWinners) {
-  console.log(runnerWinners);
-  console.log(categoryId);
-  console.log(yearId);
   return runnerWinners
       .find((cw) => cw.YearId === yearId && cw.CategoryId === categoryId);
 }
