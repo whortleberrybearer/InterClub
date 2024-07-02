@@ -215,6 +215,39 @@ async function createClubWinnersPages(graphql, actions, reporter) {
   });
 }
 
+async function createWinnersPages(graphql, actions, reporter) {
+  const { createPage } = actions;
+
+  const competitionTypes = await graphql(
+    `{
+      allSqliteCompetitionTypes {
+        edges {
+          node {
+            CompetitionTypeId
+            CompetitionType
+          }
+        }
+      }
+    }`);
+
+  if (competitionTypes.errors) {
+    reporter.panicOnBuild(`Error while running GraphQL query.`);
+    
+    return;
+  }
+
+  const runnerWinnersTemplate = path.resolve(`src/templates/winners.js`);
+  
+  competitionTypes.data.allSqliteCompetitionTypes.edges.forEach(({ node }) => {
+    createPage({
+      path: `${slugify(node.CompetitionType, { lower: true })}/winners`,
+      component: runnerWinnersTemplate,
+      context: {
+        competitionTypeId: node.CompetitionTypeId
+      },
+    })
+  });
+}
 
 exports.createPages = async ({ graphql, actions, reporter }) => {
   
@@ -224,4 +257,5 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
   await createClubStandingPages(graphql, actions, reporter);
   await createYearPages(graphql, actions, reporter);
   await createClubWinnersPages(graphql, actions, reporter);
+  await createWinnersPages(graphql, actions, reporter);
 }
