@@ -150,19 +150,20 @@ async function createClubStandingPages(graphql, actions, reporter) {
 async function createYearPages(graphql, actions, reporter) {
   const { createPage } = actions;
 
-  const years = await graphql(
+  const competitions = await graphql(
     `{
-      allSqliteYears {
+      allSqliteCompetitions {
         edges {
           node {
-            YearId
+            CompetitionId
+            CompetitionType
             Year
           }
         }
       }
     }`);
 
-  if (years.errors) {
+  if (competitions.errors) {
     reporter.panicOnBuild(`Error while running GraphQL query.`);
     
     return;
@@ -170,12 +171,12 @@ async function createYearPages(graphql, actions, reporter) {
 
   const yearsTemplate = path.resolve(`src/templates/year.js`);
   
-  years.data.allSqliteYears.edges.forEach(({ node }) => {
+  competitions.data.allSqliteCompetitions.edges.forEach(({ node }) => {
     createPage({
-      path: `${node.Year}`,
+      path: `${slugify(node.CompetitionType, { lower: true })}/${node.Year}`,
       component: yearsTemplate,
       context: {
-        id: node.YearId
+        competitionId: node.CompetitionId
       },
     })
   });

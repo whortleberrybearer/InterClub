@@ -1,22 +1,83 @@
 import * as React from 'react'
-import { graphql } from "gatsby"
+import { graphql, Link } from "gatsby"
 import Layout from '../organisms/layout'
-import CompetitionSummary from '../organisms/competition-summary';
+const slugify = require('slugify')
 
 const YearPage = ({data}) => {
-  const competitionOrder = [ "Road", "Fell" ];
-  const competitions = data.allSqliteCompetitions.nodes.sort((a, b) => {
-    return competitionOrder.indexOf(a.CompetitionType) - competitionOrder.indexOf(b.CompetitionType);
-  });
-
   return (
     <Layout>
       <main className="container">
-        <h1>{data.sqliteYears.Year}</h1>
+        <h1>{data.sqliteCompetitions.CompetitionType} {data.sqliteCompetitions.Year}</h1>
 
-        {competitions.map((competition) => (
-          <CompetitionSummary key={competition.CompetitionId} competition={competition}></CompetitionSummary>
-        ))} 
+        {data.sqliteCompetitions.Races.length > 0 &&
+          <div>
+              <h3>Races</h3>
+              <table>
+                  <tbody>
+                      {data.sqliteCompetitions.Races.map((race) => (
+                          <tr>
+                              <td>{race.StartDateTime}</td>
+                              <td>{race.Name}</td>
+                              <td>
+                                  {race.NumberOfRaceResults && 
+                                  <Link to={`${slugify(race.Name, { lower: true })}/results`}>Results</Link>}
+                              </td>
+                              <td>
+                                  {race.NumberOfClubResults && 
+                                  <Link to={`${slugify(race.Name, { lower: true })}/club-results`}>Club Results</Link>}
+                              </td>
+                          </tr>
+                      ))}
+                  </tbody>
+                  <tfoot>
+                      <tr>
+                          <td colSpan={3}>
+                              {data.sqliteCompetitions.NumberOfStandings &&    
+                              <Link to={`standings`}>Standings</Link>}
+                          </td>
+                          <td>
+                              {data.sqliteCompetitions.NumberOfClubStandings &&    
+                              <Link to={`club-standings`}>Club Standings</Link>}
+                          </td>
+                      </tr>
+                  </tfoot>
+              </table>
+          </div>
+        }
+
+        {data.sqliteCompetitions.ClubWinners.length > 0 &&
+          <div>
+              <h3>Club Winners</h3>
+              <table>
+                  <tbody>
+                  {data.sqliteCompetitions.ClubWinners.map((clubWinner) => (
+                      <tr key={clubWinner.ClubWinnerId}>
+                          <td>{clubWinner.Category}</td>
+                          <td>{clubWinner.ClubShortName}</td>
+                      </tr> 
+                  ))}
+                  </tbody>
+              </table>
+          </div>
+        }
+
+        {data.sqliteCompetitions.RunnerWinners.length > 0 &&
+          <div>
+              <h3>Individual Winners</h3>
+              <table>
+                  <tbody>
+                  {data.sqliteCompetitions.RunnerWinners.map((runnerWinner) => (
+                      <tr key={runnerWinner.RunnerWinnerId}>
+                          <td>{runnerWinner.Category}</td>
+                          <td>{runnerWinner.Position}</td>
+                          <td>{runnerWinner.Name} {runnerWinner.Surname}</td>
+                          <td>{runnerWinner.ClubShortName}</td>
+                      </tr> 
+                  ))}
+                  </tbody>
+              </table>
+          </div>
+        }
       </main>
     </Layout>
   )
@@ -25,50 +86,46 @@ const YearPage = ({data}) => {
 export const Head =  ({data}) => {
   return (
     <>
-      <title>{data.sqliteYears.Year}</title>
-      <meta name="description" content={`Inter Club details for ${data.sqliteYears.Year}.`} />
+      <title>{data.sqliteCompetitions.CompetitionType} {data.sqliteCompetitions.Year}</title>
+      <meta name="description" content={`Inter Club details ${data.sqliteCompetitions.CompetitionType} for ${data.sqliteCompetitions.Year}.`} />
     </>
   );
 }
 
 export const query = graphql`
-  query Query($id: Int) {
-    sqliteYears(YearId: {eq: $id}) {
-      Year
+  query Query($competitionId: Int) {
+    sqliteCompetitions(CompetitionId: {eq: $competitionId}) {
+      CompetitionId
+      CompetitionType
       YearId
-    }
-    allSqliteCompetitions(filter: {YearId: {eq: $id}}) {
-      nodes {
-        CompetitionId
-        CompetitionType
-        NumberOfStandings
-        NumberOfClubStandings
-        Races {
-          Name
-          RaceId
-          StartDateTime
-          NumberOfClubResults
-          NumberOfRaceResults
-        }
-        ClubWinners {
-          Category
-          CategoryId
-          ClubCategoryId
-          ClubId
-          ClubShortName
-          ClubWinnerId
-        }
-        RunnerWinners {
-          Category
-          CategoryId
-          RunnerCategoryId
-          ClubId
-          ClubShortName
-          RunnerWinnerId
-          Position
-          Name
-          Surname
-        }
+      Year
+      NumberOfStandings
+      NumberOfClubStandings
+      Races {
+        Name
+        RaceId
+        StartDateTime
+        NumberOfClubResults
+        NumberOfRaceResults
+      }
+      ClubWinners {
+        Category
+        CategoryId
+        ClubCategoryId
+        ClubId
+        ClubShortName
+        ClubWinnerId
+      }
+      RunnerWinners {
+        Category
+        CategoryId
+        RunnerCategoryId
+        ClubId
+        ClubShortName
+        RunnerWinnerId
+        Position
+        Name
+        Surname
       }
     }
   }`;
