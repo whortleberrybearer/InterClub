@@ -186,6 +186,22 @@ module.exports = {
             idFieldName: 'CompetitionTypeClubCategoryId',
             name: 'CompetitionTypeClubCategories'
           },
+          {
+            statement: `
+              SELECT 
+                co.CompetitionTypeId || "-" || ca.CategoryId CompetitionTypeRunnerCategoryId,
+                co.CompetitionTypeId,
+                ca.CategoryId,
+                ca.Category
+              FROM RunnerCategory rc
+              INNER JOIN Competition co
+              ON co.CompetitionId = rc.CompetitionId
+              INNER JOIN Category ca
+              ON ca.CategoryId = rc.CategoryId
+              GROUP BY co.CompetitionTypeId, rc.CategoryId;`,
+            idFieldName: 'CompetitionTypeRunnerCategoryId',
+            name: 'CompetitionTypeRunnerCategories'
+          },
         ]
       }
     }
