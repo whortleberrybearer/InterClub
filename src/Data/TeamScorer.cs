@@ -6,5 +6,5 @@
 
     public required string? Surname { get; init; }
 
-    public required RaceResult Result { get; init; }
+    public required RaceResult? Result { get; init; }
 }
