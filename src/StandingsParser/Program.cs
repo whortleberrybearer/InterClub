@@ -48,7 +48,7 @@ CoconaApp.Run(([Option("i")] string inputFile, [Option("o")] string outputPath, 
                 "SELECT rc.RunnerCategoryId CompetitionCategoryId, c.Category " +
                 "FROM RunnerCategory rc " +
                 "INNER JOIN Category c " +
-                "ON c.CategoryId = rc.Category" +
+                "ON c.CategoryId = rc.CategoryId " +
                 "WHERE rc.CompetitionId = @competitionId",
                 new
                 {
@@ -94,7 +94,7 @@ void SaveRunnerStandings(
                 "SELECT last_insert_rowid();",
                 new
                 {
-                    runnerCategoryId = competitionCategories.First(cc => cc.Category.Equals(runnerStanding.Category, StringComparison.InvariantCultureIgnoreCase)),
+                    runnerCategoryId = competitionCategories.First(cc => cc.Category.Equals(runnerStanding.Category, StringComparison.InvariantCultureIgnoreCase)).CompetitionCategoryId,
                     name = standing.Name,
                     surname = standing.Surname,
                     category = standing.Category,

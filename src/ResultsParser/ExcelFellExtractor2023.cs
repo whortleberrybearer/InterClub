@@ -306,7 +306,7 @@ internal class ExcelFellExtractor2023 : IResultsExtractor
     {
         List<ClubStandingResult> results = new List<ClubStandingResult>();
 
-        for (int columnIndex = 2; columnIndex <= 8; columnIndex++)
+        for (int columnIndex = 2; columnIndex <= 5; columnIndex++)
         {
             int? point = ExcelParser.ParseNumber(seasonTotalsWorksheet.Cells[rowIndex, columnIndex]);
 
@@ -326,7 +326,7 @@ internal class ExcelFellExtractor2023 : IResultsExtractor
         return new ClubStanding()
         {
             Club = ExcelParser.ParseString(seasonTotalsWorksheet.Cells[rowIndex, 1])!,
-            Total = ExcelParser.ParseNumber(seasonTotalsWorksheet.Cells[rowIndex, 9]).GetValueOrDefault(),
+            Total = ExcelParser.ParseNumber(seasonTotalsWorksheet.Cells[rowIndex, 6]).GetValueOrDefault(),
             Results = results,
         };
     }

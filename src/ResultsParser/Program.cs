@@ -34,26 +34,25 @@ CoconaApp.Run(([Option("i")] string inputFile, [Option("o")] string outputPath, 
                 {
                     year,
                 });
-            int raceId = connection.QuerySingle<int>(
-                "SELECT RaceId " +
+            IEnumerable<Race> races = connection.Query<Race>(
+                "SELECT RaceId, Name " +
                 "FROM Race " +
-                "WHERE Name = @name " +
-                "AND CompetitionId = @competitionId;",
+                "WHERE CompetitionId = @competitionId;",
                 new
                 {
                     name = race,
                     competitionId,
                 });
             IEnumerable<CompetitionCategory> competitionCategories = connection.Query<CompetitionCategory>(
-                "SELECT rc.RunnerCategoryId CompetitionCategoryId, c.Category " +
-                "FROM ClubCategory cc " +
-                "INNER JOIN Category c " +
-                "ON c.CategoryId = cc.Category" +
-                "WHERE cc.CompetitionId = @competitionId",
+                "SELECT ClubCategoryId CompetitionCategoryId, Category " +
+                "FROM ClubCategoriesView " +
+                "WHERE CompetitionId = @competitionId",
                 new
                 {
                     competitionId
                 });
+            int raceId = races.Single(r => r.Name == race).RaceId;
+
 
             if (extractedResults.RaceResults is not null)
             {
@@ -67,7 +66,7 @@ CoconaApp.Run(([Option("i")] string inputFile, [Option("o")] string outputPath, 
 
             if (extractedResults.ClubStandings is not null)
             {
-                SaveClubStandings(competitionId, raceId, race, extractedResults.ClubStandings, yearClubs, competitionCategories, connection, transaction);
+                SaveClubStandings(competitionId, races, extractedResults.ClubStandings, yearClubs, competitionCategories, connection, transaction);
             }
 
             transaction.Commit();
@@ -87,7 +86,7 @@ void SaveRaceResults(
     {
         raceResult.RaceResultId = connection.QuerySingle<int>(
             "INSERT INTO RaceResult (RaceId, Position, RunnerNumber, Name, Surname, Category, Sex, Club, YearClubId, Time, Comments) " +
-            "VALUES (@raceId, @position, @runnerNumber, @name, @surname, @category, @sex, @club, @time, @comments);" +
+            "VALUES (@raceId, @position, @runnerNumber, @name, @surname, @category, @sex, @club,  @yearClubId, @time, @comments);" +
             "SELECT last_insert_rowid();",
             new
             {
@@ -108,12 +107,12 @@ void SaveRaceResults(
         foreach (ClubCategoryResult clubCategoryResult in raceResult.ClubCategoryResults)
         {
             connection.Execute(
-                "INSERT INTO ClubCategoryResult(RaceResultId, ClubCategoryId, Position) " +
-                "VALUES(@raceResultId, @clubCategoryId, @position);",
+                "INSERT INTO ClubCategoryResult (RaceResultId, ClubCategoryId, Position) " +
+                "VALUES (@raceResultId, @clubCategoryId, @position);",
                 new
                 {
                     raceResultId = raceResult.RaceResultId,
-                    clubCategoryId = competitionCategories.First(cc => cc.Category.Equals(clubCategoryResult.Category, StringComparison.InvariantCultureIgnoreCase)),
+                    clubCategoryId = competitionCategories.First(cc => cc.Category.Equals(clubCategoryResult.Category, StringComparison.InvariantCultureIgnoreCase)).CompetitionCategoryId,
                     position = clubCategoryResult.Position,
                 },
                 transaction);
@@ -137,12 +136,12 @@ void SaveClubResults(
 
             result.ClubResultId = connection.QuerySingle<int>(
                 "INSERT INTO ClubResult (RaceId, ClubCategoryId, YearClubId, Position, Score) " +
-                "VALUES (@raceId, @clubCategoryId, @club, @position, @score);" +
+                "VALUES (@raceId, @clubCategoryId, @yearClubId, @position, @score);" +
                 "SELECT last_insert_rowid();",
                 new
                 {
                     raceId,
-                    clubCategoryId = competitionCategories.First(cc => cc.Category.Equals(clubResult.Category, StringComparison.InvariantCultureIgnoreCase)),
+                    clubCategoryId = competitionCategories.First(cc => cc.Category.Equals(clubResult.Category, StringComparison.InvariantCultureIgnoreCase)).CompetitionCategoryId,
                     yearClubId = yearClubs.First(yc => yc.ShortName.Equals(result.Club, StringComparison.InvariantCultureIgnoreCase)).YearClubId,
                     position = i + 1,
                     score = result.Score,
@@ -157,7 +156,7 @@ void SaveClubResults(
                     new
                     {
                         clubResultId = result.ClubResultId,
-                        raceResultId = teamScorer.Result.RaceResultId,
+                        raceResultId = teamScorer.Result!.RaceResultId,
                     },
                     transaction);
             }
@@ -167,8 +166,7 @@ void SaveClubResults(
 
 void SaveClubStandings(
     int competitionId,
-    int raceId,
-    string race,
+    IEnumerable<Race> races,
     IEnumerable<ClubStandings> clubStandings,
     IEnumerable<YearClub> yearClubs,
     IEnumerable<CompetitionCategory> competitionCategories,
@@ -183,18 +181,18 @@ void SaveClubStandings(
 
             int clubStandingId = connection.QuerySingle<int>(
                 "INSERT INTO ClubStanding (ClubCategoryId, YearClubId, Position, Total) " +
-                "VALUES (@clubCategoryId, @club, @position, @total);" +
+                "VALUES (@clubCategoryId, @yearClubId, @position, @total);" +
                 "SELECT last_insert_rowid();",
                 new
                 {
-                    clubCategoryId = competitionCategories.First(cc => cc.Category.Equals(clubStanding.Category, StringComparison.InvariantCultureIgnoreCase)),
+                    clubCategoryId = competitionCategories.First(cc => cc.Category.Equals(clubStanding.Category, StringComparison.InvariantCultureIgnoreCase)).CompetitionCategoryId,
                     yearClubId = yearClubs.First(yc => yc.ShortName.Equals(standing.Club, StringComparison.InvariantCultureIgnoreCase)).YearClubId,
                     position = i + 1,
                     total = standing.Total,
                 },
                 transaction);
 
-            foreach (ClubStandingResult result in standing.Results.Where(r => r.Race == race))
+            foreach (ClubStandingResult result in standing.Results)
             {
                 connection.Execute(
                     "INSERT INTO ClubStandingResult (ClubStandingId, RaceId, Points) " +
@@ -202,7 +200,7 @@ void SaveClubStandings(
                     new
                     {
                         clubStandingId,
-                        raceId,
+                        raceId = races.First(r => r.Name.Equals(result.Race, StringComparison.InvariantCultureIgnoreCase)).RaceId,
                         points = result.Points,
                     },
                     transaction);
