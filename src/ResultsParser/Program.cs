@@ -156,7 +156,7 @@ void SaveClubResults(
                     new
                     {
                         clubResultId = result.ClubResultId,
-                        raceResultId = teamScorer.Result.RaceResultId,
+                        raceResultId = teamScorer.Result!.RaceResultId,
                     },
                     transaction);
             }
