@@ -16,7 +16,6 @@ The main project in the solution is the Website, but there are some support util
 **Utilities**: C#
 
 
-
 ## Installation
 
 Install Gatsby
@@ -24,7 +23,8 @@ Install Gatsby
 ```bash
   npm install -g gatsby-cli
 ```
-    
+
+
 ## Run Locally
 
 Go to the project directory
