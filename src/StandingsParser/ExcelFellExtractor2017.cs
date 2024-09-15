@@ -62,7 +62,8 @@ internal class ExcelFellExtractor2017 : IStandingsExtractor
 
             sexAndCategory = sexAndCategory
                 .Replace("M", string.Empty, StringComparison.InvariantCultureIgnoreCase)
-                .Replace("F", string.Empty, StringComparison.InvariantCultureIgnoreCase);
+                .Replace("F", string.Empty, StringComparison.InvariantCultureIgnoreCase)
+                .Replace("V", string.Empty, StringComparison.InvariantCultureIgnoreCase);
 
             if (string.IsNullOrWhiteSpace(sexAndCategory))
             {
