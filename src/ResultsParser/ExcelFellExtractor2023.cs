@@ -82,7 +82,8 @@ internal class ExcelFellExtractor2023 : IResultsExtractor
                 .Replace("F", string.Empty, StringComparison.InvariantCultureIgnoreCase);
 
             if ((string.IsNullOrWhiteSpace(sexAndCategory)) ||
-                (sexAndCategory.Equals("S", StringComparison.InvariantCultureIgnoreCase)))
+                (sexAndCategory.Equals("S", StringComparison.InvariantCultureIgnoreCase)) ||
+                (sexAndCategory.Equals("SEN", StringComparison.InvariantCultureIgnoreCase)))
             {
                 category = "SEN";
             }
