@@ -1,6 +1,6 @@
 ﻿using OfficeOpenXml;
 
-internal class ExcelFellExtractor2023 : IResultsExtractor
+internal class ExcelFellExtractor2017 : IResultsExtractor
 {
     public ExtractedResults ExtractResults(Stream stream)
     {
@@ -81,7 +81,9 @@ internal class ExcelFellExtractor2023 : IResultsExtractor
                 .Replace("M", string.Empty, StringComparison.InvariantCultureIgnoreCase)
                 .Replace("F", string.Empty, StringComparison.InvariantCultureIgnoreCase);
 
-            if (string.IsNullOrWhiteSpace(sexAndCategory))
+            if ((string.IsNullOrWhiteSpace(sexAndCategory)) ||
+                (sexAndCategory.Equals("S", StringComparison.InvariantCultureIgnoreCase)) ||
+                (sexAndCategory.Equals("SEN", StringComparison.InvariantCultureIgnoreCase)))
             {
                 category = "SEN";
             }
