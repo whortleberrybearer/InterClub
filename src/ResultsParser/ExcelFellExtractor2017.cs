@@ -1,6 +1,6 @@
 ﻿using OfficeOpenXml;
 
-internal class ExcelFellExtractor2023 : IResultsExtractor
+internal class ExcelFellExtractor2017 : IResultsExtractor
 {
     public ExtractedResults ExtractResults(Stream stream)
     {

@@ -219,7 +219,7 @@ ExtractedResults ExtractResults(string inputFile, string competition, int year)
     }
     else if (competition.Equals("Fell", StringComparison.InvariantCultureIgnoreCase))
     {
-        resultsExtractor = new ExcelFellExtractor2023();
+        resultsExtractor = new ExcelFellExtractor2017();
     }
     else
     {
