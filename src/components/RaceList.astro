@@ -1,0 +1,42 @@
+---
+// src/components/RaceList.astro
+import type { Race, Series } from '../lib/types';
+import RaceCard from './RaceCard.astro';
+import YearFilter from './YearFilter.astro';
+
+interface Props {
+  races: Race[];
+  year: number;
+  series: Series;
+  availableYears: number[];
+  currentYear: number;
+  seriesBasePath: string;
+  seriesLabel: string;
+}
+
+const { races, year, series, availableYears, currentYear, seriesBasePath, seriesLabel } = Astro.props;
+---
+
+<div>
+  <div class="flex items-center justify-between mb-6 flex-wrap gap-3">
+    <h1 class="text-2xl font-bold">{seriesLabel} — {year}</h1>
+    {availableYears.length > 1 && (
+      <YearFilter
+        years={availableYears}
+        activeYear={year}
+        seriesBasePath={seriesBasePath}
+        currentYear={currentYear}
+      />
+    )}
+  </div>
+
+  {races.length === 0 ? (
+    <p class="text-base-content/60">No races found for {year}.</p>
+  ) : (
+    <div class="flex flex-col gap-4">
+      {races.map(race => (
+        <RaceCard race={race} year={year} series={series} />
+      ))}
+    </div>
+  )}
+</div>
