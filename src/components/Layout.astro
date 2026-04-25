@@ -1,0 +1,51 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+}
+
+const { title } = Astro.props;
+const currentPath = Astro.url.pathname;
+
+function isActive(base: string): boolean {
+  return currentPath === base || currentPath.startsWith(base + '/');
+}
+---
+
+<!doctype html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title} — Inter Club</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  </head>
+  <body class="min-h-screen bg-base-200 flex flex-col">
+    <header class="bg-base-100 shadow-sm">
+      <div class="navbar max-w-4xl mx-auto px-4">
+        <div class="navbar-start">
+          <a href="/" class="btn btn-ghost text-lg font-bold tracking-tight">Inter Club</a>
+        </div>
+        <div class="navbar-end gap-1">
+          <a
+            href="/road-gp/"
+            class={`btn btn-ghost btn-sm ${isActive('/road-gp') ? 'btn-active' : ''}`}
+          >Road GP</a>
+          <a
+            href="/fell/"
+            class={`btn btn-ghost btn-sm ${isActive('/fell') ? 'btn-active' : ''}`}
+          >Fell</a>
+        </div>
+      </div>
+    </header>
+
+    <main class="flex-1 max-w-4xl mx-auto w-full px-4 py-8">
+      <slot />
+    </main>
+
+    <footer class="footer footer-center p-4 bg-base-100 text-base-content/60 text-sm mt-8">
+      <p>Inter Club Running Competition · Lancashire</p>
+    </footer>
+  </body>
+</html>
