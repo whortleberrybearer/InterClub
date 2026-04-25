@@ -19,6 +19,6 @@ describe('formatRaceDate', () => {
   });
 
   it('handles single-digit days without zero padding', () => {
-    expect(formatRaceDate('2026-06-07')).toBe('Sun 7 Jun');
+    expect(formatRaceDate('2026-08-02', '09:00')).toBe('Sun 2 Aug · 09:00');
   });
 });
