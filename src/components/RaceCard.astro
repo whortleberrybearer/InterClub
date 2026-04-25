@@ -1,0 +1,47 @@
+---
+// src/components/RaceCard.astro
+import type { Race, Series } from '../lib/types';
+import { formatRaceDate } from '../lib/format';
+
+interface Props {
+  race: Race;
+  year: number;
+  series: Series;
+}
+
+const { race, year, series } = Astro.props;
+const { id, name, date, time, location, distance, detailsUrl, image } = race;
+
+const formattedDate = formatRaceDate(date, time);
+const detailUrl = `/${series}/${year}/${id}/`;
+---
+
+<a href={detailUrl} class="card bg-base-100 shadow-sm border border-base-200 hover:shadow-md transition-shadow no-underline">
+  {image && (
+    <figure>
+      <img src={`/images/${image}`} alt={name} class="w-full h-44 object-cover" loading="lazy" />
+    </figure>
+  )}
+  <div class="card-body gap-1 py-4">
+    <p class="text-xs text-base-content/50 uppercase tracking-wide font-medium">{formattedDate}</p>
+    <h2 class="card-title text-base font-bold">{name}</h2>
+    {(location || distance) && (
+      <p class="text-sm text-base-content/70">
+        {location}{location && distance && ' · '}{distance}
+      </p>
+    )}
+    {detailsUrl && (
+      <div class="card-actions justify-end mt-2">
+        <a
+          href={detailsUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="btn btn-outline btn-xs"
+          onclick="event.stopPropagation()"
+        >
+          External details ↗
+        </a>
+      </div>
+    )}
+  </div>
+</a>
