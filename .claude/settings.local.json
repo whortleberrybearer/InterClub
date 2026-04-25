@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(bash \"C:/Users/wheel/.claude/plugins/cache/claude-plugins-official/superpowers/5.0.7/skills/brainstorming/scripts/start-server.sh\" --project-dir \"C:/Users/wheel/source/repos/InterClub/.claude/worktrees/cool-blackwell-56e837\")",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:60619)",
+      "Bash(npm create *)",
+      "Bash(mv y/* .)",
+      "Bash(mv y/.[!.]* .)",
+      "Bash(rmdir y *)",
+      "Bash(npx astro *)",
+      "Bash(npm uninstall *)",
+      "Bash(npm install *)",
+      "Bash(npm info *)",
+      "Bash(npm run *)"
+    ]
+  }
+}
