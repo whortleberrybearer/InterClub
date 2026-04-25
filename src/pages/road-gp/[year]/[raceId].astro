@@ -1,12 +1,12 @@
 ---
 // src/pages/road-gp/[year]/[raceId].astro
 import Layout from '../../../components/Layout.astro';
-import { getAvailableYears, getRaces } from '../../../lib/data';
+import { getAvailableYears, getRaces, getCurrentYear } from '../../../lib/data';
 import { formatRaceDate } from '../../../lib/format';
 import type { Race } from '../../../lib/types';
 
 export async function getStaticPaths() {
-  const years = getAvailableYears();
+  const years = getAvailableYears('road-gp');
   return years.flatMap(year =>
     getRaces(year, 'road-gp').map(race => ({
       params: { year: String(year), raceId: race.id },
@@ -23,11 +23,13 @@ interface Props {
 const { race, year } = Astro.props;
 const { name, date, time, location, distance, detailsUrl, image } = race;
 const formattedDate = formatRaceDate(date, time);
+const currentYear = getCurrentYear();
+const backUrl = year === currentYear ? '/road-gp/' : `/road-gp/${year}/`;
 ---
 
 <Layout title={name}>
   <div class="mb-4">
-    <a href="/road-gp/" class="btn btn-ghost btn-sm gap-1 -ml-3">← Road Grand Prix</a>
+    <a href={backUrl} class="btn btn-ghost btn-sm gap-1 -ml-3">← Road Grand Prix</a>
   </div>
 
   <div class="card bg-base-100 shadow-sm border border-base-200">

@@ -5,7 +5,7 @@ import RaceList from '../../components/RaceList.astro';
 import { getCurrentYear, getAvailableYears, getRaces } from '../../lib/data';
 
 const currentYear = getCurrentYear();
-const availableYears = getAvailableYears();
+const availableYears = getAvailableYears('road-gp');
 const races = getRaces(currentYear, 'road-gp');
 ---
 
