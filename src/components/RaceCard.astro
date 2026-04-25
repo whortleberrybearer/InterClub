@@ -13,10 +13,10 @@ const { race, year, series } = Astro.props;
 const { id, name, date, time, location, distance, detailsUrl, image } = race;
 
 const formattedDate = formatRaceDate(date, time);
-const detailUrl = `/${series}/${year}/${id}/`;
+const pageUrl = `/${series}/${year}/${id}/`;
 ---
 
-<a href={detailUrl} class="card bg-base-100 shadow-sm border border-base-200 hover:shadow-md transition-shadow no-underline">
+<a href={pageUrl} class="card bg-base-100 shadow-sm border border-base-200 hover:shadow-md transition-shadow no-underline">
   {image && (
     <figure>
       <img src={`/images/${image}`} alt={name} class="w-full h-44 object-cover" loading="lazy" />
