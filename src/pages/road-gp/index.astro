@@ -1,0 +1,22 @@
+---
+// src/pages/road-gp/index.astro
+import Layout from '../../components/Layout.astro';
+import RaceList from '../../components/RaceList.astro';
+import { getCurrentYear, getAvailableYears, getRaces } from '../../lib/data';
+
+const currentYear = getCurrentYear();
+const availableYears = getAvailableYears();
+const races = getRaces(currentYear, 'road-gp');
+---
+
+<Layout title="Road Grand Prix">
+  <RaceList
+    races={races}
+    year={currentYear}
+    series="road-gp"
+    availableYears={availableYears}
+    currentYear={currentYear}
+    seriesBasePath="/road-gp"
+    seriesLabel="Road Grand Prix"
+  />
+</Layout>
