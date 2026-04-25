@@ -1,0 +1,30 @@
+---
+// src/components/YearFilter.astro
+interface Props {
+  years: number[];
+  activeYear: number;
+  seriesBasePath: string; // e.g. "/road-gp"
+  currentYear: number;
+}
+
+const { years, activeYear, seriesBasePath, currentYear } = Astro.props;
+
+function yearUrl(year: number): string {
+  return year === currentYear ? `${seriesBasePath}/` : `${seriesBasePath}/${year}/`;
+}
+---
+
+<div class="flex items-center gap-2">
+  <span class="text-sm text-base-content/60">Season:</span>
+  <select
+    class="select select-bordered select-sm"
+    onchange="window.location.href = this.value"
+    aria-label="Select season year"
+  >
+    {years.map(year => (
+      <option value={yearUrl(year)} selected={year === activeYear}>
+        {year}
+      </option>
+    ))}
+  </select>
+</div>
