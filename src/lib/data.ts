@@ -13,8 +13,11 @@ export function getCurrentYear(): number {
   return config.currentYear;
 }
 
-export function getAvailableYears(): number[] {
-  return extractYears(Object.keys(raceFiles));
+export function getAvailableYears(series?: Series): number[] {
+  const keys = series
+    ? Object.keys(raceFiles).filter(k => k.includes(`/${series}/`))
+    : Object.keys(raceFiles);
+  return extractYears(keys);
 }
 
 export function getRaces(year: number, series: Series): Race[] {
