@@ -1,0 +1,69 @@
+---
+// src/pages/road-gp/[year]/[raceId].astro
+import Layout from '../../../components/Layout.astro';
+import { getAvailableYears, getRaces } from '../../../lib/data';
+import { formatRaceDate } from '../../../lib/format';
+import type { Race } from '../../../lib/types';
+
+export async function getStaticPaths() {
+  const years = getAvailableYears();
+  return years.flatMap(year =>
+    getRaces(year, 'road-gp').map(race => ({
+      params: { year: String(year), raceId: race.id },
+      props: { race, year },
+    }))
+  );
+}
+
+interface Props {
+  race: Race;
+  year: number;
+}
+
+const { race, year } = Astro.props;
+const { name, date, time, location, distance, detailsUrl, image } = race;
+const formattedDate = formatRaceDate(date, time);
+---
+
+<Layout title={name}>
+  <div class="mb-4">
+    <a href="/road-gp/" class="btn btn-ghost btn-sm gap-1 -ml-3">← Road Grand Prix</a>
+  </div>
+
+  <div class="card bg-base-100 shadow-sm border border-base-200">
+    {image && (
+      <figure>
+        <img src={`/images/${image}`} alt={name} class="w-full h-56 object-cover" />
+      </figure>
+    )}
+    <div class="card-body gap-3">
+      <p class="text-sm text-base-content/50 uppercase tracking-wide font-medium">{formattedDate}</p>
+      <h1 class="text-2xl font-bold">{name}</h1>
+
+      <div class="divider my-1"></div>
+
+      <dl class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        {location && (
+          <div>
+            <dt class="text-xs text-base-content/50 uppercase tracking-wide">Location</dt>
+            <dd class="font-medium">{location}</dd>
+          </div>
+        )}
+        {distance && (
+          <div>
+            <dt class="text-xs text-base-content/50 uppercase tracking-wide">Distance</dt>
+            <dd class="font-medium">{distance}</dd>
+          </div>
+        )}
+      </dl>
+
+      {detailsUrl && (
+        <div class="card-actions mt-2">
+          <a href={detailsUrl} target="_blank" rel="noopener noreferrer" class="btn btn-primary">
+            View race details ↗
+          </a>
+        </div>
+      )}
+    </div>
+  </div>
+</Layout>
