@@ -104,8 +104,8 @@ const clubById = Object.fromEntries(clubs.map(c => [c.id, c]));
   </div>
 
   <!-- Data island for client-side filtering -->
-  <script type="application/json" id="results-data" set:html={JSON.stringify(results)}></script>
-  <script type="application/json" id="clubs-data" set:html={JSON.stringify(clubs)}></script>
+  <script type="application/json" id="results-data" set:html={JSON.stringify(results).replace(/<\/script>/gi, '<\\/script>')}></script>
+  <script type="application/json" id="clubs-data" set:html={JSON.stringify(clubs).replace(/<\/script>/gi, '<\\/script>')}></script>
 </Layout>
 
 <script>
@@ -141,23 +141,27 @@ const clubById = Object.fromEntries(clubs.map(c => [c.id, c]));
 
   [nameInput, clubSelect, catSelect].forEach(el => el.addEventListener('input', render));
 
+  function esc(s: string): string {
+    return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
+
   function row(r: typeof allResults[0]): string {
-    const name = r.firstName[0] ? `${r.firstName[0]}.` : '';
-    const clubShort = r.club === 'Guest' ? 'Guest' : (clubById[r.club]?.shortName ?? r.club);
-    const clubFull = r.club === 'Guest' ? 'Guest' : (clubById[r.club]?.name ?? r.club);
+    const name = r.firstName[0] ? `${esc(r.firstName[0])}.` : '';
+    const clubShort = r.club === 'Guest' ? 'Guest' : esc(clubById[r.club]?.shortName ?? r.club);
+    const clubFull = r.club === 'Guest' ? 'Guest' : esc(clubById[r.club]?.name ?? r.club);
     return `<tr>
       <td class="hidden sm:table-cell">${r.position ?? '–'}</td>
       <td>${r.club === 'Guest' ? '–' : (r.icPosition ?? '–')}</td>
       <td>
-        <span class="sm:hidden">${name} ${r.lastName}</span>
-        <span class="hidden sm:inline">${r.firstName} ${r.lastName}</span>
+        <span class="sm:hidden">${name} ${esc(r.lastName)}</span>
+        <span class="hidden sm:inline">${esc(r.firstName)} ${esc(r.lastName)}</span>
       </td>
-      <td>${r.category}</td>
+      <td>${esc(r.category)}</td>
       <td>
         <span class="sm:hidden">${clubShort}</span>
         <span class="hidden sm:inline">${clubFull}</span>
       </td>
-      <td class="text-right tabular-nums">${r.time || '–'}</td>
+      <td class="text-right tabular-nums">${esc(r.time || '–')}</td>
     </tr>`;
   }
 
