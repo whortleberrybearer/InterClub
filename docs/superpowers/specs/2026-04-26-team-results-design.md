@@ -34,10 +34,11 @@ Categories and their `scorerCount` change between series and year — this confi
 One JSON file per race, placed alongside the individual results CSV:
 
 ```
-src/data/{year}/{series}/results/{race-id}-teams.json
+src/data/{year}/{series}/results/{race-id}-teams.json              (final)
+src/data/{year}/{series}/results/{race-id}-teams-provisional.json  (provisional)
 ```
 
-File absence means no team results exist for that race — same convention as individual results CSVs.
+File absence means no team results exist for that race. If both files exist the final is used, same convention as individual results CSVs. `getTeamResults` returns `{ teamResults: TeamResults, provisional: boolean }` mirroring `getResultsInfo`.
 
 ```json
 {
@@ -115,8 +116,8 @@ export interface SeriesConfig {
 
 Two functions added to `src/lib/results.ts`:
 
-- **`getTeamResults(year, series, raceId): TeamResults | null`** — loads `{race-id}-teams.json` via `import.meta.glob` with eager loading. Returns `null` if the file does not exist.
-- **`hasTeamResults(year, series, raceId): boolean`** — returns true if the team results file exists. Used on the individual results page to conditionally enable the navigation button.
+- **`getTeamResults(year, series, raceId): { teamResults: TeamResults, provisional: boolean } | null`** — loads the team results JSON via `import.meta.glob` with eager loading. Prefers the final file over provisional if both exist. Returns `null` if neither file exists.
+- **`hasTeamResults(year, series, raceId): boolean`** — returns true if either the final or provisional team results file exists. Used on the individual results page to conditionally enable the navigation button.
 
 Both follow the same glob/eager patterns already used for individual results and club data.
 
@@ -163,4 +164,4 @@ The existing disabled "View Team Results" button on each individual results page
 
 ### Provisional badge
 
-Not applicable — team results are always final when published. No provisional variant needed.
+Shown when `provisional` is `true`, identical treatment to the individual results page.
