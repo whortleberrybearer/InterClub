@@ -1,0 +1,179 @@
+---
+// src/pages/road-gp/[year]/[raceId]/results.astro
+import Layout from '../../../../components/Layout.astro';
+import { getRace } from '../../../../lib/data';
+import { getResultsStaticPaths } from '../../../../lib/results';
+import type { Club, RaceResult, SeriesConfig } from '../../../../lib/types';
+
+export async function getStaticPaths() {
+  return getResultsStaticPaths('road-gp');
+}
+
+interface Props {
+  year: number;
+  raceId: string;
+  results: RaceResult[];
+  provisional: boolean;
+  clubs: Club[];
+  config: SeriesConfig;
+}
+
+const { year, raceId, results, provisional, clubs, config } = Astro.props;
+const race = getRace(year, 'road-gp', raceId);
+const title = race?.name ?? raceId;
+const clubById = Object.fromEntries(clubs.map(c => [c.id, c]));
+---
+
+<Layout title={`${title} — Results`}>
+  <div class="mb-4 flex items-center gap-2">
+    <a href={`/road-gp/${year}/${raceId}`} class="btn btn-ghost btn-sm gap-1 -ml-3">← {title}</a>
+  </div>
+
+  <div class="mb-6">
+    <div class="flex items-center gap-3 flex-wrap">
+      <h1 class="text-2xl font-bold">{title} Results</h1>
+      {provisional && (
+        <span class="badge badge-warning badge-lg">Provisional</span>
+      )}
+    </div>
+    {race && <p class="text-sm text-base-content/60 mt-1">{year}</p>}
+  </div>
+
+  <!-- Filter bar -->
+  <div class="bg-base-100 border border-base-200 rounded-lg p-3 mb-4 flex flex-col sm:flex-row gap-2 sm:items-center flex-wrap">
+    <input
+      id="filter-name"
+      type="search"
+      placeholder="Search name…"
+      class="input input-bordered input-sm w-full sm:w-40"
+    />
+    <select id="filter-club" class="select select-bordered select-sm w-full sm:w-auto">
+      <option value="">All Clubs</option>
+      {clubs.map(c => <option value={c.id}>{c.name}</option>)}
+    </select>
+    <select id="filter-cat" class="select select-bordered select-sm w-full sm:w-auto">
+      <option value="">All Categories</option>
+      {config.categories.map(cat => <option value={cat}>{cat}</option>)}
+    </select>
+    <div class="flex gap-1">
+      <button class="btn btn-sm btn-active" data-sex="">All</button>
+      <button class="btn btn-sm btn-ghost" data-sex="M">Men</button>
+      <button class="btn btn-sm btn-ghost" data-sex="F">Women</button>
+    </div>
+  </div>
+
+  <!-- Results table -->
+  <div class="overflow-x-auto">
+    <table class="table table-sm w-full">
+      <thead>
+        <tr>
+          <th class="hidden sm:table-cell">Pos</th>
+          <th>IC</th>
+          <th>Name</th>
+          <th>Cat</th>
+          <th>Club</th>
+          <th class="text-right">Time</th>
+        </tr>
+      </thead>
+      <tbody id="results-tbody">
+        {results.map(r => (
+          <tr>
+            <td class="hidden sm:table-cell">{r.position ?? '–'}</td>
+            <td>{r.icPosition ?? '–'}</td>
+            <td>
+              <span class="sm:hidden">{r.firstName[0] ?? ''}. {r.lastName}</span>
+              <span class="hidden sm:inline">{r.firstName} {r.lastName}</span>
+            </td>
+            <td>{r.category}</td>
+            <td>
+              <span class="sm:hidden">{r.club === 'Guest' ? 'Guest' : (clubById[r.club]?.shortName ?? r.club)}</span>
+              <span class="hidden sm:inline">{r.club === 'Guest' ? 'Guest' : (clubById[r.club]?.name ?? r.club)}</span>
+            </td>
+            <td class="text-right tabular-nums">{r.time || '–'}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Footer links -->
+  <div class="mt-6 flex gap-3 flex-wrap">
+    <a href={`/road-gp/${year}/${raceId}/team-results`} class="btn btn-outline btn-sm">
+      View Team Results
+    </a>
+  </div>
+
+  <!-- Data island for client-side filtering -->
+  <script type="application/json" id="results-data" set:html={JSON.stringify(results)}></script>
+  <script type="application/json" id="clubs-data" set:html={JSON.stringify(clubs)}></script>
+</Layout>
+
+<script>
+  const allResults: Array<{
+    position: number | null; icPosition: number | null;
+    firstName: string; lastName: string;
+    club: string; category: string; sex: string; time: string;
+  }> = JSON.parse(document.getElementById('results-data')!.textContent!);
+
+  const clubs: Array<{ id: string; name: string; shortName: string }> =
+    JSON.parse(document.getElementById('clubs-data')!.textContent!);
+  const clubById = Object.fromEntries(clubs.map(c => [c.id, c]));
+
+  const nameInput = document.getElementById('filter-name') as HTMLInputElement;
+  const clubSelect = document.getElementById('filter-club') as HTMLSelectElement;
+  const catSelect = document.getElementById('filter-cat') as HTMLSelectElement;
+  const tbody = document.getElementById('results-tbody')!;
+
+  let activeSex = '';
+
+  document.querySelectorAll<HTMLButtonElement>('[data-sex]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      activeSex = btn.dataset.sex ?? '';
+      document.querySelectorAll('[data-sex]').forEach(b =>
+        b.classList.toggle('btn-active', (b as HTMLElement).dataset.sex === activeSex)
+      );
+      document.querySelectorAll('[data-sex]').forEach(b =>
+        b.classList.toggle('btn-ghost', (b as HTMLElement).dataset.sex !== activeSex)
+      );
+      render();
+    });
+  });
+
+  [nameInput, clubSelect, catSelect].forEach(el => el.addEventListener('input', render));
+
+  function row(r: typeof allResults[0]): string {
+    const name = r.firstName[0] ? `${r.firstName[0]}.` : '';
+    const clubShort = r.club === 'Guest' ? 'Guest' : (clubById[r.club]?.shortName ?? r.club);
+    const clubFull = r.club === 'Guest' ? 'Guest' : (clubById[r.club]?.name ?? r.club);
+    return `<tr>
+      <td class="hidden sm:table-cell">${r.position ?? '–'}</td>
+      <td>${r.icPosition ?? '–'}</td>
+      <td>
+        <span class="sm:hidden">${name} ${r.lastName}</span>
+        <span class="hidden sm:inline">${r.firstName} ${r.lastName}</span>
+      </td>
+      <td>${r.category}</td>
+      <td>
+        <span class="sm:hidden">${clubShort}</span>
+        <span class="hidden sm:inline">${clubFull}</span>
+      </td>
+      <td class="text-right tabular-nums">${r.time || '–'}</td>
+    </tr>`;
+  }
+
+  function render() {
+    const name = nameInput.value.toLowerCase();
+    const club = clubSelect.value;
+    const cat = catSelect.value;
+
+    const filtered = allResults.filter(r => {
+      if (name && !r.firstName.toLowerCase().includes(name) && !r.lastName.toLowerCase().includes(name)) return false;
+      if (club && r.club !== club) return false;
+      if (cat && r.category !== cat) return false;
+      if (activeSex && r.sex !== activeSex) return false;
+      return true;
+    });
+
+    tbody.innerHTML = filtered.map(row).join('');
+  }
+</script>
