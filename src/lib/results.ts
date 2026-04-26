@@ -10,7 +10,7 @@ export function parseResultsCsv(csv: string): RaceResult[] {
   return lines.slice(1).filter(l => l.trim()).map(line => {
     const cols = line.split(',');
     const get = (name: string) => cols[idx(name)]?.trim() ?? '';
-    const num = (name: string) => { const v = get(name); return v ? parseInt(v) : null; };
+    const num = (name: string) => { const v = get(name); return v ? parseInt(v, 10) : null; };
     return {
       position: num('position'),
       icPosition: num('ic_position'),
@@ -46,7 +46,7 @@ interface ResultsInfo {
 function parseResultsPath(path: string): { year: number; raceId: string; provisional: boolean } | null {
   const match = path.match(/\/data\/(\d+)\/[^/]+\/results\/(.+)\.csv$/);
   if (!match) return null;
-  const year = parseInt(match[1]);
+  const year = parseInt(match[1], 10);
   const filename = match[2];
   const provisional = filename.endsWith('-provisional');
   const raceId = provisional ? filename.slice(0, -'-provisional'.length) : filename;
@@ -69,7 +69,10 @@ export function getResultsInfo(year: number, series: Series, raceId: string): Re
 
 export function hasResults(year: number, series: Series, raceId: string): boolean {
   const files = csvFilesForSeries(series);
-  return Object.keys(files).some(k => k.includes(`/${year}/${series}/results/${raceId}`));
+  return Object.keys(files).some(k =>
+    k.includes(`/${year}/${series}/results/${raceId}.csv`) ||
+    k.includes(`/${year}/${series}/results/${raceId}-provisional.csv`)
+  );
 }
 
 export function getResultsStaticPaths(series: Series) {
