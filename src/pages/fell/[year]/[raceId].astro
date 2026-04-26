@@ -3,6 +3,7 @@
 import Layout from '../../../components/Layout.astro';
 import { getAvailableYears, getRaces, getCurrentYear } from '../../../lib/data';
 import { formatRaceDate } from '../../../lib/format';
+import { hasResults } from '../../../lib/results';
 import type { Race } from '../../../lib/types';
 
 export async function getStaticPaths() {
@@ -25,6 +26,7 @@ const { name, date, time, location, distance, detailsUrl, image } = race;
 const formattedDate = formatRaceDate(date, time);
 const currentYear = getCurrentYear();
 const backUrl = year === currentYear ? '/fell/' : `/fell/${year}/`;
+const resultsExist = hasResults(year, 'fell', race.id);
 ---
 
 <Layout title={name}>
@@ -59,11 +61,18 @@ const backUrl = year === currentYear ? '/fell/' : `/fell/${year}/`;
         )}
       </dl>
 
-      {detailsUrl && (
-        <div class="card-actions mt-2">
-          <a href={detailsUrl} target="_blank" rel="noopener noreferrer" class="btn btn-primary">
-            View race details ↗
-          </a>
+      {(detailsUrl || resultsExist) && (
+        <div class="card-actions mt-2 flex-wrap">
+          {detailsUrl && (
+            <a href={detailsUrl} target="_blank" rel="noopener noreferrer" class="btn btn-primary">
+              View race details ↗
+            </a>
+          )}
+          {resultsExist && (
+            <a href={`/fell/${year}/${race.id}/results`} class="btn btn-outline">
+              View Results
+            </a>
+          )}
         </div>
       )}
     </div>
