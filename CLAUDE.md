@@ -40,15 +40,25 @@ src/
   data/
     config.json              # controls currentYear
     {year}/
+      clubs.json             # competing clubs for that year (id, name, shortName, logo)
       road-gp/
         races.json           # Road GP schedule
+        config.json          # series config (age categories)
+        results/
+          {race-id}.csv              # final results
+          {race-id}-provisional.csv  # provisional results (build prefers final if both exist)
       fell/
         races.json           # Fell Championship schedule
+        config.json          # series config (age categories)
+        results/
+          {race-id}.csv
+          {race-id}-provisional.csv
   lib/
-    types.ts                 # domain types (Race, Series, SiteConfig)
+    types.ts                 # domain types (Race, Series, SiteConfig, RaceResult, Club, SeriesConfig)
     format.ts                # date formatting utilities
     years.ts                 # pure helper for extracting years from paths
-    data.ts                  # data loading via import.meta.glob
+    data.ts                  # race schedule loading via import.meta.glob
+    results.ts               # CSV parsing + results/clubs/config loading
   components/
     Layout.astro             # shared nav + footer wrapper
     RaceCard.astro           # individual race card
@@ -64,6 +74,30 @@ src/
 
 Race data lives in `src/data/{year}/{series}/races.json`. The current year is controlled by `src/data/config.json` — update `currentYear` when a new season begins.
 
-To add a new year, create `src/data/{year}/road-gp/races.json` and `src/data/{year}/fell/races.json`, then update `config.json`.
+To add a new year, create all of these files:
+
+```
+src/data/{year}/clubs.json             # competing clubs for that year
+src/data/{year}/road-gp/races.json
+src/data/{year}/road-gp/config.json    # age categories for Road GP
+src/data/{year}/fell/races.json
+src/data/{year}/fell/config.json       # age categories for Fell
+```
+
+Then update `src/data/config.json` to set `currentYear`. Missing `clubs.json` or `config.json` causes results pages to silently render with no clubs or categories in the filter bar.
 
 `getAvailableYears(series)` in `src/lib/data.ts` requires a series argument — it is intentionally series-aware so that years with data for one series but not the other don't generate empty pages.
+
+### Results CSV schema
+
+```
+position,ic_position,first_name,last_name,club,category,sex,time
+1,1,Luke,Minns,blackpool,V35,M,19:35
+9,,T.,Guest,Guest,SEN,M,22:14
+```
+
+`club` is a club `id` from `clubs.json`, or `Guest` for non-club runners. `ic_position` is empty for guests. All fields are optional to support partial historical data.
+
+### Data loading
+
+CSVs are loaded at build time via `import.meta.glob` with `{ query: '?raw', import: 'default', eager: true }` — this returns the raw file content as a string. Do not use a CSV library; use the `parseResultsCsv` utility in `src/lib/results.ts`. JSON data files (clubs, config, races) are loaded with standard eager glob imports.
