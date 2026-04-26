@@ -129,7 +129,7 @@ src/pages/road-gp/[year]/[raceId]/team-results.astro
 src/pages/fell/[year]/[raceId]/team-results.astro
 ```
 
-Each page receives `year`, `raceId`, `teamResults` (TeamResults), `clubs` (Club[]), and `config` (SeriesConfig) via `getStaticPaths`.
+Each page receives `year`, `raceId`, `race` (Race), `teamResults` (TeamResults), `clubs` (Club[]), and `config` (SeriesConfig) via `getStaticPaths`.
 
 Only races with a `-teams.json` file generate a team results page.
 
