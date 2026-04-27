@@ -2,7 +2,7 @@
 // src/pages/road-gp/[year]/[raceId]/results.astro
 import Layout from '../../../../components/Layout.astro';
 import { getRace } from '../../../../lib/data';
-import { getResultsStaticPaths } from '../../../../lib/results';
+import { getResultsStaticPaths, hasTeamResults } from '../../../../lib/results';
 import type { Club, RaceResult, SeriesConfig } from '../../../../lib/types';
 
 export async function getStaticPaths() {
@@ -22,6 +22,7 @@ const { year, raceId, results, provisional, clubs, config } = Astro.props;
 const race = getRace(year, 'road-gp', raceId);
 const title = race?.name ?? raceId;
 const clubById = Object.fromEntries(clubs.map(c => [c.id, c]));
+const showTeamResults = hasTeamResults(year, 'road-gp', raceId);
 ---
 
 <Layout title={`${title} — Results`}>
@@ -98,9 +99,10 @@ const clubById = Object.fromEntries(clubs.map(c => [c.id, c]));
 
   <!-- Footer links -->
   <div class="mt-6 flex gap-3 flex-wrap">
-    <button class="btn btn-outline btn-sm" disabled>
-      View Team Results
-    </button>
+    {showTeamResults
+      ? <a href="team-results" class="btn btn-outline btn-sm">View Team Results</a>
+      : <button class="btn btn-outline btn-sm" disabled>View Team Results</button>
+    }
   </div>
 
   <!-- Data island for client-side filtering -->

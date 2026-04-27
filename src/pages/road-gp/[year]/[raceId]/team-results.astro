@@ -1,0 +1,145 @@
+---
+// src/pages/road-gp/[year]/[raceId]/team-results.astro
+import Layout from '../../../../components/Layout.astro';
+import { getRace } from '../../../../lib/data';
+import { getTeamResultsStaticPaths } from '../../../../lib/results';
+import type { Club, SeriesConfig, TeamResults } from '../../../../lib/types';
+
+export async function getStaticPaths() {
+  return getTeamResultsStaticPaths('road-gp');
+}
+
+interface Props {
+  year: number;
+  raceId: string;
+  teamResults: TeamResults;
+  provisional: boolean;
+  clubs: Club[];
+  config: SeriesConfig;
+}
+
+const { year, raceId, teamResults, provisional, clubs, config } = Astro.props;
+const race = getRace(year, 'road-gp', raceId);
+const title = race?.name ?? raceId;
+const clubById = Object.fromEntries(clubs.map(c => [c.id, c]));
+const categoryById = Object.fromEntries((config.teamCategories ?? []).map(c => [c.id, c]));
+---
+
+<Layout title={`${title} — Team Results`}>
+  <div class="mb-4">
+    <a href={`/road-gp/${year}/${raceId}/results`} class="btn btn-ghost btn-sm gap-1 -ml-3">← Individual Results</a>
+  </div>
+
+  <div class="mb-6">
+    <div class="flex items-center gap-3 flex-wrap">
+      <h1 class="text-2xl font-bold">{title} Team Results</h1>
+      {provisional && (
+        <span class="badge badge-warning badge-lg">Provisional</span>
+      )}
+    </div>
+    {race && <p class="text-sm text-base-content/60 mt-1">{year}</p>}
+  </div>
+
+  <!-- Category tabs -->
+  <div class="overflow-x-auto -mx-4 px-4 mb-1">
+    <div class="flex border-b border-base-200 min-w-max" role="tablist">
+      {teamResults.categories.map((cat, i) => {
+        const label = categoryById[cat.category]?.name ?? cat.category;
+        return (
+          <button
+            class:list={[
+              'tab-btn px-4 py-2 text-sm border-b-2 -mb-px whitespace-nowrap transition-colors',
+              i === 0
+                ? 'border-primary font-medium'
+                : 'border-transparent text-base-content/50 hover:text-base-content',
+            ]}
+            data-target={`cat-panel-${i}`}
+            role="tab"
+            aria-selected={i === 0 ? 'true' : 'false'}
+          >
+            {label}
+          </button>
+        );
+      })}
+    </div>
+  </div>
+
+  <!-- Category panels -->
+  {teamResults.categories.map((cat, i) => {
+    const catConfig = categoryById[cat.category];
+    return (
+      <div id={`cat-panel-${i}`} class:list={['pt-3', i > 0 && 'hidden']} role="tabpanel">
+        {catConfig && (
+          <p class="text-xs text-base-content/40 mb-3">
+            {catConfig.scorerCount} scorers · lower score wins
+          </p>
+        )}
+        {cat.clubs.map(clubResult => {
+          const club = clubById[clubResult.club];
+          const clubName = club?.name ?? clubResult.club;
+          return (
+            <div class="border-b border-base-200 py-3 sm:grid sm:grid-cols-2 sm:gap-x-8 sm:items-start last:border-0">
+              <!-- Club info: position | name | points -->
+              <div class="flex items-baseline gap-2">
+                <span class="w-5 shrink-0 text-sm text-base-content/40 tabular-nums">
+                  {clubResult.position}
+                </span>
+                <span class="font-semibold">{clubName}</span>
+                <span class="ml-auto text-sm">
+                  <strong class="text-base-content/70">{clubResult.points}</strong>
+                  <span class="text-base-content/40"> {clubResult.points === 1 ? 'pt' : 'pts'}</span>
+                </span>
+              </div>
+              <!-- Scorers: collapsible on mobile, always open on desktop -->
+              <details class="scorer-details mt-1 sm:mt-0">
+                <summary class="sm:hidden list-none cursor-pointer select-none text-xs text-base-content/40 py-1">
+                  Show scorers
+                </summary>
+                <ul class="mt-1">
+                  {clubResult.scorers.map(scorer => (
+                    <li class="flex justify-between py-0.5 text-sm">
+                      <span class="text-base-content/70">{scorer.name || '–'}</span>
+                      <span class="tabular-nums text-base-content/50">{scorer.position}</span>
+                    </li>
+                  ))}
+                  <li class="flex justify-between pt-1.5 mt-1 border-t border-base-200 text-sm font-semibold">
+                    <span>Total</span>
+                    <span class="tabular-nums">{clubResult.total}</span>
+                  </li>
+                </ul>
+              </details>
+            </div>
+          );
+        })}
+      </div>
+    );
+  })}
+</Layout>
+
+<script>
+  // Tab switching
+  const tabs = document.querySelectorAll<HTMLButtonElement>('.tab-btn');
+  tabs.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const targetId = btn.dataset.target!;
+      tabs.forEach(t => {
+        const active = t === btn;
+        t.classList.toggle('border-primary', active);
+        t.classList.toggle('font-medium', active);
+        t.classList.toggle('border-transparent', !active);
+        t.classList.toggle('text-base-content/50', !active);
+        t.setAttribute('aria-selected', active ? 'true' : 'false');
+      });
+      document.querySelectorAll<HTMLElement>('[id^="cat-panel-"]').forEach(panel => {
+        panel.classList.toggle('hidden', panel.id !== targetId);
+      });
+    });
+  });
+
+  // Expand all scorer details on desktop
+  if (window.matchMedia('(min-width: 640px)').matches) {
+    document.querySelectorAll<HTMLDetailsElement>('.scorer-details').forEach(d => {
+      d.open = true;
+    });
+  }
+</script>
