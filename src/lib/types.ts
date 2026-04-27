@@ -13,6 +13,7 @@ export interface Race {
   distance?: string;
   detailsUrl?: string;
   image?: string;     // filename relative to /public/images/
+  shortName?: string;
 }
 
 export interface RaceResult {
@@ -64,4 +65,23 @@ export interface TeamCategoryResult {
 
 export interface TeamResults {
   categories: TeamCategoryResult[];
+}
+
+export interface TeamStandingsClub {
+  position: number;
+  club: string;
+  points: (number | null)[];
+  total: number;
+  tiebreaker: string | null;
+}
+
+export interface TeamStandingsCategory {
+  category: string;
+  clubs: TeamStandingsClub[];
+}
+
+export interface TeamStandings {
+  provisional: boolean;
+  races: string[];
+  categories: TeamStandingsCategory[];
 }
