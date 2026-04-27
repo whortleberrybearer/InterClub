@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { parseResultsCsv } from '../../src/lib/results';
+import { parseResultsCsv, parseTeamResultsPath } from '../../src/lib/results';
 
 describe('parseResultsCsv', () => {
   const sample = [
@@ -53,8 +53,6 @@ describe('parseResultsCsv', () => {
     expect(parseResultsCsv('')).toHaveLength(0);
   });
 });
-
-import { parseTeamResultsPath } from '../../src/lib/results';
 
 describe('parseTeamResultsPath', () => {
   it('parses a final road-gp team results path', () => {
