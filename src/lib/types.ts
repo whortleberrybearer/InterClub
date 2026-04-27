@@ -33,20 +33,20 @@ export interface Club {
   logo: string;        // filename in /public/images/clubs/, may not exist yet
 }
 
+export interface SeriesConfig {
+  categories: string[];
+  teamCategories?: TeamCategory[];
+}
+
 export interface TeamCategory {
   id: string;
   name: string;
   scorerCount: number;
 }
 
-export interface SeriesConfig {
-  categories: string[];
-  teamCategories?: TeamCategory[];
-}
-
 export interface TeamScorer {
   name: string;
-  position: number;   // category-specific IC position (e.g. 1st female, not 1st overall)
+  position: number;   // rank within the sex/age group used for team scoring
 }
 
 export interface TeamClubResult {
