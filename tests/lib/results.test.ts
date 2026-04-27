@@ -53,3 +53,35 @@ describe('parseResultsCsv', () => {
     expect(parseResultsCsv('')).toHaveLength(0);
   });
 });
+
+import { parseTeamResultsPath } from '../../src/lib/results';
+
+describe('parseTeamResultsPath', () => {
+  it('parses a final road-gp team results path', () => {
+    expect(parseTeamResultsPath('../data/2026/road-gp/results/bwf-5-teams.json'))
+      .toEqual({ year: 2026, raceId: 'bwf-5', provisional: false });
+  });
+
+  it('parses a provisional team results path', () => {
+    expect(parseTeamResultsPath('../data/2026/road-gp/results/bwf-5-teams-provisional.json'))
+      .toEqual({ year: 2026, raceId: 'bwf-5', provisional: true });
+  });
+
+  it('parses a fell path', () => {
+    expect(parseTeamResultsPath('../data/2026/fell/results/race-1-teams.json'))
+      .toEqual({ year: 2026, raceId: 'race-1', provisional: false });
+  });
+
+  it('parses a race id containing hyphens', () => {
+    expect(parseTeamResultsPath('../data/2026/road-gp/results/long-race-id-teams.json'))
+      .toEqual({ year: 2026, raceId: 'long-race-id', provisional: false });
+  });
+
+  it('returns null for a CSV path', () => {
+    expect(parseTeamResultsPath('../data/2026/road-gp/results/bwf-5.csv')).toBeNull();
+  });
+
+  it('returns null for a non-teams JSON path', () => {
+    expect(parseTeamResultsPath('../data/2026/road-gp/config.json')).toBeNull();
+  });
+});
