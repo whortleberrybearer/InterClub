@@ -12,9 +12,10 @@ interface Props {
   currentYear: number;
   seriesBasePath: string;
   seriesLabel: string;
+  standingsUrl?: string;
 }
 
-const { races, year, series, availableYears, currentYear, seriesBasePath, seriesLabel } = Astro.props;
+const { races, year, series, availableYears, currentYear, seriesBasePath, seriesLabel, standingsUrl } = Astro.props;
 ---
 
 <div>
@@ -29,6 +30,14 @@ const { races, year, series, availableYears, currentYear, seriesBasePath, series
       />
     )}
   </div>
+
+  {standingsUrl && (
+    <div class="mb-4">
+      <a href={standingsUrl} class="btn btn-sm btn-outline gap-1">
+        Team Standings →
+      </a>
+    </div>
+  )}
 
   {races.length === 0 ? (
     <p class="text-base-content/60">No races found for {year}.</p>
