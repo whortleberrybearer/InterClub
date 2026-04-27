@@ -3,10 +3,14 @@
 import Layout from '../../components/Layout.astro';
 import RaceList from '../../components/RaceList.astro';
 import { getCurrentYear, getAvailableYears, getRaces } from '../../lib/data';
+import { hasTeamStandings } from '../../lib/results';
 
 const currentYear = getCurrentYear();
 const availableYears = getAvailableYears('road-gp');
 const races = getRaces(currentYear, 'road-gp');
+const standingsUrl = hasTeamStandings(currentYear, 'road-gp')
+  ? `/road-gp/${currentYear}/team-standings`
+  : undefined;
 ---
 
 <Layout title="Road Grand Prix">
@@ -18,5 +22,6 @@ const races = getRaces(currentYear, 'road-gp');
     currentYear={currentYear}
     seriesBasePath="/road-gp"
     seriesLabel="Road Grand Prix"
+    standingsUrl={standingsUrl}
   />
 </Layout>
