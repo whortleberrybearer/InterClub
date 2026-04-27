@@ -1,4 +1,4 @@
-import type { Club, RaceResult, Series, SeriesConfig } from './types';
+import type { Club, RaceResult, Series, SeriesConfig, TeamResults } from './types';
 
 export function parseResultsCsv(csv: string): RaceResult[] {
   const lines = csv.replace(/\r\n/g, '\n').replace(/\r/g, '\n').trim().split('\n');
@@ -36,6 +36,82 @@ const fellConfigFiles = import.meta.glob<{ default: SeriesConfig }>('../data/*/f
 
 function csvFilesForSeries(series: Series) {
   return series === 'road-gp' ? csvFiles : fellCsvFiles;
+}
+
+const roadTeamFiles = import.meta.glob<{ default: TeamResults }>(
+  '../data/*/road-gp/results/*-teams*.json', { eager: true }
+);
+const fellTeamFiles = import.meta.glob<{ default: TeamResults }>(
+  '../data/*/fell/results/*-teams*.json', { eager: true }
+);
+
+function teamFilesForSeries(series: Series) {
+  return series === 'road-gp' ? roadTeamFiles : fellTeamFiles;
+}
+
+export function parseTeamResultsPath(path: string): { year: number; raceId: string; provisional: boolean } | null {
+  const match = path.match(/\/data\/(\d+)\/[^/]+\/results\/(.+)-teams(-provisional)?\.json$/);
+  if (!match) return null;
+  return {
+    year: parseInt(match[1], 10),
+    raceId: match[2],
+    provisional: !!match[3],
+  };
+}
+
+interface TeamResultsInfo {
+  teamResults: TeamResults;
+  provisional: boolean;
+}
+
+export function getTeamResults(year: number, series: Series, raceId: string): TeamResultsInfo | null {
+  const files = teamFilesForSeries(series);
+  const finalKey = Object.keys(files).find(k =>
+    k.includes(`/${year}/${series}/results/${raceId}-teams.json`)
+  );
+  const provisionalKey = Object.keys(files).find(k =>
+    k.includes(`/${year}/${series}/results/${raceId}-teams-provisional.json`)
+  );
+  const key = finalKey ?? provisionalKey;
+  if (!key) return null;
+  return {
+    teamResults: files[key].default,
+    provisional: !finalKey && !!provisionalKey,
+  };
+}
+
+export function hasTeamResults(year: number, series: Series, raceId: string): boolean {
+  const files = teamFilesForSeries(series);
+  return Object.keys(files).some(k =>
+    k.includes(`/${year}/${series}/results/${raceId}-teams.json`) ||
+    k.includes(`/${year}/${series}/results/${raceId}-teams-provisional.json`)
+  );
+}
+
+export function getTeamResultsStaticPaths(series: Series) {
+  const files = teamFilesForSeries(series);
+  const seen = new Map<string, { year: number; raceId: string; provisional: boolean }>();
+
+  for (const path of Object.keys(files)) {
+    const parsed = parseTeamResultsPath(path);
+    if (!parsed) continue;
+    const { year, raceId, provisional } = parsed;
+    const key = `${year}/${raceId}`;
+    const existing = seen.get(key);
+    if (!existing || (!provisional && existing.provisional)) {
+      seen.set(key, { year, raceId, provisional });
+    }
+  }
+
+  return [...seen.values()].map(({ year, raceId, provisional }) => {
+    const info = getTeamResults(year, series, raceId)!;
+    const clubs = getClubs(year);
+    const config = getSeriesConfig(year, series);
+    return {
+      params: { year: String(year), raceId },
+      props: { year, raceId, teamResults: info.teamResults, provisional, clubs, config },
+    };
+  });
 }
 
 interface ResultsInfo {
