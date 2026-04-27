@@ -33,6 +33,35 @@ export interface Club {
   logo: string;        // filename in /public/images/clubs/, may not exist yet
 }
 
+export interface TeamCategory {
+  id: string;
+  name: string;
+  scorerCount: number;
+}
+
 export interface SeriesConfig {
   categories: string[];
+  teamCategories?: TeamCategory[];
+}
+
+export interface TeamScorer {
+  name: string;
+  position: number;   // category-specific IC position (e.g. 1st female, not 1st overall)
+}
+
+export interface TeamClubResult {
+  position: number;   // finishing position in this team category
+  points: number;     // season points earned (stored explicitly)
+  club: string;       // id → Club lookup via clubs.json
+  total: number;      // sum of scorer positions
+  scorers: TeamScorer[];
+}
+
+export interface TeamCategoryResult {
+  category: string;   // id → TeamCategory lookup via config.teamCategories
+  clubs: TeamClubResult[];
+}
+
+export interface TeamResults {
+  categories: TeamCategoryResult[];
 }
