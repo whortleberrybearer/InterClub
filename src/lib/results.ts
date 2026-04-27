@@ -1,4 +1,4 @@
-import type { Club, RaceResult, Series, SeriesConfig, TeamResults } from './types';
+import type { Club, RaceResult, Series, SeriesConfig, TeamResults, TeamStandings } from './types';
 
 export function parseResultsCsv(csv: string): RaceResult[] {
   const lines = csv.replace(/\r\n/g, '\n').replace(/\r/g, '\n').trim().split('\n');
@@ -49,6 +49,17 @@ function teamFilesForSeries(series: Series) {
   return series === 'road-gp' ? roadTeamFiles : fellTeamFiles;
 }
 
+const roadStandingsFiles = import.meta.glob<{ default: TeamStandings }>(
+  '../data/*/road-gp/team-standings.json', { eager: true }
+);
+const fellStandingsFiles = import.meta.glob<{ default: TeamStandings }>(
+  '../data/*/fell/team-standings.json', { eager: true }
+);
+
+function standingsFilesForSeries(series: Series) {
+  return series === 'road-gp' ? roadStandingsFiles : fellStandingsFiles;
+}
+
 export function parseTeamResultsPath(path: string): { year: number; raceId: string; provisional: boolean } | null {
   const match = path.match(/\/data\/(\d+)\/[^/]+\/results\/(.+)-teams(-provisional)?\.json$/);
   if (!match) return null;
@@ -57,6 +68,41 @@ export function parseTeamResultsPath(path: string): { year: number; raceId: stri
     raceId: match[2],
     provisional: !!match[3],
   };
+}
+
+export function parseTeamStandingsPath(path: string): { year: number } | null {
+  const match = path.match(/\/data\/(\d+)\/[^/]+\/team-standings\.json$/);
+  if (!match) return null;
+  return { year: parseInt(match[1], 10) };
+}
+
+export function getTeamStandings(year: number, series: Series): TeamStandings | null {
+  const files = standingsFilesForSeries(series);
+  return files[`../data/${year}/${series}/team-standings.json`]?.default ?? null;
+}
+
+export function hasTeamStandings(year: number, series: Series): boolean {
+  const files = standingsFilesForSeries(series);
+  return `../data/${year}/${series}/team-standings.json` in files;
+}
+
+export function getTeamStandingsStaticPaths(series: Series) {
+  const files = standingsFilesForSeries(series);
+  return Object.keys(files).flatMap(path => {
+    const parsed = parseTeamStandingsPath(path);
+    if (!parsed) return [];
+    const { year } = parsed;
+    const standings = files[path].default;
+    const clubs = getClubs(year);
+    const config = getSeriesConfig(year, series);
+    const linkedRaceIds = standings.races.filter(raceId =>
+      hasTeamResults(year, series, raceId)
+    );
+    return [{
+      params: { year: String(year) },
+      props: { year, standings, clubs, config, linkedRaceIds },
+    }];
+  });
 }
 
 interface TeamResultsInfo {
