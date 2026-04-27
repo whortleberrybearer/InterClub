@@ -1,3 +1,11 @@
 {
-  "categories": ["U17", "U20", "U23", "SEN", "V35", "V40", "V45", "V50", "V55", "V60", "V65", "V70", "V75", "V80"]
+  "categories": ["U17", "U20", "U23", "SEN", "V35", "V40", "V45", "V50", "V55", "V60", "V65", "V70", "V75", "V80"],
+  "teamCategories": [
+    { "id": "open",   "name": "Open",    "scorerCount": 10 },
+    { "id": "ladies", "name": "Ladies",  "scorerCount": 5  },
+    { "id": "fv40",   "name": "FV40",    "scorerCount": 5  },
+    { "id": "vets",   "name": "Vets",    "scorerCount": 6  },
+    { "id": "vet50s", "name": "Vet 50s", "scorerCount": 4  },
+    { "id": "vet60s", "name": "Vet 60s", "scorerCount": 3  }
+  ]
 }
