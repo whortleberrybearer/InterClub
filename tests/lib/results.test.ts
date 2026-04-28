@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { parseResultsCsv, parseTeamResultsPath, parseTeamStandingsPath } from '../../src/lib/results';
+import { parseResultsCsv, parseTeamResultsPath, parseTeamStandingsPath, parseIndividualStandingsPath } from '../../src/lib/results';
 
 describe('parseResultsCsv', () => {
   const sample = [
@@ -102,6 +102,33 @@ describe('parseTeamStandingsPath', () => {
 
   it('returns null for a config path', () => {
     expect(parseTeamStandingsPath('../data/2026/road-gp/config.json'))
+      .toBeNull();
+  });
+});
+
+describe('parseIndividualStandingsPath', () => {
+  it('parses a road-gp individual standings path', () => {
+    expect(parseIndividualStandingsPath('../data/2026/road-gp/individual-standings.json'))
+      .toEqual({ year: 2026 });
+  });
+
+  it('parses a fell individual standings path', () => {
+    expect(parseIndividualStandingsPath('../data/2026/fell/individual-standings.json'))
+      .toEqual({ year: 2026 });
+  });
+
+  it('returns null for a team-standings path', () => {
+    expect(parseIndividualStandingsPath('../data/2026/fell/team-standings.json'))
+      .toBeNull();
+  });
+
+  it('returns null for a config path', () => {
+    expect(parseIndividualStandingsPath('../data/2026/fell/config.json'))
+      .toBeNull();
+  });
+
+  it('returns null for an individual results path', () => {
+    expect(parseIndividualStandingsPath('../data/2026/fell/results/race-1.csv'))
       .toBeNull();
   });
 });
