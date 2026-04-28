@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { parseResultsCsv, parseTeamResultsPath } from '../../src/lib/results';
+import { parseResultsCsv, parseTeamResultsPath, parseTeamStandingsPath } from '../../src/lib/results';
 
 describe('parseResultsCsv', () => {
   const sample = [
@@ -81,5 +81,27 @@ describe('parseTeamResultsPath', () => {
 
   it('returns null for a non-teams JSON path', () => {
     expect(parseTeamResultsPath('../data/2026/road-gp/config.json')).toBeNull();
+  });
+});
+
+describe('parseTeamStandingsPath', () => {
+  it('parses a road-gp standings path', () => {
+    expect(parseTeamStandingsPath('../data/2026/road-gp/team-standings.json'))
+      .toEqual({ year: 2026 });
+  });
+
+  it('parses a fell standings path', () => {
+    expect(parseTeamStandingsPath('../data/2026/fell/team-standings.json'))
+      .toEqual({ year: 2026 });
+  });
+
+  it('returns null for a team results path', () => {
+    expect(parseTeamStandingsPath('../data/2026/road-gp/results/bwf-5-teams.json'))
+      .toBeNull();
+  });
+
+  it('returns null for a config path', () => {
+    expect(parseTeamStandingsPath('../data/2026/road-gp/config.json'))
+      .toBeNull();
   });
 });

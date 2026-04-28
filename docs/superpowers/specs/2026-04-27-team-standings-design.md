@@ -96,10 +96,6 @@ Same tab pattern as `team-results.astro` — one tab per category in `teamCatego
   - Pills with `null` points show `—` in a muted colour
 - **Tiebreaker:** when non-null, shown as a small line below the pills in the expanded section
 
-## Tying / Position Display
-
-When two or more clubs share the same total and the same position value, the position is displayed as `1=`, `3=`, etc. This is encoded in the JSON (`"position": 1` for both tied clubs) and the page renders `=` when the position appears more than once in the category.
-
 ## Build-time Logic
 
 At build time, the standings page needs to know which races have team results (to enable links). It does this by checking for `{raceId}-teams.json` or `{raceId}-teams-provisional.json` alongside the existing individual results files — the same file-existence logic already used in `getTeamResultsStaticPaths`. A `Set<string>` of linkable race IDs is passed as a prop to the page.
