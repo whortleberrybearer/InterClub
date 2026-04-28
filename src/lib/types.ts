@@ -37,6 +37,7 @@ export interface Club {
 export interface IndividualCategory {
   id: string;
   name: string;
+  sex?: 'M' | 'F';
 }
 
 export interface SeriesConfig {
@@ -117,4 +118,50 @@ export interface IndividualStandings {
   provisional: boolean;
   races: string[];    // ordered list of race ids; defines column order
   categories: IndividualStandingsCategory[];
+}
+
+// Raw awards data (from awards.json)
+export interface TeamAward {
+  category: string;  // references teamCategories[].id in config.json
+  club: string;      // references clubs.json id
+}
+
+export interface IndividualAwardEntry {
+  position: number;
+  name: string;
+  club: string;      // references clubs.json id
+}
+
+export interface IndividualAward {
+  category: string;  // references individualCategories[].id in config.json
+  awards: IndividualAwardEntry[];
+}
+
+export interface SeriesAwards {
+  teamAwards: TeamAward[];
+  individualAwards: IndividualAward[];
+}
+
+// Resolved awards data (display names looked up, categories partitioned by sex)
+export interface ResolvedTeamAward {
+  categoryName: string;
+  clubName: string;
+}
+
+export interface ResolvedIndividualAwardEntry {
+  position: number;
+  name: string;
+  clubName: string;
+}
+
+export interface ResolvedIndividualAward {
+  categoryName: string;
+  awards: ResolvedIndividualAwardEntry[];
+}
+
+export interface ResolvedSeriesAwards {
+  teamAwards: ResolvedTeamAward[];
+  overallAwards: ResolvedIndividualAward[];  // sex field absent on config category
+  maleAwards: ResolvedIndividualAward[];     // sex === 'M' on config category
+  femaleAwards: ResolvedIndividualAward[];   // sex === 'F' on config category
 }
