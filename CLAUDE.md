@@ -244,5 +244,33 @@ Season individual standings are computed externally and placed at `src/data/{yea
 
 - `ageCategories` — age bands shown in the results filter bar (note: formerly named `categories` — do not use the old name)
 - `maxCountingRaces` — optional; when set, individual standings page shows "Best N races count" and marks non-counting results
-- `individualCategories` — optional; defines which tabs appear on the individual standings page and in what order; `id` is referenced by `individual-standings.json`
-- `teamCategories` — defines team scoring groups; `id` is referenced by team results JSON files
+- `individualCategories` — optional; defines which tabs appear on the individual standings page and in what order; `id` is referenced by `individual-standings.json` and `awards.json`; optional `sex: "M" | "F"` field controls column placement on the awards section (absent = Overall, full-width)
+- `teamCategories` — defines team scoring groups; `id` is referenced by team results JSON files and `awards.json`
+
+### Awards JSON schema
+
+End-of-season award winners are placed at `src/data/{year}/{series}/awards.json`. File absence means no awards section is shown on the series index page.
+
+```json
+{
+  "teamAwards": [
+    { "category": "open",   "club": "wesham" },
+    { "category": "ladies", "club": "lytham" }
+  ],
+  "individualAwards": [
+    {
+      "category": "sen-m",
+      "awards": [
+        { "position": 1, "name": "L. Minns", "club": "blackpool" },
+        { "position": 3, "name": "T. Guest", "club": "red-rose" }
+      ]
+    }
+  ]
+}
+```
+
+- `teamAwards[].category` — id matching `teamCategories[].id` in `config.json`; one award per team category (the winning club only)
+- `individualAwards[].category` — id matching `individualCategories[].id` in `config.json`
+- `individualAwards[].awards[].position` — explicit; gaps are allowed (e.g. position 2 absent means no 2nd-place award was given)
+- `club` — id matching `clubs.json[].id`; display name resolved at build time
+- The awards section appears above the race list and only renders when this file exists
