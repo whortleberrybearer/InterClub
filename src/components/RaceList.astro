@@ -1,7 +1,8 @@
 ---
 // src/components/RaceList.astro
-import type { Race, Series } from '../lib/types';
+import type { Race, ResolvedSeriesAwards, Series } from '../lib/types';
 import RaceCard from './RaceCard.astro';
+import SeriesAwards from './SeriesAwards.astro';
 import YearFilter from './YearFilter.astro';
 
 interface Props {
@@ -14,9 +15,10 @@ interface Props {
   seriesLabel: string;
   standingsUrl?: string;
   individualStandingsUrl?: string;
+  awards?: ResolvedSeriesAwards;
 }
 
-const { races, year, series, availableYears, currentYear, seriesBasePath, seriesLabel, standingsUrl, individualStandingsUrl } = Astro.props;
+const { races, year, series, availableYears, currentYear, seriesBasePath, seriesLabel, standingsUrl, individualStandingsUrl, awards } = Astro.props;
 ---
 
 <div>
@@ -46,6 +48,8 @@ const { races, year, series, availableYears, currentYear, seriesBasePath, series
       )}
     </div>
   )}
+
+  {awards && <SeriesAwards awards={awards} />}
 
   {races.length === 0 ? (
     <p class="text-base-content/60">No races found for {year}.</p>
