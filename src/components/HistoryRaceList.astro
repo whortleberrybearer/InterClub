@@ -1,0 +1,92 @@
+---
+// src/components/HistoryRaceList.astro
+import type { Race, ResolvedSeriesAwards, Series } from '../lib/types';
+import SeriesAwards from './SeriesAwards.astro';
+import YearFilter from './YearFilter.astro';
+import { formatRaceDate } from '../lib/format';
+import { hasResults, hasTeamResults } from '../lib/results';
+
+interface Props {
+  races: Race[];
+  year: number;
+  series: Series;
+  availableYears: number[];
+  currentYear: number;
+  seriesBasePath: string;
+  seriesLabel: string;
+  standingsUrl?: string;
+  individualStandingsUrl?: string;
+  awards?: ResolvedSeriesAwards;
+}
+
+const {
+  races, year, series, availableYears, currentYear,
+  seriesBasePath, seriesLabel, standingsUrl, individualStandingsUrl, awards,
+} = Astro.props;
+---
+
+<div>
+  <div class="flex items-center justify-between mb-6 flex-wrap gap-3">
+    <h1 class="text-2xl font-bold">{seriesLabel} — {year}</h1>
+    {availableYears.length > 1 && (
+      <YearFilter
+        years={availableYears}
+        activeYear={year}
+        seriesBasePath={seriesBasePath}
+        currentYear={currentYear}
+      />
+    )}
+  </div>
+
+  {(standingsUrl || individualStandingsUrl) && (
+    <div class="mb-4 flex gap-2 flex-wrap">
+      {standingsUrl && (
+        <a href={standingsUrl} class="btn btn-sm btn-outline gap-1">Team Standings →</a>
+      )}
+      {individualStandingsUrl && (
+        <a href={individualStandingsUrl} class="btn btn-sm btn-outline gap-1">Individual Standings →</a>
+      )}
+    </div>
+  )}
+
+  {races.length === 0 ? (
+    <p class="text-base-content/60">No races found for {year}.</p>
+  ) : (
+    <div class="divide-y divide-base-200">
+      {races.map(race => {
+        const resultsUrl = hasResults(year, series, race.id)
+          ? `/${series}/${year}/${race.id}/results/`
+          : null;
+        const teamResultsUrl = hasTeamResults(year, series, race.id)
+          ? `/${series}/${year}/${race.id}/team-results/`
+          : null;
+        return (
+          <div class="flex items-baseline gap-4 py-3">
+            <span class="text-sm text-base-content/50 w-28 shrink-0">
+              {formatRaceDate(race.date)}
+            </span>
+            <span class="flex-1 font-medium">{race.name}</span>
+            <div class="flex gap-3 text-sm shrink-0">
+              {resultsUrl && (
+                <a href={resultsUrl} class="link link-hover">Results</a>
+              )}
+              {teamResultsUrl && (
+                <a href={teamResultsUrl} class="link link-hover">Team Results</a>
+              )}
+              {!resultsUrl && !teamResultsUrl && (
+                <span class="text-base-content/30">—</span>
+              )}
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  )}
+
+  {awards && (
+    <div class="mt-8">
+      <h2 class="text-xl font-bold mb-4">{year} Awards</h2>
+      <SeriesAwards awards={awards} />
+    </div>
+  )}
+</div>
