@@ -1,4 +1,4 @@
-import type { Club, RaceResult, Series, SeriesConfig, TeamResults, TeamStandings } from './types';
+import type { Club, IndividualStandings, RaceResult, Series, SeriesConfig, TeamResults, TeamStandings } from './types';
 
 export function parseResultsCsv(csv: string): RaceResult[] {
   const lines = csv.replace(/\r\n/g, '\n').replace(/\r/g, '\n').trim().split('\n');
@@ -58,6 +58,17 @@ const fellStandingsFiles = import.meta.glob<{ default: TeamStandings }>(
 
 function standingsFilesForSeries(series: Series) {
   return series === 'road-gp' ? roadStandingsFiles : fellStandingsFiles;
+}
+
+const roadIndividualStandingsFiles = import.meta.glob<{ default: IndividualStandings }>(
+  '../data/*/road-gp/individual-standings.json', { eager: true }
+);
+const fellIndividualStandingsFiles = import.meta.glob<{ default: IndividualStandings }>(
+  '../data/*/fell/individual-standings.json', { eager: true }
+);
+
+function individualStandingsFilesForSeries(series: Series) {
+  return series === 'road-gp' ? roadIndividualStandingsFiles : fellIndividualStandingsFiles;
 }
 
 export function parseTeamResultsPath(path: string): { year: number; raceId: string; provisional: boolean } | null {
@@ -230,5 +241,35 @@ export function getClubs(year: number): Club[] {
 
 export function getSeriesConfig(year: number, series: Series): SeriesConfig {
   const files = series === 'road-gp' ? roadConfigFiles : fellConfigFiles;
-  return files[`../data/${year}/${series}/config.json`]?.default ?? { categories: [] };
+  return files[`../data/${year}/${series}/config.json`]?.default ?? { ageCategories: [] };
+}
+
+export function parseIndividualStandingsPath(path: string): { year: number } | null {
+  const match = path.match(/\/data\/(\d+)\/[^/]+\/individual-standings\.json$/);
+  if (!match) return null;
+  return { year: parseInt(match[1], 10) };
+}
+
+export function hasIndividualStandings(year: number, series: Series): boolean {
+  const files = individualStandingsFilesForSeries(series);
+  return `../data/${year}/${series}/individual-standings.json` in files;
+}
+
+export function getIndividualStandingsStaticPaths(series: Series) {
+  const files = individualStandingsFilesForSeries(series);
+  return Object.keys(files).flatMap(path => {
+    const parsed = parseIndividualStandingsPath(path);
+    if (!parsed) return [];
+    const { year } = parsed;
+    const standings = files[path].default;
+    const clubs = getClubs(year);
+    const config = getSeriesConfig(year, series);
+    const linkedRaceIds = standings.races.filter(raceId =>
+      hasResults(year, series, raceId)
+    );
+    return [{
+      params: { year: String(year) },
+      props: { year, standings, clubs, config, linkedRaceIds },
+    }];
+  });
 }
