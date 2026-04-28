@@ -65,7 +65,7 @@ const hasMF = awards.maleAwards.length > 0 || awards.femaleAwards.length > 0;
         )}
 
         {hasMF && (
-          <div class="grid grid-cols-2 gap-2">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
             <div class="flex flex-col gap-2">
               {awards.maleAwards.map(cat => (
                 <div class="bg-base-100 rounded-lg p-3">
