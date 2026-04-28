@@ -73,13 +73,19 @@ src/
   pages/
     index.astro              # home page
     road-gp/                 # Road GP schedule + detail pages
-      [year]/[raceId]/
-        results.astro        # individual results page
-        team-results.astro   # team results page (only generated when team JSON exists)
+      [year]/
+        index.astro          # schedule for that year
+        team-standings.astro # season team standings (only generated when team-standings.json exists)
+        [raceId]/
+          results.astro      # individual results page
+          team-results.astro # team results page (only generated when team JSON exists)
     fell/                    # Fell Championship schedule + detail pages
-      [year]/[raceId]/
-        results.astro
-        team-results.astro
+      [year]/
+        index.astro
+        team-standings.astro
+        [raceId]/
+          results.astro
+          team-results.astro
 ```
 
 ## Data
@@ -90,7 +96,7 @@ To add a new year, create all of these files:
 
 ```
 src/data/{year}/clubs.json             # competing clubs for that year
-src/data/{year}/road-gp/races.json
+src/data/{year}/road-gp/races.json     # each race may have a shortName abbreviation for standings columns
 src/data/{year}/road-gp/config.json    # age categories + teamCategories for Road GP
 src/data/{year}/fell/races.json
 src/data/{year}/fell/config.json       # age categories + teamCategories for Fell
@@ -145,4 +151,35 @@ Team results are computed externally and placed alongside the individual results
 
 CSVs are loaded at build time via `import.meta.glob` with `{ query: '?raw', import: 'default', eager: true }` — this returns the raw file content as a string. Do not use a CSV library; use the `parseResultsCsv` utility in `src/lib/results.ts`. JSON data files (clubs, config, races, team results) are loaded with standard eager glob imports.
 
-Only pure functions (`parseResultsCsv`, `parseTeamResultsPath`, date helpers, year extraction) are unit tested. Functions that depend on `import.meta.glob` are validated by the build instead.
+Only pure functions (`parseResultsCsv`, `parseTeamResultsPath`, `parseTeamStandingsPath`, date helpers, year extraction) are unit tested. Functions that depend on `import.meta.glob` are validated by the build instead.
+
+### Team standings JSON schema
+
+Season standings are computed externally and placed at `src/data/{year}/{series}/team-standings.json`. File absence means no standings page is generated for that year.
+
+```json
+{
+  "provisional": true,
+  "races": ["bwf-5", "chorley-4"],
+  "categories": [
+    {
+      "category": "open",
+      "clubs": [
+        {
+          "position": 1,
+          "club": "wesham",
+          "points": [7, null],
+          "total": 7,
+          "tiebreaker": null
+        }
+      ]
+    }
+  ]
+}
+```
+
+- `provisional` — shows a warning badge on the page when true
+- `races` — ordered list of race ids; index maps to each club's `points` array
+- `clubs[].points` — one entry per race; `null` for races not yet run (renders as `—`)
+- `clubs[].tiebreaker` — nullable string shown beneath the total when non-null
+- `races[].shortName` in `races.json` provides the column header abbreviation (e.g. `"BPL"`); falls back to the race id if absent
