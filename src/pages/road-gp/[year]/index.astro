@@ -3,7 +3,7 @@
 import Layout from '../../../components/Layout.astro';
 import RaceList from '../../../components/RaceList.astro';
 import { getCurrentYear, getAvailableYears, getRaces } from '../../../lib/data';
-import { hasTeamStandings } from '../../../lib/results';
+import { hasTeamStandings, hasIndividualStandings } from '../../../lib/results';
 
 export async function getStaticPaths() {
   const current = getCurrentYear();
@@ -19,6 +19,9 @@ const races = getRaces(year, 'road-gp');
 const standingsUrl = hasTeamStandings(year, 'road-gp')
   ? `/road-gp/${year}/team-standings`
   : undefined;
+const individualStandingsUrl = hasIndividualStandings(year, 'road-gp')
+  ? `/road-gp/${year}/individual-standings`
+  : undefined;
 ---
 
 <Layout title={`Road Grand Prix ${year}`}>
@@ -31,5 +34,6 @@ const standingsUrl = hasTeamStandings(year, 'road-gp')
     seriesBasePath="/road-gp"
     seriesLabel="Road Grand Prix"
     standingsUrl={standingsUrl}
+    individualStandingsUrl={individualStandingsUrl}
   />
 </Layout>
