@@ -1,0 +1,303 @@
+---
+// src/pages/road-gp/[year]/individual-standings.astro
+import Layout from '../../../components/Layout.astro';
+import { getRaces } from '../../../lib/data';
+import { getIndividualStandingsStaticPaths } from '../../../lib/results';
+import type { Club, SeriesConfig, IndividualStandings } from '../../../lib/types';
+
+export async function getStaticPaths() {
+  return getIndividualStandingsStaticPaths('road-gp');
+}
+
+interface Props {
+  year: number;
+  standings: IndividualStandings;
+  clubs: Club[];
+  config: SeriesConfig;
+  linkedRaceIds: string[];
+}
+
+const { year, standings, clubs, config } = Astro.props;
+const linkedRaceIds = new Set(Astro.props.linkedRaceIds);
+const races = getRaces(year, 'road-gp');
+const raceById = Object.fromEntries(races.map(r => [r.id, r]));
+const categoryById = Object.fromEntries((config.individualCategories ?? []).map(c => [c.id, c]));
+const clubById = Object.fromEntries(clubs.map(c => [c.id, c]));
+---
+
+<Layout title={`Road Grand Prix ${year} — Individual Standings`}>
+  <div class="mb-4">
+    <a href={`/road-gp/${year}`} class="btn btn-ghost btn-sm gap-1 -ml-3">← Road Grand Prix {year}</a>
+  </div>
+
+  <div class="mb-6">
+    <div class="flex items-center gap-3 flex-wrap">
+      <h1 class="text-2xl font-bold">Individual Standings</h1>
+      {standings.provisional && (
+        <span class="badge badge-warning badge-lg">Provisional</span>
+      )}
+    </div>
+    <p class="text-sm text-base-content/60 mt-1">{year} Inter Club Road Grand Prix</p>
+    {config.maxCountingRaces && (
+      <p class="text-sm text-base-content/60 mt-0.5">Best {config.maxCountingRaces} races count</p>
+    )}
+  </div>
+
+  <!-- Category tabs -->
+  <div class="overflow-x-auto -mx-4 px-4 mb-1">
+    <div class="flex border-b border-base-200 min-w-max" role="tablist">
+      {standings.categories.map((cat, i) => {
+        const label = categoryById[cat.category]?.name ?? cat.category;
+        return (
+          <button
+            class:list={[
+              'tab-btn px-4 py-2 text-sm border-b-2 -mb-px whitespace-nowrap transition-colors',
+              i === 0
+                ? 'border-primary font-medium'
+                : 'border-transparent text-base-content/50 hover:text-base-content',
+            ]}
+            data-target={`cat-panel-${i}`}
+            role="tab"
+            aria-selected={i === 0 ? 'true' : 'false'}
+          >
+            {label}
+          </button>
+        );
+      })}
+    </div>
+  </div>
+
+  <!-- Category panels -->
+  {standings.categories.map((cat, i) => {
+    const distinctAgeCats = [...new Set(cat.runners.map(r => r.ageCategory))].sort();
+    return (
+      <div id={`cat-panel-${i}`} data-panel class:list={['pt-3', i > 0 && 'hidden']} role="tabpanel">
+
+        <!-- Filter controls -->
+        <div class="flex flex-wrap gap-2 mb-3 items-center">
+          <div class="flex gap-1">
+            <button class="filter-sex btn btn-xs btn-active" data-value="">All</button>
+            <button class="filter-sex btn btn-xs btn-ghost" data-value="M">M</button>
+            <button class="filter-sex btn btn-xs btn-ghost" data-value="F">F</button>
+          </div>
+          {distinctAgeCats.length > 1 && (
+            <div class="flex gap-1 flex-wrap">
+              {distinctAgeCats.map(age => (
+                <button class="filter-age btn btn-xs btn-ghost" data-value={age}>{age}</button>
+              ))}
+            </div>
+          )}
+        </div>
+
+        <!-- Desktop table -->
+        <div class="hidden sm:block overflow-x-auto">
+          <table class="w-full border-collapse text-sm">
+            <thead>
+              <tr class="border-b border-base-200">
+                <th class="text-left py-2 pr-3 text-base-content/40 font-medium w-8">#</th>
+                <th class="text-left py-2 pr-4 text-base-content/40 font-medium">Name</th>
+                <th class="text-left py-2 pr-4 text-base-content/40 font-medium">Club</th>
+                <th class="text-left py-2 pr-4 text-base-content/40 font-medium">Cat</th>
+                {standings.races.map(raceId => {
+                  const race = raceById[raceId];
+                  const label = race?.shortName ?? raceId;
+                  const href = linkedRaceIds.has(raceId) ? `/road-gp/${year}/${raceId}/results` : null;
+                  return (
+                    <th class="text-right py-2 px-2 font-medium whitespace-nowrap">
+                      {href
+                        ? <a href={href} class="text-primary hover:underline">{label}</a>
+                        : <span class="text-base-content/20">{label}</span>
+                      }
+                    </th>
+                  );
+                })}
+                <th class="text-right py-2 pl-4 text-base-content/40 font-medium">Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              {cat.runners.map(runner => {
+                const clubName = clubById[runner.club]?.name ?? runner.club;
+                const catLabel = `${runner.sex}${runner.ageCategory}`;
+                return (
+                  <tr
+                    class="border-b border-base-200/50 last:border-0 hover:bg-base-200/30"
+                    data-sex={runner.sex}
+                    data-age-cat={runner.ageCategory}
+                  >
+                    <td class="py-2.5 pr-3 text-base-content/40 tabular-nums">{runner.position}</td>
+                    <td class="py-2.5 pr-4 font-semibold">{runner.name}</td>
+                    <td class="py-2.5 pr-4">{clubName}</td>
+                    <td class="py-2.5 pr-4 text-base-content/60 text-xs tabular-nums">{catLabel}</td>
+                    {standings.races.map(raceId => {
+                      const result = runner.results[raceId];
+                      if (!result) return <td class="py-2.5 px-2" />;
+                      return (
+                        <td class:list={[
+                          'py-2.5 px-2 text-right tabular-nums',
+                          !result.counting && 'text-base-content/30',
+                        ]}>
+                          <span class:list={[!result.counting && 'line-through']}>
+                            {result.points}
+                          </span>
+                        </td>
+                      );
+                    })}
+                    <td class="py-2.5 pl-4 text-right">
+                      <strong class="text-base-content/80">{runner.total}</strong>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Mobile view -->
+        <div class="sm:hidden">
+          <!-- Race key -->
+          <div class="flex flex-wrap gap-x-3 gap-y-1 py-3 border-b border-base-200 mb-1 text-xs text-base-content/40">
+            {standings.races.map(raceId => {
+              const race = raceById[raceId];
+              const label = race?.shortName ?? raceId;
+              const href = linkedRaceIds.has(raceId) ? `/road-gp/${year}/${raceId}/results` : null;
+              return (
+                <span>
+                  {href
+                    ? <a href={href} class="text-primary">{label}</a>
+                    : label
+                  }
+                  {' = '}{race?.name ?? raceId}
+                </span>
+              );
+            })}
+          </div>
+
+          {cat.runners.map((runner, runnerIdx) => {
+            const clubName = clubById[runner.club]?.name ?? runner.club;
+            const catLabel = `${runner.sex}${runner.ageCategory}`;
+            const detailId = `detail-${i}-${runnerIdx}`;
+            return (
+              <div
+                class="runner-card border-b border-base-200 last:border-0"
+                data-sex={runner.sex}
+                data-age-cat={runner.ageCategory}
+              >
+                <button
+                  class="standings-toggle w-full flex items-center gap-2 py-2.5 text-left"
+                  data-target={detailId}
+                  aria-expanded="false"
+                >
+                  <span class="w-6 shrink-0 text-sm text-base-content/40 tabular-nums">{runner.position}</span>
+                  <span class="flex-1 font-semibold">{runner.name}</span>
+                  <strong class="text-base-content/80">{runner.total}</strong>
+                  <span class="chevron text-base-content/30 text-xs ml-1 transition-transform">▾</span>
+                </button>
+                <div id={detailId} class="hidden pb-3 pl-8">
+                  <p class="text-sm text-base-content/60 mb-1.5">
+                    {clubName} · <span class="font-mono text-xs">{catLabel}</span>
+                  </p>
+                  <div class="flex flex-wrap gap-1.5">
+                    {standings.races.filter(raceId => runner.results[raceId]).map(raceId => {
+                      const result = runner.results[raceId];
+                      const race = raceById[raceId];
+                      const label = race?.shortName ?? raceId;
+                      const href = linkedRaceIds.has(raceId) ? `/road-gp/${year}/${raceId}/results` : null;
+                      return (
+                        <div class:list={[
+                          'rounded px-2.5 py-1 text-center text-sm min-w-[44px]',
+                          result.counting ? 'bg-base-200' : 'bg-base-200/40',
+                        ]}>
+                          {href
+                            ? <a href={href} class:list={['block text-[10px] mb-0.5', result.counting ? 'text-primary' : 'text-base-content/30']}>{label}</a>
+                            : <span class:list={['block text-[10px] mb-0.5', result.counting ? 'text-base-content/40' : 'text-base-content/20']}>{label}</span>
+                          }
+                          <span class:list={[
+                            result.counting ? 'font-semibold' : 'text-base-content/30 line-through',
+                          ]}>{result.points}</span>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+      </div>
+    );
+  })}
+</Layout>
+
+<script>
+  // Tab switching
+  const tabs = document.querySelectorAll<HTMLButtonElement>('.tab-btn');
+  tabs.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const targetId = btn.dataset.target!;
+      tabs.forEach(t => {
+        const active = t === btn;
+        t.classList.toggle('border-primary', active);
+        t.classList.toggle('font-medium', active);
+        t.classList.toggle('border-transparent', !active);
+        t.classList.toggle('text-base-content/50', !active);
+        t.setAttribute('aria-selected', active ? 'true' : 'false');
+      });
+      document.querySelectorAll<HTMLElement>('[id^="cat-panel-"]').forEach(panel => {
+        panel.classList.toggle('hidden', panel.id !== targetId);
+      });
+    });
+  });
+
+  // Mobile accordion
+  document.querySelectorAll<HTMLButtonElement>('.standings-toggle').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const targetId = btn.dataset.target!;
+      const detail = document.getElementById(targetId)!;
+      const isOpen = !detail.classList.contains('hidden');
+      detail.classList.toggle('hidden', isOpen);
+      btn.setAttribute('aria-expanded', isOpen ? 'false' : 'true');
+      btn.querySelector('.chevron')?.classList.toggle('rotate-180', !isOpen);
+    });
+  });
+
+  // Filtering
+  function filterPanel(panel: HTMLElement) {
+    const activeSex = panel.querySelector<HTMLElement>('.filter-sex.btn-active')?.dataset.value ?? '';
+    const activeAges = [...panel.querySelectorAll<HTMLElement>('.filter-age.btn-active')]
+      .map(b => b.dataset.value ?? '');
+
+    panel.querySelectorAll<HTMLElement>('tr[data-sex]').forEach(row => {
+      const sexMatch = !activeSex || row.dataset.sex === activeSex;
+      const ageMatch = activeAges.length === 0 || activeAges.includes(row.dataset.ageCat ?? '');
+      row.style.display = sexMatch && ageMatch ? '' : 'none';
+    });
+
+    panel.querySelectorAll<HTMLElement>('.runner-card').forEach(card => {
+      const sexMatch = !activeSex || card.dataset.sex === activeSex;
+      const ageMatch = activeAges.length === 0 || activeAges.includes(card.dataset.ageCat ?? '');
+      card.style.display = sexMatch && ageMatch ? '' : 'none';
+    });
+  }
+
+  document.querySelectorAll<HTMLButtonElement>('.filter-sex').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const panel = btn.closest<HTMLElement>('[data-panel]')!;
+      panel.querySelectorAll<HTMLElement>('.filter-sex').forEach(b => {
+        const active = b === btn;
+        b.classList.toggle('btn-active', active);
+        b.classList.toggle('btn-ghost', !active);
+      });
+      filterPanel(panel);
+    });
+  });
+
+  document.querySelectorAll<HTMLButtonElement>('.filter-age').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const panel = btn.closest<HTMLElement>('[data-panel]')!;
+      btn.classList.toggle('btn-active');
+      btn.classList.toggle('btn-ghost');
+      filterPanel(panel);
+    });
+  });
+</script>
