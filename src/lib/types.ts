@@ -34,8 +34,15 @@ export interface Club {
   logo: string;        // filename in /public/images/clubs/, may not exist yet
 }
 
+export interface IndividualCategory {
+  id: string;
+  name: string;
+}
+
 export interface SeriesConfig {
-  categories: string[];
+  ageCategories: string[];           // renamed from categories
+  maxCountingRaces?: number;         // optional; when set, the page shows "Best N races count"
+  individualCategories?: IndividualCategory[];
   teamCategories?: TeamCategory[];
 }
 
@@ -84,4 +91,30 @@ export interface TeamStandings {
   provisional: boolean;
   races: string[];
   categories: TeamStandingsCategory[];
+}
+
+export interface IndividualRaceResult {
+  points: number;
+  counting: boolean;
+}
+
+export interface IndividualStandingsRunner {
+  position: number;
+  name: string;
+  club: string;
+  sex: string;          // 'M' or 'F'
+  ageCategory: string;  // e.g. 'SEN', 'V40'
+  total: number;
+  results: Record<string, IndividualRaceResult>;  // keyed by race id; only races the runner entered
+}
+
+export interface IndividualStandingsCategory {
+  category: string;   // id → IndividualCategory lookup via config.individualCategories
+  runners: IndividualStandingsRunner[];
+}
+
+export interface IndividualStandings {
+  provisional: boolean;
+  races: string[];    // ordered list of race ids; defines column order
+  categories: IndividualStandingsCategory[];
 }
