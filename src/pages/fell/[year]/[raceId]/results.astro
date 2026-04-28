@@ -54,7 +54,7 @@ const showTeamResults = hasTeamResults(year, 'fell', raceId);
     </select>
     <select id="filter-cat" class="select select-bordered select-sm w-full sm:w-auto">
       <option value="">All Categories</option>
-      {config.categories.map(cat => <option value={cat}>{cat}</option>)}
+      {(config.ageCategories ?? []).map(cat => <option value={cat}>{cat}</option>)}
     </select>
     <div class="flex gap-1">
       <button class="btn btn-sm btn-active" data-sex="">All</button>
