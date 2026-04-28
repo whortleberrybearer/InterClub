@@ -72,13 +72,14 @@ src/
   components/
     Layout.astro             # shared nav + footer wrapper
     RaceCard.astro           # individual race card
-    RaceList.astro           # race list with year filter
+    RaceList.astro           # race list with year filter (current year only)
+    HistoryRaceList.astro    # condensed archive list for past years (date, name, result links, awards)
     YearFilter.astro         # year dropdown navigation
   pages/
     index.astro              # home page
     road-gp/                 # Road GP schedule + detail pages
       [year]/
-        index.astro          # schedule for that year
+        index.astro          # condensed history view for that past year (uses HistoryRaceList)
         team-standings.astro        # season team standings (only generated when team-standings.json exists)
         individual-standings.astro  # season individual standings (only generated when individual-standings.json exists)
         [raceId]/
@@ -86,7 +87,7 @@ src/
           team-results.astro # team results page (only generated when team JSON exists)
     fell/                    # Fell Championship schedule + detail pages
       [year]/
-        index.astro
+        index.astro          # condensed history view for that past year (uses HistoryRaceList)
         team-standings.astro
         individual-standings.astro
         [raceId]/
@@ -273,4 +274,5 @@ End-of-season award winners are placed at `src/data/{year}/{series}/awards.json`
 - `individualAwards[].category` — id matching `individualCategories[].id` in `config.json`
 - `individualAwards[].awards[].position` — explicit; gaps are allowed (e.g. position 2 absent means no 2nd-place award was given)
 - `club` — id matching `clubs.json[].id`; display name resolved at build time
-- The awards section appears above the race list and only renders when this file exists
+- Awards are placed at `src/data/{year}/{series}/awards.json` for a past year — they are announced the following season, so they belong on the past-year archive page, not the current-year page
+- On past-year pages (`[year]/index.astro`) the awards section renders below the race list under a `{year} Awards` heading, only when this file exists; the current-year pages never show awards
