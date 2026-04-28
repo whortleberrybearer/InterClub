@@ -1,0 +1,52 @@
+{
+  "provisional": true,
+  "races": ["fell-race-1", "fell-race-2", "fell-race-3", "fell-race-4"],
+  "categories": [
+    {
+      "category": "sen-m",
+      "runners": [
+        {
+          "position": 1,
+          "name": "Luke Minns",
+          "club": "blackpool",
+          "sex": "M",
+          "ageCategory": "SEN",
+          "total": 47,
+          "results": {
+            "fell-race-1": { "points": 25, "counting": true },
+            "fell-race-3": { "points": 22, "counting": true }
+          }
+        },
+        {
+          "position": 2,
+          "name": "J. Smith",
+          "club": "wesham",
+          "sex": "M",
+          "ageCategory": "SEN",
+          "total": 38,
+          "results": {
+            "fell-race-1": { "points": 20, "counting": true },
+            "fell-race-2": { "points": 18, "counting": true },
+            "fell-race-3": { "points": 15, "counting": false }
+          }
+        }
+      ]
+    },
+    {
+      "category": "sen-f",
+      "runners": [
+        {
+          "position": 1,
+          "name": "A. Jones",
+          "club": "chorley",
+          "sex": "F",
+          "ageCategory": "SEN",
+          "total": 30,
+          "results": {
+            "fell-race-2": { "points": 30, "counting": true }
+          }
+        }
+      ]
+    }
+  ]
+}
