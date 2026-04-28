@@ -1,7 +1,7 @@
 ---
 // src/pages/road-gp/[year]/index.astro
 import Layout from '../../../components/Layout.astro';
-import RaceList from '../../../components/RaceList.astro';
+import HistoryRaceList from '../../../components/HistoryRaceList.astro';
 import { getCurrentYear, getAvailableYears, getRaces } from '../../../lib/data';
 import { getAwards, getClubs, getSeriesConfig, hasAwards, hasIndividualStandings, hasTeamStandings } from '../../../lib/results';
 import type { ResolvedSeriesAwards } from '../../../lib/types';
@@ -64,7 +64,7 @@ if (hasAwards(year, 'road-gp')) {
 ---
 
 <Layout title={`Road Grand Prix ${year}`}>
-  <RaceList
+  <HistoryRaceList
     races={races}
     year={year}
     series="road-gp"
