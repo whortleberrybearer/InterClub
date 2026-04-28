@@ -33,6 +33,8 @@ npm run preview  # serve built output
 npm test         # run unit tests
 ```
 
+> **Note:** TypeScript errors in Astro pages only surface via `npm run build` — `npm test` only runs pure-function unit tests and will not catch type errors in `.astro` files.
+
 ## Project Structure
 
 ```
@@ -43,7 +45,8 @@ src/
       clubs.json             # competing clubs for that year (id, name, shortName, logo)
       road-gp/
         races.json           # Road GP schedule
-        config.json          # series config (age categories + teamCategories)
+        config.json          # series config (ageCategories, teamCategories, and optionally individualCategories + maxCountingRaces)
+        individual-standings.json  # season individual standings (optional; computed externally)
         results/
           {race-id}.csv                      # final individual results
           {race-id}-provisional.csv          # provisional individual results
@@ -52,12 +55,13 @@ src/
                                              # (build prefers final over provisional if both exist)
       fell/
         races.json           # Fell Championship schedule
-        config.json          # series config (age categories + teamCategories)
+        config.json          # series config (ageCategories, teamCategories, and optionally individualCategories + maxCountingRaces)
         results/
           {race-id}.csv
           {race-id}-provisional.csv
           {race-id}-teams.json
           {race-id}-teams-provisional.json
+        individual-standings.json  # season individual standings (optional; computed externally)
   lib/
     types.ts                 # domain types (Race, Series, SiteConfig, RaceResult, Club,
                              #   SeriesConfig, TeamCategory, TeamResults, TeamClubResult, etc.)
@@ -75,7 +79,8 @@ src/
     road-gp/                 # Road GP schedule + detail pages
       [year]/
         index.astro          # schedule for that year
-        team-standings.astro # season team standings (only generated when team-standings.json exists)
+        team-standings.astro        # season team standings (only generated when team-standings.json exists)
+        individual-standings.astro  # season individual standings (only generated when individual-standings.json exists)
         [raceId]/
           results.astro      # individual results page
           team-results.astro # team results page (only generated when team JSON exists)
@@ -83,6 +88,7 @@ src/
       [year]/
         index.astro
         team-standings.astro
+        individual-standings.astro
         [raceId]/
           results.astro
           team-results.astro
@@ -183,3 +189,60 @@ Season standings are computed externally and placed at `src/data/{year}/{series}
 - `clubs[].points` — one entry per race; `null` for races not yet run (renders as `—`)
 - `clubs[].tiebreaker` — nullable string shown beneath the total when non-null
 - `races[].shortName` in `races.json` provides the column header abbreviation (e.g. `"BPL"`); falls back to the race id if absent
+
+### Individual standings JSON schema
+
+Season individual standings are computed externally and placed at `src/data/{year}/{series}/individual-standings.json`. File absence means no individual standings page is generated for that year.
+
+```json
+{
+  "provisional": true,
+  "races": ["fell-race-1", "fell-race-2"],
+  "categories": [
+    {
+      "category": "sen-m",
+      "runners": [
+        {
+          "position": 1,
+          "name": "Luke Minns",
+          "club": "blackpool",
+          "sex": "M",
+          "ageCategory": "SEN",
+          "total": 47,
+          "results": {
+            "fell-race-1": { "points": 25, "counting": true },
+            "fell-race-3": { "points": 22, "counting": false }
+          }
+        }
+      ]
+    }
+  ]
+}
+```
+
+- `category` — id matching `individualCategories[].id` in the series `config.json`
+- `runners[].results` — sparse map keyed by race id; only races the runner actually entered are present (no nulls)
+- `results[raceId].counting` — `false` when this race didn't count toward the runner's total (shown dimmed with strikethrough on the page)
+- `runners[].total` — pre-computed and stored explicitly
+- `runners[].sex` / `runners[].ageCategory` — stored separately for client-side filtering; displayed combined as e.g. `MSEN`, `FV40`
+
+### Series config.json schema
+
+```json
+{
+  "ageCategories": ["SEN", "V40", "V50"],
+  "maxCountingRaces": 3,
+  "individualCategories": [
+    { "id": "sen-m", "name": "Senior Men" },
+    { "id": "v40-f", "name": "V40 Women" }
+  ],
+  "teamCategories": [
+    { "id": "open", "name": "Open", "scorerCount": 6 }
+  ]
+}
+```
+
+- `ageCategories` — age bands shown in the results filter bar (note: formerly named `categories` — do not use the old name)
+- `maxCountingRaces` — optional; when set, individual standings page shows "Best N races count" and marks non-counting results
+- `individualCategories` — optional; defines which tabs appear on the individual standings page and in what order; `id` is referenced by `individual-standings.json`
+- `teamCategories` — defines team scoring groups; `id` is referenced by team results JSON files
