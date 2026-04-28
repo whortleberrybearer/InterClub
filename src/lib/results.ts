@@ -1,4 +1,4 @@
-import type { Club, IndividualStandings, RaceResult, Series, SeriesConfig, TeamResults, TeamStandings } from './types';
+import type { Club, IndividualStandings, RaceResult, Series, SeriesAwards, SeriesConfig, TeamResults, TeamStandings } from './types';
 
 export function parseResultsCsv(csv: string): RaceResult[] {
   const lines = csv.replace(/\r\n/g, '\n').replace(/\r/g, '\n').trim().split('\n');
@@ -69,6 +69,17 @@ const fellIndividualStandingsFiles = import.meta.glob<{ default: IndividualStand
 
 function individualStandingsFilesForSeries(series: Series) {
   return series === 'road-gp' ? roadIndividualStandingsFiles : fellIndividualStandingsFiles;
+}
+
+const roadAwardsFiles = import.meta.glob<{ default: SeriesAwards }>(
+  '../data/*/road-gp/awards.json', { eager: true }
+);
+const fellAwardsFiles = import.meta.glob<{ default: SeriesAwards }>(
+  '../data/*/fell/awards.json', { eager: true }
+);
+
+function awardsFilesForSeries(series: Series) {
+  return series === 'road-gp' ? roadAwardsFiles : fellAwardsFiles;
 }
 
 export function parseTeamResultsPath(path: string): { year: number; raceId: string; provisional: boolean } | null {
@@ -272,4 +283,14 @@ export function getIndividualStandingsStaticPaths(series: Series) {
       props: { year, standings, clubs, config, linkedRaceIds },
     }];
   });
+}
+
+export function hasAwards(year: number, series: Series): boolean {
+  const files = awardsFilesForSeries(series);
+  return `../data/${year}/${series}/awards.json` in files;
+}
+
+export function getAwards(year: number, series: Series): SeriesAwards | null {
+  const files = awardsFilesForSeries(series);
+  return files[`../data/${year}/${series}/awards.json`]?.default ?? null;
 }
