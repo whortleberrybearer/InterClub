@@ -116,12 +116,12 @@ Then update `src/data/config.json` to set `currentYear`. Missing `clubs.json` or
 ### Results CSV schema
 
 ```
-position,ic_position,first_name,last_name,club,category,sex,time
-1,1,Luke,Minns,blackpool,V35,M,19:35
-9,,T.,Guest,Guest,SEN,M,22:14
+position,ic_position,race_number,first_name,last_name,club,category,sex,time
+1,1,42,Luke,Minns,blackpool,V35,M,19:35
+9,, ,T.,Guest,Guest,SEN,M,22:14
 ```
 
-`club` is a club `id` from `clubs.json`, or `Guest` for non-club runners. `ic_position` is empty for guests. All fields are optional to support partial historical data.
+`club` is a club `id` from `clubs.json`, or `Guest` for non-club runners. `ic_position` is empty for guests. `race_number` is optional — the column may be omitted entirely from older CSVs or left empty for individual runners; both cases parse as `null` on `RaceResult.raceNumber`. All fields are optional to support partial historical data.
 
 ### Team results JSON schema
 
