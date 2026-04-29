@@ -25,6 +25,7 @@ export interface RaceResult {
   category: string;   // e.g. 'SEN', 'V35', 'U17'
   sex: string;        // 'M' or 'F'
   time: string;       // 'MM:SS', may be empty
+  raceNumber: number | null;
 }
 
 export interface Club {
