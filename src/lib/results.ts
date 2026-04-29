@@ -20,6 +20,7 @@ export function parseResultsCsv(csv: string): RaceResult[] {
       category: get('category'),
       sex: get('sex'),
       time: get('time'),
+      raceNumber: num('race_number'),
     };
   });
 }

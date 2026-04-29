@@ -52,6 +52,24 @@ describe('parseResultsCsv', () => {
   it('returns empty array for empty string', () => {
     expect(parseResultsCsv('')).toHaveLength(0);
   });
+
+  it('parses raceNumber as a number when present', () => {
+    const csv = 'position,ic_position,race_number,first_name,last_name,club,category,sex,time\n1,1,42,Luke,Minns,blackpool,V35,M,19:35';
+    const [row] = parseResultsCsv(csv);
+    expect(row.raceNumber).toBe(42);
+  });
+
+  it('parses raceNumber as null when the column is empty', () => {
+    const csv = 'position,ic_position,race_number,first_name,last_name,club,category,sex,time\n1,1,,Luke,Minns,blackpool,V35,M,19:35';
+    const [row] = parseResultsCsv(csv);
+    expect(row.raceNumber).toBeNull();
+  });
+
+  it('parses raceNumber as null when the column is absent (old CSV format)', () => {
+    const csv = 'position,ic_position,first_name,last_name,club,category,sex,time\n1,1,Luke,Minns,blackpool,V35,M,19:35';
+    const [row] = parseResultsCsv(csv);
+    expect(row.raceNumber).toBeNull();
+  });
 });
 
 describe('parseTeamResultsPath', () => {
