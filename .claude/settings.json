@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm test)",
+      "Bash(npm test 2>&1)",
+      "Bash(npx tsc --noEmit)",
+      "Bash(npx tsc --noEmit 2>&1)",
+      "Bash(git worktree list)",
+      "Bash(npm show *)"
+    ]
+  }
+}
