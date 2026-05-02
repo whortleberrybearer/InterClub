@@ -91,7 +91,7 @@ const showTeamResults = hasTeamResults(year, 'fell', raceId);
             <td>
               {(() => {
                 const url = r.seriesRunnerId != null ? runnerUrlMap[r.seriesRunnerId] : undefined;
-                const short = `${r.firstName[0] ?? ''}. ${r.lastName}`;
+                const short = r.firstName ? `${r.firstName[0]}. ${r.lastName}` : r.lastName;
                 const full = `${r.firstName} ${r.lastName}`;
                 return url
                   ? <><span class="sm:hidden"><a href={url} class="link link-hover">{short}</a></span><span class="hidden sm:inline"><a href={url} class="link link-hover">{full}</a></span></>
