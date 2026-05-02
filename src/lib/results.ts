@@ -21,6 +21,7 @@ export function parseResultsCsv(csv: string): RaceResult[] {
       sex: get('sex'),
       time: get('time'),
       raceNumber: num('race_number'),
+      seriesRunnerId: num('series_runner_id'),
     };
   });
 }
