@@ -5,6 +5,7 @@ import HistoryRaceList from '../../../components/HistoryRaceList.astro';
 import { getCurrentYear, getAvailableYears, getRaces } from '../../../lib/data';
 import { getAwards, getClubs, getSeriesConfig, hasAwards, hasIndividualStandings, hasTeamStandings } from '../../../lib/results';
 import type { ResolvedSeriesAwards } from '../../../lib/types';
+import { buildRunnerUrlMap } from '../../../lib/runners';
 
 export async function getStaticPaths() {
   const current = getCurrentYear();
@@ -36,6 +37,8 @@ if (hasAwards(year, 'fell')) {
   const resolveIndividualCategory = (id: string) =>
     config.individualCategories?.find(c => c.id === id);
 
+  const runnerUrlMap = buildRunnerUrlMap(year, 'fell');
+
   const partitioned = raw.individualAwards.map(ia => {
     const cat = resolveIndividualCategory(ia.category);
     return {
@@ -46,6 +49,7 @@ if (hasAwards(year, 'fell')) {
           position: a.position,
           name: a.name,
           clubName: resolveClub(a.club),
+          runnerUrl: a.seriesRunnerId != null ? runnerUrlMap[a.seriesRunnerId] : undefined,
         })),
       },
     };
