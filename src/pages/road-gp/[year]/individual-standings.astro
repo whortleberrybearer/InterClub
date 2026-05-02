@@ -4,9 +4,13 @@ import Layout from '../../../components/Layout.astro';
 import { getRaces } from '../../../lib/data';
 import { getIndividualStandingsStaticPaths } from '../../../lib/results';
 import type { Club, SeriesConfig, IndividualStandings } from '../../../lib/types';
+import { buildRunnerUrlMap } from '../../../lib/runners';
 
 export async function getStaticPaths() {
-  return getIndividualStandingsStaticPaths('road-gp');
+  return getIndividualStandingsStaticPaths('road-gp').map(p => ({
+    ...p,
+    props: { ...p.props, runnerUrlMap: buildRunnerUrlMap(p.props.year, 'road-gp') },
+  }));
 }
 
 interface Props {
@@ -15,9 +19,10 @@ interface Props {
   clubs: Club[];
   config: SeriesConfig;
   linkedRaceIds: string[];
+  runnerUrlMap: Record<number, string>;
 }
 
-const { year, standings, clubs, config } = Astro.props;
+const { year, standings, clubs, config, runnerUrlMap } = Astro.props;
 const linkedRaceIds = new Set(Astro.props.linkedRaceIds);
 const races = getRaces(year, 'road-gp');
 const raceById = Object.fromEntries(races.map(r => [r.id, r]));
@@ -125,7 +130,11 @@ const clubById = Object.fromEntries(clubs.map(c => [c.id, c]));
                     data-age-cat={runner.ageCategory}
                   >
                     <td class="py-2.5 pr-3 text-base-content/40 tabular-nums">{runner.position}</td>
-                    <td class="py-2.5 pr-4 font-semibold">{runner.name}</td>
+                    <td class="py-2.5 pr-4 font-semibold">
+                      {runner.seriesRunnerId != null && runnerUrlMap[runner.seriesRunnerId]
+                        ? <a href={runnerUrlMap[runner.seriesRunnerId]} class="link link-hover">{runner.name}</a>
+                        : runner.name}
+                    </td>
                     <td class="py-2.5 pr-4">{clubName}</td>
                     <td class="py-2.5 pr-4 text-base-content/60 text-xs tabular-nums">{catLabel}</td>
                     {standings.races.map(raceId => {
@@ -188,7 +197,11 @@ const clubById = Object.fromEntries(clubs.map(c => [c.id, c]));
                   aria-expanded="false"
                 >
                   <span class="w-6 shrink-0 text-sm text-base-content/40 tabular-nums">{runner.position}</span>
-                  <span class="flex-1 font-semibold">{runner.name}</span>
+                  <span class="flex-1 font-semibold">
+                    {runner.seriesRunnerId != null && runnerUrlMap[runner.seriesRunnerId]
+                      ? <a href={runnerUrlMap[runner.seriesRunnerId]} class="link link-hover">{runner.name}</a>
+                      : runner.name}
+                  </span>
                   <strong class="text-base-content/80">{runner.total}</strong>
                   <span class="chevron text-base-content/30 text-xs ml-1 transition-transform">▾</span>
                 </button>
