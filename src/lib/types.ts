@@ -26,6 +26,7 @@ export interface RaceResult {
   sex: string;        // 'M' or 'F'
   time: string;       // 'MM:SS', may be empty
   raceNumber: number | null;
+  seriesRunnerId: number | null;   // series-local runner ID from CSV; null when absent
 }
 
 export interface Club {
@@ -33,6 +34,50 @@ export interface Club {
   name: string;
   shortName: string;
   logo: string;        // filename in /public/images/clubs/, may not exist yet
+}
+
+export interface GlobalRunner {
+  id: number;
+  firstName: string;
+  lastName: string;
+  club: string;       // club id matching clubs.json
+  sex: string;        // 'M' or 'F'
+  category: string;   // e.g. 'SEN', 'V40'
+}
+
+export interface SeriesRunner {
+  id: number;         // series-local numeric ID; referenced from CSV series_runner_id
+  runnerId: number;   // references GlobalRunner.id
+  firstName: string;
+  lastName: string;
+  club: string;
+  sex: string;
+  category: string;
+  number?: number;    // optional bib number
+}
+
+export interface RunnerProfileRace {
+  date: string;       // ISO date e.g. "2026-04-01"
+  raceName: string;
+  raceId: string;
+  time: string;
+  hasResults: boolean;
+}
+
+export interface RunnerProfileAward {
+  categoryName: string;
+  position: number;
+}
+
+export interface RunnerYearSeries {
+  races: RunnerProfileRace[];
+  awards: RunnerProfileAward[];
+}
+
+export interface RunnerYearBlock {
+  year: number;
+  roadGp?: RunnerYearSeries;
+  fell?: RunnerYearSeries;
 }
 
 export interface IndividualCategory {
@@ -108,6 +153,7 @@ export interface IndividualStandingsRunner {
   ageCategory: string;  // e.g. 'SEN', 'V40'
   total: number;
   results: Record<string, IndividualRaceResult>;  // keyed by race id; only races the runner entered
+  seriesRunnerId?: number;   // optional; links standing entry to a runner profile
 }
 
 export interface IndividualStandingsCategory {
@@ -131,6 +177,7 @@ export interface IndividualAwardEntry {
   position: number;
   name: string;
   club: string;      // references clubs.json id
+  seriesRunnerId?: number;   // optional; links award to a runner profile
 }
 
 export interface IndividualAward {
@@ -153,6 +200,7 @@ export interface ResolvedIndividualAwardEntry {
   position: number;
   name: string;
   clubName: string;
+  runnerUrl?: string;   // resolved profile URL when seriesRunnerId is present
 }
 
 export interface ResolvedIndividualAward {
