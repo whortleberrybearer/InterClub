@@ -1,0 +1,180 @@
+{
+  "ageCategories": [
+    "SEN",
+    "V35",
+    "V40",
+    "V45",
+    "V50",
+    "V55",
+    "V60",
+    "V65",
+    "V70",
+    "V75",
+    "V80",
+    "V85"
+  ],
+  "maxCountingRaces": 4,
+  "individualCategories": [
+    {
+      "id": "overall",
+      "name": "Overall"
+    },
+    {
+      "id": "jun-m",
+      "name": "Junior Men",
+      "sex": "M"
+    },
+    {
+      "id": "jun-f",
+      "name": "Junior Women",
+      "sex": "F"
+    },
+    {
+      "id": "men",
+      "name": "Men",
+      "sex": "M"
+    },
+    {
+      "id": "women",
+      "name": "Women",
+      "sex": "F"
+    },
+    {
+      "id": "v35-female",
+      "name": "V35 Women",
+      "sex": "F"
+    },
+    {
+      "id": "v40-male",
+      "name": "V40 Men",
+      "sex": "M"
+    },
+    {
+      "id": "v40-female",
+      "name": "V40 Women",
+      "sex": "F"
+    },
+    {
+      "id": "v45-male",
+      "name": "V45 Men",
+      "sex": "M"
+    },
+    {
+      "id": "v45-female",
+      "name": "V45 Women",
+      "sex": "F"
+    },
+    {
+      "id": "v50-male",
+      "name": "V50 Men",
+      "sex": "M"
+    },
+    {
+      "id": "v50-female",
+      "name": "V50 Women",
+      "sex": "F"
+    },
+    {
+      "id": "v55-male",
+      "name": "V55 Men",
+      "sex": "M"
+    },
+    {
+      "id": "v55-female",
+      "name": "V55 Women",
+      "sex": "F"
+    },
+    {
+      "id": "v60-male",
+      "name": "V60 Men",
+      "sex": "M"
+    },
+    {
+      "id": "v60-female",
+      "name": "V60 Women",
+      "sex": "F"
+    },
+    {
+      "id": "v65-male",
+      "name": "V65 Men",
+      "sex": "M"
+    },
+    {
+      "id": "v65-female",
+      "name": "V65 Women",
+      "sex": "F"
+    },
+    {
+      "id": "v70-male",
+      "name": "V70 Men",
+      "sex": "M"
+    },
+    {
+      "id": "v70-female",
+      "name": "V70 Women",
+      "sex": "F"
+    },
+    {
+      "id": "v75-male",
+      "name": "V75 Men",
+      "sex": "M"
+    },
+    {
+      "id": "v75-female",
+      "name": "V75 Women",
+      "sex": "F"
+    },
+    {
+      "id": "v80-male",
+      "name": "V80 Men",
+      "sex": "M"
+    },
+    {
+      "id": "v80-female",
+      "name": "V80 Women",
+      "sex": "F"
+    },
+    {
+      "id": "v85-male",
+      "name": "V85 Men",
+      "sex": "M"
+    },
+    {
+      "id": "v85-female",
+      "name": "V85 Women",
+      "sex": "F"
+    }
+  ],
+  "teamCategories": [
+    {
+      "id": "open",
+      "name": "Open",
+      "scorerCount": 10
+    },
+    {
+      "id": "ladies",
+      "name": "Ladies",
+      "scorerCount": 5
+    },
+    {
+      "id": "vets",
+      "name": "Vets",
+      "scorerCount": 6
+    },
+    {
+      "id": "lady-vets",
+      "name": "Lady Vets",
+      "scorerCount": 5
+    },
+    {
+      "id": "v50",
+      "name": "Vet 50s",
+      "scorerCount": 4
+    },
+    {
+      "id": "v60",
+      "name": "Vet 60s",
+      "scorerCount": 3
+    }
+  ]
+}

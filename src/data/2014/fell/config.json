@@ -1,0 +1,43 @@
+{
+  "ageCategories": [
+    "SEN",
+    "V40",
+    "V50",
+    "V60",
+    "V70"
+  ],
+  "maxCountingRaces": 3,
+  "individualCategories": [
+    {
+      "id": "overall",
+      "name": "Overall"
+    }
+  ],
+  "teamCategories": [
+    {
+      "id": "open",
+      "name": "Open",
+      "scorerCount": 5
+    },
+    {
+      "id": "ladies",
+      "name": "Ladies",
+      "scorerCount": 3
+    },
+    {
+      "id": "vets",
+      "name": "Vets",
+      "scorerCount": 4
+    },
+    {
+      "id": "v50",
+      "name": "Vet 50s",
+      "scorerCount": 3
+    },
+    {
+      "id": "v60",
+      "name": "Vet 60s",
+      "scorerCount": 2
+    }
+  ]
+}
