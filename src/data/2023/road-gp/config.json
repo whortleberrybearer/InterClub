@@ -1,0 +1,90 @@
+{
+  "ageCategories": [
+    "SEN",
+    "V35",
+    "V40",
+    "V45",
+    "V50",
+    "V55",
+    "V60",
+    "V65",
+    "V70",
+    "V75",
+    "V80",
+    "V85"
+  ],
+  "maxCountingRaces": 3,
+  "individualCategories": [
+    {
+      "id": "overall",
+      "name": "Overall"
+    },
+    {
+      "id": "men",
+      "name": "Men",
+      "sex": "M"
+    },
+    {
+      "id": "women",
+      "name": "Women",
+      "sex": "F"
+    },
+    {
+      "id": "v40-male",
+      "name": "V40 Men",
+      "sex": "M"
+    },
+    {
+      "id": "v40-female",
+      "name": "V40 Women",
+      "sex": "F"
+    },
+    {
+      "id": "v50-male",
+      "name": "V50 Men",
+      "sex": "M"
+    },
+    {
+      "id": "v50-female",
+      "name": "V50 Women",
+      "sex": "F"
+    },
+    {
+      "id": "v60-male",
+      "name": "V60 Men",
+      "sex": "M"
+    }
+  ],
+  "teamCategories": [
+    {
+      "id": "open",
+      "name": "Open",
+      "scorerCount": 10
+    },
+    {
+      "id": "ladies",
+      "name": "Ladies",
+      "scorerCount": 5
+    },
+    {
+      "id": "vets",
+      "name": "Vets",
+      "scorerCount": 6
+    },
+    {
+      "id": "lady-vets",
+      "name": "Lady Vets",
+      "scorerCount": 5
+    },
+    {
+      "id": "v50",
+      "name": "Vet 50s",
+      "scorerCount": 4
+    },
+    {
+      "id": "v60",
+      "name": "Vet 60s",
+      "scorerCount": 3
+    }
+  ]
+}
