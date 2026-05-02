@@ -2,10 +2,10 @@
   "ageCategories": ["SEN", "V40", "V50", "V60", "V70"],
   "maxCountingRaces": 3,
   "individualCategories": [
-    { "id": "sen-m", "name": "Senior Men",   "sex": "M" },
-    { "id": "sen-f", "name": "Senior Women", "sex": "F" },
-    { "id": "v40-m", "name": "V40 Men",      "sex": "M" },
-    { "id": "v40-f", "name": "V40 Women",    "sex": "F" }
+    { "id": "male",       "name": "Senior Men",   "sex": "M" },
+    { "id": "female",     "name": "Senior Women", "sex": "F" },
+    { "id": "v40-male",   "name": "V40 Men",      "sex": "M" },
+    { "id": "v40-female", "name": "V40 Women",    "sex": "F" }
   ],
   "teamCategories": [
     { "id": "open",   "name": "Open",   "scorerCount": 6 },
