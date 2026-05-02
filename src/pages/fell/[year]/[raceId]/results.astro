@@ -3,10 +3,14 @@
 import Layout from '../../../../components/Layout.astro';
 import { getRace } from '../../../../lib/data';
 import { getResultsStaticPaths, hasTeamResults } from '../../../../lib/results';
+import { buildRunnerUrlMap } from '../../../../lib/runners';
 import type { Club, RaceResult, SeriesConfig } from '../../../../lib/types';
 
 export async function getStaticPaths() {
-  return getResultsStaticPaths('fell');
+  return getResultsStaticPaths('fell').map(p => ({
+    ...p,
+    props: { ...p.props, runnerUrlMap: buildRunnerUrlMap(p.props.year, 'fell') },
+  }));
 }
 
 interface Props {
@@ -16,9 +20,10 @@ interface Props {
   provisional: boolean;
   clubs: Club[];
   config: SeriesConfig;
+  runnerUrlMap: Record<number, string>;
 }
 
-const { year, raceId, results, provisional, clubs, config } = Astro.props;
+const { year, raceId, results, provisional, clubs, config, runnerUrlMap } = Astro.props;
 const race = getRace(year, 'fell', raceId);
 const title = race?.name ?? raceId;
 const clubById = Object.fromEntries(clubs.map(c => [c.id, c]));
@@ -84,8 +89,14 @@ const showTeamResults = hasTeamResults(year, 'fell', raceId);
             <td>{r.club === 'Guest' ? '–' : (r.icPosition ?? '–')}</td>
             <td class="hidden sm:table-cell">{r.raceNumber ?? '–'}</td>
             <td>
-              <span class="sm:hidden">{r.firstName[0] ?? ''}. {r.lastName}</span>
-              <span class="hidden sm:inline">{r.firstName} {r.lastName}</span>
+              {(() => {
+                const url = r.seriesRunnerId != null ? runnerUrlMap[r.seriesRunnerId] : undefined;
+                const short = `${r.firstName[0] ?? ''}. ${r.lastName}`;
+                const full = `${r.firstName} ${r.lastName}`;
+                return url
+                  ? <><span class="sm:hidden"><a href={url} class="link link-hover">{short}</a></span><span class="hidden sm:inline"><a href={url} class="link link-hover">{full}</a></span></>
+                  : <><span class="sm:hidden">{short}</span><span class="hidden sm:inline">{full}</span></>;
+              })()}
             </td>
             <td>{r.category}</td>
             <td>
@@ -110,6 +121,7 @@ const showTeamResults = hasTeamResults(year, 'fell', raceId);
   <!-- Data island for client-side filtering -->
   <script type="application/json" id="results-data" set:html={JSON.stringify(results).replace(/<\/script>/gi, '<\\/script>')}></script>
   <script type="application/json" id="clubs-data" set:html={JSON.stringify(clubs).replace(/<\/script>/gi, '<\\/script>')}></script>
+  <script type="application/json" id="runner-url-map" set:html={JSON.stringify(runnerUrlMap).replace(/<\/script>/gi, '<\\/script>')}></script>
 </Layout>
 
 <script>
@@ -118,11 +130,16 @@ const showTeamResults = hasTeamResults(year, 'fell', raceId);
     raceNumber: number | null;
     firstName: string; lastName: string;
     club: string; category: string; sex: string; time: string;
+    seriesRunnerId: number | null;
   }> = JSON.parse(document.getElementById('results-data')!.textContent!);
 
   const clubs: Array<{ id: string; name: string; shortName: string }> =
     JSON.parse(document.getElementById('clubs-data')!.textContent!);
   const clubById = Object.fromEntries(clubs.map(c => [c.id, c]));
+
+  const runnerUrlMap: Record<number, string> = JSON.parse(
+    document.getElementById('runner-url-map')!.textContent!
+  );
 
   const nameInput = document.getElementById('filter-name') as HTMLInputElement;
   const clubSelect = document.getElementById('filter-club') as HTMLSelectElement;
@@ -151,24 +168,28 @@ const showTeamResults = hasTeamResults(year, 'fell', raceId);
   }
 
   function row(r: typeof allResults[0]): string {
-    const name = r.firstName[0] ? `${esc(r.firstName[0])}.` : '';
+    const url = r.seriesRunnerId != null ? runnerUrlMap[r.seriesRunnerId] : null;
+    const shortText = `${r.firstName[0] ? esc(r.firstName[0]) + '. ' : ''}${esc(r.lastName)}`;
+    const fullText = `${esc(r.firstName)} ${esc(r.lastName)}`;
+    const shortName = url ? `<a href="${url}" class="link link-hover">${shortText}</a>` : shortText;
+    const fullName = url ? `<a href="${url}" class="link link-hover">${fullText}</a>` : fullText;
     const clubShort = r.club === 'Guest' ? 'Guest' : esc(clubById[r.club]?.shortName ?? r.club);
     const clubFull = r.club === 'Guest' ? 'Guest' : esc(clubById[r.club]?.name ?? r.club);
     return `<tr>
-      <td class="hidden sm:table-cell">${r.position ?? '–'}</td>
-      <td>${r.club === 'Guest' ? '–' : (r.icPosition ?? '–')}</td>
-      <td class="hidden sm:table-cell">${r.raceNumber ?? '–'}</td>
-      <td>
-        <span class="sm:hidden">${name} ${esc(r.lastName)}</span>
-        <span class="hidden sm:inline">${esc(r.firstName)} ${esc(r.lastName)}</span>
-      </td>
-      <td>${esc(r.category)}</td>
-      <td>
-        <span class="sm:hidden">${clubShort}</span>
-        <span class="hidden sm:inline">${clubFull}</span>
-      </td>
-      <td class="text-right tabular-nums">${esc(r.time || '–')}</td>
-    </tr>`;
+    <td class="hidden sm:table-cell">${r.position ?? '–'}</td>
+    <td>${r.club === 'Guest' ? '–' : (r.icPosition ?? '–')}</td>
+    <td class="hidden sm:table-cell">${r.raceNumber ?? '–'}</td>
+    <td>
+      <span class="sm:hidden">${shortName}</span>
+      <span class="hidden sm:inline">${fullName}</span>
+    </td>
+    <td>${esc(r.category)}</td>
+    <td>
+      <span class="sm:hidden">${clubShort}</span>
+      <span class="hidden sm:inline">${clubFull}</span>
+    </td>
+    <td class="text-right tabular-nums">${esc(r.time || '–')}</td>
+  </tr>`;
   }
 
   function render() {
