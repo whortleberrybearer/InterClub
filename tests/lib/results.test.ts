@@ -70,6 +70,22 @@ describe('parseResultsCsv', () => {
     const [row] = parseResultsCsv(csv);
     expect(row.raceNumber).toBeNull();
   });
+
+  it('parses seriesRunnerId when column is present', () => {
+    const csv = [
+      'position,ic_position,first_name,last_name,club,category,sex,time,series_runner_id',
+      '1,1,Luke,Minns,blackpool,V35,M,19:35,2',
+      '11,,T.,Guest,Guest,SEN,M,21:44,',
+    ].join('\n');
+    const results = parseResultsCsv(csv);
+    expect(results[0].seriesRunnerId).toBe(2);
+    expect(results[1].seriesRunnerId).toBeNull();
+  });
+
+  it('returns seriesRunnerId as null when column is absent', () => {
+    const results = parseResultsCsv(sample);
+    results.forEach(r => expect(r.seriesRunnerId).toBeNull());
+  });
 });
 
 describe('parseTeamResultsPath', () => {
