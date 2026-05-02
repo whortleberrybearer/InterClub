@@ -1,4 +1,194 @@
 ---
-export async function getStaticPaths() { return []; }
+import Layout from '../../components/Layout.astro';
+import { getRunnerProfileStaticPaths } from '../../lib/runners';
+import type { GlobalRunner, RunnerYearBlock } from '../../lib/types';
+
+export async function getStaticPaths() {
+  return getRunnerProfileStaticPaths();
+}
+
+interface Props {
+  runner: GlobalRunner;
+  clubName: string;
+  yearBlocks: RunnerYearBlock[];
+}
+
+const { runner, clubName, yearBlocks } = Astro.props;
+const title = `${runner.firstName} ${runner.lastName}`;
+const allYears = yearBlocks.map(b => b.year);
+
+function formatDateShort(isoDate: string): string {
+  const d = new Date(isoDate);
+  return `${d.getUTCDate()}/${d.getUTCMonth() + 1}`;
+}
+
+function positionLabel(pos: number): string {
+  const mod10 = pos % 10, mod100 = pos % 100;
+  const suffix =
+    mod10 === 1 && mod100 !== 11 ? 'st' :
+    mod10 === 2 && mod100 !== 12 ? 'nd' :
+    mod10 === 3 && mod100 !== 13 ? 'rd' : 'th';
+  return `${pos}${suffix}`;
+}
 ---
-<div>placeholder</div>
+
+<Layout title={title}>
+  <h1 class="text-2xl font-bold mb-1">{title}</h1>
+  <p class="text-sm text-base-content/60 mb-6">
+    {clubName} &middot; {runner.sex === 'M' ? 'Men' : 'Women'} &middot; {runner.category}
+  </p>
+
+  <!-- Filter bar -->
+  <div class="bg-base-100 border border-base-200 rounded-lg p-3 mb-6 flex flex-wrap gap-2 items-center">
+    <div class="flex gap-1">
+      <button class="btn btn-sm btn-active" data-series-filter="all">All</button>
+      <button class="btn btn-sm btn-ghost" data-series-filter="road-gp">Road GP</button>
+      <button class="btn btn-sm btn-ghost" data-series-filter="fell">Fell</button>
+    </div>
+    <select id="filter-year" class="select select-bordered select-sm">
+      <option value="">All Years</option>
+      {allYears.map(y => <option value={String(y)}>{y}</option>)}
+    </select>
+    <select id="filter-race" class="select select-bordered select-sm">
+      <option value="">All Races</option>
+    </select>
+  </div>
+
+  <!-- Year blocks -->
+  <div id="profile-content">
+    {yearBlocks.map(block => (
+      <div data-year={String(block.year)} class="mb-8">
+        <h2 class="text-lg font-bold text-primary border-b border-base-200 pb-1 mb-4">{block.year}</h2>
+
+        {block.roadGp && (
+          <div data-series="road-gp" class="mb-5">
+            <h3 class="text-xs font-bold uppercase tracking-wider text-base-content/50 mb-2">Road GP</h3>
+            {block.roadGp.awards.map(award => (
+              <a href={`/road-gp/${block.year}/`} class="inline-flex items-center gap-1 text-sm text-success hover:underline mb-2">
+                🏆 {award.categoryName} — {positionLabel(award.position)}
+              </a>
+            ))}
+            <table class="table table-sm w-full">
+              <tbody>
+                {block.roadGp.races.map(race => (
+                  <tr data-race-id={race.raceId} data-race-name={race.raceName}>
+                    <td class="text-base-content/50 text-xs w-12 tabular-nums">{formatDateShort(race.date)}</td>
+                    <td>
+                      {race.hasResults
+                        ? <a href={`/road-gp/${block.year}/${race.raceId}/results`} class="link link-hover">{race.raceName}</a>
+                        : race.raceName}
+                    </td>
+                    <td class="text-right tabular-nums font-mono text-sm">{race.time || '–'}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+
+        {block.fell && (
+          <div data-series="fell" class="mb-5">
+            <h3 class="text-xs font-bold uppercase tracking-wider text-base-content/50 mb-2">Fell</h3>
+            {block.fell.awards.map(award => (
+              <a href={`/fell/${block.year}/`} class="inline-flex items-center gap-1 text-sm text-success hover:underline mb-2">
+                🏆 {award.categoryName} — {positionLabel(award.position)}
+              </a>
+            ))}
+            <table class="table table-sm w-full">
+              <tbody>
+                {block.fell.races.map(race => (
+                  <tr data-race-id={race.raceId} data-race-name={race.raceName}>
+                    <td class="text-base-content/50 text-xs w-12 tabular-nums">{formatDateShort(race.date)}</td>
+                    <td>
+                      {race.hasResults
+                        ? <a href={`/fell/${block.year}/${race.raceId}/results`} class="link link-hover">{race.raceName}</a>
+                        : race.raceName}
+                    </td>
+                    <td class="text-right tabular-nums font-mono text-sm">{race.time || '–'}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </div>
+    ))}
+  </div>
+</Layout>
+
+<script>
+  const yearSelect = document.getElementById('filter-year') as HTMLSelectElement;
+  const raceSelect = document.getElementById('filter-race') as HTMLSelectElement;
+  let activeSeries = 'all';
+
+  function applyFilters() {
+    const activeYear = yearSelect.value;
+    const activeRace = raceSelect.value;
+
+    // Show/hide series sections
+    document.querySelectorAll<HTMLElement>('[data-series]').forEach(div => {
+      div.classList.toggle('hidden', activeSeries !== 'all' && div.dataset.series !== activeSeries);
+    });
+
+    // Show/hide race rows
+    document.querySelectorAll<HTMLElement>('tr[data-race-id]').forEach(row => {
+      row.classList.toggle('hidden', activeRace !== '' && row.dataset.raceId !== activeRace);
+    });
+
+    // Hide series sections whose race rows are all hidden (only when race filter active)
+    if (activeRace !== '') {
+      document.querySelectorAll<HTMLElement>('[data-series]:not(.hidden)').forEach(div => {
+        const visibleRows = div.querySelectorAll('tr[data-race-id]:not(.hidden)');
+        if (visibleRows.length === 0) div.classList.add('hidden');
+      });
+    }
+
+    // Show/hide year blocks
+    document.querySelectorAll<HTMLElement>('[data-year]').forEach(block => {
+      const yearMatch = activeYear === '' || block.dataset.year === activeYear;
+      const hasVisibleSeries = block.querySelector('[data-series]:not(.hidden)') !== null;
+      block.classList.toggle('hidden', !yearMatch || !hasVisibleSeries);
+    });
+  }
+
+  function updateRaceDropdown() {
+    const activeYear = yearSelect.value;
+    const seen = new Set<string>();
+    const options: Array<{ id: string; name: string }> = [];
+
+    document.querySelectorAll<HTMLElement>('tr[data-race-id]').forEach(row => {
+      const yearBlock = row.closest<HTMLElement>('[data-year]');
+      const seriesDiv = row.closest<HTMLElement>('[data-series]');
+      const yearMatch = activeYear === '' || yearBlock?.dataset.year === activeYear;
+      const seriesMatch = activeSeries === 'all' || seriesDiv?.dataset.series === activeSeries;
+      if (yearMatch && seriesMatch) {
+        const id = row.dataset.raceId!;
+        if (!seen.has(id)) {
+          seen.add(id);
+          options.push({ id, name: row.dataset.raceName! });
+        }
+      }
+    });
+
+    const current = raceSelect.value;
+    raceSelect.innerHTML = '<option value="">All Races</option>' +
+      options.map(o => `<option value="${o.id}"${o.id === current ? ' selected' : ''}>${o.name}</option>`).join('');
+    if (current && !options.find(o => o.id === current)) raceSelect.value = '';
+  }
+
+  document.querySelectorAll<HTMLButtonElement>('[data-series-filter]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      activeSeries = btn.dataset.seriesFilter!;
+      document.querySelectorAll('[data-series-filter]').forEach(b => {
+        const active = b === btn;
+        b.classList.toggle('btn-active', active);
+        b.classList.toggle('btn-ghost', !active);
+      });
+      applyFilters();
+      updateRaceDropdown();
+    });
+  });
+
+  yearSelect.addEventListener('change', () => { applyFilters(); updateRaceDropdown(); });
+  raceSelect.addEventListener('change', applyFilters);
+</script>
