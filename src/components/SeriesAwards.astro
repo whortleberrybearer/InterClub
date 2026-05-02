@@ -54,7 +54,9 @@ const hasMF = awards.maleAwards.length > 0 || awards.femaleAwards.length > 0;
                   {cat.awards.map(a => (
                     <div class="flex items-baseline gap-2 text-sm">
                       <span class="w-6 shrink-0">{positionLabel(a.position)}</span>
-                      <span class="font-medium">{a.name}</span>
+                      {a.runnerUrl
+                        ? <a href={a.runnerUrl} class="font-medium link link-hover">{a.name}</a>
+                        : <span class="font-medium">{a.name}</span>}
                       <span class="text-base-content/50 text-xs">{a.clubName}</span>
                     </div>
                   ))}
@@ -74,7 +76,9 @@ const hasMF = awards.maleAwards.length > 0 || awards.femaleAwards.length > 0;
                     {cat.awards.map(a => (
                       <div class="flex items-baseline gap-2 text-sm">
                         <span class="w-6 shrink-0">{positionLabel(a.position)}</span>
-                        <span class="font-medium">{a.name}</span>
+                        {a.runnerUrl
+                        ? <a href={a.runnerUrl} class="font-medium link link-hover">{a.name}</a>
+                        : <span class="font-medium">{a.name}</span>}
                         <span class="text-base-content/50 text-xs">{a.clubName}</span>
                       </div>
                     ))}
@@ -90,7 +94,9 @@ const hasMF = awards.maleAwards.length > 0 || awards.femaleAwards.length > 0;
                     {cat.awards.map(a => (
                       <div class="flex items-baseline gap-2 text-sm">
                         <span class="w-6 shrink-0">{positionLabel(a.position)}</span>
-                        <span class="font-medium">{a.name}</span>
+                        {a.runnerUrl
+                        ? <a href={a.runnerUrl} class="font-medium link link-hover">{a.name}</a>
+                        : <span class="font-medium">{a.name}</span>}
                         <span class="text-base-content/50 text-xs">{a.clubName}</span>
                       </div>
                     ))}
