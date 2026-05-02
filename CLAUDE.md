@@ -69,6 +69,7 @@ src/
     years.ts                 # pure helper for extracting years from paths
     data.ts                  # race schedule loading via import.meta.glob
     results.ts               # CSV + team JSON parsing; results/clubs/config/team loading
+    runners.ts               # runner identity loading; buildRunnerUrlMap; getRunnerProfileStaticPaths
   components/
     Layout.astro             # shared nav + footer wrapper
     RaceCard.astro           # individual race card
@@ -93,6 +94,8 @@ src/
         [raceId]/
           results.astro
           team-results.astro
+    runners/
+      [slug].astro       # runner profile page (aggregates all results and awards for one runner)
 ```
 
 ## Data
@@ -122,6 +125,8 @@ position,ic_position,race_number,first_name,last_name,club,category,sex,time
 ```
 
 `club` is a club `id` from `clubs.json`, or `Guest` for non-club runners. `ic_position` is empty for guests. `race_number` is optional — the column may be omitted entirely from older CSVs or left empty for individual runners; both cases parse as `null` on `RaceResult.raceNumber`. All fields are optional to support partial historical data.
+
+The optional `series_runner_id` column (last column, integer) links a row to `id` in `src/data/{year}/{series}/runners.json`, enabling runner profile links and profile page aggregation.
 
 ### Team results JSON schema
 
@@ -276,3 +281,26 @@ End-of-season award winners are placed at `src/data/{year}/{series}/awards.json`
 - `club` — id matching `clubs.json[].id`; display name resolved at build time
 - Awards are placed at `src/data/{year}/{series}/awards.json` for a past year — they are announced the following season, so they belong on the past-year archive page, not the current-year page
 - On past-year pages (`[year]/index.astro`) the awards section renders below the race list under a `{year} Awards` heading, only when this file exists; the current-year pages never show awards
+
+### Global runner registry schema
+
+`src/data/runners.json` — one entry per canonical runner identity:
+
+```json
+{ "id": 1, "firstName": "Luke", "lastName": "Minns", "club": "blackpool", "sex": "M", "category": "V35" }
+```
+
+### Series runner file schema
+
+`src/data/{year}/{series}/runners.json` — links series-local IDs to the global registry:
+
+```json
+{ "id": 1, "runnerId": 1, "firstName": "Luke", "lastName": "Minns", "club": "blackpool", "sex": "M", "category": "V35" }
+```
+
+- `id` — series-local numeric ID; referenced by `series_runner_id` in results CSVs and `seriesRunnerId` in awards JSON
+- `runnerId` — references the global `runners.json` `id`
+- `number` — optional bib number for this series/year
+
+The results CSV `series_runner_id` column (last, optional) references `id` in the series runner file.
+The awards JSON `seriesRunnerId` field (optional on individual award entries) references the same `id`.
