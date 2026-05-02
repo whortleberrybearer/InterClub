@@ -75,6 +75,7 @@ src/
     RaceCard.astro           # individual race card
     RaceList.astro           # race list with year filter (current year only)
     HistoryRaceList.astro    # condensed archive list for past years (date, name, result links, awards)
+    SeriesAwards.astro       # awards section rendered on past-year index pages
     YearFilter.astro         # year dropdown navigation
   pages/
     index.astro              # home page
@@ -108,11 +109,23 @@ To add a new year, create all of these files:
 src/data/{year}/clubs.json             # competing clubs for that year
 src/data/{year}/road-gp/races.json     # each race may have a shortName abbreviation for standings columns
 src/data/{year}/road-gp/config.json    # age categories + teamCategories for Road GP
+src/data/{year}/road-gp/runners.json   # series runner file — can start as [] and grow as IDs are assigned
 src/data/{year}/fell/races.json
 src/data/{year}/fell/config.json       # age categories + teamCategories for Fell
+src/data/{year}/fell/runners.json      # series runner file — can start as []
 ```
 
 Then update `src/data/config.json` to set `currentYear`. Missing `clubs.json` or `config.json` causes results pages to silently render with no clubs or categories in the filter bar.
+
+### Adding a new runner
+
+1. Add an entry to `src/data/runners.json` with a new unique `id` (increment from the highest existing id). Use the runner's canonical/current name.
+2. Add a matching entry to `src/data/{year}/{series}/runners.json` with a series-local `id` (unique within that file) and `runnerId` pointing to the global entry.
+3. In the results CSV, add the series-local `id` in the `series_runner_id` column for the runner's rows.
+4. In any `awards.json` individual award entries for this runner, add `"seriesRunnerId": <series-local-id>`.
+5. In any `individual-standings.json` runner entries, add `"seriesRunnerId": <series-local-id>`.
+
+Runner data degrades gracefully: rows with no `series_runner_id` simply render without a profile link — existing CSVs and JSON files do not need to be updated all at once.
 
 `getAvailableYears(series)` in `src/lib/data.ts` requires a series argument — it is intentionally series-aware so that years with data for one series but not the other don't generate empty pages.
 
@@ -163,7 +176,11 @@ Team results are computed externally and placed alongside the individual results
 
 CSVs are loaded at build time via `import.meta.glob` with `{ query: '?raw', import: 'default', eager: true }` — this returns the raw file content as a string. Do not use a CSV library; use the `parseResultsCsv` utility in `src/lib/results.ts`. JSON data files (clubs, config, races, team results) are loaded with standard eager glob imports.
 
-Only pure functions (`parseResultsCsv`, `parseTeamResultsPath`, `parseTeamStandingsPath`, date helpers, year extraction) are unit tested. Functions that depend on `import.meta.glob` are validated by the build instead.
+**`import.meta.glob` must be called at module level** (top of the file, outside any function or conditional). Vite resolves glob patterns at build time; calling them inside a function causes a runtime error. See `src/lib/runners.ts` for the established pattern of declaring all globs at module scope and referencing them inside functions.
+
+**Dependency direction in lib/:** `runners.ts` imports from `results.ts` and `data.ts`. `results.ts` and `data.ts` do not import from `runners.ts`. Keep this one-way — pages import `buildRunnerUrlMap` directly from `runners.ts`, not via `results.ts` helpers.
+
+Only pure functions (`parseResultsCsv`, `parseTeamResultsPath`, `parseTeamStandingsPath`, `runnerSlug`, `parseSeriesRunnerPath`, date helpers, year extraction) are unit tested. Functions that depend on `import.meta.glob` are validated by the build instead.
 
 ### Team standings JSON schema
 
@@ -231,6 +248,7 @@ Season individual standings are computed externally and placed at `src/data/{yea
 - `results[raceId].counting` — `false` when this race didn't count toward the runner's total (shown dimmed with strikethrough on the page)
 - `runners[].total` — pre-computed and stored explicitly
 - `runners[].sex` / `runners[].ageCategory` — stored separately for client-side filtering; displayed combined as e.g. `MSEN`, `FV40`
+- `runners[].seriesRunnerId` — optional; references `id` in `src/data/{year}/{series}/runners.json`; enables a link to the runner's profile page
 
 ### Series config.json schema
 
@@ -267,7 +285,7 @@ End-of-season award winners are placed at `src/data/{year}/{series}/awards.json`
     {
       "category": "sen-m",
       "awards": [
-        { "position": 1, "name": "L. Minns", "club": "blackpool" },
+        { "position": 1, "name": "L. Minns", "club": "blackpool", "seriesRunnerId": 1 },
         { "position": 3, "name": "T. Guest", "club": "red-rose" }
       ]
     }
@@ -278,6 +296,7 @@ End-of-season award winners are placed at `src/data/{year}/{series}/awards.json`
 - `teamAwards[].category` — id matching `teamCategories[].id` in `config.json`; one award per team category (the winning club only)
 - `individualAwards[].category` — id matching `individualCategories[].id` in `config.json`
 - `individualAwards[].awards[].position` — explicit; gaps are allowed (e.g. position 2 absent means no 2nd-place award was given)
+- `individualAwards[].awards[].seriesRunnerId` — optional; references `id` in `src/data/{year}/{series}/runners.json`; enables a link to the runner's profile page
 - `club` — id matching `clubs.json[].id`; display name resolved at build time
 - Awards are placed at `src/data/{year}/{series}/awards.json` for a past year — they are announced the following season, so they belong on the past-year archive page, not the current-year page
 - On past-year pages (`[year]/index.astro`) the awards section renders below the race list under a `{year} Awards` heading, only when this file exists; the current-year pages never show awards
