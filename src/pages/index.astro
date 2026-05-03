@@ -2,43 +2,169 @@
 // src/pages/index.astro
 import Layout from '../components/Layout.astro';
 import { getCurrentYear, getRaces } from '../lib/data';
+import { hasResults, hasTeamStandings, hasIndividualStandings } from '../lib/results';
+import { formatRaceDate } from '../lib/format';
+import type { Race } from '../lib/types';
 
 const currentYear = getCurrentYear();
 const roadRaces = getRaces(currentYear, 'road-gp');
 const fellRaces = getRaces(currentYear, 'fell');
+
+// Parse an ISO date string as a local midnight Date (avoids timezone shifts)
+function toLocalDate(dateStr: string): Date {
+  const [y, m, d] = dateStr.split('-').map(Number);
+  return new Date(y, m - 1, d);
+}
+
+const today = new Date();
+today.setHours(0, 0, 0, 0);
+
+const sevenDaysAgo = new Date(today);
+sevenDaysAgo.setDate(today.getDate() - 7);
+
+// Identify hero race: most recent Road GP race with results within 7 days,
+// otherwise the next upcoming Road GP race.
+const recentRace = roadRaces
+  .filter(r => {
+    const d = toLocalDate(r.date);
+    return d >= sevenDaysAgo && d < today && hasResults(currentYear, 'road-gp', r.id);
+  })
+  .at(-1) ?? null;
+
+const nextRoadRace = roadRaces.find(r => toLocalDate(r.date) >= today) ?? null;
+const heroRace: Race | null = recentRace ?? nextRoadRace;
+const heroMode: 'recent' | 'next' | null = recentRace ? 'recent' : nextRoadRace ? 'next' : null;
+
+const heroIndex = heroRace ? roadRaces.indexOf(heroRace) + 1 : null;
+const heroLabel = heroMode === 'recent'
+  ? `Recent Results · Race ${heroIndex} of ${roadRaces.length}`
+  : heroMode === 'next'
+    ? `Next Race · Race ${heroIndex} of ${roadRaces.length}`
+    : null;
+
+// Standings links: prefer individual standings, fall back to team standings
+function getStandingsUrl(series: 'road-gp' | 'fell'): string | undefined {
+  if (hasIndividualStandings(currentYear, series))
+    return `/${series}/${currentYear}/individual-standings`;
+  if (hasTeamStandings(currentYear, series))
+    return `/${series}/${currentYear}/team-standings`;
+  return undefined;
+}
+
+const roadStandingsUrl = getStandingsUrl('road-gp');
+const fellStandingsUrl = getStandingsUrl('fell');
+
+// Race row state helpers
+function isPast(race: Race): boolean {
+  return toLocalDate(race.date) < today;
+}
+function isNext(races: Race[], race: Race): boolean {
+  return races.find(r => toLocalDate(r.date) >= today)?.id === race.id;
+}
 ---
 
 <Layout title="Home">
-  <div class="mb-8">
-    <h1 class="text-3xl font-bold mb-2">Inter Club {currentYear}</h1>
-    <p class="text-base-content/70">
-      Lancashire's annual running competition between seven clubs, contested across two series.
-    </p>
+  <!-- ── Road Grand Prix ──────────────────────────────── -->
+  <div class="mb-10">
+    <div class="flex items-center justify-between mb-4">
+      <h2 class="text-xl font-bold">Road Grand Prix</h2>
+      {roadStandingsUrl && (
+        <a href={roadStandingsUrl} class="text-sm text-primary hover:underline">Standings →</a>
+      )}
+    </div>
+
+    {heroRace && heroMode && (
+      <div class={`card shadow mb-4 ${heroMode === 'recent' ? 'bg-success text-success-content' : 'bg-primary text-primary-content'}`}>
+        <div class="card-body flex-row items-center justify-between flex-wrap gap-4 py-4">
+          <div>
+            <div class="text-xs uppercase tracking-wide opacity-70 mb-1">{heroLabel}</div>
+            <h3 class="text-lg font-bold">{heroRace.name}</h3>
+            <p class="opacity-80 text-sm mt-0.5">
+              {formatRaceDate(heroRace.date, heroMode === 'recent' ? undefined : heroRace.time)}
+              {heroRace.location && ` · ${heroRace.location}`}
+            </p>
+          </div>
+          {heroMode === 'recent' ? (
+            <a href={`/road-gp/${currentYear}/${heroRace.id}/results`} class={`btn btn-sm border-0 shrink-0 bg-white text-success hover:bg-base-200`}>
+              View results →
+            </a>
+          ) : (
+            <a href={`/road-gp/${currentYear}/${heroRace.id}`} class={`btn btn-sm border-0 shrink-0 bg-white text-primary hover:bg-base-200`}>
+              Race info →
+            </a>
+          )}
+        </div>
+      </div>
+    )}
+
+    <div class="overflow-x-auto">
+      <table class="table table-sm bg-base-100 rounded-box shadow-sm w-full">
+        <tbody>
+          {roadRaces.map(race => {
+            const past = isPast(race);
+            const next = isNext(roadRaces, race);
+            return (
+              <tr class:list={[{ 'opacity-40': past, 'bg-primary/5': next }]}>
+                <td class:list={['text-sm w-28', { 'text-base-content/70': past }]}>
+                  {formatRaceDate(race.date)}
+                </td>
+                <td class:list={['text-sm', { 'font-bold': next }]}>
+                  {race.name}
+                  {next && <span class="badge badge-primary badge-xs ml-2">Next</span>}
+                </td>
+                <td class="text-right">
+                  {past && hasResults(currentYear, 'road-gp', race.id) && (
+                    <a href={`/road-gp/${currentYear}/${race.id}/results`} class="link link-primary text-sm">Results</a>
+                  )}
+                  {next && (
+                    <a href={`/road-gp/${currentYear}/${race.id}`} class="link link-primary text-sm">Info</a>
+                  )}
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    </div>
   </div>
 
-  <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-    <a href="/road-gp/" class="card bg-base-100 shadow-sm border border-base-200 hover:shadow-md transition-shadow">
-      <div class="card-body">
-        <h2 class="card-title">Road Grand Prix</h2>
-        <p class="text-base-content/70 text-sm">
-          {roadRaces.length} race{roadRaces.length !== 1 ? 's' : ''} · hosted by member clubs · free entry
-        </p>
-        <div class="card-actions justify-end mt-2">
-          <span class="btn btn-primary btn-sm">View schedule →</span>
-        </div>
-      </div>
-    </a>
+  <!-- ── Fell Championship ────────────────────────────── -->
+  <div>
+    <div class="flex items-center justify-between mb-4">
+      <h2 class="text-xl font-bold">Fell Championship</h2>
+      {fellStandingsUrl && (
+        <a href={fellStandingsUrl} class="text-sm text-primary hover:underline">Standings →</a>
+      )}
+    </div>
 
-    <a href="/fell/" class="card bg-base-100 shadow-sm border border-base-200 hover:shadow-md transition-shadow">
-      <div class="card-body">
-        <h2 class="card-title">Fell Championship</h2>
-        <p class="text-base-content/70 text-sm">
-          {fellRaces.length} race{fellRaces.length !== 1 ? 's' : ''} · external events · paid entry
-        </p>
-        <div class="card-actions justify-end mt-2">
-          <span class="btn btn-primary btn-sm">View schedule →</span>
-        </div>
-      </div>
-    </a>
+    <div class="overflow-x-auto">
+      <table class="table table-sm bg-base-100 rounded-box shadow-sm w-full">
+        <tbody>
+          {fellRaces.map(race => {
+            const past = isPast(race);
+            const next = isNext(fellRaces, race);
+            return (
+              <tr class:list={[{ 'opacity-40': past, 'bg-primary/5': next }]}>
+                <td class:list={['text-sm w-28', { 'text-base-content/70': past }]}>
+                  {formatRaceDate(race.date)}
+                </td>
+                <td class:list={['text-sm', { 'font-bold': next }]}>
+                  {race.name}
+                  {next && <span class="badge badge-primary badge-xs ml-2">Next</span>}
+                </td>
+                <td class="text-right">
+                  {past && hasResults(currentYear, 'fell', race.id) && (
+                    <a href={`/fell/${currentYear}/${race.id}/results`} class="link link-primary text-sm">Results</a>
+                  )}
+                  {next && (
+                    <a href={`/fell/${currentYear}/${race.id}`} class="link link-primary text-sm">Info</a>
+                  )}
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    </div>
   </div>
 </Layout>
