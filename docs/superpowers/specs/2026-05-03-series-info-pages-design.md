@@ -88,11 +88,13 @@ The Inter Club Fell Championship is a series of four fell races held during the 
 
 ### 4. Team Categories
 
-| Category | Scorers | Eligibility     |
-|----------|---------|-----------------|
-| Open     | 6       | All finishers   |
-| Ladies   | 3       | Women           |
-| Vets     | 4       | Men & Women 40+ |
+| Category | Scorers | Eligibility              |
+|----------|---------|--------------------------|
+| Open     | 5       | Any age, any sex         |
+| Ladies   | 3       | Women                    |
+| Vets     | 4       | Men & Women 40+          |
+| Vet 50   | 3       | Men & Women 50+          |
+| Vet 60   | 2       | Men & Women 60+          |
 
 ### 5. Team Scoring
 
