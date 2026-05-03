@@ -24,11 +24,11 @@ const standingsUrl = hasTeamStandings(year, 'road-gp')
 const individualStandingsUrl = hasIndividualStandings(year, 'road-gp')
   ? `/road-gp/${year}/individual-standings`
   : undefined;
+const config = getSeriesConfig(year, 'road-gp');
 
 let awards: ResolvedSeriesAwards | undefined;
 if (hasAwards(year, 'road-gp')) {
   const raw = getAwards(year, 'road-gp')!;
-  const config = getSeriesConfig(year, 'road-gp');
   const clubs = getClubs(year);
 
   const resolveClub = (id: string) => clubs.find(c => c.id === id)?.name ?? id;
@@ -79,5 +79,6 @@ if (hasAwards(year, 'road-gp')) {
     standingsUrl={standingsUrl}
     individualStandingsUrl={individualStandingsUrl}
     awards={awards}
+    note={config.note}
   />
 </Layout>
