@@ -6,10 +6,12 @@ interface Props {
 }
 
 const { title } = Astro.props;
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const currentPath = Astro.url.pathname;
 
-function isActive(base: string): boolean {
-  return currentPath === base || currentPath.startsWith(base + '/');
+function isActive(path: string): boolean {
+  const fullPath = base + path;
+  return currentPath === fullPath || currentPath.startsWith(fullPath + '/');
 }
 ---
 
@@ -19,21 +21,21 @@ function isActive(base: string): boolean {
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{title} — Inter Club</title>
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/svg+xml" href={`${import.meta.env.BASE_URL}favicon.svg`} />
   </head>
   <body class="min-h-screen bg-base-200 flex flex-col">
     <header class="bg-base-100 shadow-sm">
       <div class="navbar max-w-4xl mx-auto px-4">
         <div class="navbar-start">
-          <a href="/" class="btn btn-ghost text-lg font-bold tracking-tight">Inter Club</a>
+          <a href={import.meta.env.BASE_URL} class="btn btn-ghost text-lg font-bold tracking-tight">Inter Club</a>
         </div>
         <div class="navbar-end gap-1">
           <a
-            href="/road-gp/"
+            href={`${import.meta.env.BASE_URL}road-gp/`}
             class={`btn btn-ghost btn-sm ${isActive('/road-gp') ? 'btn-active' : ''}`}
           >Road GP</a>
           <a
-            href="/fell/"
+            href={`${import.meta.env.BASE_URL}fell/`}
             class={`btn btn-ghost btn-sm ${isActive('/fell') ? 'btn-active' : ''}`}
           >Fell</a>
         </div>
