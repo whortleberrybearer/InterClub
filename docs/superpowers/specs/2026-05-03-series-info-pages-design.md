@@ -78,7 +78,6 @@ The Inter Club Fell Championship is a series of four fell races held during the 
 
 ### 2. Key Rules
 
-- Entry fees must be paid — these are not free races
 - Competitors are responsible for their own safety on the fells and must obey all rules set by race organisers
 - Additional mandatory kit and protective clothing may be required; failure to carry required kit risks disqualification
 
