@@ -87,10 +87,11 @@ export interface IndividualCategory {
 }
 
 export interface SeriesConfig {
-  ageCategories: string[];           // renamed from categories
+  ageCategories?: string[];          // renamed from categories; now optional
   maxCountingRaces?: number;         // optional; when set, the page shows "Best N races count"
   individualCategories?: IndividualCategory[];
   teamCategories?: TeamCategory[];
+  note?: string;                     // optional; used for suspended seasons
 }
 
 export interface TeamCategory {
