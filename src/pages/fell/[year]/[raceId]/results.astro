@@ -4,6 +4,7 @@ import Layout from '../../../../components/Layout.astro';
 import { getRace } from '../../../../lib/data';
 import { getResultsStaticPaths, hasTeamResults } from '../../../../lib/results';
 import { buildRunnerUrlMap } from '../../../../lib/runners';
+import { siteUrl } from '../../../../lib/url';
 import type { Club, RaceResult, SeriesConfig } from '../../../../lib/types';
 
 export async function getStaticPaths() {
@@ -32,7 +33,7 @@ const showTeamResults = hasTeamResults(year, 'fell', raceId);
 
 <Layout title={`${title} — Results`}>
   <div class="mb-4 flex items-center gap-2">
-    <a href={`/fell/${year}/${raceId}`} class="btn btn-ghost btn-sm gap-1 -ml-3">← {title}</a>
+    <a href={siteUrl(`/fell/${year}/${raceId}`)} class="btn btn-ghost btn-sm gap-1 -ml-3">← {title}</a>
   </div>
 
   <div class="mb-6">

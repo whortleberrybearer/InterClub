@@ -3,6 +3,7 @@
 import Layout from '../../../../components/Layout.astro';
 import { getRace } from '../../../../lib/data';
 import { getTeamResultsStaticPaths } from '../../../../lib/results';
+import { siteUrl } from '../../../../lib/url';
 import type { Club, SeriesConfig, TeamResults } from '../../../../lib/types';
 
 export async function getStaticPaths() {
@@ -27,7 +28,7 @@ const categoryById = Object.fromEntries((config.teamCategories ?? []).map(c => [
 
 <Layout title={`${title} — Team Results`}>
   <div class="mb-4">
-    <a href={`/fell/${year}/${raceId}/results`} class="btn btn-ghost btn-sm gap-1 -ml-3">← Individual Results</a>
+    <a href={siteUrl(`/fell/${year}/${raceId}/results`)} class="btn btn-ghost btn-sm gap-1 -ml-3">← Individual Results</a>
   </div>
 
   <div class="mb-6">

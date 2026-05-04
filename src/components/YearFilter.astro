@@ -1,5 +1,7 @@
 ---
 // src/components/YearFilter.astro
+import { siteUrl } from '../lib/url';
+
 interface Props {
   years: number[];
   activeYear: number;
@@ -10,7 +12,7 @@ interface Props {
 const { years, activeYear, seriesBasePath, currentYear } = Astro.props;
 
 function yearUrl(year: number): string {
-  return year === currentYear ? `${seriesBasePath}/` : `${seriesBasePath}/${year}/`;
+  return year === currentYear ? siteUrl(`${seriesBasePath}/`) : siteUrl(`${seriesBasePath}/${year}/`);
 }
 ---
 

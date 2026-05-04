@@ -4,6 +4,7 @@ import type {
 } from './types';
 import { parseResultsCsv, hasResults, getSeriesConfig } from './results';
 import { getRaces } from './data';
+import { siteUrl } from './url';
 
 // All import.meta.glob calls MUST be at module level (Vite constraint)
 const globalRunnerFile = import.meta.glob<{ default: GlobalRunner[] }>(
@@ -61,7 +62,7 @@ export function buildRunnerUrlMap(year: number, series: Series): Record<number, 
   const map: Record<number, string> = {};
   for (const sr of seriesRunners) {
     const global = globalById[sr.runnerId];
-    if (global) map[sr.id] = `/runners/${runnerSlug(global)}/`;
+    if (global) map[sr.id] = siteUrl(`/runners/${runnerSlug(global)}/`);
   }
   return map;
 }

@@ -4,6 +4,7 @@ import Layout from '../../../components/Layout.astro';
 import { getRaces } from '../../../lib/data';
 import { getTeamStandingsStaticPaths } from '../../../lib/results';
 import type { Club, SeriesConfig, TeamStandings } from '../../../lib/types';
+import { siteUrl } from '../../../lib/url';
 
 export async function getStaticPaths() {
   return getTeamStandingsStaticPaths('fell');
@@ -27,7 +28,7 @@ const categoryById = Object.fromEntries((config.teamCategories ?? []).map(c => [
 
 <Layout title={`Fell Championship ${year} — Team Standings`}>
   <div class="mb-4">
-    <a href={`/fell/${year}`} class="btn btn-ghost btn-sm gap-1 -ml-3">← Fell Championship {year}</a>
+    <a href={siteUrl(`/fell/${year}`)} class="btn btn-ghost btn-sm gap-1 -ml-3">← Fell Championship {year}</a>
   </div>
 
   <div class="mb-6">
@@ -79,7 +80,7 @@ const categoryById = Object.fromEntries((config.teamCategories ?? []).map(c => [
                 const race = raceById[raceId];
                 const label = race?.shortName ?? raceId;
                 const href = linkedRaceIds.has(raceId)
-                  ? `/fell/${year}/${raceId}/team-results`
+                  ? siteUrl(`/fell/${year}/${raceId}/team-results`)
                   : null;
                 return (
                   <th class="text-right py-2 px-2 font-medium whitespace-nowrap">
@@ -161,7 +162,7 @@ const categoryById = Object.fromEntries((config.teamCategories ?? []).map(c => [
                     const race = raceById[raceId];
                     const label = race?.shortName ?? raceId;
                     const href = linkedRaceIds.has(raceId)
-                      ? `/fell/${year}/${raceId}/team-results`
+                      ? siteUrl(`/fell/${year}/${raceId}/team-results`)
                       : null;
                     const isEmpty = pts === null;
                     return (

@@ -1,6 +1,7 @@
 ---
 import Layout from '../../components/Layout.astro';
 import { getRunnerProfileStaticPaths } from '../../lib/runners';
+import { siteUrl } from '../../lib/url';
 import type { GlobalRunner, RunnerYearBlock } from '../../lib/types';
 
 export async function getStaticPaths() {
@@ -64,7 +65,7 @@ function positionLabel(pos: number): string {
           <div data-series="road-gp" class="mb-5">
             <h3 class="text-xs font-bold uppercase tracking-wider text-base-content/50 mb-2">Road GP</h3>
             {block.roadGp.awards.map(award => (
-              <a href={`/road-gp/${block.year}/`} class="inline-flex items-center gap-1 text-sm text-success hover:underline mb-2">
+              <a href={siteUrl(`/road-gp/${block.year}/`)} class="inline-flex items-center gap-1 text-sm text-success hover:underline mb-2">
                 🏆 {award.categoryName} — {positionLabel(award.position)}
               </a>
             ))}
@@ -75,7 +76,7 @@ function positionLabel(pos: number): string {
                     <td class="text-base-content/50 text-xs w-12 tabular-nums">{formatDateShort(race.date)}</td>
                     <td>
                       {race.hasResults
-                        ? <a href={`/road-gp/${block.year}/${race.raceId}/results`} class="link link-hover">{race.raceName}</a>
+                        ? <a href={siteUrl(`/road-gp/${block.year}/${race.raceId}/results`)} class="link link-hover">{race.raceName}</a>
                         : race.raceName}
                     </td>
                     <td class="text-right tabular-nums font-mono text-sm">{race.time || '–'}</td>
@@ -90,7 +91,7 @@ function positionLabel(pos: number): string {
           <div data-series="fell" class="mb-5">
             <h3 class="text-xs font-bold uppercase tracking-wider text-base-content/50 mb-2">Fell</h3>
             {block.fell.awards.map(award => (
-              <a href={`/fell/${block.year}/`} class="inline-flex items-center gap-1 text-sm text-success hover:underline mb-2">
+              <a href={siteUrl(`/fell/${block.year}/`)} class="inline-flex items-center gap-1 text-sm text-success hover:underline mb-2">
                 🏆 {award.categoryName} — {positionLabel(award.position)}
               </a>
             ))}
@@ -101,7 +102,7 @@ function positionLabel(pos: number): string {
                     <td class="text-base-content/50 text-xs w-12 tabular-nums">{formatDateShort(race.date)}</td>
                     <td>
                       {race.hasResults
-                        ? <a href={`/fell/${block.year}/${race.raceId}/results`} class="link link-hover">{race.raceName}</a>
+                        ? <a href={siteUrl(`/fell/${block.year}/${race.raceId}/results`)} class="link link-hover">{race.raceName}</a>
                         : race.raceName}
                     </td>
                     <td class="text-right tabular-nums font-mono text-sm">{race.time || '–'}</td>

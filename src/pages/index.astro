@@ -4,6 +4,7 @@ import Layout from '../components/Layout.astro';
 import { getCurrentYear, getRaces } from '../lib/data';
 import { hasResults, hasTeamStandings, hasIndividualStandings } from '../lib/results';
 import { formatRaceDate } from '../lib/format';
+import { siteUrl } from '../lib/url';
 import type { Race } from '../lib/types';
 
 const currentYear = getCurrentYear();
@@ -45,9 +46,9 @@ const heroLabel = heroMode === 'recent'
 // Standings links: prefer individual standings, fall back to team standings
 function getStandingsUrl(series: 'road-gp' | 'fell'): string | undefined {
   if (hasIndividualStandings(currentYear, series))
-    return `/${series}/${currentYear}/individual-standings`;
+    return siteUrl(`/${series}/${currentYear}/individual-standings`);
   if (hasTeamStandings(currentYear, series))
-    return `/${series}/${currentYear}/team-standings`;
+    return siteUrl(`/${series}/${currentYear}/team-standings`);
   return undefined;
 }
 
@@ -85,11 +86,11 @@ function isNext(races: Race[], race: Race): boolean {
             </p>
           </div>
           {heroMode === 'recent' ? (
-            <a href={`/road-gp/${currentYear}/${heroRace.id}/results`} class={`btn btn-sm border-0 shrink-0 bg-white text-success hover:bg-base-200`}>
+            <a href={siteUrl(`/road-gp/${currentYear}/${heroRace.id}/results`)} class={`btn btn-sm border-0 shrink-0 bg-white text-success hover:bg-base-200`}>
               View results →
             </a>
           ) : (
-            <a href={`/road-gp/${currentYear}/${heroRace.id}`} class={`btn btn-sm border-0 shrink-0 bg-white text-primary hover:bg-base-200`}>
+            <a href={siteUrl(`/road-gp/${currentYear}/${heroRace.id}`)} class={`btn btn-sm border-0 shrink-0 bg-white text-primary hover:bg-base-200`}>
               Race info →
             </a>
           )}
@@ -114,10 +115,10 @@ function isNext(races: Race[], race: Race): boolean {
                 </td>
                 <td class="text-right">
                   {past && hasResults(currentYear, 'road-gp', race.id) && (
-                    <a href={`/road-gp/${currentYear}/${race.id}/results`} class="link link-primary text-sm">Results</a>
+                    <a href={siteUrl(`/road-gp/${currentYear}/${race.id}/results`)} class="link link-primary text-sm">Results</a>
                   )}
                   {next && (
-                    <a href={`/road-gp/${currentYear}/${race.id}`} class="link link-primary text-sm">Info</a>
+                    <a href={siteUrl(`/road-gp/${currentYear}/${race.id}`)} class="link link-primary text-sm">Info</a>
                   )}
                 </td>
               </tr>
@@ -154,10 +155,10 @@ function isNext(races: Race[], race: Race): boolean {
                 </td>
                 <td class="text-right">
                   {past && hasResults(currentYear, 'fell', race.id) && (
-                    <a href={`/fell/${currentYear}/${race.id}/results`} class="link link-primary text-sm">Results</a>
+                    <a href={siteUrl(`/fell/${currentYear}/${race.id}/results`)} class="link link-primary text-sm">Results</a>
                   )}
                   {next && (
-                    <a href={`/fell/${currentYear}/${race.id}`} class="link link-primary text-sm">Info</a>
+                    <a href={siteUrl(`/fell/${currentYear}/${race.id}`)} class="link link-primary text-sm">Info</a>
                   )}
                 </td>
               </tr>
