@@ -6,6 +6,7 @@ import { getCurrentYear, getAvailableYears, getRaces } from '../../../lib/data';
 import { getAwards, getClubs, getSeriesConfig, hasAwards, hasIndividualStandings, hasTeamStandings } from '../../../lib/results';
 import type { ResolvedSeriesAwards } from '../../../lib/types';
 import { buildRunnerUrlMap } from '../../../lib/runners';
+import { siteUrl } from '../../../lib/url';
 
 export async function getStaticPaths() {
   const current = getCurrentYear();
@@ -19,10 +20,10 @@ const currentYear = getCurrentYear();
 const availableYears = getAvailableYears('fell');
 const races = getRaces(year, 'fell');
 const standingsUrl = hasTeamStandings(year, 'fell')
-  ? `/fell/${year}/team-standings`
+  ? siteUrl(`/fell/${year}/team-standings`)
   : undefined;
 const individualStandingsUrl = hasIndividualStandings(year, 'fell')
-  ? `/fell/${year}/individual-standings`
+  ? siteUrl(`/fell/${year}/individual-standings`)
   : undefined;
 const config = getSeriesConfig(year, 'fell');
 

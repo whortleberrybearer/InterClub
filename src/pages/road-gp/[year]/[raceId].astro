@@ -4,6 +4,7 @@ import Layout from '../../../components/Layout.astro';
 import { getAvailableYears, getRaces, getCurrentYear } from '../../../lib/data';
 import { formatRaceDate } from '../../../lib/format';
 import { hasResults } from '../../../lib/results';
+import { siteUrl } from '../../../lib/url';
 import type { Race } from '../../../lib/types';
 
 export async function getStaticPaths() {
@@ -25,7 +26,7 @@ const { race, year } = Astro.props;
 const { name, date, time, location, distance, detailsUrl, image } = race;
 const formattedDate = formatRaceDate(date, time);
 const currentYear = getCurrentYear();
-const backUrl = year === currentYear ? '/road-gp/' : `/road-gp/${year}/`;
+const backUrl = year === currentYear ? siteUrl('/road-gp/') : siteUrl(`/road-gp/${year}/`);
 const resultsExist = hasResults(year, 'road-gp', race.id);
 ---
 
@@ -37,7 +38,7 @@ const resultsExist = hasResults(year, 'road-gp', race.id);
   <div class="card bg-base-100 shadow-sm border border-base-200">
     {image && (
       <figure>
-        <img src={`/images/${image}`} alt={name} class="w-full h-56 object-cover" />
+        <img src={siteUrl(`/images/${image}`)} alt={name} class="w-full h-56 object-cover" />
       </figure>
     )}
     <div class="card-body gap-3">
@@ -69,7 +70,7 @@ const resultsExist = hasResults(year, 'road-gp', race.id);
             </a>
           )}
           {resultsExist && (
-            <a href={`/road-gp/${year}/${race.id}/results`} class="btn btn-outline">
+            <a href={siteUrl(`/road-gp/${year}/${race.id}/results`)} class="btn btn-outline">
               View Results
             </a>
           )}

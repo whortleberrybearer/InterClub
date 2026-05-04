@@ -5,6 +5,7 @@ import { getRaces } from '../../../lib/data';
 import { getIndividualStandingsStaticPaths } from '../../../lib/results';
 import type { Club, SeriesConfig, IndividualStandings } from '../../../lib/types';
 import { buildRunnerUrlMap } from '../../../lib/runners';
+import { siteUrl } from '../../../lib/url';
 
 export async function getStaticPaths() {
   return getIndividualStandingsStaticPaths('fell').map(p => ({
@@ -32,7 +33,7 @@ const clubById = Object.fromEntries(clubs.map(c => [c.id, c]));
 
 <Layout title={`Fell Championship ${year} — Individual Standings`}>
   <div class="mb-4">
-    <a href={`/fell/${year}`} class="btn btn-ghost btn-sm gap-1 -ml-3">← Fell Championship {year}</a>
+    <a href={siteUrl(`/fell/${year}`)} class="btn btn-ghost btn-sm gap-1 -ml-3">← Fell Championship {year}</a>
   </div>
 
   <div class="mb-6">
@@ -106,7 +107,7 @@ const clubById = Object.fromEntries(clubs.map(c => [c.id, c]));
                 {standings.races.map(raceId => {
                   const race = raceById[raceId];
                   const label = race?.shortName ?? raceId;
-                  const href = linkedRaceIds.has(raceId) ? `/fell/${year}/${raceId}/results` : null;
+                  const href = linkedRaceIds.has(raceId) ? siteUrl(`/fell/${year}/${raceId}/results`) : null;
                   return (
                     <th class="text-right py-2 px-2 font-medium whitespace-nowrap">
                       {href
@@ -168,7 +169,7 @@ const clubById = Object.fromEntries(clubs.map(c => [c.id, c]));
             {standings.races.map(raceId => {
               const race = raceById[raceId];
               const label = race?.shortName ?? raceId;
-              const href = linkedRaceIds.has(raceId) ? `/fell/${year}/${raceId}/results` : null;
+              const href = linkedRaceIds.has(raceId) ? siteUrl(`/fell/${year}/${raceId}/results`) : null;
               return (
                 <span>
                   {href
@@ -214,7 +215,7 @@ const clubById = Object.fromEntries(clubs.map(c => [c.id, c]));
                       const result = runner.results[raceId];
                       const race = raceById[raceId];
                       const label = race?.shortName ?? raceId;
-                      const href = linkedRaceIds.has(raceId) ? `/fell/${year}/${raceId}/results` : null;
+                      const href = linkedRaceIds.has(raceId) ? siteUrl(`/fell/${year}/${raceId}/results`) : null;
                       return (
                         <div class:list={[
                           'rounded px-2.5 py-1 text-center text-sm min-w-[44px]',

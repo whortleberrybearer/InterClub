@@ -5,6 +5,7 @@ import SeriesAwards from './SeriesAwards.astro';
 import YearFilter from './YearFilter.astro';
 import { formatRaceDate } from '../lib/format';
 import { hasResults, hasTeamResults } from '../lib/results';
+import { siteUrl } from '../lib/url';
 
 interface Props {
   races: Race[];
@@ -54,10 +55,10 @@ const {
     <div class="divide-y divide-base-200">
       {races.map(race => {
         const resultsUrl = hasResults(year, series, race.id)
-          ? `/${series}/${year}/${race.id}/results/`
+          ? siteUrl(`/${series}/${year}/${race.id}/results/`)
           : null;
         const teamResultsUrl = hasTeamResults(year, series, race.id)
-          ? `/${series}/${year}/${race.id}/team-results/`
+          ? siteUrl(`/${series}/${year}/${race.id}/team-results/`)
           : null;
         return (
           <div class="flex items-baseline gap-4 py-3">

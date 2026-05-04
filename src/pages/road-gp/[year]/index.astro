@@ -4,6 +4,7 @@ import Layout from '../../../components/Layout.astro';
 import HistoryRaceList from '../../../components/HistoryRaceList.astro';
 import { getCurrentYear, getAvailableYears, getRaces } from '../../../lib/data';
 import { getAwards, getClubs, getSeriesConfig, hasAwards, hasIndividualStandings, hasTeamStandings } from '../../../lib/results';
+import { siteUrl } from '../../../lib/url';
 import type { ResolvedSeriesAwards } from '../../../lib/types';
 import { buildRunnerUrlMap } from '../../../lib/runners';
 
@@ -19,10 +20,10 @@ const currentYear = getCurrentYear();
 const availableYears = getAvailableYears('road-gp');
 const races = getRaces(year, 'road-gp');
 const standingsUrl = hasTeamStandings(year, 'road-gp')
-  ? `/road-gp/${year}/team-standings`
+  ? siteUrl(`/road-gp/${year}/team-standings`)
   : undefined;
 const individualStandingsUrl = hasIndividualStandings(year, 'road-gp')
-  ? `/road-gp/${year}/individual-standings`
+  ? siteUrl(`/road-gp/${year}/individual-standings`)
   : undefined;
 const config = getSeriesConfig(year, 'road-gp');
 
