@@ -80,17 +80,51 @@ function Get-ClubId {
     return $null
 }
 
+# Populated from config after it is loaded - maps Excel display names -> config category IDs
+$script:categoryMap = @{}
+
+function Build-CategoryMap {
+    param($teamCategories)
+
+    $map = @{}
+
+    foreach ($cat in $teamCategories) {
+        $lname = $cat.name.ToLower()
+
+        # Exact config name always resolves to its own ID
+        $map[$lname] = $cat.id
+
+        # Pattern aliases so Excel display names resolve regardless of config naming convention
+        if ($lname -match '\bopen\b') {
+            $map["open"]  = $cat.id
+            $map["team"]  = $cat.id
+        }
+        if ($lname -match 'ladies' -and $lname -notmatch 'vet') {
+            $map["ladies"] = $cat.id
+        }
+        # Female-vets category: config may call it "FV40", "Lady Vets", etc.
+        if ($lname -match '(fv.?40|lady.?vet|female.?vet)' -and $lname -notmatch '(50|60)') {
+            $map["fv40"]       = $cat.id
+            $map["lady vets"]  = $cat.id
+        }
+        if ($lname -match 'vets?' -and $lname -notmatch '(50|60|lady|female|fv)') {
+            $map["vets"] = $cat.id
+        }
+        if ($lname -match '50') {
+            $map["vet 50s"] = $cat.id
+        }
+        if ($lname -match '60') {
+            $map["vet 60s"] = $cat.id
+        }
+    }
+
+    return $map
+}
+
 function Get-TeamCategoryId {
     param([string]$Name)
-    switch ($Name.Trim().ToLower()) {
-        "team"    { return "open"   }
-        "open"    { return "open"   }
-        "ladies"  { return "ladies" }
-        "fv40"    { return "fv40"   }
-        "vets"    { return "vets"   }
-        "vet 50s" { return "vet50s" }
-        "vet 60s" { return "vet60s" }
-    }
+    $key = $Name.Trim().ToLower()
+    if ($script:categoryMap.ContainsKey($key)) { return $script:categoryMap[$key] }
     return $null
 }
 
@@ -528,6 +562,8 @@ $teamsFile     = Join-Path $resultsDir "$RaceId-teams$suffix.json"
 $standingsFile = Join-Path $dataDir "team-standings.json"
 $configFile    = Join-Path $dataDir "config.json"
 $clubsFile     = Join-Path $ProjectRoot "src\data\$Year\clubs.json"
+$xlsxExt       = [System.IO.Path]::GetExtension($ExcelFile)
+$xlsxDest      = Join-Path $resultsDir "$RaceId$xlsxExt"
 
 Write-Host "Configuration" -ForegroundColor Yellow
 Write-Host "  Excel:       $ExcelFile"
@@ -551,6 +587,10 @@ $config       = Get-Content $configFile -Raw | ConvertFrom-Json
 $categoryIds  = @($config.teamCategories | ForEach-Object { $_.id })
 $clubs        = Get-Content $clubsFile -Raw | ConvertFrom-Json
 $clubIds      = @($clubs | ForEach-Object { $_.id })
+
+# Build dynamic category map from config so Excel display names resolve to correct config IDs
+$script:categoryMap = Build-CategoryMap $config.teamCategories
+Write-Host "Category map: $(($script:categoryMap.GetEnumerator() | Sort-Object Name | ForEach-Object { "$($_.Name)=$($_.Value)" }) -join ', ')" -ForegroundColor DarkGray
 
 # Open Excel via COM
 Write-Host "Opening Excel..." -ForegroundColor DarkGray
@@ -701,6 +741,7 @@ try {
         Write-Host "  Would write: $csvFile  ($rowCount data rows)"
         Write-Host "  Would write: $teamsFile"
         Write-Host "  Would write: $standingsFile"
+        Write-Host "  Would copy:  $ExcelFile -> $xlsxDest"
         Write-Host ""
         Write-Host "CSV preview (first 6 lines):" -ForegroundColor Yellow
         $csvLines | Select-Object -First 6 | ForEach-Object { Write-Host "  $_" -ForegroundColor DarkGray }
@@ -717,6 +758,9 @@ try {
 
         $standingsJsonStr | Set-Content -Path $standingsFile -Encoding UTF8
         Write-Host "Written: $standingsFile" -ForegroundColor Green
+
+        Copy-Item -Path $ExcelFile -Destination $xlsxDest -Force
+        Write-Host "Copied:  $xlsxDest" -ForegroundColor Green
     }
 
     Write-Host ""
