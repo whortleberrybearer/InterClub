@@ -133,35 +133,94 @@ function Get-TeamCategoryId {
 function Parse-Positions {
     param($Sheet)
 
-    # Column layout (1-based):
-    #  1=RaceNum  2=Pos  3=IC  4=Vet  5=V50  6=V60  7=Lady  8=FV40
-    #  9=First  10=Last  11=Cat  12=Sex  13=(empty)  14=Club  15=Time
-
-    # Find the header row — scan up to row 15 for a row with header content
     $totalRows = $Sheet.UsedRange.Rows.Count
-    $script:dataStartRow = -1
+    $totalCols = $Sheet.UsedRange.Columns.Count
 
-    # Look for first row that has numeric data in position column (column 2)
-    for ($r = 2; $r -le [Math]::Min(20, $totalRows); $r++) {
-        if ($Sheet.Cells.Item($r, 1).Text -match '^\d+$') {
-            $script:dataStartRow = $r
+    # Find the header row by scanning for a row that contains both a position and a name/surname column header.
+    # This works regardless of how many leading columns the format has.
+    $headerRow = -1
+    $script:colMap = @{ RaceNum = 1; Pos = 2; IC = 3; First = 9; Last = 10; Cat = 11; Sex = 12; Club = 14; Time = 15 }
+
+    for ($hr = 1; $hr -le [Math]::Min(20, $totalRows); $hr++) {
+        $detected = @{}
+        for ($c = 1; $c -le $totalCols; $c++) {
+            $h = $Sheet.Cells.Item($hr, $c).Text.Trim().ToLower()
+            # First-occurrence-wins for all fields
+            switch -Wildcard ($h) {
+                "runner*"       { if (-not $detected["RaceNum"]) { $detected["RaceNum"] = $c } }
+                "bib*"          { if (-not $detected["RaceNum"]) { $detected["RaceNum"] = $c } }
+                "posn"          { if (-not $detected["Pos"])     { $detected["Pos"]     = $c } }
+                "pos"           { if (-not $detected["Pos"])     { $detected["Pos"]     = $c } }
+                "position"      { if (-not $detected["Pos"])     { $detected["Pos"]     = $c } }
+                "ic"            { if (-not $detected["IC"])      { $detected["IC"]      = $c } }
+                "ic pos*"       { if (-not $detected["IC"])      { $detected["IC"]      = $c } }
+                "name"          { if (-not $detected["First"])   { $detected["First"]   = $c } }
+                "first*"        { if (-not $detected["First"])   { $detected["First"]   = $c } }
+                "forename*"     { if (-not $detected["First"])   { $detected["First"]   = $c } }
+                "christian*"    { if (-not $detected["First"])   { $detected["First"]   = $c } }
+                "given*"        { if (-not $detected["First"])   { $detected["First"]   = $c } }
+                "surname*"      { if (-not $detected["Last"])    { $detected["Last"]    = $c } }
+                "last name*"    { if (-not $detected["Last"])    { $detected["Last"]    = $c } }
+                "family*"       { if (-not $detected["Last"])    { $detected["Last"]    = $c } }
+                "cat*"          { if (-not $detected["Cat"])     { $detected["Cat"]     = $c } }
+                "class*"        { if (-not $detected["Cat"])     { $detected["Cat"]     = $c } }
+                "sex"           { if (-not $detected["Sex"])     { $detected["Sex"]     = $c } }
+                "m/f"           { if (-not $detected["Sex"])     { $detected["Sex"]     = $c } }
+                "gender*"       { if (-not $detected["Sex"])     { $detected["Sex"]     = $c } }
+                "club"          { if (-not $detected["Club"])    { $detected["Club"]    = $c } }
+                "team"          { if (-not $detected["Club"])    { $detected["Club"]    = $c } }
+                "time"          { if (-not $detected["Time"])    { $detected["Time"]    = $c } }
+            }
+        }
+        # Require at least Pos + one of Last/Time to confirm this is the results header row
+        if ($detected["Pos"] -and ($detected["Last"] -or $detected["Time"])) {
+            $headerRow = $hr
+            if ($detected["RaceNum"]) { $script:colMap["RaceNum"] = $detected["RaceNum"] }
+            if ($detected["Pos"])     { $script:colMap["Pos"]     = $detected["Pos"]     }
+            if ($detected["IC"])      { $script:colMap["IC"]      = $detected["IC"]      }
+            if ($detected["First"])   { $script:colMap["First"]   = $detected["First"]   }
+            if ($detected["Last"])    { $script:colMap["Last"]    = $detected["Last"]    }
+            if ($detected["Cat"])     { $script:colMap["Cat"]     = $detected["Cat"]     }
+            if ($detected["Sex"])     { $script:colMap["Sex"]     = $detected["Sex"]     }
+            if ($detected["Club"])    { $script:colMap["Club"]    = $detected["Club"]    }
+            if ($detected["Time"])    { $script:colMap["Time"]    = $detected["Time"]    }
             break
         }
     }
-    if ($script:dataStartRow -eq -1) { throw "Could not find first data row in Positions sheet" }
+
+    Write-Host "  Header row: $headerRow | Cols: RaceNum=$($script:colMap['RaceNum']) Pos=$($script:colMap['Pos']) IC=$($script:colMap['IC']) First=$($script:colMap['First']) Last=$($script:colMap['Last']) Cat=$($script:colMap['Cat']) Sex=$($script:colMap['Sex']) Club=$($script:colMap['Club']) Time=$($script:colMap['Time'])" -ForegroundColor DarkGray
+
+    # Data starts at the row after the header; fall back to scanning col 1 if no header found
+    if ($headerRow -gt 0) {
+        $script:dataStartRow = $headerRow + 1
+        # Skip any blank rows between header and first data row
+        while ($script:dataStartRow -le $totalRows) {
+            $testVal = $Sheet.Cells.Item($script:dataStartRow, $script:colMap["Pos"]).Text.Trim()
+            if ($testVal -match '^\d+$') { break }
+            $script:dataStartRow++
+        }
+    } else {
+        $script:dataStartRow = -1
+        for ($r = 2; $r -le [Math]::Min(20, $totalRows); $r++) {
+            if ($Sheet.Cells.Item($r, 1).Text -match '^\d+$') { $script:dataStartRow = $r; break }
+        }
+    }
+    if ($script:dataStartRow -eq -1 -or $script:dataStartRow -gt $totalRows) {
+        throw "Could not find first data row in Positions sheet"
+    }
 
     for ($r = $script:dataStartRow; $r -le $totalRows; $r++) {
-        $pos = $Sheet.Cells.Item($r, 2).Text.Trim()
+        $pos = $Sheet.Cells.Item($r, $colMap["Pos"]).Text.Trim()
         if ($pos -notmatch '^\d+$') { continue }   # skip blank / non-runner rows
 
-        $raceNum = $Sheet.Cells.Item($r, 1).Text.Trim()
-        $icPos   = $Sheet.Cells.Item($r, 3).Text.Trim()
-        $first   = $Sheet.Cells.Item($r, 9).Text.Trim()
-        $last    = $Sheet.Cells.Item($r, 10).Text.Trim()
-        $cat     = $Sheet.Cells.Item($r, 11).Text.Trim()
-        $sex     = $Sheet.Cells.Item($r, 12).Text.Trim()
-        $club    = $Sheet.Cells.Item($r, 14).Text.Trim()
-        $time    = $Sheet.Cells.Item($r, 15).Text.Trim()
+        $raceNum = $Sheet.Cells.Item($r, $colMap["RaceNum"]).Text.Trim()
+        $icPos   = $Sheet.Cells.Item($r, $colMap["IC"]).Text.Trim()
+        $first   = $Sheet.Cells.Item($r, $colMap["First"]).Text.Trim()
+        $last    = $Sheet.Cells.Item($r, $colMap["Last"]).Text.Trim()
+        $cat     = $Sheet.Cells.Item($r, $colMap["Cat"]).Text.Trim()
+        $sex     = $Sheet.Cells.Item($r, $colMap["Sex"]).Text.Trim()
+        $club    = $Sheet.Cells.Item($r, $colMap["Club"]).Text.Trim()
+        $time    = $Sheet.Cells.Item($r, $colMap["Time"]).Text.Trim()
 
         $clubId = Get-ClubId $club
         if ($null -eq $clubId) {
@@ -646,10 +705,10 @@ try {
     for ($i = 0; $i -lt $results.Count; $i += 5) {
         $runner   = $results[$i]
         $exRow    = $script:dataStartRow + $i
-        $exPos    = $posSheet.Cells.Item($exRow, 2).Text.Trim()
-        $exFirst  = $posSheet.Cells.Item($exRow, 9).Text.Trim()
-        $exLast   = $posSheet.Cells.Item($exRow, 10).Text.Trim()
-        $exTime   = $posSheet.Cells.Item($exRow, 15).Text.Trim()
+        $exPos    = $posSheet.Cells.Item($exRow, $script:colMap["Pos"]).Text.Trim()
+        $exFirst  = $posSheet.Cells.Item($exRow, $script:colMap["First"]).Text.Trim()
+        $exLast   = $posSheet.Cells.Item($exRow, $script:colMap["Last"]).Text.Trim()
+        $exTime   = $posSheet.Cells.Item($exRow, $script:colMap["Time"]).Text.Trim()
 
         $rowLabel = "Result #$($i + 1) (Excel row $exRow)"
         $ok = $true
