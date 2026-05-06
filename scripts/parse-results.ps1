@@ -137,17 +137,18 @@ function Parse-Positions {
     #  1=RaceNum  2=Pos  3=IC  4=Vet  5=V50  6=V60  7=Lady  8=FV40
     #  9=First  10=Last  11=Cat  12=Sex  13=(empty)  14=Club  15=Time
 
-    # Find the first data row (runner number is numeric; rows 1-3 are headers/empty)
+    # Find the header row — scan up to row 15 for a row with header content
+    $totalRows = $Sheet.UsedRange.Rows.Count
     $script:dataStartRow = -1
-    for ($r = 2; $r -le 10; $r++) {
+
+    # Look for first row that has numeric data in position column (column 2)
+    for ($r = 2; $r -le [Math]::Min(20, $totalRows); $r++) {
         if ($Sheet.Cells.Item($r, 1).Text -match '^\d+$') {
             $script:dataStartRow = $r
             break
         }
     }
     if ($script:dataStartRow -eq -1) { throw "Could not find first data row in Positions sheet" }
-
-    $totalRows = $Sheet.UsedRange.Rows.Count
 
     for ($r = $script:dataStartRow; $r -le $totalRows; $r++) {
         $pos = $Sheet.Cells.Item($r, 2).Text.Trim()
