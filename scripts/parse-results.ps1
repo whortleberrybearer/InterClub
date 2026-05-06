@@ -186,26 +186,37 @@ function Parse-Positions {
 function Parse-TeamScorers {
     param($Sheet)
 
-    # Row 1: club name headers in columns 4, 6, 8 ... (name column of each pair)
-    # Row 2+: [scorer#][category?][pos1][name1][pos2][name2]...
+    # Header row: club name headers in columns 3+ (name column of each pair, pos column is one to the left)
+    # Data rows: [scorer#][category?][pos1][name1][pos2][name2]...
+    # Header row may not be row 1 — scan up to row 15 to find it.
 
     $totalCols = $Sheet.UsedRange.Columns.Count
     $totalRows = $Sheet.UsedRange.Rows.Count
 
-    # Detect club columns from header row
-    $clubCols = [ordered]@{}   # club_name -> { PosCol; NameCol }
-    for ($c = 3; $c -le $totalCols; $c++) {
-        $header = $Sheet.Cells.Item(1, $c).Text.Trim()
-        if ($header -and (Get-ClubId $header)) {
-            $clubCols[$header] = [PSCustomObject]@{ PosCol = $c - 1; NameCol = $c }
+    # Detect club columns — find first row with 2+ club name headers
+    $headerRow = -1
+    $clubCols  = [ordered]@{}   # club_name -> { PosCol; NameCol }
+    for ($hr = 1; $hr -le [Math]::Min(15, $totalRows); $hr++) {
+        $found = [ordered]@{}
+        for ($c = 3; $c -le $totalCols; $c++) {
+            $header = $Sheet.Cells.Item($hr, $c).Text.Trim()
+            if ($header -and (Get-ClubId $header)) {
+                $found[$header] = [PSCustomObject]@{ PosCol = $c - 1; NameCol = $c }
+            }
+        }
+        if ($found.Count -ge 2) {
+            $headerRow = $hr
+            $clubCols  = $found
+            break
         }
     }
     if ($clubCols.Count -eq 0) { throw "Could not detect club columns in Team Scorers sheet" }
+    Write-Host "  Team Scorers header row: $headerRow  ($($clubCols.Count) clubs)" -ForegroundColor DarkGray
 
     $data = @{}       # category_id -> club_name -> List[PSCustomObject]
     $currentCat = $null
 
-    for ($r = 2; $r -le $totalRows; $r++) {
+    for ($r = $headerRow + 1; $r -le $totalRows; $r++) {
         $scorerNum = $Sheet.Cells.Item($r, 1).Text.Trim()
         $catName   = $Sheet.Cells.Item($r, 2).Text.Trim()
 
@@ -312,25 +323,31 @@ function Parse-SeasonTotals {
         return $null
     }
 
-    # Find the race column
+    # Find the race column — scan up to row 15 for the header row
     $totalCols = $Sheet.UsedRange.Columns.Count
     $totalRows = $Sheet.UsedRange.Rows.Count
     $raceCol   = -1
-    for ($c = 1; $c -le $totalCols; $c++) {
-        if ($Sheet.Cells.Item(1, $c).Text.Trim() -ieq $headerName) {
-            $raceCol = $c
-            break
+    $headerRow = -1
+    for ($hr = 1; $hr -le [Math]::Min(15, $totalRows); $hr++) {
+        for ($c = 1; $c -le $totalCols; $c++) {
+            if ($Sheet.Cells.Item($hr, $c).Text.Trim() -ieq $headerName) {
+                $raceCol   = $c
+                $headerRow = $hr
+                break
+            }
         }
+        if ($raceCol -ne -1) { break }
     }
     if ($raceCol -eq -1) {
         Write-Warning "Column '$headerName' not found in Season Totals header row; skipping."
         return $null
     }
+    Write-Host "  Season Totals header row: $headerRow  (column $raceCol = '$headerName')" -ForegroundColor DarkGray
 
     $totals     = @{}   # category_id -> club_id -> points
     $currentCat = $null
 
-    for ($r = 2; $r -le $totalRows; $r++) {
+    for ($r = $headerRow + 1; $r -le $totalRows; $r++) {
         $c1  = $Sheet.Cells.Item($r, 1).Text.Trim()
         $cRa = $Sheet.Cells.Item($r, $raceCol).Text.Trim()
 
