@@ -1,0 +1,913 @@
+﻿{
+    "categories":  [
+                       {
+                           "category":  "open",
+                           "clubs":  [
+                                         {
+                                             "position":  1,
+                                             "points":  7,
+                                             "club":  "preston",
+                                             "total":  132,
+                                             "scorers":  [
+                                                             {
+                                                                 "position":  1,
+                                                                 "name":  "D.Rigby"
+                                                             },
+                                                             {
+                                                                 "position":  2,
+                                                                 "name":  "R.Affleck"
+                                                             },
+                                                             {
+                                                                 "position":  4,
+                                                                 "name":  "G.Butler"
+                                                             },
+                                                             {
+                                                                 "position":  5,
+                                                                 "name":  "J.Parker"
+                                                             },
+                                                             {
+                                                                 "position":  6,
+                                                                 "name":  "J.Green"
+                                                             },
+                                                             {
+                                                                 "position":  19,
+                                                                 "name":  "N.McDonald"
+                                                             },
+                                                             {
+                                                                 "position":  21,
+                                                                 "name":  "D.Watson"
+                                                             },
+                                                             {
+                                                                 "position":  22,
+                                                                 "name":  "B.Johnstone"
+                                                             },
+                                                             {
+                                                                 "position":  24,
+                                                                 "name":  "M.Lee"
+                                                             },
+                                                             {
+                                                                 "position":  28,
+                                                                 "name":  "C.Wales"
+                                                             }
+                                                         ]
+                                         },
+                                         {
+                                             "position":  2,
+                                             "points":  6,
+                                             "club":  "blackpool",
+                                             "total":  187,
+                                             "scorers":  [
+                                                             {
+                                                                 "position":  7,
+                                                                 "name":  "J.Mulvany"
+                                                             },
+                                                             {
+                                                                 "position":  8,
+                                                                 "name":  "J.Unsworth"
+                                                             },
+                                                             {
+                                                                 "position":  9,
+                                                                 "name":  "L.Craine"
+                                                             },
+                                                             {
+                                                                 "position":  11,
+                                                                 "name":  "J.Wright"
+                                                             },
+                                                             {
+                                                                 "position":  12,
+                                                                 "name":  "S.Waterhouse"
+                                                             },
+                                                             {
+                                                                 "position":  17,
+                                                                 "name":  "D.Williamson"
+                                                             },
+                                                             {
+                                                                 "position":  18,
+                                                                 "name":  "D.Hayes"
+                                                             },
+                                                             {
+                                                                 "position":  29,
+                                                                 "name":  "E.Japp"
+                                                             },
+                                                             {
+                                                                 "position":  35,
+                                                                 "name":  "I.Dawson"
+                                                             },
+                                                             {
+                                                                 "position":  42,
+                                                                 "name":  "C.Lloyd"
+                                                             }
+                                                         ]
+                                         },
+                                         {
+                                             "position":  3,
+                                             "points":  5,
+                                             "club":  "wesham",
+                                             "total":  238,
+                                             "scorers":  [
+                                                             {
+                                                                 "position":  3,
+                                                                 "name":  "R.Danson"
+                                                             },
+                                                             {
+                                                                 "position":  13,
+                                                                 "name":  "L.Barlow"
+                                                             },
+                                                             {
+                                                                 "position":  14,
+                                                                 "name":  "K.Lee"
+                                                             },
+                                                             {
+                                                                 "position":  16,
+                                                                 "name":  "S.Myerscough"
+                                                             },
+                                                             {
+                                                                 "position":  20,
+                                                                 "name":  "A.Rowe"
+                                                             },
+                                                             {
+                                                                 "position":  23,
+                                                                 "name":  "P.Gregory"
+                                                             },
+                                                             {
+                                                                 "position":  32,
+                                                                 "name":  "G.Barnett"
+                                                             },
+                                                             {
+                                                                 "position":  33,
+                                                                 "name":  "J.Barlow"
+                                                             },
+                                                             {
+                                                                 "position":  39,
+                                                                 "name":  "J.Collier"
+                                                             },
+                                                             {
+                                                                 "position":  45,
+                                                                 "name":  "C.Linkinson"
+                                                             }
+                                                         ]
+                                         },
+                                         {
+                                             "position":  4,
+                                             "points":  4,
+                                             "club":  "red-rose",
+                                             "total":  474,
+                                             "scorers":  [
+                                                             {
+                                                                 "position":  15,
+                                                                 "name":  "B.Donoghue"
+                                                             },
+                                                             {
+                                                                 "position":  25,
+                                                                 "name":  "K.Addison"
+                                                             },
+                                                             {
+                                                                 "position":  27,
+                                                                 "name":  "J.Swarbrick"
+                                                             },
+                                                             {
+                                                                 "position":  34,
+                                                                 "name":  "J.Donoghue"
+                                                             },
+                                                             {
+                                                                 "position":  47,
+                                                                 "name":  "S.Whitney"
+                                                             },
+                                                             {
+                                                                 "position":  49,
+                                                                 "name":  "S.Cann"
+                                                             },
+                                                             {
+                                                                 "position":  55,
+                                                                 "name":  "S.Gore"
+                                                             },
+                                                             {
+                                                                 "position":  64,
+                                                                 "name":  "F.Nightingale"
+                                                             },
+                                                             {
+                                                                 "position":  74,
+                                                                 "name":  "M.Hall"
+                                                             },
+                                                             {
+                                                                 "position":  84,
+                                                                 "name":  "D.Hooton"
+                                                             }
+                                                         ]
+                                         },
+                                         {
+                                             "position":  5,
+                                             "points":  3,
+                                             "club":  "lytham",
+                                             "total":  639,
+                                             "scorers":  [
+                                                             {
+                                                                 "position":  10,
+                                                                 "name":  "J.Greenwood"
+                                                             },
+                                                             {
+                                                                 "position":  31,
+                                                                 "name":  "P.Cruse"
+                                                             },
+                                                             {
+                                                                 "position":  44,
+                                                                 "name":  "G.Webster"
+                                                             },
+                                                             {
+                                                                 "position":  54,
+                                                                 "name":  "N.Tate"
+                                                             },
+                                                             {
+                                                                 "position":  63,
+                                                                 "name":  "M.Selby"
+                                                             },
+                                                             {
+                                                                 "position":  67,
+                                                                 "name":  "J.Allitt"
+                                                             },
+                                                             {
+                                                                 "position":  80,
+                                                                 "name":  "T.Hellings"
+                                                             },
+                                                             {
+                                                                 "position":  81,
+                                                                 "name":  "O.Hirsh"
+                                                             },
+                                                             {
+                                                                 "position":  98,
+                                                                 "name":  "D.Dunn"
+                                                             },
+                                                             {
+                                                                 "position":  111,
+                                                                 "name":  "R.Storey"
+                                                             }
+                                                         ]
+                                         },
+                                         {
+                                             "position":  6,
+                                             "points":  2,
+                                             "club":  "chorley",
+                                             "total":  656,
+                                             "scorers":  [
+                                                             {
+                                                                 "position":  26,
+                                                                 "name":  "R.Walsh"
+                                                             },
+                                                             {
+                                                                 "position":  40,
+                                                                 "name":  "P.Iddon"
+                                                             },
+                                                             {
+                                                                 "position":  59,
+                                                                 "name":  "B.Beckett"
+                                                             },
+                                                             {
+                                                                 "position":  61,
+                                                                 "name":  "L.Murphy"
+                                                             },
+                                                             {
+                                                                 "position":  66,
+                                                                 "name":  "D.Bowles"
+                                                             },
+                                                             {
+                                                                 "position":  75,
+                                                                 "name":  "M.B"
+                                                             },
+                                                             {
+                                                                 "position":  76,
+                                                                 "name":  "W.Crook"
+                                                             },
+                                                             {
+                                                                 "position":  77,
+                                                                 "name":  "J.Burgess"
+                                                             },
+                                                             {
+                                                                 "position":  78,
+                                                                 "name":  "P.Wareing"
+                                                             },
+                                                             {
+                                                                 "position":  98,
+                                                                 "name":  "M.Hendry"
+                                                             }
+                                                         ]
+                                         }
+                                     ]
+                       },
+                       {
+                           "category":  "ladies",
+                           "clubs":  [
+                                         {
+                                             "position":  1,
+                                             "points":  7,
+                                             "club":  "blackpool",
+                                             "total":  37,
+                                             "scorers":  [
+                                                             {
+                                                                 "position":  1,
+                                                                 "name":  "E.Japp"
+                                                             },
+                                                             {
+                                                                 "position":  5,
+                                                                 "name":  "A.Johnson"
+                                                             },
+                                                             {
+                                                                 "position":  6,
+                                                                 "name":  "B.Wright"
+                                                             },
+                                                             {
+                                                                 "position":  11,
+                                                                 "name":  "J.Rogers"
+                                                             },
+                                                             {
+                                                                 "position":  14,
+                                                                 "name":  "S.Wetherill"
+                                                             }
+                                                         ]
+                                         },
+                                         {
+                                             "position":  2,
+                                             "points":  6,
+                                             "club":  "wesham",
+                                             "total":  44,
+                                             "scorers":  [
+                                                             {
+                                                                 "position":  4,
+                                                                 "name":  "C.Carrdus"
+                                                             },
+                                                             {
+                                                                 "position":  8,
+                                                                 "name":  "S.Coulthurst"
+                                                             },
+                                                             {
+                                                                 "position":  9,
+                                                                 "name":  "H.Lawrenson"
+                                                             },
+                                                             {
+                                                                 "position":  10,
+                                                                 "name":  "S.Sherratt"
+                                                             },
+                                                             {
+                                                                 "position":  13,
+                                                                 "name":  "J.Thompson"
+                                                             }
+                                                         ]
+                                         },
+                                         {
+                                             "position":  3,
+                                             "points":  5,
+                                             "club":  "preston",
+                                             "total":  49,
+                                             "scorers":  [
+                                                             {
+                                                                 "position":  2,
+                                                                 "name":  "B.Rigby"
+                                                             },
+                                                             {
+                                                                 "position":  3,
+                                                                 "name":  "C.Slater"
+                                                             },
+                                                             {
+                                                                 "position":  12,
+                                                                 "name":  "A.Tipping"
+                                                             },
+                                                             {
+                                                                 "position":  15,
+                                                                 "name":  "M.Hesketh"
+                                                             },
+                                                             {
+                                                                 "position":  17,
+                                                                 "name":  "J.Gornall"
+                                                             }
+                                                         ]
+                                         },
+                                         {
+                                             "position":  4,
+                                             "points":  4,
+                                             "club":  "red-rose",
+                                             "total":  183,
+                                             "scorers":  [
+                                                             {
+                                                                 "position":  24,
+                                                                 "name":  "P.Plowman"
+                                                             },
+                                                             {
+                                                                 "position":  34,
+                                                                 "name":  "C.Douglas"
+                                                             },
+                                                             {
+                                                                 "position":  38,
+                                                                 "name":  "D.Porter"
+                                                             },
+                                                             {
+                                                                 "position":  42,
+                                                                 "name":  "J.Fairclough"
+                                                             },
+                                                             {
+                                                                 "position":  45,
+                                                                 "name":  "J.Gouldthorpe"
+                                                             }
+                                                         ]
+                                         },
+                                         {
+                                             "position":  5,
+                                             "points":  3,
+                                             "club":  "lytham",
+                                             "total":  217,
+                                             "scorers":  [
+                                                             {
+                                                                 "position":  25,
+                                                                 "name":  "L.Ashworth"
+                                                             },
+                                                             {
+                                                                 "position":  32,
+                                                                 "name":  "J.Rolfe"
+                                                             },
+                                                             {
+                                                                 "position":  33,
+                                                                 "name":  "D.Bloor"
+                                                             },
+                                                             {
+                                                                 "position":  60,
+                                                                 "name":  "K.Lanigan"
+                                                             },
+                                                             {
+                                                                 "position":  67,
+                                                                 "name":  "D.Lock"
+                                                             }
+                                                         ]
+                                         }
+                                     ]
+                       },
+                       {
+                           "category":  "vets",
+                           "clubs":  [
+                                         {
+                                             "position":  1,
+                                             "points":  7,
+                                             "club":  "preston",
+                                             "total":  38,
+                                             "scorers":  [
+                                                             {
+                                                                 "position":  1,
+                                                                 "name":  "R.Affleck"
+                                                             },
+                                                             {
+                                                                 "position":  2,
+                                                                 "name":  "G.Butler"
+                                                             },
+                                                             {
+                                                                 "position":  3,
+                                                                 "name":  "J.Parker"
+                                                             },
+                                                             {
+                                                                 "position":  9,
+                                                                 "name":  "N.McDonald"
+                                                             },
+                                                             {
+                                                                 "position":  11,
+                                                                 "name":  "D.Watson"
+                                                             },
+                                                             {
+                                                                 "position":  12,
+                                                                 "name":  "B.Johnstone"
+                                                             }
+                                                         ]
+                                         },
+                                         {
+                                             "position":  2,
+                                             "points":  6,
+                                             "club":  "wesham",
+                                             "total":  84,
+                                             "scorers":  [
+                                                             {
+                                                                 "position":  6,
+                                                                 "name":  "L.Barlow"
+                                                             },
+                                                             {
+                                                                 "position":  7,
+                                                                 "name":  "S.Myerscough"
+                                                             },
+                                                             {
+                                                                 "position":  10,
+                                                                 "name":  "A.Rowe"
+                                                             },
+                                                             {
+                                                                 "position":  19,
+                                                                 "name":  "G.Barnett"
+                                                             },
+                                                             {
+                                                                 "position":  20,
+                                                                 "name":  "J.Barlow"
+                                                             },
+                                                             {
+                                                                 "position":  22,
+                                                                 "name":  "J.Collier"
+                                                             }
+                                                         ]
+                                         },
+                                         {
+                                             "position":  3,
+                                             "points":  5,
+                                             "club":  "blackpool",
+                                             "total":  144,
+                                             "scorers":  [
+                                                             {
+                                                                 "position":  4,
+                                                                 "name":  "J.Wright"
+                                                             },
+                                                             {
+                                                                 "position":  5,
+                                                                 "name":  "S.Waterhouse"
+                                                             },
+                                                             {
+                                                                 "position":  8,
+                                                                 "name":  "D.Williamson"
+                                                             },
+                                                             {
+                                                                 "position":  34,
+                                                                 "name":  "B.Wright"
+                                                             },
+                                                             {
+                                                                 "position":  40,
+                                                                 "name":  "A.Owen"
+                                                             },
+                                                             {
+                                                                 "position":  53,
+                                                                 "name":  "N.Hulme"
+                                                             }
+                                                         ]
+                                         },
+                                         {
+                                             "position":  4,
+                                             "points":  4,
+                                             "club":  "red-rose",
+                                             "total":  166,
+                                             "scorers":  [
+                                                             {
+                                                                 "position":  14,
+                                                                 "name":  "K.Addison"
+                                                             },
+                                                             {
+                                                                 "position":  16,
+                                                                 "name":  "J.Swarbrick"
+                                                             },
+                                                             {
+                                                                 "position":  27,
+                                                                 "name":  "S.Whitney"
+                                                             },
+                                                             {
+                                                                 "position":  28,
+                                                                 "name":  "S.Cann"
+                                                             },
+                                                             {
+                                                                 "position":  36,
+                                                                 "name":  "F.Nightingale"
+                                                             },
+                                                             {
+                                                                 "position":  45,
+                                                                 "name":  "M.Hall"
+                                                             }
+                                                         ]
+                                         },
+                                         {
+                                             "position":  5,
+                                             "points":  3,
+                                             "club":  "chorley",
+                                             "total":  190,
+                                             "scorers":  [
+                                                             {
+                                                                 "position":  15,
+                                                                 "name":  "R.Walsh"
+                                                             },
+                                                             {
+                                                                 "position":  23,
+                                                                 "name":  "P.Iddon"
+                                                             },
+                                                             {
+                                                                 "position":  33,
+                                                                 "name":  "B.Beckett"
+                                                             },
+                                                             {
+                                                                 "position":  35,
+                                                                 "name":  "L.Murphy"
+                                                             },
+                                                             {
+                                                                 "position":  38,
+                                                                 "name":  "D.Bowles"
+                                                             },
+                                                             {
+                                                                 "position":  46,
+                                                                 "name":  "W.Crook"
+                                                             }
+                                                         ]
+                                         },
+                                         {
+                                             "position":  6,
+                                             "points":  2,
+                                             "club":  "lytham",
+                                             "total":  245,
+                                             "scorers":  [
+                                                             {
+                                                                 "position":  18,
+                                                                 "name":  "P.Cruse"
+                                                             },
+                                                             {
+                                                                 "position":  24,
+                                                                 "name":  "G.Webster"
+                                                             },
+                                                             {
+                                                                 "position":  39,
+                                                                 "name":  "J.Allitt"
+                                                             },
+                                                             {
+                                                                 "position":  50,
+                                                                 "name":  "T.Hellings"
+                                                             },
+                                                             {
+                                                                 "position":  51,
+                                                                 "name":  "O.Hirsh"
+                                                             },
+                                                             {
+                                                                 "position":  63,
+                                                                 "name":  "D.Dunn"
+                                                             }
+                                                         ]
+                                         }
+                                     ]
+                       },
+                       {
+                           "category":  "v50",
+                           "clubs":  [
+                                         {
+                                             "position":  1,
+                                             "points":  7,
+                                             "club":  "preston",
+                                             "total":  24,
+                                             "scorers":  [
+                                                             {
+                                                                 "position":  2,
+                                                                 "name":  "B.Johnstone"
+                                                             },
+                                                             {
+                                                                 "position":  3,
+                                                                 "name":  "M.Lee"
+                                                             },
+                                                             {
+                                                                 "position":  7,
+                                                                 "name":  "K.Hesketh"
+                                                             },
+                                                             {
+                                                                 "position":  12,
+                                                                 "name":  "P.Cowling"
+                                                             }
+                                                         ]
+                                         },
+                                         {
+                                             "position":  2,
+                                             "points":  6,
+                                             "club":  "red-rose",
+                                             "total":  30,
+                                             "scorers":  [
+                                                             {
+                                                                 "position":  4,
+                                                                 "name":  "K.Addison"
+                                                             },
+                                                             {
+                                                                 "position":  5,
+                                                                 "name":  "J.Swarbrick"
+                                                             },
+                                                             {
+                                                                 "position":  10,
+                                                                 "name":  "S.Whitney"
+                                                             },
+                                                             {
+                                                                 "position":  11,
+                                                                 "name":  "S.Cann"
+                                                             }
+                                                         ]
+                                         },
+                                         {
+                                             "position":  3,
+                                             "points":  5,
+                                             "club":  "wesham",
+                                             "total":  36,
+                                             "scorers":  [
+                                                             {
+                                                                 "position":  1,
+                                                                 "name":  "A.Rowe"
+                                                             },
+                                                             {
+                                                                 "position":  8,
+                                                                 "name":  "J.Collier"
+                                                             },
+                                                             {
+                                                                 "position":  13,
+                                                                 "name":  "N.Shepherd"
+                                                             },
+                                                             {
+                                                                 "position":  14,
+                                                                 "name":  "A.Hudson"
+                                                             }
+                                                         ]
+                                         },
+                                         {
+                                             "position":  4,
+                                             "points":  4,
+                                             "club":  "lytham",
+                                             "total":  62,
+                                             "scorers":  [
+                                                             {
+                                                                 "position":  6,
+                                                                 "name":  "P.Cruse"
+                                                             },
+                                                             {
+                                                                 "position":  9,
+                                                                 "name":  "G.Webster"
+                                                             },
+                                                             {
+                                                                 "position":  20,
+                                                                 "name":  "T.Hellings"
+                                                             },
+                                                             {
+                                                                 "position":  27,
+                                                                 "name":  "D.Dunn"
+                                                             }
+                                                         ]
+                                         },
+                                         {
+                                             "position":  5,
+                                             "points":  3,
+                                             "club":  "blackpool",
+                                             "total":  85,
+                                             "scorers":  [
+                                                             {
+                                                                 "position":  15,
+                                                                 "name":  "B.Wright"
+                                                             },
+                                                             {
+                                                                 "position":  22,
+                                                                 "name":  "N.Hume"
+                                                             },
+                                                             {
+                                                                 "position":  23,
+                                                                 "name":  "P.Singleton"
+                                                             },
+                                                             {
+                                                                 "position":  25,
+                                                                 "name":  "B.Willoughby"
+                                                             }
+                                                         ]
+                                         },
+                                         {
+                                             "position":  6,
+                                             "points":  2,
+                                             "club":  "chorley",
+                                             "total":  111,
+                                             "scorers":  [
+                                                             {
+                                                                 "position":  18,
+                                                                 "name":  "W.Crook"
+                                                             },
+                                                             {
+                                                                 "position":  19,
+                                                                 "name":  "P.Wareing"
+                                                             },
+                                                             {
+                                                                 "position":  30,
+                                                                 "name":  "A.Lowe"
+                                                             },
+                                                             {
+                                                                 "position":  44,
+                                                                 "name":  "S.Wilde"
+                                                             }
+                                                         ]
+                                         }
+                                     ]
+                       },
+                       {
+                           "category":  "v60",
+                           "clubs":  [
+                                         {
+                                             "position":  1,
+                                             "points":  7,
+                                             "club":  "preston",
+                                             "total":  14,
+                                             "scorers":  [
+                                                             {
+                                                                 "position":  1,
+                                                                 "name":  "K.Hesketh"
+                                                             },
+                                                             {
+                                                                 "position":  5,
+                                                                 "name":  "A.Appleby"
+                                                             },
+                                                             {
+                                                                 "position":  8,
+                                                                 "name":  "M.Hesketh"
+                                                             }
+                                                         ]
+                                         },
+                                         {
+                                             "position":  2,
+                                             "points":  6,
+                                             "club":  "wesham",
+                                             "total":  15,
+                                             "scorers":  [
+                                                             {
+                                                                 "position":  2,
+                                                                 "name":  "J.Collier"
+                                                             },
+                                                             {
+                                                                 "position":  4,
+                                                                 "name":  "A.Hudson"
+                                                             },
+                                                             {
+                                                                 "position":  9,
+                                                                 "name":  "P.Leaver"
+                                                             }
+                                                         ]
+                                         },
+                                         {
+                                             "position":  3,
+                                             "points":  5,
+                                             "club":  "lytham",
+                                             "total":  20,
+                                             "scorers":  [
+                                                             {
+                                                                 "position":  3,
+                                                                 "name":  "G.Webster"
+                                                             },
+                                                             {
+                                                                 "position":  6,
+                                                                 "name":  "T.Hellings"
+                                                             },
+                                                             {
+                                                                 "position":  11,
+                                                                 "name":  "R.Stevens"
+                                                             }
+                                                         ]
+                                         },
+                                         {
+                                             "position":  4,
+                                             "points":  4,
+                                             "club":  "blackpool",
+                                             "total":  37,
+                                             "scorers":  [
+                                                             {
+                                                                 "position":  10,
+                                                                 "name":  "S.Minto"
+                                                             },
+                                                             {
+                                                                 "position":  13,
+                                                                 "name":  "D.Twizell"
+                                                             },
+                                                             {
+                                                                 "position":  14,
+                                                                 "name":  "A.Wilkinson"
+                                                             }
+                                                         ]
+                                         },
+                                         {
+                                             "position":  5,
+                                             "points":  3,
+                                             "club":  "red-rose",
+                                             "total":  38,
+                                             "scorers":  [
+                                                             {
+                                                                 "position":  7,
+                                                                 "name":  "D.Hooton"
+                                                             },
+                                                             {
+                                                                 "position":  15,
+                                                                 "name":  "N.Marshall"
+                                                             },
+                                                             {
+                                                                 "position":  16,
+                                                                 "name":  "C.Douglas"
+                                                             }
+                                                         ]
+                                         },
+                                         {
+                                             "position":  6,
+                                             "points":  2,
+                                             "club":  "chorley",
+                                             "total":  57,
+                                             "scorers":  [
+                                                             {
+                                                                 "position":  17,
+                                                                 "name":  "S.Wilde"
+                                                             },
+                                                             {
+                                                                 "position":  18,
+                                                                 "name":  "T.Orrell"
+                                                             },
+                                                             {
+                                                                 "position":  22,
+                                                                 "name":  "J.Swift"
+                                                             }
+                                                         ]
+                                         }
+                                     ]
+                       }
+                   ]
+}
