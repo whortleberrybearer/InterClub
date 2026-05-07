@@ -72,12 +72,19 @@ function Get-ClubId {
         "b.w.f*"     { return "blackpool" }   # 2015: B.W.F., B.W.F
         "bwf*"       { return "blackpool" }   # 2015: BWF abbreviation
         "chorley*"   { return "chorley"   }
+        "cac*"       { return "chorley"   }   # Chorley abbreviation
+        "cat*"       { return "chorley"   }   # 2015: Chorley alternate abbreviation
         "lytham*"    { return "lytham"    }
+        "lsa*"       { return "lytham"    }   # Lytham St Annes abbreviation
         "preston*"   { return "preston"   }
+        "ph*"        { return "preston"   }   # Preston Harriers abbreviation
         "red rose*"  { return "red-rose"  }
         "red-rose*"  { return "red-rose"  }   # 2015: hyphenated variant
+        "rr*"        { return "red-rose"  }   # Red Rose abbreviation
         "thornton*"  { return "thornton"  }
+        "tc*"        { return "thornton"  }   # Thornton abbreviation
         "wesham*"    { return "wesham"    }
+        "wrr*"       { return "wesham"    }   # Wesham RR abbreviation
         "guest*"     { return "Guest"     }
     }
     return $null
@@ -951,13 +958,13 @@ try {
 
     # ── Detect format: 2015 files use "Individual"/"Teams"/"Tables" ────────
     $sheetNames     = @($wb.Sheets | ForEach-Object { $_.Name })
-    $isLegacyFormat = $sheetNames -contains "Individual"
+    $isLegacyFormat = ($sheetNames -contains "Individual") -or ($sheetNames -contains "Teams" -and $sheetNames -contains "Tables")
     if ($isLegacyFormat) {
-        Write-Host "Detected legacy 2015 format (Individual / Teams / Tables)" -ForegroundColor Yellow
+        Write-Host "Detected legacy 2015 format (Individual / Teams / Tables or Main / Teams / Tables)" -ForegroundColor Yellow
     }
 
     # ── 1. Individual Results ──────────────────────────────────────────────
-    $posSheetName = if ($isLegacyFormat) { "Individual" } else { "Positions" }
+    $posSheetName = if ($sheetNames -contains "Individual") { "Individual" } elseif ($sheetNames -contains "Main") { "Main" } else { "Positions" }
     Write-Host "Parsing $posSheetName sheet..." -ForegroundColor DarkGray
     $posSheet = $wb.Sheets.Item($posSheetName)
     $results = @(Parse-Positions $posSheet)
