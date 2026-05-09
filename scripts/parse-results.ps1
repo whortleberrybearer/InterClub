@@ -509,13 +509,17 @@ function Parse-Teams2015 {
 
     for ($r = 1; $r -le $totalRows; $r++) {
 
-        # ── Category label in col 8 (non-first categories only) ──────────────
+        # ── Category label in col 1 or col 8 (non-first categories only) ────
         if (-not $inData) {
-            $col8 = $Sheet.Cells.Item($r, 8).Text.Trim()
-            if ($col8) {
-                $catId = Get-TeamCategoryId $col8
-                if ($catId) { $pendingCatId = $catId; continue }
+            $foundCatId = $null
+            foreach ($labelCol in @(1, 8)) {
+                $labelVal = $Sheet.Cells.Item($r, $labelCol).Text.Trim()
+                if ($labelVal) {
+                    $foundCatId = Get-TeamCategoryId $labelVal
+                    if ($foundCatId) { break }
+                }
             }
+            if ($foundCatId) { $pendingCatId = $foundCatId; continue }
         }
 
         # ── Club header row — any row with 2+ club names ──────────────────────
@@ -549,10 +553,15 @@ function Parse-Teams2015 {
             continue
         }
 
-        # Some formats omit the club header row for non-first categories (e.g. Lytham 2015).
-        # When we have a pending category and an existing column map, check whether this row
-        # is a scorer data row and, if so, start the new category without a new header row.
-        if ($pendingCatId -and $clubCols.Count -ge 2 -and -not $inData) {
+        # Some formats omit the club header row for non-first categories, and some also omit
+        # the category label row (e.g. wesham 2010 VETS section has neither).
+        # When we have a pending category or unprocessed categories remain, check whether this
+        # row is scorer data and if so start the next category without a header/label row.
+        $nextUnlabeled = $null
+        if (-not $pendingCatId) {
+            $nextUnlabeled = $CategoryOrder | Where-Object { -not $scorers.ContainsKey($_) } | Select-Object -First 1
+        }
+        if (($pendingCatId -or $nextUnlabeled) -and $clubCols.Count -ge 2 -and -not $inData) {
             $hasData = $false
             foreach ($cn in $clubCols.Keys) {
                 if ($Sheet.Cells.Item($r, $clubCols[$cn].PosCol).Text.Trim() -match '^\d+$') {
@@ -560,7 +569,11 @@ function Parse-Teams2015 {
                 }
             }
             if ($hasData) {
-                $currentCatId = $pendingCatId; $pendingCatId = $null
+                if ($pendingCatId) {
+                    $currentCatId = $pendingCatId; $pendingCatId = $null
+                } else {
+                    $currentCatId = $nextUnlabeled
+                }
                 $inData = $true
                 if (-not $scorers.ContainsKey($currentCatId)) {
                     $scorers[$currentCatId] = @{}
