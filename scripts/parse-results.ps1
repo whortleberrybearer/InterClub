@@ -698,6 +698,134 @@ function Parse-SeasonTotals2015 {
     return $totals
 }
 
+# Parses the 2010-format "Teams" (or "teams") sheet.
+#
+# Two layout variants exist within the same year:
+#   Compact  (6 cols): row 1 = club names; data cells contain "pos Name" in one cell
+#   Paired  (12 cols): club names in even cols (2,4,…); odd cols = pos, even cols = name
+#
+# Both variants interleave all team categories in one sheet, separated by single-cell
+# category-label rows ("Ladies", "VETS", "VET-50", "VET-60").  The Open block is first
+# and has no explicit label.  Each block ends with a totals/rank row (cells that contain
+# ordinal strings like "1st", "2nd") which is skipped; rankings are derived by summing
+# scorer positions (lower total = better finish, as in cross-country scoring).
+#
+# Returns: @{ Scorers = catId→clubId→List[{Position,Name}]; Positions = catId→List[{Club,Total}] }
+function Parse-Teams2010 {
+    param($Sheet, [string[]]$CategoryOrder)
+
+    $totalRows = $Sheet.UsedRange.Rows.Count
+    $totalCols = $Sheet.UsedRange.Columns.Count
+    $isCompact = ($totalCols -le 6)
+
+    # Locate club-header row (first row with 2+ recognised club names)
+    $headerRow = -1
+    $clubCols  = [ordered]@{}   # displayName → {PosCol, NameCol}
+
+    for ($hr = 1; $hr -le [Math]::Min(5, $totalRows); $hr++) {
+        $found = [ordered]@{}
+        for ($c = 1; $c -le $totalCols; $c++) {
+            $h   = $Sheet.Cells.Item($hr, $c).Text.Trim()
+            $cId = if ($h) { Get-ClubId $h } else { $null }
+            if ($null -ne $cId -and $cId -ne 'Guest') {
+                $posCol = if ($isCompact) { 0 } else { $c - 1 }
+                $found[$h] = [PSCustomObject]@{ PosCol = $posCol; NameCol = $c }
+            }
+        }
+        if ($found.Count -ge 2) { $headerRow = $hr; $clubCols = $found; break }
+    }
+    if ($clubCols.Count -eq 0) { throw "Could not find club header row in Teams2010 sheet" }
+
+    Write-Host "  Teams2010: header=$headerRow clubs=$($clubCols.Count) format=$(if ($isCompact) {'compact'} else {'paired'})" -ForegroundColor DarkGray
+
+    # Initialise first (implicit Open) category
+    $currentCat = if ($CategoryOrder.Count -gt 0) { $CategoryOrder[0] } else { "open" }
+    $scorers    = @{}
+    $positions  = @{}
+
+    $scorers[$currentCat] = @{}
+    foreach ($cn in $clubCols.Keys) {
+        $cId = Get-ClubId $cn
+        if ($cId -and $cId -ne 'Guest') { $scorers[$currentCat][$cId] = [System.Collections.Generic.List[PSCustomObject]]@() }
+    }
+
+    for ($r = $headerRow + 1; $r -le $totalRows; $r++) {
+
+        # Collect non-empty cells (plain hashtable — integer keys work as keys, not indices)
+        $cells = @{}
+        for ($c = 1; $c -le $totalCols; $c++) {
+            $v = $Sheet.Cells.Item($r, $c).Text.Trim()
+            if ($v) { $cells[$c] = $v }
+        }
+        if ($cells.Count -eq 0) { continue }
+
+        # Category-label row: exactly one non-empty cell whose value is a known category
+        if ($cells.Count -eq 1) {
+            $singleVal = $cells.Values | Select-Object -First 1
+            $newCatId  = Get-TeamCategoryId $singleVal
+            if ($newCatId) {
+                Finalize-Category2010 $scorers $positions $currentCat $clubCols
+                $currentCat = $newCatId
+                $scorers[$currentCat] = @{}
+                foreach ($cn in $clubCols.Keys) {
+                    $cId = Get-ClubId $cn
+                    if ($cId -and $cId -ne 'Guest') { $scorers[$currentCat][$cId] = [System.Collections.Generic.List[PSCustomObject]]@() }
+                }
+                continue
+            }
+        }
+
+        # Totals/rank row: any cell contains an ordinal suffix (1st, 2nd, 3rd, 4th…)
+        $isTotals = $false
+        foreach ($v in $cells.Values) {
+            if ($v -match '\b\d+(?:st|nd|rd|th)\b') { $isTotals = $true; break }
+        }
+        if ($isTotals) { continue }
+
+        # Scorer data row
+        foreach ($cn in $clubCols.Keys) {
+            $cols       = $clubCols[$cn]
+            $scorerPos  = $null
+            $scorerName = ""
+
+            if ($isCompact) {
+                $cv = $Sheet.Cells.Item($r, $cols.NameCol).Text.Trim()
+                if ($cv -match '^(\d+)\s*(.+)$') { $scorerPos = [int]$Matches[1]; $scorerName = $Matches[2].Trim() }
+            } else {
+                $pv = if ($cols.PosCol -gt 0) { $Sheet.Cells.Item($r, $cols.PosCol).Text.Trim() } else { "" }
+                $nv = $Sheet.Cells.Item($r, $cols.NameCol).Text.Trim()
+                if ($pv -match '^\d+$' -and $nv) { $scorerPos = [int]$pv; $scorerName = $nv }
+            }
+
+            if ($null -ne $scorerPos -and $scorerName) {
+                $cId = Get-ClubId $cn
+                if ($cId -and $cId -ne 'Guest' -and $scorers[$currentCat].ContainsKey($cId)) {
+                    $scorers[$currentCat][$cId].Add([PSCustomObject]@{ Position = $scorerPos; Name = $scorerName })
+                }
+            }
+        }
+    }
+
+    Finalize-Category2010 $scorers $positions $currentCat $clubCols
+
+    Write-Host "  Teams2010 categories parsed: $($positions.Keys -join ', ')" -ForegroundColor DarkGray
+    return @{ Scorers = $scorers; Positions = $positions }
+}
+
+function Finalize-Category2010 {
+    param($Scorers, $Positions, [string]$CatId, $ClubCols)
+    if (-not $CatId) { return }
+    $list = [System.Collections.Generic.List[PSCustomObject]]@()
+    foreach ($cn in $ClubCols.Keys) {
+        $cId = Get-ClubId $cn
+        if ($cId -and $cId -ne 'Guest' -and $Scorers[$CatId].ContainsKey($cId) -and $Scorers[$CatId][$cId].Count -gt 0) {
+            $total = ($Scorers[$CatId][$cId] | Measure-Object -Property Position -Sum).Sum
+            $list.Add([PSCustomObject]@{ Club = $cId; Total = $total })
+        }
+    }
+    $Positions[$CatId] = [System.Collections.Generic.List[PSCustomObject]]@($list | Sort-Object Total)
+}
+
 # ─── Output builders ──────────────────────────────────────────────────────────
 
 function Build-TeamResultsJson {
@@ -724,10 +852,11 @@ function Build-TeamResultsJson {
         $orderedClubs = $TeamPositions[$catId]
         $clubs = [System.Collections.Generic.List[object]]@()
 
+        $scoringClubs = $orderedClubs.Count   # points: N for 1st, 1 for last
         for ($i = 0; $i -lt $orderedClubs.Count; $i++) {
             $entry    = $orderedClubs[$i]
             $position = $i + 1
-            $points   = $numClubs - $i   # 7 for 1st … 1 for 7th
+            $points   = $scoringClubs - $i
 
             # Collect scorers — try club ID first (2015 format), then display-name map (current format)
             $scorers = [System.Collections.Generic.List[object]]@()
@@ -949,17 +1078,27 @@ $wb = $excel.Workbooks.Open($ExcelFile)
 
 try {
 
-    # ── Detect format: 2015 files use "Individual"/"Teams"/"Tables" ────────
-    $sheetNames     = @($wb.Sheets | ForEach-Object { $_.Name })
-    $isLegacyFormat = $sheetNames -contains "Individual"
-    if ($isLegacyFormat) {
+    # ── Detect format ─────────────────────────────────────────────────────
+    # 2010: Individual + Teams (no Tables sheet)
+    # 2015: Individual + Teams + Tables
+    # Current: Positions + Team Scorers + Team Positions + Season Totals
+    $sheetNames      = @($wb.Sheets | ForEach-Object { $_.Name })
+    $hasIndividual   = ($sheetNames | Where-Object { $_ -ieq "Individual" }).Count -gt 0
+    $hasTables       = ($sheetNames | Where-Object { $_ -ieq "Tables"     }).Count -gt 0
+    $hasTeams        = ($sheetNames | Where-Object { $_ -imatch '^teams?$' }).Count -gt 0
+    $isLegacyFormat  = $hasIndividual -and $hasTables
+    $is2010Format    = $hasIndividual -and $hasTeams -and -not $hasTables
+    if ($is2010Format) {
+        Write-Host "Detected 2010 format (Individual / Teams, no Tables)" -ForegroundColor Yellow
+    } elseif ($isLegacyFormat) {
         Write-Host "Detected legacy 2015 format (Individual / Teams / Tables)" -ForegroundColor Yellow
     }
 
     # ── 1. Individual Results ──────────────────────────────────────────────
-    $posSheetName = if ($isLegacyFormat) { "Individual" } else { "Positions" }
+    $indvSheet    = $wb.Sheets | Where-Object { $_.Name -ieq "Individual" } | Select-Object -First 1
+    $posSheetName = if ($indvSheet) { $indvSheet.Name } else { "Positions" }
     Write-Host "Parsing $posSheetName sheet..." -ForegroundColor DarkGray
-    $posSheet = $wb.Sheets.Item($posSheetName)
+    $posSheet = if ($indvSheet) { $indvSheet } else { $wb.Sheets.Item("Positions") }
     $results = @(Parse-Positions $posSheet)
 
     $icCount    = ($results | Where-Object { $null -ne $_.IcPos }).Count
@@ -1020,7 +1159,28 @@ try {
 
     # ── 3-5. Team data — routed by format ─────────────────────────────────
     Write-Host ""
-    if ($isLegacyFormat) {
+    if ($is2010Format) {
+
+        # 2010: single Teams sheet holds all categories; no Tables/season-totals sheet.
+        Write-Host "Parsing Teams sheet (2010)..." -ForegroundColor DarkGray
+        $teamSheet2010 = $wb.Sheets | Where-Object { $_.Name -imatch '^teams?$' } | Select-Object -First 1
+        $teams2010     = Parse-Teams2010 $teamSheet2010 $categoryIds
+        $teamScorers   = $teams2010.Scorers
+        $teamPositions = $teams2010.Positions
+        Write-Host "  Team categories: $($teamPositions.Keys -join ', ')"
+
+        # Derive per-race points from finishing positions (no season totals sheet in 2010)
+        Write-Host "  Deriving season-totals points from team positions..." -ForegroundColor DarkGray
+        $pointsSource = @{}
+        foreach ($catId in $teamPositions.Keys) {
+            $pointsSource[$catId] = @{}
+            $ordered = $teamPositions[$catId]
+            for ($i = 0; $i -lt $ordered.Count; $i++) {
+                $pointsSource[$catId][$ordered[$i].Club] = $ordered.Count - $i
+            }
+        }
+
+    } elseif ($isLegacyFormat) {
 
         # 2015: Teams sheet contains both scorer details and team positions;
         #       Tables sheet contains per-race season totals.
