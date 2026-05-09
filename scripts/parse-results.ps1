@@ -71,7 +71,7 @@ function Get-ClubId {
         "blackpool*" { return "blackpool" }
         "b.w.f*"     { return "blackpool" }   # 2015: B.W.F., B.W.F
         "bwf*"       { return "blackpool" }   # 2015: BWF abbreviation
-        "chorley*"   { return "chorley"   }
+        "chorley*"   { return "chorley-ac" }
         "lytham*"    { return "lytham"    }
         "preston*"   { return "preston"   }
         "red rose*"  { return "red-rose"  }
@@ -764,7 +764,6 @@ function Parse-Teams2010 {
             $singleVal = $cells.Values | Select-Object -First 1
             $newCatId  = Get-TeamCategoryId $singleVal
             if ($newCatId) {
-                Finalize-Category2010 $scorers $positions $currentCat $clubCols
                 $currentCat = $newCatId
                 $scorers[$currentCat] = @{}
                 foreach ($cn in $clubCols.Keys) {
@@ -775,12 +774,54 @@ function Parse-Teams2010 {
             }
         }
 
-        # Totals/rank row: any cell contains an ordinal suffix (1st, 2nd, 3rd, 4th…)
+        # Totals/rank row — read rank and actual total directly from the spreadsheet
         $isTotals = $false
         foreach ($v in $cells.Values) {
             if ($v -match '\b\d+(?:st|nd|rd|th)\b') { $isTotals = $true; break }
         }
-        if ($isTotals) { continue }
+        if ($isTotals) {
+            $rankList = [System.Collections.Generic.List[PSCustomObject]]@()
+            foreach ($cn in $clubCols.Keys) {
+                $cols = $clubCols[$cn]
+                $cId  = Get-ClubId $cn
+                if (-not $cId -or $cId -eq 'Guest') { continue }
+
+                $rank  = $null
+                $total = $null
+
+                if ($isCompact) {
+                    # Compact: single cell contains "2nd 167" or just "2nd"
+                    $cv = $Sheet.Cells.Item($r, $cols.NameCol).Text.Trim()
+                    if ($cv -match '^(\d+)(?:st|nd|rd|th)\s+(\d+)') {
+                        $rank = [int]$Matches[1]; $total = [int]$Matches[2]
+                    } elseif ($cv -match '^(\d+)(?:st|nd|rd|th)') {
+                        $rank = [int]$Matches[1]
+                    }
+                } else {
+                    # Paired: name col may have "3rd" or "1039 6th"; pos col may have total
+                    $nv = $Sheet.Cells.Item($r, $cols.NameCol).Text.Trim()
+                    $pv = if ($cols.PosCol -gt 0) { $Sheet.Cells.Item($r, $cols.PosCol).Text.Trim() } else { "" }
+                    if ($nv -match '^(\d+)\s+(\d+)(?:st|nd|rd|th)') {
+                        $total = [int]$Matches[1]; $rank = [int]$Matches[2]
+                    } elseif ($nv -match '^(\d+)(?:st|nd|rd|th)$' -and $pv -match '^\d+$') {
+                        $rank = [int]$Matches[1]; $total = [int]$pv
+                    } elseif ($nv -match '^(\d+)(?:st|nd|rd|th)') {
+                        $rank = [int]$Matches[1]
+                    }
+                }
+
+                if ($null -ne $rank) {
+                    $rankList.Add([PSCustomObject]@{ Club = $cId; Rank = $rank; Total = $total })
+                }
+            }
+
+            if ($rankList.Count -gt 0) {
+                $positions[$currentCat] = [System.Collections.Generic.List[PSCustomObject]]@(
+                    $rankList | Sort-Object Rank | ForEach-Object { [PSCustomObject]@{ Club = $_.Club; Total = $_.Total } }
+                )
+            }
+            continue
+        }
 
         # Scorer data row
         foreach ($cn in $clubCols.Keys) {
@@ -806,24 +847,8 @@ function Parse-Teams2010 {
         }
     }
 
-    Finalize-Category2010 $scorers $positions $currentCat $clubCols
-
     Write-Host "  Teams2010 categories parsed: $($positions.Keys -join ', ')" -ForegroundColor DarkGray
     return @{ Scorers = $scorers; Positions = $positions }
-}
-
-function Finalize-Category2010 {
-    param($Scorers, $Positions, [string]$CatId, $ClubCols)
-    if (-not $CatId) { return }
-    $list = [System.Collections.Generic.List[PSCustomObject]]@()
-    foreach ($cn in $ClubCols.Keys) {
-        $cId = Get-ClubId $cn
-        if ($cId -and $cId -ne 'Guest' -and $Scorers[$CatId].ContainsKey($cId) -and $Scorers[$CatId][$cId].Count -gt 0) {
-            $total = ($Scorers[$CatId][$cId] | Measure-Object -Property Position -Sum).Sum
-            $list.Add([PSCustomObject]@{ Club = $cId; Total = $total })
-        }
-    }
-    $Positions[$CatId] = [System.Collections.Generic.List[PSCustomObject]]@($list | Sort-Object Total)
 }
 
 # ─── Output builders ──────────────────────────────────────────────────────────
@@ -836,7 +861,7 @@ function Build-TeamResultsJson {
     # Mapping from Team Scorers display name -> club ID
     $scorerClubMap = @{
         "Blackpool" = "blackpool"
-        "Chorley"   = "chorley"
+        "Chorley"   = "chorley-ac"
         "Lytham"    = "lytham"
         "Preston"   = "preston"
         "Red Rose"  = "red-rose"
