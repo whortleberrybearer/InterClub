@@ -71,7 +71,7 @@ function Get-ClubId {
         "blackpool*" { return "blackpool" }
         "b.w.f*"     { return "blackpool" }   # 2015: B.W.F., B.W.F
         "bwf*"       { return "blackpool" }   # 2015: BWF abbreviation
-        "chorley*"   { return "chorley-ac" }
+        "chorley*"   { return $script:chorleyClubId }
         "lytham*"    { return "lytham"    }
         "preston*"   { return "preston"   }
         "red rose*"  { return "red-rose"  }
@@ -85,6 +85,9 @@ function Get-ClubId {
 
 # Populated from config after it is loaded - maps Excel display names -> config category IDs
 $script:categoryMap = @{}
+
+# Resolved after Year is known: pre-2012 results use "chorley-ac"; 2012+ use "chorley"
+$script:chorleyClubId = "chorley"
 
 function Build-CategoryMap {
     param($teamCategories)
@@ -803,10 +806,9 @@ function Parse-Teams2010 {
                     $pv = if ($cols.PosCol -gt 0) { $Sheet.Cells.Item($r, $cols.PosCol).Text.Trim() } else { "" }
                     if ($nv -match '^(\d+)\s+(\d+)(?:st|nd|rd|th)') {
                         $total = [int]$Matches[1]; $rank = [int]$Matches[2]
-                    } elseif ($nv -match '^(\d+)(?:st|nd|rd|th)$' -and $pv -match '^\d+$') {
-                        $rank = [int]$Matches[1]; $total = [int]$pv
                     } elseif ($nv -match '^(\d+)(?:st|nd|rd|th)') {
-                        $rank = [int]$Matches[1]
+                        $rank = [int]$Matches[1]   # save rank NOW before $pv match overwrites $Matches
+                        if ($pv -match '^\d+$') { $total = [int]$pv }
                     }
                 }
 
@@ -1044,6 +1046,7 @@ if (-not (Test-Path $ProjectRoot)) { throw "Project root not found: $ProjectRoot
 if (-not $Year) {
     $Year = Prompt-Value "Series year (e.g. 2026)" "2026"
 }
+$script:chorleyClubId = if ([int]$Year -lt 2012) { "chorley-ac" } else { "chorley" }
 
 if (-not $RaceId) {
     $RaceId = Prompt-Value "Race ID (e.g. blackpool, red-rose)"
