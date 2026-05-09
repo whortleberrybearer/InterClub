@@ -1227,6 +1227,21 @@ try {
             Write-Host "  Season-totals categories: $($seasonTotals.Keys -join ', ')"
             $pointsSource = $seasonTotals
 
+            # For categories in season totals but not Teams positions (no scorers in Teams sheet),
+            # synthesize position order from Tables points (higher points = better rank).
+            # These entries have no scorer detail and no cross-country total.
+            foreach ($catId in $seasonTotals.Keys) {
+                if (-not $teamPositions.ContainsKey($catId)) {
+                    $ranked = [System.Collections.Generic.List[PSCustomObject]]@()
+                    foreach ($clubId in $seasonTotals[$catId].Keys) {
+                        $ranked.Add([PSCustomObject]@{ Club = $clubId; Total = $null })
+                    }
+                    $teamPositions[$catId] = [System.Collections.Generic.List[PSCustomObject]]@(
+                        $ranked | Sort-Object { $seasonTotals[$catId][$_.Club] } -Descending
+                    )
+                }
+            }
+
             # Cross-check Tables points vs Teams positions order (ordering only — total clubs may vary by category)
             Write-Host "  Cross-checking Tables points vs Teams positions..." -ForegroundColor DarkGray
             $crossErr = 0
