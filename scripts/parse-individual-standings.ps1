@@ -208,6 +208,7 @@ function Parse-AgeCategory {
         if ([int]$posRaw -eq 0) { continue }   # 0 = category header placeholder row
 
         $score    = if ($scoreRaw -match '^\d+$') { [int]$scoreRaw } else { 0 }
+        if ($score -eq 0) { continue }
         $position = [int]$posRaw
 
         $clubId = Get-ClubId $clubRaw
@@ -266,6 +267,7 @@ function Parse-OverallSheet {
         if ([int]$posRaw -eq 0) { continue }   # 0 = row 2 summary placeholder
 
         $score    = if ($scoreRaw -match '^\d+$') { [int]$scoreRaw } else { 0 }
+        if ($score -eq 0) { continue }
         $position = [int]$posRaw
 
         $catInfo     = Get-CategoryInfo $cat
