@@ -69,13 +69,17 @@ function Get-ClubId {
     param([string]$Name)
     switch -Wildcard ($Name.Trim().ToLower()) {
         "blackpool*" { return "blackpool" }
+        "blackpool & fylde*" { return "blackpool-fylde" }   # 2006: Blackpool & Fylde AC
         "b.w.f*"     { return "blackpool" }   # 2015: B.W.F., B.W.F
         "bwf*"       { return "blackpool" }   # 2015/2009: BWF abbreviation
         "b'pool*"    { return "blackpool" }   # 2009: B'pool Wyre & Fylde
+        "b&f*"       { return "blackpool-fylde" }   # 2006: B&F abbreviation (Blackpool & Fylde AC)
         "chorley*"   { return $script:chorleyClubId }
         "cac"        { return $script:chorleyClubId }   # 2009: CAC abbreviation
         "lytham*"    { return "lytham"    }
         "lsa*"       { return "lytham"    }   # 2009: LSA / LSA RR abbreviation
+        "north fylde*" { return "north-fylde" }
+        "nf"         { return "north-fylde" }   # 2006: NF abbreviation
         "preston*"   { return "preston"   }
         "ph"         { return "preston"   }   # 2009: PH abbreviation
         "red rose*"  { return "red-rose"  }
@@ -1541,7 +1545,8 @@ try {
         Write-Host "  Team categories: $($teamPositions.Keys -join ', ')"
 
         Write-Host "Parsing Tables sheet (2009)..." -ForegroundColor DarkGray
-        $seasonTotals = Parse-Tables2009 ($wb.Sheets.Item("Tables")) $RaceId
+        $tablesSheet2009 = $wb.Sheets | Where-Object { $_.Name -ieq "Tables" -or $_.Name -ieq "master" } | Select-Object -First 1
+        $seasonTotals = Parse-Tables2009 $tablesSheet2009 $RaceId
 
         if ($seasonTotals -and $seasonTotals.Count -gt 0) {
             Write-Host "  Season-totals categories: $($seasonTotals.Keys -join ', ')"
@@ -1582,7 +1587,7 @@ try {
     } elseif ($isLegacyFormat) {
 
         # 2015: Teams sheet contains both scorer details and team positions;
-        #       Tables sheet contains per-race season totals.
+        #       Tables sheet (or "master") contains per-race season totals.
         Write-Host "Parsing Teams sheet (2015)..." -ForegroundColor DarkGray
         $teamSheet   = $wb.Sheets.Item("Teams")
         $teams2015   = Parse-Teams2015 $teamSheet $categoryIds
@@ -1591,7 +1596,8 @@ try {
         Write-Host "  Team categories: $($teamPositions.Keys -join ', ')"
 
         Write-Host "Parsing Tables sheet (2015)..." -ForegroundColor DarkGray
-        $tablesSheet  = $wb.Sheets.Item("Tables")
+        $tablesSheet  = $wb.Sheets | Where-Object { $_.Name -ieq "Tables" -or $_.Name -ieq "master" } | Select-Object -First 1
+        if (-not $tablesSheet) { throw "Tables or master sheet not found" }
         $seasonTotals = Parse-SeasonTotals2015 $tablesSheet $RaceId
 
         if ($seasonTotals -and $seasonTotals.Count -gt 0) {
