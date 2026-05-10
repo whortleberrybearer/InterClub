@@ -52,7 +52,9 @@ param(
     [string]$Series = "road-gp",
     [string]$ProjectRoot,
     [switch]$Provisional,
-    [switch]$DryRun
+    [switch]$DryRun,
+    [int]$AgeCatScoreColumn = 0,
+    [int]$OverallScoreColumn = 0
 )
 
 $ErrorActionPreference = "Stop"
@@ -389,8 +391,23 @@ if (-not $PSBoundParameters.ContainsKey('Provisional')) {
     $Provisional = $provInput -match '^[yY]'
 }
 
-# 2019 and earlier used a compact format: col 7 = total races, col 9 = score, no per-race columns.
-$ScoreColumn = if ([int]$Year -le 2019) { 9 } else { 40 }
+# Determine score columns for each sheet type.
+# 2018: Age Category uses col 15 (O), Ladies/Men use col 7 (G), no per-race columns.
+# 2019: all sheets use col 9, no per-race columns.
+# 2020+: all sheets use col 40, with per-race columns.
+if ($AgeCatScoreColumn -eq 0 -or $OverallScoreColumn -eq 0) {
+    if ([int]$Year -eq 2018) {
+        if ($AgeCatScoreColumn -eq 0) { $AgeCatScoreColumn = 15 }
+        if ($OverallScoreColumn -eq 0) { $OverallScoreColumn = 7 }
+    } elseif ([int]$Year -le 2019) {
+        if ($AgeCatScoreColumn -eq 0) { $AgeCatScoreColumn = 9 }
+        if ($OverallScoreColumn -eq 0) { $OverallScoreColumn = 9 }
+    } else {
+        if ($AgeCatScoreColumn -eq 0) { $AgeCatScoreColumn = 40 }
+        if ($OverallScoreColumn -eq 0) { $OverallScoreColumn = 40 }
+    }
+}
+$ScoreColumn = $OverallScoreColumn
 
 $dataDir     = Join-Path $ProjectRoot "src\data\$Year\$Series"
 $configFile  = Join-Path $dataDir "config.json"
@@ -401,7 +418,8 @@ Write-Host "Configuration" -ForegroundColor Yellow
 Write-Host "  Excel:       $ExcelFile"
 Write-Host "  Year:        $Year  |  Series: $Series"
 Write-Host "  Provisional: $Provisional"
-Write-Host "  ScoreColumn: $ScoreColumn$(if ($ScoreColumn -le 13) { ' (legacy format - no per-race data)' })"
+Write-Host "  AgeCatScoreColumn: $AgeCatScoreColumn$(if ($AgeCatScoreColumn -le 13) { ' (legacy format - no per-race data)' })"
+Write-Host "  OverallScoreColumn: $OverallScoreColumn$(if ($OverallScoreColumn -le 13) { ' (legacy format - no per-race data)' })"
 Write-Host "  Output:      $outputFile"
 if ($DryRun) { Write-Host "  *** DRY RUN - no files written ***" -ForegroundColor Magenta }
 Write-Host ""
@@ -445,7 +463,7 @@ try {
     Write-Host ""
     Write-Host "Parsing '$ageCatSheetName'..." -ForegroundColor DarkGray
     $ageCatSheet  = $wb.Sheets.Item($ageCatSheetName)
-    $ageCatResult = @(Parse-AgeCategory -Sheet $ageCatSheet -MaxCounting $maxCounting -ScoreColumn $ScoreColumn)
+    $ageCatResult = @(Parse-AgeCategory -Sheet $ageCatSheet -MaxCounting $maxCounting -ScoreColumn $AgeCatScoreColumn)
 
     $ageCatGroups = $ageCatResult | Group-Object CategoryId
     foreach ($g in ($ageCatGroups | Sort-Object Name)) {
@@ -489,11 +507,13 @@ try {
 
     $errCount = 0
 
-    $hasRaceCols = $ScoreColumn -gt 13
+    $overallCats = @("female", "male", "overall")
     foreach ($catId in @("female", "male", "v35-female", "v40-male")) {
+        $isOverallCat = $overallCats -contains $catId
+        $catHasRaceCols = if ($isOverallCat) { $OverallScoreColumn -gt 13 } else { $AgeCatScoreColumn -gt 13 }
         $sample = @($allRunners | Where-Object { $_.CategoryId -eq $catId }) | Select-Object -First 3
         foreach ($runner in $sample) {
-            if ($hasRaceCols) {
+            if ($catHasRaceCols) {
                 $countingResults = $runner.Results.Values | Where-Object { $_.counting -eq $true }
                 $expectedTotal   = 0
                 foreach ($cr in $countingResults) { $expectedTotal += $cr.points }
@@ -505,7 +525,7 @@ try {
                     Write-Host ("  OK  {0,-30} cat={1,-15} pos={2,3}  total={3}" -f $runner.Name, $catId, $runner.Position, $runner.Total) -ForegroundColor Green
                 }
             } else {
-                Write-Host ("  OK  {0,-30} cat={1,-15} pos={2,3}  total={3}  (no per-race data)" -f $runner.Name, $catId, $runner.Position, $runner.Total) -ForegroundColor Green
+                Write-Host ("  OK  {0,-30} cat={1,-15} pos={2,3}  total={3}  (no per-race data in sheet)" -f $runner.Name, $catId, $runner.Position, $runner.Total) -ForegroundColor Green
             }
         }
     }
