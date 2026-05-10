@@ -70,14 +70,22 @@ function Get-ClubId {
     switch -Wildcard ($Name.Trim().ToLower()) {
         "blackpool*" { return "blackpool" }
         "b.w.f*"     { return "blackpool" }   # 2015: B.W.F., B.W.F
-        "bwf*"       { return "blackpool" }   # 2015: BWF abbreviation
+        "bwf*"       { return "blackpool" }   # 2015/2009: BWF abbreviation
+        "b'pool*"    { return "blackpool" }   # 2009: B'pool Wyre & Fylde
         "chorley*"   { return $script:chorleyClubId }
+        "cac"        { return $script:chorleyClubId }   # 2009: CAC abbreviation
         "lytham*"    { return "lytham"    }
+        "lsa*"       { return "lytham"    }   # 2009: LSA / LSA RR abbreviation
         "preston*"   { return "preston"   }
+        "ph"         { return "preston"   }   # 2009: PH abbreviation
         "red rose*"  { return "red-rose"  }
         "red-rose*"  { return "red-rose"  }   # 2015: hyphenated variant
+        "rr"         { return "red-rose"  }   # 2009: RR abbreviation
+        "rrrr*"      { return "red-rose"  }   # 2009: RRRR in Tables
         "thornton*"  { return "thornton"  }
+        "tc"         { return "thornton"  }   # 2009: TC abbreviation
         "wesham*"    { return "wesham"    }
+        "wrr"        { return "wesham"    }   # 2009: WRR abbreviation
         "guest*"     { return "Guest"     }
     }
     return $null
@@ -109,6 +117,9 @@ function Build-CategoryMap {
             $map["ladies"] = $cat.id
             $map["women"]  = $cat.id   # 2015 Tables uses "WOMEN" for the ladies category
         }
+        if ($lname -match '\bwomen\b' -and $lname -notmatch 'vet') {
+            $map["women"] = $cat.id   # 2009: team category named "Women"
+        }
         # Female-vets category: config may call it "FV40", "Lady Vets", etc.
         if ($lname -match '(fv.?40|lady.?vet|female.?vet)' -and $lname -notmatch '(50|60)') {
             $map["fv40"]       = $cat.id
@@ -120,10 +131,14 @@ function Build-CategoryMap {
         if ($lname -match '50') {
             $map["vet 50s"] = $cat.id
             $map["vet-50"]  = $cat.id   # 2015: "VET-50"
+            $map["vet50"]   = $cat.id   # 2009 Tables: "VET50"
+            $map["v50"]     = $cat.id   # 2009 Vets sheet section label
         }
         if ($lname -match '60') {
             $map["vet 60s"] = $cat.id
             $map["vet-60"]  = $cat.id   # 2015: "VET-60"
+            $map["vet60"]   = $cat.id   # 2009 Tables: "VET60"
+            $map["v60"]     = $cat.id   # 2009 Vets sheet section label
         }
     }
 
@@ -866,6 +881,295 @@ function Parse-Teams2010 {
     return @{ Scorers = $scorers; Positions = $positions }
 }
 
+# ─── 2009 format helpers ──────────────────────────────────────────────────────
+
+# Converts a 2009-style category string to the site's SEN/V40/V45/... format.
+# Handles: M, MJ, F, FJ → SEN; V40 → V40; FV40, F45 → V40, V45.
+function Normalize-Category2009 {
+    param([string]$Cat)
+    $c = $Cat.Trim()
+    switch -Regex ($c) {
+        '^(?i)(M|MJ|FJ|F)$' { return "SEN" }
+        '^(?i)FV?(\d+)$'    { return "V$($Matches[1])" }
+        '^(?i)V(\d+)$'      { return "V$($Matches[1])" }
+        default             { return $c }
+    }
+}
+
+# Derives sex from a 2009 category string; F-prefix categories are female.
+function Get-Sex2009 {
+    param([string]$Cat)
+    if ($Cat.Trim() -imatch '^F') { return "F" }
+    return "M"
+}
+
+# Splits a full name on the last space: "John Smith" → {First="John", Last="Smith"}.
+function Split-Name2009 {
+    param([string]$FullName)
+    $n   = $FullName.Trim()
+    $idx = $n.LastIndexOf(' ')
+    if ($idx -lt 0) { return @{ First = $n; Last = "" } }
+    return @{ First = $n.Substring(0, $idx).Trim(); Last = $n.Substring($idx + 1).Trim() }
+}
+
+# Parses the 2009-format "Main" sheet.
+#
+# Two layouts exist:
+#   Form-control (race 1):  header in row 1 with [#] checkbox controls in odd cols;
+#     data in even cols: 2=Pos, 4=IC, 14=Name, 16=Cat, 18=Club, 20=Time
+#   Multi-column (races 2-6): four data blocks across two row bands:
+#     rows 2-65:  cols 1-10 (pos 1-64) and cols 12-21 (pos 65-128)
+#     rows 68+:   cols 1-10 (pos 129-178) and cols 12-21 (pos 179+)
+#     (row 66 blank, row 67 repeat header)
+#     Col layout per block: Pos IC V V50 V60 L Name Cat Club Time
+#
+# Returns results in position order; names are split first/last on the final space.
+function Parse-Main2009 {
+    param($Sheet)
+
+    $totalRows = $Sheet.UsedRange.Rows.Count
+    $results   = [System.Collections.Generic.List[PSCustomObject]]@()
+
+    $isFormControl = ($Sheet.Cells.Item(1, 2).Text.Trim() -ieq "Pos")
+
+    if ($isFormControl) {
+        for ($r = 2; $r -le $totalRows; $r++) {
+            $pos = $Sheet.Cells.Item($r, 2).Text.Trim()
+            if ($pos -notmatch '^\d+$') { continue }
+
+            $icPos   = $Sheet.Cells.Item($r,  4).Text.Trim()
+            $name    = $Sheet.Cells.Item($r, 14).Text.Trim()
+            $cat     = $Sheet.Cells.Item($r, 16).Text.Trim()
+            $clubRaw = $Sheet.Cells.Item($r, 18).Text.Trim()
+            $time    = $Sheet.Cells.Item($r, 20).Text.Trim()
+
+            $np    = Split-Name2009 $name
+            $clubId = Get-ClubId $clubRaw
+            if ($null -eq $clubId) { Write-Warning "Row ${r}: unknown club '$clubRaw'"; $clubId = "Guest" }
+
+            $results.Add([PSCustomObject]@{
+                ExcelRow = $r
+                Position = [int]$pos
+                IcPos    = if ($icPos -match '^\d+$') { [int]$icPos } else { $null }
+                RaceNum  = $null
+                First    = $np.First
+                Last     = $np.Last
+                Club     = $clubId
+                Category = Normalize-Category2009 $cat
+                Sex      = Get-Sex2009 $cat
+                Time     = $time
+            })
+        }
+    } else {
+        # Multi-column: left block (cols 1-10) then right block (cols 12-21)
+        $blocks = @(
+            [PSCustomObject]@{ PosCol=1;  IcCol=2;  NameCol=7;  CatCol=8;  ClubCol=9;  TimeCol=10 },
+            [PSCustomObject]@{ PosCol=12; IcCol=13; NameCol=18; CatCol=19; ClubCol=20; TimeCol=21 }
+        )
+        foreach ($blk in $blocks) {
+            for ($r = 2; $r -le $totalRows; $r++) {
+                $pos = $Sheet.Cells.Item($r, $blk.PosCol).Text.Trim()
+                if ($pos -notmatch '^\d+$') { continue }
+
+                $icPos   = $Sheet.Cells.Item($r, $blk.IcCol).Text.Trim()
+                $name    = $Sheet.Cells.Item($r, $blk.NameCol).Text.Trim()
+                $cat     = $Sheet.Cells.Item($r, $blk.CatCol).Text.Trim()
+                $clubRaw = $Sheet.Cells.Item($r, $blk.ClubCol).Text.Trim()
+                $time    = $Sheet.Cells.Item($r, $blk.TimeCol).Text.Trim()
+
+                if (-not $name -and -not $time) { continue }
+
+                $np     = Split-Name2009 $name
+                $clubId = Get-ClubId $clubRaw
+                if ($null -eq $clubId) { Write-Warning "Row ${r} col $($blk.PosCol): unknown club '$clubRaw'"; $clubId = "Guest" }
+
+                $results.Add([PSCustomObject]@{
+                    ExcelRow = $r
+                    Position = [int]$pos
+                    IcPos    = if ($icPos -match '^\d+$') { [int]$icPos } else { $null }
+                    RaceNum  = $null
+                    First    = $np.First
+                    Last     = $np.Last
+                    Club     = $clubId
+                    Category = Normalize-Category2009 $cat
+                    Sex      = Get-Sex2009 $cat
+                    Time     = $time
+                })
+            }
+        }
+        $results = [System.Collections.Generic.List[PSCustomObject]]@($results | Sort-Object Position)
+    }
+
+    Write-Host "  Layout: $(if ($isFormControl) { 'form-control' } else { 'multi-column' })  |  $($results.Count) runners" -ForegroundColor DarkGray
+    return $results
+}
+
+# Parses a 2009 team-scorer sheet (Overall, Vets, or Women).
+#
+# Layout: 6 clubs × 4 columns (pos, name, cat, blank), club names at cols 2,6,10,14,18,22.
+# Scorer rows: position in PosCol, name in NameCol.
+# Totals/rank row: ordinal string ("1st") in NameCol for club 1.
+# Category label rows (Vets sheet): category name in col 1 on the same row as the club header.
+#
+# The Vets sheet contains three interleaved sections (Vets, V50, V60);
+# $DefaultCatId applies to the first section when no label precedes it.
+#
+# Returns @{ Scorers = catId→clubId→List[{Position,Name}]; Positions = catId→List[{Club,Total}] }
+function Parse-Teams2009Sheet {
+    param($Sheet, [string]$DefaultCatId)
+
+    $totalRows    = $Sheet.UsedRange.Rows.Count
+    $nameColsList = @(2, 6, 10, 14, 18, 22)
+
+    $scorers    = @{}
+    $positions  = @{}
+    $currentCat = $DefaultCatId
+    $clubCols   = @()
+
+    for ($r = 1; $r -le $totalRows; $r++) {
+        $c1 = $Sheet.Cells.Item($r, 1).Text.Trim()
+        $c2 = $Sheet.Cells.Item($r, 2).Text.Trim()
+
+        # Club-header row: col 2 is a recognised non-Guest club
+        $c2Id = if ($c2) { Get-ClubId $c2 } else { $null }
+        if ($null -ne $c2Id -and $c2Id -ne 'Guest') {
+            if ($c1) {
+                $lc = Get-TeamCategoryId $c1
+                if ($lc) { $currentCat = $lc }
+            }
+            $clubCols = @()
+            foreach ($nc in $nameColsList) {
+                $cn  = $Sheet.Cells.Item($r, $nc).Text.Trim()
+                $cId = if ($cn) { Get-ClubId $cn } else { $null }
+                if ($null -ne $cId -and $cId -ne 'Guest') {
+                    $clubCols += [PSCustomObject]@{ PosCol = $nc - 1; NameCol = $nc; ClubId = $cId }
+                }
+            }
+            if (-not $scorers.ContainsKey($currentCat)) { $scorers[$currentCat] = @{} }
+            foreach ($cc in $clubCols) {
+                if (-not $scorers[$currentCat].ContainsKey($cc.ClubId)) {
+                    $scorers[$currentCat][$cc.ClubId] = [System.Collections.Generic.List[PSCustomObject]]@()
+                }
+            }
+            Write-Host "  Teams2009Sheet: cat=$currentCat clubs=$($clubCols.Count)" -ForegroundColor DarkGray
+            continue
+        }
+
+        if ($clubCols.Count -eq 0) { continue }
+
+        # Totals/rank row: col 2 contains an ordinal string
+        if ($c2 -match '\d+(?:st|nd|rd|th)') {
+            $rankList = [System.Collections.Generic.List[PSCustomObject]]@()
+            foreach ($cc in $clubCols) {
+                $totalStr = $Sheet.Cells.Item($r, $cc.PosCol).Text.Trim()
+                $rankStr  = $Sheet.Cells.Item($r, $cc.NameCol).Text.Trim()
+                if ($rankStr -match '(\d+)(?:st|nd|rd|th)') {
+                    $rankList.Add([PSCustomObject]@{
+                        ClubId = $cc.ClubId
+                        Rank   = [int]$Matches[1]
+                        Total  = if ($totalStr -match '^\d+$') { [int]$totalStr } else { $null }
+                    })
+                }
+            }
+            $positions[$currentCat] = [System.Collections.Generic.List[PSCustomObject]]@(
+                $rankList | Sort-Object Rank | ForEach-Object { [PSCustomObject]@{ Club = $_.ClubId; Total = $_.Total } }
+            )
+            $clubCols = @()
+            continue
+        }
+
+        # Skip rows with no scorer data
+        $hasData = $false
+        foreach ($cc in $clubCols) {
+            if ($Sheet.Cells.Item($r, $cc.PosCol).Text.Trim() -match '^\d+$') { $hasData = $true; break }
+        }
+        if (-not $hasData) { continue }
+
+        # Scorer row
+        foreach ($cc in $clubCols) {
+            $scorerPos  = $Sheet.Cells.Item($r, $cc.PosCol).Text.Trim()
+            $scorerName = $Sheet.Cells.Item($r, $cc.NameCol).Text.Trim()
+            if ($scorerPos -match '^\d+$' -and $scorerName) {
+                $scorers[$currentCat][$cc.ClubId].Add([PSCustomObject]@{
+                    Position = [int]$scorerPos
+                    Name     = $scorerName
+                })
+            }
+        }
+    }
+
+    return @{ Scorers = $scorers; Positions = $positions }
+}
+
+# Parses the 2009-format "Tables" sheet to extract per-race team points.
+#
+# Layout: category label in col 1 alone (OPEN, WOMEN, VETS, VET50, VET60),
+# followed by a header row (col 1 starts with "Club"; race abbreviations in cols 2+),
+# then club-data rows (club name in col 1, points in race column).
+#
+# Returns catId → clubId → points (same shape as Parse-SeasonTotals).
+function Parse-Tables2009 {
+    param($Sheet, [string]$RaceId)
+
+    $raceAbbrevMap = @{
+        "blackpool" = @("BWF", "BPL")
+        "lytham"    = @("LSA")
+        "preston"   = @("PH")
+        "wesham"    = @("WRR")
+        "chorley"   = @("CAC", "CAT")
+        "red-rose"  = @("RR")
+    }
+
+    $totalRows     = $Sheet.UsedRange.Rows.Count
+    $totalCols     = $Sheet.UsedRange.Columns.Count
+    $targetAbbrevs = $raceAbbrevMap[$RaceId.ToLower()]
+    if (-not $targetAbbrevs) {
+        Write-Warning "No race abbreviation mapping for '$RaceId' in 2009 Tables; skipping."
+        return $null
+    }
+
+    $totals     = @{}
+    $currentCat = $null
+    $raceCol    = -1
+
+    for ($r = 1; $r -le $totalRows; $r++) {
+        $c1 = $Sheet.Cells.Item($r, 1).Text.Trim()
+        if (-not $c1) { continue }
+
+        $catId = Get-TeamCategoryId $c1
+        if ($catId) {
+            $currentCat = $catId
+            $totals[$catId] = @{}
+            $raceCol = -1
+            continue
+        }
+
+        if ($c1 -imatch '^Club') {
+            $raceCol = -1
+            for ($c = 2; $c -le $totalCols; $c++) {
+                if ($targetAbbrevs -contains $Sheet.Cells.Item($r, $c).Text.Trim()) {
+                    $raceCol = $c
+                    Write-Host "  Tables2009: '$RaceId' → col $raceCol (row $r)" -ForegroundColor DarkGray
+                    break
+                }
+            }
+            continue
+        }
+
+        if ($currentCat -and $raceCol -gt 0) {
+            $clubId = Get-ClubId $c1
+            if ($clubId -and $clubId -ne 'Guest') {
+                $pts = $Sheet.Cells.Item($r, $raceCol).Text.Trim()
+                if ($pts -match '^\d+$') {
+                    $totals[$currentCat][$clubId] = [int]$pts
+                }
+            }
+        }
+    }
+
+    return $totals
+}
+
 # ─── Output builders ──────────────────────────────────────────────────────────
 
 function Build-TeamResultsJson {
@@ -1124,23 +1428,34 @@ try {
     # 2015: Individual + Teams + Tables
     # Current: Positions + Team Scorers + Team Positions + Season Totals
     $sheetNames      = @($wb.Sheets | ForEach-Object { $_.Name })
+    $hasMain         = ($sheetNames | Where-Object { $_ -ieq "Main"       }).Count -gt 0
+    $hasOverall      = ($sheetNames | Where-Object { $_ -ieq "Overall"    }).Count -gt 0
     $hasIndividual   = ($sheetNames | Where-Object { $_ -ieq "Individual" }).Count -gt 0
     $hasTables       = ($sheetNames | Where-Object { $_ -ieq "Tables"     }).Count -gt 0
     $hasTeams        = ($sheetNames | Where-Object { $_ -imatch '^teams?$' }).Count -gt 0
+    $is2009Format    = $hasMain -and $hasOverall
     $isLegacyFormat  = $hasIndividual -and $hasTables
     $is2010Format    = $hasIndividual -and $hasTeams -and -not $hasTables
-    if ($is2010Format) {
+    if ($is2009Format) {
+        Write-Host "Detected 2009 format (Main / Overall / Vets / Women / Tables)" -ForegroundColor Yellow
+    } elseif ($is2010Format) {
         Write-Host "Detected 2010 format (Individual / Teams, no Tables)" -ForegroundColor Yellow
     } elseif ($isLegacyFormat) {
         Write-Host "Detected legacy 2015 format (Individual / Teams / Tables)" -ForegroundColor Yellow
     }
 
     # ── 1. Individual Results ──────────────────────────────────────────────
-    $indvSheet    = $wb.Sheets | Where-Object { $_.Name -ieq "Individual" } | Select-Object -First 1
-    $posSheetName = if ($indvSheet) { $indvSheet.Name } else { "Positions" }
-    Write-Host "Parsing $posSheetName sheet..." -ForegroundColor DarkGray
-    $posSheet = if ($indvSheet) { $indvSheet } else { $wb.Sheets.Item("Positions") }
-    $results = @(Parse-Positions $posSheet)
+    if ($is2009Format) {
+        Write-Host "Parsing Main sheet (2009)..." -ForegroundColor DarkGray
+        $posSheet = $wb.Sheets.Item("Main")
+        $results  = @(Parse-Main2009 $posSheet)
+    } else {
+        $indvSheet    = $wb.Sheets | Where-Object { $_.Name -ieq "Individual" } | Select-Object -First 1
+        $posSheetName = if ($indvSheet) { $indvSheet.Name } else { "Positions" }
+        Write-Host "Parsing $posSheetName sheet..." -ForegroundColor DarkGray
+        $posSheet = if ($indvSheet) { $indvSheet } else { $wb.Sheets.Item("Positions") }
+        $results  = @(Parse-Positions $posSheet)
+    }
 
     $icCount    = ($results | Where-Object { $null -ne $_.IcPos }).Count
     $guestCount = ($results | Where-Object { $null -eq $_.IcPos }).Count
@@ -1161,37 +1476,43 @@ try {
     Write-Host "Validation" -ForegroundColor Yellow
 
     $errCount = 0
-    for ($i = 0; $i -lt $results.Count; $i += 5) {
-        $runner   = $results[$i]
-        $exRow    = $script:dataStartRow + $i
-        $exPos    = $posSheet.Cells.Item($exRow, $script:colMap["Pos"]).Text.Trim()
-        $exFirst  = $posSheet.Cells.Item($exRow, $script:colMap["First"]).Text.Trim()
-        $exLast   = $posSheet.Cells.Item($exRow, $script:colMap["Last"]).Text.Trim()
-        $exTime   = $posSheet.Cells.Item($exRow, $script:colMap["Time"]).Text.Trim()
+    if ($is2009Format) {
+        foreach ($runner in ($results | Select-Object -First 5)) {
+            Write-Host ("  OK  pos={0}  {1} {2}  {3}" -f $runner.Position, $runner.First, $runner.Last, $runner.Time) -ForegroundColor Green
+        }
+    } else {
+        for ($i = 0; $i -lt $results.Count; $i += 5) {
+            $runner   = $results[$i]
+            $exRow    = $script:dataStartRow + $i
+            $exPos    = $posSheet.Cells.Item($exRow, $script:colMap["Pos"]).Text.Trim()
+            $exFirst  = $posSheet.Cells.Item($exRow, $script:colMap["First"]).Text.Trim()
+            $exLast   = $posSheet.Cells.Item($exRow, $script:colMap["Last"]).Text.Trim()
+            $exTime   = $posSheet.Cells.Item($exRow, $script:colMap["Time"]).Text.Trim()
 
-        $rowLabel = "Result #$($i + 1) (Excel row $exRow)"
-        $ok = $true
+            $rowLabel = "Result #$($i + 1) (Excel row $exRow)"
+            $ok = $true
 
-        if ([string]$runner.Position -ne $exPos) {
-            Write-Warning "  $rowLabel position: expected '$exPos', got '$($runner.Position)'"
-            $errCount++; $ok = $false
-        }
-        if ($runner.First -ne $exFirst) {
-            Write-Warning "  $rowLabel first name: expected '$exFirst', got '$($runner.First)'"
-            $errCount++; $ok = $false
-        }
-        if ($runner.Last.Trim() -ne $exLast.Trim()) {
-            Write-Warning "  $rowLabel last name: expected '$exLast', got '$($runner.Last)'"
-            $errCount++; $ok = $false
-        }
-        if ($runner.Time -ne $exTime) {
-            Write-Warning "  $rowLabel time: expected '$exTime', got '$($runner.Time)'"
-            $errCount++; $ok = $false
-        }
+            if ([string]$runner.Position -ne $exPos) {
+                Write-Warning "  $rowLabel position: expected '$exPos', got '$($runner.Position)'"
+                $errCount++; $ok = $false
+            }
+            if ($runner.First -ne $exFirst) {
+                Write-Warning "  $rowLabel first name: expected '$exFirst', got '$($runner.First)'"
+                $errCount++; $ok = $false
+            }
+            if ($runner.Last.Trim() -ne $exLast.Trim()) {
+                Write-Warning "  $rowLabel last name: expected '$exLast', got '$($runner.Last)'"
+                $errCount++; $ok = $false
+            }
+            if ($runner.Time -ne $exTime) {
+                Write-Warning "  $rowLabel time: expected '$exTime', got '$($runner.Time)'"
+                $errCount++; $ok = $false
+            }
 
-        if ($ok) {
-            $color = "Green"
-            Write-Host ("  OK  #{0,-4} pos={1}  {2} {3}  {4}" -f ($i+1), $runner.Position, $runner.First, $runner.Last.Trim(), $runner.Time) -ForegroundColor $color
+            if ($ok) {
+                $color = "Green"
+                Write-Host ("  OK  #{0,-4} pos={1}  {2} {3}  {4}" -f ($i+1), $runner.Position, $runner.First, $runner.Last.Trim(), $runner.Time) -ForegroundColor $color
+            }
         }
     }
 
@@ -1200,7 +1521,44 @@ try {
 
     # ── 3-5. Team data — routed by format ─────────────────────────────────
     Write-Host ""
-    if ($is2010Format) {
+    if ($is2009Format) {
+
+        # 2009: Overall = Open, Women = Women, Vets sheet = Vets + V50 + V60
+        $teamScorers   = @{}
+        $teamPositions = @{}
+
+        foreach ($sheetSpec in @(
+            [PSCustomObject]@{ SheetName = "Overall"; DefaultCat = "open"  },
+            [PSCustomObject]@{ SheetName = "Women";   DefaultCat = "women" },
+            [PSCustomObject]@{ SheetName = "Vets";    DefaultCat = "vets"  }
+        )) {
+            Write-Host "Parsing $($sheetSpec.SheetName) sheet (2009)..." -ForegroundColor DarkGray
+            $sh   = $wb.Sheets.Item($sheetSpec.SheetName)
+            $data = Parse-Teams2009Sheet $sh $sheetSpec.DefaultCat
+            foreach ($k in $data.Scorers.Keys)   { $teamScorers[$k]   = $data.Scorers[$k]   }
+            foreach ($k in $data.Positions.Keys) { $teamPositions[$k] = $data.Positions[$k] }
+        }
+        Write-Host "  Team categories: $($teamPositions.Keys -join ', ')"
+
+        Write-Host "Parsing Tables sheet (2009)..." -ForegroundColor DarkGray
+        $seasonTotals = Parse-Tables2009 ($wb.Sheets.Item("Tables")) $RaceId
+
+        if ($seasonTotals -and $seasonTotals.Count -gt 0) {
+            Write-Host "  Season-totals categories: $($seasonTotals.Keys -join ', ')"
+            $pointsSource = $seasonTotals
+        } else {
+            Write-Host "  Tables unavailable - deriving points from team positions" -ForegroundColor Yellow
+            $pointsSource = @{}
+            foreach ($catId in $teamPositions.Keys) {
+                $pointsSource[$catId] = @{}
+                $ordered = $teamPositions[$catId]
+                for ($i = 0; $i -lt $ordered.Count; $i++) {
+                    $pointsSource[$catId][$ordered[$i].Club] = $ordered.Count - $i
+                }
+            }
+        }
+
+    } elseif ($is2010Format) {
 
         # 2010: single Teams sheet holds all categories; no Tables/season-totals sheet.
         Write-Host "Parsing Teams sheet (2010)..." -ForegroundColor DarkGray
