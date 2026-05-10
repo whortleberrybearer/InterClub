@@ -70,6 +70,19 @@ function formatName(first, last) {
 }
 
 
+// Normalise the spreadsheet age-category string (col D / col M in the overall
+// section) to the standard age-band format used in runners.json ("V45", "SEN").
+function normalizeAgeCategory(raw) {
+  if (!raw) return undefined;
+  const s = String(raw).trim();
+  if (s === 'F' || s === 'M') return 'SEN';
+  if (s === 'JF' || s === 'JM') return 'JUN';
+  const m = s.match(/^[FM]-?(\d+)$/);
+  if (m) return `V${m[1]}`;
+  if (/^(SEN|JUN|V\d+)$/.test(s)) return s;
+  return undefined;
+}
+
 function isCategoryLabel(val) {
   return typeof val === 'string' && LABEL_TO_CATEGORY[val.trim()] != null;
 }
@@ -94,17 +107,17 @@ function loadRunnerLookup(year, series) {
 function parseAwardsSheet(rows, runnerLookup) {
   const byCategory = {};
 
-  function addAward(catId, position, runnerId, first, last, clubFromSheet) {
+  function addAward(catId, position, runnerId, first, last, clubFromSheet, category) {
     const name = formatName(first, last);
     if (!name) return;
 
     const runner = runnerId ? runnerLookup[runnerId] : undefined;
     const club = runner?.club ?? resolveClub(clubFromSheet);
-    const category = runner?.category;
+    const resolvedCategory = runner?.category ?? category;
 
     const award = { position, name };
     if (club) award.club = club;
-    if (category) award.category = category;
+    if (resolvedCategory) award.category = resolvedCategory;
 
     (byCategory[catId] ??= []).push(award);
   }
@@ -121,11 +134,11 @@ function parseAwardsSheet(rows, runnerLookup) {
 
     // Ladies (cols 0-7): runnerId, first, last, ageCat, club
     if (isNumberId(row[0])) {
-      addAward('female', pos, row[0], row[1], row[2], row[4]);
+      addAward('female', pos, row[0], row[1], row[2], row[4], normalizeAgeCategory(row[3]));
     }
     // Men (cols 9-16): runnerId, first, last, ageCat, club
     if (isNumberId(row[9])) {
-      addAward('male', pos, row[9], row[10], row[11], row[13]);
+      addAward('male', pos, row[9], row[10], row[11], row[13], normalizeAgeCategory(row[12]));
     }
     i++;
   }
