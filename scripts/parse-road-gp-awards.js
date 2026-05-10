@@ -69,6 +69,7 @@ function formatName(first, last) {
   return `${f[0]}. ${l}`;
 }
 
+
 function isCategoryLabel(val) {
   return typeof val === 'string' && LABEL_TO_CATEGORY[val.trim()] != null;
 }
@@ -97,12 +98,13 @@ function parseAwardsSheet(rows, runnerLookup) {
     const name = formatName(first, last);
     if (!name) return;
 
-    const runnerClub = runnerId ? runnerLookup[runnerId]?.club : undefined;
-    const club = runnerClub ?? resolveClub(clubFromSheet);
+    const runner = runnerId ? runnerLookup[runnerId] : undefined;
+    const club = runner?.club ?? resolveClub(clubFromSheet);
+    const category = runner?.category;
 
     const award = { position, name };
     if (club) award.club = club;
-    if (runnerId) award.seriesRunnerId = runnerId;
+    if (category) award.category = category;
 
     (byCategory[catId] ??= []).push(award);
   }
@@ -117,11 +119,11 @@ function parseAwardsSheet(rows, runnerLookup) {
 
     const pos = i - 2; // 1-based position
 
-    // Ladies (cols 0-7)
+    // Ladies (cols 0-7): runnerId, first, last, ageCat, club
     if (isNumberId(row[0])) {
       addAward('female', pos, row[0], row[1], row[2], row[4]);
     }
-    // Men (cols 9-16)
+    // Men (cols 9-16): runnerId, first, last, ageCat, club
     if (isNumberId(row[9])) {
       addAward('male', pos, row[9], row[10], row[11], row[13]);
     }
