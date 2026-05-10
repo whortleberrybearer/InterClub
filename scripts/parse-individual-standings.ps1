@@ -185,9 +185,10 @@ function Build-RaceResults {
 # Returns list of PSCustomObject with fields needed for per-age-category standings.
 # Position is inferred from the order rows appear within each category (sheet is assumed sorted).
 function Parse-AgeCategory {
-    param($Sheet, [int]$MaxCounting)
+    param($Sheet, [int]$MaxCounting, [int]$ScoreColumn = 40)
 
     $raceColMap       = Get-RaceColMap
+    $hasRaceCols      = $ScoreColumn -gt 13
     $totalRows        = $Sheet.UsedRange.Rows.Count
     $runners          = [System.Collections.Generic.List[PSCustomObject]]@()
     $categoryCounters = @{}
@@ -204,7 +205,7 @@ function Parse-AgeCategory {
         $catInfo = Get-CategoryInfo $cat
         if (-not $catInfo) { continue }
 
-        $scoreRaw = $Sheet.Cells.Item($r, 40).Text.Trim()
+        $scoreRaw = $Sheet.Cells.Item($r, $ScoreColumn).Text.Trim()
         $score    = if ($scoreRaw -match '^\d+$') { [int]$scoreRaw } else { 0 }
         if ($score -eq 0) { continue }
 
@@ -218,13 +219,15 @@ function Parse-AgeCategory {
             $clubId = "Guest"
         }
 
-        $racePositions = [ordered]@{}
-        foreach ($col in $raceColMap.Keys) {
-            $posVal = $Sheet.Cells.Item($r, [int]$col).Text.Trim()
-            $racePositions[$raceColMap["$col"]] = if ($posVal -match '^\d+$') { [int]$posVal } else { 999 }
+        $raceResults = [ordered]@{}
+        if ($hasRaceCols) {
+            $racePositions = [ordered]@{}
+            foreach ($col in $raceColMap.Keys) {
+                $posVal = $Sheet.Cells.Item($r, [int]$col).Text.Trim()
+                $racePositions[$raceColMap["$col"]] = if ($posVal -match '^\d+$') { [int]$posVal } else { 999 }
+            }
+            $raceResults = Build-RaceResults -RacePositions $racePositions -MaxCounting $MaxCounting
         }
-
-        $raceResults = Build-RaceResults -RacePositions $racePositions -MaxCounting $MaxCounting
 
         $runners.Add([PSCustomObject]@{
             Name        = "$first $last".Trim()
@@ -248,9 +251,10 @@ function Parse-AgeCategory {
 # Returns list of PSCustomObject for the overall category.
 # Position is inferred from row order (sheet is assumed sorted).
 function Parse-OverallSheet {
-    param($Sheet, [string]$OverallCategoryId, [string]$Sex, [int]$MaxCounting)
+    param($Sheet, [string]$OverallCategoryId, [string]$Sex, [int]$MaxCounting, [int]$ScoreColumn = 40)
 
     $raceColMap  = Get-RaceColMap
+    $hasRaceCols = $ScoreColumn -gt 13
     $totalRows   = $Sheet.UsedRange.Rows.Count
     $runners     = [System.Collections.Generic.List[PSCustomObject]]@()
     $posCounter  = 0
@@ -264,7 +268,7 @@ function Parse-OverallSheet {
         if (-not $first -and -not $last) { continue }
         if (-not $cat) { continue }
 
-        $scoreRaw = $Sheet.Cells.Item($r, 40).Text.Trim()
+        $scoreRaw = $Sheet.Cells.Item($r, $ScoreColumn).Text.Trim()
         $score    = if ($scoreRaw -match '^\d+$') { [int]$scoreRaw } else { 0 }
         if ($score -eq 0) { continue }
 
@@ -280,13 +284,15 @@ function Parse-OverallSheet {
             $clubId = "Guest"
         }
 
-        $racePositions = [ordered]@{}
-        foreach ($col in $raceColMap.Keys) {
-            $posVal = $Sheet.Cells.Item($r, [int]$col).Text.Trim()
-            $racePositions[$raceColMap["$col"]] = if ($posVal -match '^\d+$') { [int]$posVal } else { 999 }
+        $raceResults = [ordered]@{}
+        if ($hasRaceCols) {
+            $racePositions = [ordered]@{}
+            foreach ($col in $raceColMap.Keys) {
+                $posVal = $Sheet.Cells.Item($r, [int]$col).Text.Trim()
+                $racePositions[$raceColMap["$col"]] = if ($posVal -match '^\d+$') { [int]$posVal } else { 999 }
+            }
+            $raceResults = Build-RaceResults -RacePositions $racePositions -MaxCounting $MaxCounting
         }
-
-        $raceResults = Build-RaceResults -RacePositions $racePositions -MaxCounting $MaxCounting
 
         $runners.Add([PSCustomObject]@{
             Name        = "$first $last".Trim()
@@ -383,6 +389,9 @@ if (-not $PSBoundParameters.ContainsKey('Provisional')) {
     $Provisional = $provInput -match '^[yY]'
 }
 
+# 2019 and earlier used a compact format: col 7 = total races, col 9 = score, no per-race columns.
+$ScoreColumn = if ([int]$Year -le 2019) { 9 } else { 40 }
+
 $dataDir     = Join-Path $ProjectRoot "src\data\$Year\$Series"
 $configFile  = Join-Path $dataDir "config.json"
 $racesFile   = Join-Path $dataDir "races.json"
@@ -392,6 +401,7 @@ Write-Host "Configuration" -ForegroundColor Yellow
 Write-Host "  Excel:       $ExcelFile"
 Write-Host "  Year:        $Year  |  Series: $Series"
 Write-Host "  Provisional: $Provisional"
+Write-Host "  ScoreColumn: $ScoreColumn$(if ($ScoreColumn -le 13) { ' (legacy format - no per-race data)' })"
 Write-Host "  Output:      $outputFile"
 if ($DryRun) { Write-Host "  *** DRY RUN - no files written ***" -ForegroundColor Magenta }
 Write-Host ""
@@ -435,7 +445,7 @@ try {
     Write-Host ""
     Write-Host "Parsing '$ageCatSheetName'..." -ForegroundColor DarkGray
     $ageCatSheet  = $wb.Sheets.Item($ageCatSheetName)
-    $ageCatResult = @(Parse-AgeCategory -Sheet $ageCatSheet -MaxCounting $maxCounting)
+    $ageCatResult = @(Parse-AgeCategory -Sheet $ageCatSheet -MaxCounting $maxCounting -ScoreColumn $ScoreColumn)
 
     $ageCatGroups = $ageCatResult | Group-Object CategoryId
     foreach ($g in ($ageCatGroups | Sort-Object Name)) {
@@ -450,7 +460,7 @@ try {
         Write-Host ""
         Write-Host "Parsing '$ladiesSheetName'..." -ForegroundColor DarkGray
         $ladiesSheet  = $wb.Sheets.Item($ladiesSheetName)
-        $ladiesResult = @(Parse-OverallSheet -Sheet $ladiesSheet -OverallCategoryId "female" -Sex "F" -MaxCounting $maxCounting)
+        $ladiesResult = @(Parse-OverallSheet -Sheet $ladiesSheet -OverallCategoryId "female" -Sex "F" -MaxCounting $maxCounting -ScoreColumn $ScoreColumn)
         Write-Host "  female: $($ladiesResult.Count) runners"
         foreach ($item in $ladiesResult) { $allRunners.Add($item) }
     } else {
@@ -463,7 +473,7 @@ try {
         Write-Host ""
         Write-Host "Parsing '$menSheetName'..." -ForegroundColor DarkGray
         $menSheet  = $wb.Sheets.Item($menSheetName)
-        $menResult = @(Parse-OverallSheet -Sheet $menSheet -OverallCategoryId "male" -Sex "M" -MaxCounting $maxCounting)
+        $menResult = @(Parse-OverallSheet -Sheet $menSheet -OverallCategoryId "male" -Sex "M" -MaxCounting $maxCounting -ScoreColumn $ScoreColumn)
         Write-Host "  male: $($menResult.Count) runners"
         foreach ($item in $menResult) { $allRunners.Add($item) }
     } else {
@@ -479,18 +489,23 @@ try {
 
     $errCount = 0
 
+    $hasRaceCols = $ScoreColumn -gt 13
     foreach ($catId in @("female", "male", "v35-female", "v40-male")) {
         $sample = @($allRunners | Where-Object { $_.CategoryId -eq $catId }) | Select-Object -First 3
         foreach ($runner in $sample) {
-            $countingResults = $runner.Results.Values | Where-Object { $_.counting -eq $true }
-            $expectedTotal   = 0
-            foreach ($cr in $countingResults) { $expectedTotal += $cr.points }
+            if ($hasRaceCols) {
+                $countingResults = $runner.Results.Values | Where-Object { $_.counting -eq $true }
+                $expectedTotal   = 0
+                foreach ($cr in $countingResults) { $expectedTotal += $cr.points }
 
-            if ($expectedTotal -ne $runner.Total) {
-                Write-Warning ("  {0} ({1}): computed total {2} != stored {3}" -f $runner.Name, $catId, $expectedTotal, $runner.Total)
-                $errCount++
+                if ($expectedTotal -ne $runner.Total) {
+                    Write-Warning ("  {0} ({1}): computed total {2} != stored {3}" -f $runner.Name, $catId, $expectedTotal, $runner.Total)
+                    $errCount++
+                } else {
+                    Write-Host ("  OK  {0,-30} cat={1,-15} pos={2,3}  total={3}" -f $runner.Name, $catId, $runner.Position, $runner.Total) -ForegroundColor Green
+                }
             } else {
-                Write-Host ("  OK  {0,-30} cat={1,-15} pos={2,3}  total={3}" -f $runner.Name, $catId, $runner.Position, $runner.Total) -ForegroundColor Green
+                Write-Host ("  OK  {0,-30} cat={1,-15} pos={2,3}  total={3}  (no per-race data)" -f $runner.Name, $catId, $runner.Position, $runner.Total) -ForegroundColor Green
             }
         }
     }
