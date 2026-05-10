@@ -1,31 +1,475 @@
-﻿{
-    "individualAwards":  [
-
-                         ],
-    "teamAwards":  [
-                       {
-                           "club":  "preston",
-                           "category":  "open"
-                       },
-                       {
-                           "club":  "preston",
-                           "category":  "vets"
-                       },
-                       {
-                           "club":  "preston",
-                           "category":  "vet50"
-                       },
-                       {
-                           "club":  "red-rose",
-                           "category":  "vet60"
-                       },
-                       {
-                           "club":  "lytham",
-                           "category":  "ladies"
-                       },
-                       {
-                           "club":  "blackpool",
-                           "category":  "ladyvets"
-                       }
-                   ]
+{
+  "individualAwards": [
+    {
+      "category": "female",
+      "awards": [
+        {
+          "position": 1,
+          "name": "T. Robinson",
+          "club": "wesham",
+          "seriesRunnerId": 1361
+        },
+        {
+          "position": 2,
+          "name": "E. Abbott",
+          "club": "lytham",
+          "seriesRunnerId": 361
+        },
+        {
+          "position": 3,
+          "name": "C. Carrdus",
+          "club": "lytham",
+          "seriesRunnerId": 269
+        },
+        {
+          "position": 4,
+          "name": "J. Rogers",
+          "club": "blackpool",
+          "seriesRunnerId": 53
+        },
+        {
+          "position": 5,
+          "name": "J. Goorney",
+          "club": "lytham",
+          "seriesRunnerId": 288
+        },
+        {
+          "position": 6,
+          "name": "B. Wright",
+          "club": "blackpool",
+          "seriesRunnerId": 87
+        },
+        {
+          "position": 7,
+          "name": "M. Koth",
+          "club": "lytham",
+          "seriesRunnerId": 305
+        },
+        {
+          "position": 8,
+          "name": "H. Lawrenson",
+          "club": "wesham",
+          "seriesRunnerId": 1287
+        },
+        {
+          "position": 9,
+          "name": "J. Wren",
+          "club": "preston",
+          "seriesRunnerId": 533
+        },
+        {
+          "position": 10,
+          "name": "H. Lees",
+          "club": "chorley",
+          "seriesRunnerId": 168
+        }
+      ]
+    },
+    {
+      "category": "male",
+      "awards": [
+        {
+          "position": 1,
+          "name": "R. Danson",
+          "club": "wesham",
+          "seriesRunnerId": 1246
+        },
+        {
+          "position": 2,
+          "name": "R. Affleck",
+          "club": "preston",
+          "seriesRunnerId": 402
+        },
+        {
+          "position": 3,
+          "name": "S. Croft",
+          "club": "red-rose",
+          "seriesRunnerId": 654
+        },
+        {
+          "position": 4,
+          "name": "P. Leybourne",
+          "club": "blackpool",
+          "seriesRunnerId": 39
+        },
+        {
+          "position": 5,
+          "name": "S. Swarbrick",
+          "club": "wesham",
+          "seriesRunnerId": 1331
+        },
+        {
+          "position": 6,
+          "name": "J. Greenwood",
+          "club": "lytham",
+          "seriesRunnerId": 289
+        },
+        {
+          "position": 7,
+          "name": "A. Draper",
+          "club": "lytham",
+          "seriesRunnerId": 275
+        },
+        {
+          "position": 8,
+          "name": "K. Hodgson",
+          "club": "preston",
+          "seriesRunnerId": 461
+        },
+        {
+          "position": 9,
+          "name": "T. Belcher",
+          "club": "chorley",
+          "seriesRunnerId": 217
+        },
+        {
+          "position": 10,
+          "name": "K. Lee",
+          "club": "lytham",
+          "seriesRunnerId": 357
+        }
+      ]
+    },
+    {
+      "category": "jun-female",
+      "awards": [
+        {
+          "position": 1,
+          "name": "E. Ingham",
+          "seriesRunnerId": 721
+        },
+        {
+          "position": 2,
+          "name": "O. Sutch",
+          "seriesRunnerId": 892
+        }
+      ]
+    },
+    {
+      "category": "jun-male",
+      "awards": [
+        {
+          "position": 1,
+          "name": "G. Norris",
+          "seriesRunnerId": 172
+        },
+        {
+          "position": 2,
+          "name": "D. Fletcher",
+          "seriesRunnerId": 20
+        }
+      ]
+    },
+    {
+      "category": "sen-female",
+      "awards": [
+        {
+          "position": 1,
+          "name": "S. Edwards",
+          "seriesRunnerId": 670
+        },
+        {
+          "position": 2,
+          "name": "H. McCusker",
+          "seriesRunnerId": 879
+        }
+      ]
+    },
+    {
+      "category": "sen-male",
+      "awards": [
+        {
+          "position": 1,
+          "name": "R. Smith",
+          "seriesRunnerId": 513
+        },
+        {
+          "position": 2,
+          "name": "D. Taylor",
+          "seriesRunnerId": 1333
+        }
+      ]
+    },
+    {
+      "category": "v35-female",
+      "awards": [
+        {
+          "position": 1,
+          "name": "A. Fairhurst",
+          "seriesRunnerId": 130
+        },
+        {
+          "position": 2,
+          "name": "S. Jeffrey",
+          "seriesRunnerId": 219
+        }
+      ]
+    },
+    {
+      "category": "v40-female",
+      "awards": [
+        {
+          "position": 1,
+          "name": "M. Tickle",
+          "seriesRunnerId": 68
+        },
+        {
+          "position": 2,
+          "name": "S. Brookes",
+          "seriesRunnerId": 876
+        }
+      ]
+    },
+    {
+      "category": "v40-male",
+      "awards": [
+        {
+          "position": 1,
+          "name": "R. Walsh",
+          "seriesRunnerId": 205
+        },
+        {
+          "position": 2,
+          "name": "S. Abbott",
+          "seriesRunnerId": 1360
+        }
+      ]
+    },
+    {
+      "category": "v45-female",
+      "awards": [
+        {
+          "position": 1,
+          "name": "N. Unsworth",
+          "seriesRunnerId": 74
+        },
+        {
+          "position": 2,
+          "name": "H. Haigh",
+          "seriesRunnerId": 291
+        }
+      ]
+    },
+    {
+      "category": "v45-male",
+      "awards": [
+        {
+          "position": 1,
+          "name": "P. Marsden",
+          "seriesRunnerId": 742
+        },
+        {
+          "position": 2,
+          "name": "L. Barlow",
+          "seriesRunnerId": 1205
+        }
+      ]
+    },
+    {
+      "category": "v50-female",
+      "awards": [
+        {
+          "position": 1,
+          "name": "K. Dunford",
+          "seriesRunnerId": 16
+        },
+        {
+          "position": 2,
+          "name": "A. Parkinson",
+          "seriesRunnerId": 784
+        }
+      ]
+    },
+    {
+      "category": "v50-male",
+      "awards": [
+        {
+          "position": 1,
+          "name": "D. Watson",
+          "seriesRunnerId": 528
+        },
+        {
+          "position": 2,
+          "name": "J. Wright",
+          "seriesRunnerId": 86
+        }
+      ]
+    },
+    {
+      "category": "v55-female",
+      "awards": [
+        {
+          "position": 1,
+          "name": "A. Cleave",
+          "seriesRunnerId": 644
+        },
+        {
+          "position": 2,
+          "name": "P. Hardman",
+          "seriesRunnerId": 292
+        }
+      ]
+    },
+    {
+      "category": "v55-male",
+      "awards": [
+        {
+          "position": 1,
+          "name": "W. Johnstone",
+          "seriesRunnerId": 465
+        },
+        {
+          "position": 2,
+          "name": "J. Allen",
+          "seriesRunnerId": 603
+        }
+      ]
+    },
+    {
+      "category": "v60-female",
+      "awards": [
+        {
+          "position": 1,
+          "name": "A. Titterington",
+          "seriesRunnerId": 71
+        },
+        {
+          "position": 2,
+          "name": "S. Tonge",
+          "seriesRunnerId": 841
+        }
+      ]
+    },
+    {
+      "category": "v60-male",
+      "awards": [
+        {
+          "position": 1,
+          "name": "D. Jolly",
+          "seriesRunnerId": 151
+        },
+        {
+          "position": 2,
+          "name": "K. Addison",
+          "seriesRunnerId": 602
+        }
+      ]
+    },
+    {
+      "category": "v65-female",
+      "awards": [
+        {
+          "position": 1,
+          "name": "J. Gouldthorpe",
+          "seriesRunnerId": 687
+        },
+        {
+          "position": 2,
+          "name": "M. Kirkby",
+          "seriesRunnerId": 471
+        }
+      ]
+    },
+    {
+      "category": "v65-male",
+      "awards": [
+        {
+          "position": 1,
+          "name": "G. Webster",
+          "seriesRunnerId": 347
+        },
+        {
+          "position": 2,
+          "name": "R. Taylor",
+          "seriesRunnerId": 834
+        }
+      ]
+    },
+    {
+      "category": "v70-female",
+      "awards": [
+        {
+          "position": 1,
+          "name": "C. Douglass",
+          "seriesRunnerId": 871
+        },
+        {
+          "position": 2,
+          "name": "P. Binns",
+          "seriesRunnerId": 258
+        }
+      ]
+    },
+    {
+      "category": "v70-male",
+      "awards": [
+        {
+          "position": 1,
+          "name": "A. Appleby",
+          "seriesRunnerId": 403
+        },
+        {
+          "position": 2,
+          "name": "R. Smallbone",
+          "seriesRunnerId": 60
+        }
+      ]
+    },
+    {
+      "category": "v75-male",
+      "awards": [
+        {
+          "position": 1,
+          "name": "J. Swift",
+          "seriesRunnerId": 200
+        }
+      ]
+    },
+    {
+      "category": "v80-male",
+      "awards": [
+        {
+          "position": 1,
+          "name": "J. Winters",
+          "seriesRunnerId": 1418
+        }
+      ]
+    },
+    {
+      "category": "v85-male",
+      "awards": [
+        {
+          "position": 1,
+          "name": "M. Walsh",
+          "seriesRunnerId": 1092
+        }
+      ]
+    }
+  ],
+  "teamAwards": [
+    {
+      "club": "preston",
+      "category": "open"
+    },
+    {
+      "club": "preston",
+      "category": "vets"
+    },
+    {
+      "club": "preston",
+      "category": "vet50"
+    },
+    {
+      "club": "red-rose",
+      "category": "vet60"
+    },
+    {
+      "club": "lytham",
+      "category": "ladies"
+    },
+    {
+      "club": "blackpool",
+      "category": "ladyvets"
+    }
+  ]
 }
