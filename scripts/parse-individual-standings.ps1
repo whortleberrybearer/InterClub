@@ -54,7 +54,10 @@ param(
     [switch]$Provisional,
     [switch]$DryRun,
     [int]$AgeCatScoreColumn = 0,
-    [int]$OverallScoreColumn = 0
+    [int]$OverallScoreColumn = 0,
+    # When set, no score column exists in the Excel: total is emitted as null and all
+    # non-empty name rows are included regardless of score.  Auto-enabled for years <= 2017.
+    [switch]$NoScore
 )
 
 $ErrorActionPreference = "Stop"
@@ -183,19 +186,21 @@ function Build-RaceResults {
 # --- Sheet parsers ------------------------------------------------------------
 
 # Parses "Y2D - Age Category".
-# Header row 2 (row 1 blank), data from row 3.
+# Standard format: header row 2 (row 1 blank), data from row 3.
+# No-score format (years <= 2017): header row 1, data from row 2; no score column.
 # Returns list of PSCustomObject with fields needed for per-age-category standings.
 # Position is inferred from the order rows appear within each category (sheet is assumed sorted).
 function Parse-AgeCategory {
-    param($Sheet, [int]$MaxCounting, [int]$ScoreColumn = 40)
+    param($Sheet, [int]$MaxCounting, [int]$ScoreColumn = 40, [switch]$NoScore)
 
     $raceColMap       = Get-RaceColMap
-    $hasRaceCols      = $ScoreColumn -gt 13
+    $hasRaceCols      = (-not $NoScore) -and ($ScoreColumn -gt 13)
+    $dataStartRow     = if ($NoScore) { 2 } else { 3 }
     $totalRows        = $Sheet.UsedRange.Rows.Count
     $runners          = [System.Collections.Generic.List[PSCustomObject]]@()
     $categoryCounters = @{}
 
-    for ($r = 3; $r -le $totalRows; $r++) {
+    for ($r = $dataStartRow; $r -le $totalRows; $r++) {
         $first   = $Sheet.Cells.Item($r, 2).Text.Trim()
         $last    = $Sheet.Cells.Item($r, 3).Text.Trim()
         $cat     = $Sheet.Cells.Item($r, 4).Text.Trim()
@@ -207,9 +212,13 @@ function Parse-AgeCategory {
         $catInfo = Get-CategoryInfo $cat
         if (-not $catInfo) { continue }
 
-        $scoreRaw = $Sheet.Cells.Item($r, $ScoreColumn).Text.Trim()
-        $score    = if ($scoreRaw -match '^\d+$') { [int]$scoreRaw } else { 0 }
-        if ($score -eq 0) { continue }
+        if ($NoScore) {
+            $score = $null
+        } else {
+            $scoreRaw = $Sheet.Cells.Item($r, $ScoreColumn).Text.Trim()
+            $score    = if ($scoreRaw -match '^\d+$') { [int]$scoreRaw } else { 0 }
+            if ($score -eq 0) { continue }
+        }
 
         if (-not $categoryCounters.ContainsKey($catInfo.Id)) { $categoryCounters[$catInfo.Id] = 0 }
         $categoryCounters[$catInfo.Id]++
@@ -247,16 +256,16 @@ function Parse-AgeCategory {
 }
 
 # Parses "Y2D - Ladies" or "Y2D - Men" overall sheet.
-# Header row 1, data from row 3.
+# Header row 1, data from row 3 (row 2 is blank in both standard and no-score formats).
 # $OverallCategoryId: "female" or "male"
 # $Sex: "F" or "M"
 # Returns list of PSCustomObject for the overall category.
 # Position is inferred from row order (sheet is assumed sorted).
 function Parse-OverallSheet {
-    param($Sheet, [string]$OverallCategoryId, [string]$Sex, [int]$MaxCounting, [int]$ScoreColumn = 40)
+    param($Sheet, [string]$OverallCategoryId, [string]$Sex, [int]$MaxCounting, [int]$ScoreColumn = 40, [switch]$NoScore)
 
     $raceColMap  = Get-RaceColMap
-    $hasRaceCols = $ScoreColumn -gt 13
+    $hasRaceCols = (-not $NoScore) -and ($ScoreColumn -gt 13)
     $totalRows   = $Sheet.UsedRange.Rows.Count
     $runners     = [System.Collections.Generic.List[PSCustomObject]]@()
     $posCounter  = 0
@@ -270,9 +279,13 @@ function Parse-OverallSheet {
         if (-not $first -and -not $last) { continue }
         if (-not $cat) { continue }
 
-        $scoreRaw = $Sheet.Cells.Item($r, $ScoreColumn).Text.Trim()
-        $score    = if ($scoreRaw -match '^\d+$') { [int]$scoreRaw } else { 0 }
-        if ($score -eq 0) { continue }
+        if ($NoScore) {
+            $score = $null
+        } else {
+            $scoreRaw = $Sheet.Cells.Item($r, $ScoreColumn).Text.Trim()
+            $score    = if ($scoreRaw -match '^\d+$') { [int]$scoreRaw } else { 0 }
+            if ($score -eq 0) { continue }
+        }
 
         $posCounter++
         $position = $posCounter
@@ -392,6 +405,7 @@ if (-not $PSBoundParameters.ContainsKey('Provisional')) {
 }
 
 # Determine score columns for each sheet type.
+# <= 2017: no score data in the standings sheets at all; NoScore is auto-enabled below.
 # 2018: Age Category uses col 15 (O), Ladies/Men use col 7 (G), no per-race columns.
 # 2019: all sheets use col 9, no per-race columns.
 # 2020+: all sheets use col 40, with per-race columns.
@@ -409,6 +423,11 @@ if ($AgeCatScoreColumn -eq 0 -or $OverallScoreColumn -eq 0) {
 }
 $ScoreColumn = $OverallScoreColumn
 
+# Auto-enable NoScore for years where the standings sheets contain no score column.
+if (-not $PSBoundParameters.ContainsKey('NoScore') -and [int]$Year -le 2017) {
+    $NoScore = $true
+}
+
 $dataDir     = Join-Path $ProjectRoot "src\data\$Year\$Series"
 $configFile  = Join-Path $dataDir "config.json"
 $racesFile   = Join-Path $dataDir "races.json"
@@ -418,6 +437,7 @@ Write-Host "Configuration" -ForegroundColor Yellow
 Write-Host "  Excel:       $ExcelFile"
 Write-Host "  Year:        $Year  |  Series: $Series"
 Write-Host "  Provisional: $Provisional"
+Write-Host "  NoScore:     $NoScore$(if ($NoScore) { ' (total will be null; position from row order)' })"
 Write-Host "  AgeCatScoreColumn: $AgeCatScoreColumn$(if ($AgeCatScoreColumn -le 13) { ' (legacy format - no per-race data)' })"
 Write-Host "  OverallScoreColumn: $OverallScoreColumn$(if ($OverallScoreColumn -le 13) { ' (legacy format - no per-race data)' })"
 Write-Host "  Output:      $outputFile"
@@ -463,7 +483,7 @@ try {
     Write-Host ""
     Write-Host "Parsing '$ageCatSheetName'..." -ForegroundColor DarkGray
     $ageCatSheet  = $wb.Sheets.Item($ageCatSheetName)
-    $ageCatResult = @(Parse-AgeCategory -Sheet $ageCatSheet -MaxCounting $maxCounting -ScoreColumn $AgeCatScoreColumn)
+    $ageCatResult = @(Parse-AgeCategory -Sheet $ageCatSheet -MaxCounting $maxCounting -ScoreColumn $AgeCatScoreColumn -NoScore:$NoScore)
 
     $ageCatGroups = $ageCatResult | Group-Object CategoryId
     foreach ($g in ($ageCatGroups | Sort-Object Name)) {
@@ -478,7 +498,7 @@ try {
         Write-Host ""
         Write-Host "Parsing '$ladiesSheetName'..." -ForegroundColor DarkGray
         $ladiesSheet  = $wb.Sheets.Item($ladiesSheetName)
-        $ladiesResult = @(Parse-OverallSheet -Sheet $ladiesSheet -OverallCategoryId "female" -Sex "F" -MaxCounting $maxCounting -ScoreColumn $ScoreColumn)
+        $ladiesResult = @(Parse-OverallSheet -Sheet $ladiesSheet -OverallCategoryId "female" -Sex "F" -MaxCounting $maxCounting -ScoreColumn $ScoreColumn -NoScore:$NoScore)
         Write-Host "  female: $($ladiesResult.Count) runners"
         foreach ($item in $ladiesResult) { $allRunners.Add($item) }
     } else {
@@ -491,7 +511,7 @@ try {
         Write-Host ""
         Write-Host "Parsing '$menSheetName'..." -ForegroundColor DarkGray
         $menSheet  = $wb.Sheets.Item($menSheetName)
-        $menResult = @(Parse-OverallSheet -Sheet $menSheet -OverallCategoryId "male" -Sex "M" -MaxCounting $maxCounting -ScoreColumn $ScoreColumn)
+        $menResult = @(Parse-OverallSheet -Sheet $menSheet -OverallCategoryId "male" -Sex "M" -MaxCounting $maxCounting -ScoreColumn $ScoreColumn -NoScore:$NoScore)
         Write-Host "  male: $($menResult.Count) runners"
         foreach ($item in $menResult) { $allRunners.Add($item) }
     } else {
