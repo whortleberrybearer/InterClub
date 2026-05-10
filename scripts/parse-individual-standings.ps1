@@ -183,12 +183,14 @@ function Build-RaceResults {
 # Parses "Y2D - Age Category".
 # Header row 2 (row 1 blank), data from row 3.
 # Returns list of PSCustomObject with fields needed for per-age-category standings.
+# Position is inferred from the order rows appear within each category (sheet is assumed sorted).
 function Parse-AgeCategory {
     param($Sheet, [int]$MaxCounting)
 
-    $raceColMap = Get-RaceColMap
-    $totalRows  = $Sheet.UsedRange.Rows.Count
-    $runners    = [System.Collections.Generic.List[PSCustomObject]]@()
+    $raceColMap       = Get-RaceColMap
+    $totalRows        = $Sheet.UsedRange.Rows.Count
+    $runners          = [System.Collections.Generic.List[PSCustomObject]]@()
+    $categoryCounters = @{}
 
     for ($r = 3; $r -le $totalRows; $r++) {
         $first   = $Sheet.Cells.Item($r, 2).Text.Trim()
@@ -203,13 +205,12 @@ function Parse-AgeCategory {
         if (-not $catInfo) { continue }
 
         $scoreRaw = $Sheet.Cells.Item($r, 40).Text.Trim()
-        $posRaw   = $Sheet.Cells.Item($r, 41).Text.Trim()
-        if ($posRaw -notmatch '^\d+$') { continue }
-        if ([int]$posRaw -eq 0) { continue }   # 0 = category header placeholder row
-
         $score    = if ($scoreRaw -match '^\d+$') { [int]$scoreRaw } else { 0 }
         if ($score -eq 0) { continue }
-        $position = [int]$posRaw
+
+        if (-not $categoryCounters.ContainsKey($catInfo.Id)) { $categoryCounters[$catInfo.Id] = 0 }
+        $categoryCounters[$catInfo.Id]++
+        $position = $categoryCounters[$catInfo.Id]
 
         $clubId = Get-ClubId $clubRaw
         if (-not $clubId) {
@@ -245,12 +246,14 @@ function Parse-AgeCategory {
 # $OverallCategoryId: "female" or "male"
 # $Sex: "F" or "M"
 # Returns list of PSCustomObject for the overall category.
+# Position is inferred from row order (sheet is assumed sorted).
 function Parse-OverallSheet {
     param($Sheet, [string]$OverallCategoryId, [string]$Sex, [int]$MaxCounting)
 
-    $raceColMap = Get-RaceColMap
-    $totalRows  = $Sheet.UsedRange.Rows.Count
-    $runners    = [System.Collections.Generic.List[PSCustomObject]]@()
+    $raceColMap  = Get-RaceColMap
+    $totalRows   = $Sheet.UsedRange.Rows.Count
+    $runners     = [System.Collections.Generic.List[PSCustomObject]]@()
+    $posCounter  = 0
 
     for ($r = 3; $r -le $totalRows; $r++) {
         $first   = $Sheet.Cells.Item($r, 2).Text.Trim()
@@ -262,13 +265,11 @@ function Parse-OverallSheet {
         if (-not $cat) { continue }
 
         $scoreRaw = $Sheet.Cells.Item($r, 40).Text.Trim()
-        $posRaw   = $Sheet.Cells.Item($r, 42).Text.Trim()
-        if ($posRaw -notmatch '^\d+$') { continue }
-        if ([int]$posRaw -eq 0) { continue }   # 0 = row 2 summary placeholder
-
         $score    = if ($scoreRaw -match '^\d+$') { [int]$scoreRaw } else { 0 }
         if ($score -eq 0) { continue }
-        $position = [int]$posRaw
+
+        $posCounter++
+        $position = $posCounter
 
         $catInfo     = Get-CategoryInfo $cat
         $ageCategory = if ($catInfo) { $catInfo.AgeCategory } else { "SEN" }
