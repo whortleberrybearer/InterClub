@@ -13,8 +13,7 @@
     "V80"
   ],
   "individualCategories": [
-    { "id": "overall", "name": "Overall" },
-    { "id": "ladies", "name": "Ladies", "sex": "F" }
+    { "id": "overall", "name": "Overall" }
   ],
   "teamCategories": [
     {
@@ -23,24 +22,14 @@
       "scorerCount": 6
     },
     {
-      "id": "ladies",
-      "name": "Ladies",
-      "scorerCount": 4
-    },
-    {
       "id": "vets",
       "name": "Vets",
+      "scorerCount": 6
+    },
+    {
+      "id": "ladies",
+      "name": "Ladies",
       "scorerCount": 5
-    },
-    {
-      "id": "v50",
-      "name": "Vet 50s",
-      "scorerCount": 4
-    },
-    {
-      "id": "v60",
-      "name": "Vet 60s",
-      "scorerCount": 3
     }
   ]
 }
