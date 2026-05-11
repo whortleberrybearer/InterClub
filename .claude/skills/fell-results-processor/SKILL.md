@@ -158,7 +158,7 @@ If the PDF includes a team results section for a race:
    - Position (rank in that category)
    - Points awarded
    - Scorer count (number of runners that counted)
-   - Scorer names and their race positions
+   - Scorer race positions (the finish positions in the race for each scoring runner)
 
 3. **Build the JSON structure:**
 
@@ -174,8 +174,8 @@ If the PDF includes a team results section for a race:
           "points": 7,
           "total": 175,
           "scorers": [
-            {"name": "M. Swarbrick", "position": 5},
-            {"name": "J. Townsend", "position": 8}
+            {"position": 5},
+            {"position": 8}
           ]
         }
       ]
@@ -184,15 +184,16 @@ If the PDF includes a team results section for a race:
 }
 ```
 
+**Important:** Team results contain only race positions (finish order), not runner names. Extract positions directly from the PDF with no recalculation or inference of runner data.
+
 ### Validation Checks for Team Results
 
 - **Category IDs match config.json**: All team categories in the file exist in `teamCategories`
 - **Club IDs valid**: Match `clubs.json` for that year
-- **Scorers count correct**: Matches `teamCategories[category].scorerCount`
-- **Scorer positions valid**: Must match runners from the individual results for that race
+- **Scorer count correct**: Matches `teamCategories[category].scorerCount`
 - **Points assigned**: Non-zero for teams with full scorer count, 0 for incomplete teams
 - **No duplicate clubs** in the same category
-- **Scorer names** match runner names exactly (handle formatting variations)
+- **Data matches PDF exactly**: All values extracted directly from document with no modifications, calculations, or inference
 
 ---
 
