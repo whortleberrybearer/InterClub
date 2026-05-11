@@ -444,11 +444,6 @@ Files created/updated:
 - Look for section headers to identify where each type of data starts/ends
 - Re-extract with corrected range if needed
 
-**Name formatting inconsistencies** — PDFs may show abbreviated or full names:
-- Standardize to full names where possible
-- Flag any ambiguities (multiple runners with same surname)
-- Cross-reference with existing runner data
-
 **Missing team results** — Not all races may have team results in the PDF:
 - Only create team results files for races with team data
 - Proceed with team standings if most races have team data
