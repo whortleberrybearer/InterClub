@@ -291,7 +291,6 @@ If the PDF includes an awards section:
    - Position rank (1, 2, 3, etc. — gaps allowed)
    - Winner's name
    - Winner's club
-   - Optional: seriesRunnerId (if runner is in the registry)
 
 3. **JSON structure:**
 
@@ -308,8 +307,7 @@ If the PDF includes an awards section:
         {
           "position": 1,
           "name": "L. Minns",
-          "club": "blackpool",
-          "seriesRunnerId": 1
+          "club": "blackpool"
         },
         {
           "position": 2,
@@ -328,9 +326,8 @@ If the PDF includes an awards section:
 - **Individual category IDs valid**: Match `individualCategories` in config.json (if defined)
 - **Club IDs valid**: Match `clubs.json`
 - **Award positions unique** within each category (no two 1st places)
-- **seriesRunnerId valid** (if present): Match a runner in `src/data/{year}/{series}/runners.json`
-- **Winner names match** runner names in standings or runner registry
 - **No missing required fields**: position, name, club required for individual awards
+- **Data matches PDF exactly**: All values extracted directly from document with no modifications
 
 ---
 
