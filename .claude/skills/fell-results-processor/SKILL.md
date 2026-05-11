@@ -27,19 +27,23 @@ The PDF is the source of truth. All output files are restructured to match the P
 
 Each fell race produces a CSV file (`results/{race-id}.csv`) with runner results. The CSV has two position columns that serve different purposes:
 
-- **position**: The runner's race/bib number (assigned by the race organizer)
-- **ic_position**: The runner's overall InterClub finishing order (1st finisher = 1, 2nd = 2, etc.)
+- **position**: The runner's finish position in that specific race (1st finisher = 1, 2nd = 2, etc.)
+- **ic_position**: The runner's overall InterClub position across all races in the season (used for rankings)
 
-The PDF shows one combined "Pos." column. Your job is to map that to both `position` and `ic_position`.
+The PDF provides two columns that map directly to these:
+
+- PDF **"Pos."** column → CSV `position` (race finish position)
+- PDF **"Overall"** column → CSV `ic_position` (InterClub overall position)
 
 ### Parsing Race Results from PDF
 
 For each race section in the PDF:
 
-1. **Extract the results table** with columns: Position, Name, Club, Category, Sex, Time
+1. **Extract the results table** with columns: Pos., Overall, Name, Club, Category, Sex, Time
 2. **Map to CSV columns:**
-   - PDF "Pos." column → `ic_position` (sequential: 1, 2, 3...)
-   - Race/bib number (if shown, or use the position value if it represents the bib) → `position`
+   - PDF "Pos." column → `position`
+   - PDF "Overall" column → `ic_position`
+   - Name, Club, Category, Sex, Time → preserve exactly as shown
 3. **Preserve all other fields** exactly as they appear: first_name, last_name, club, category, sex, time
 
 ### Validation Checks for CSVs
