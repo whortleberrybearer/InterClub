@@ -1,0 +1,23 @@
+{
+  "skill_name": "fell-results-processor",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Process the 2023 fell championship PDF (src/data/2023/fell/2023-fell-results.pdf) and restructure the individual standings to match the document exactly. The standings should include all 59 male runners in the sen-m category with ageCategory distinguishing them, and all 25 female runners in the sen-f category. Create the individual-standings.json file with proper point calculations and counting race flags. Provide a validation report showing runner counts by category.",
+      "expected_output": "Correctly structured individual-standings.json file matching PDF source, validation report confirming 59 male and 25 female runners with proper category breakdown, no validation errors",
+      "files": ["src/data/2023/fell/2023-fell-results.pdf"]
+    },
+    {
+      "id": 2,
+      "prompt": "Validate the existing 2023 fell individual standings (src/data/2023/fell/individual-standings.json) against the PDF. Check that all runners from the PDF are present, verify no duplicates exist, confirm that V60 female runners are merged into f50 category (not in a separate f60), and validate point totals match the expected calculation. Generate a validation report with any discrepancies found.",
+      "expected_output": "Validation report showing all 84 runners accounted for, no duplicates, correct category merging (f60 into f50), point calculations verified, summary of validation status (PASS or list of issues)",
+      "files": ["src/data/2023/fell/individual-standings.json", "src/data/2023/fell/2023-fell-results.pdf"]
+    },
+    {
+      "id": 3,
+      "prompt": "The fell championship PDF page ranges vary by year. Extract individual standings from pages 4-11 (instead of the typical 5-12) and create individual-standings.json for a hypothetical 2024 season. Handle the page range variation gracefully, parse all category sections, calculate points correctly, and provide a validation report. The report should indicate total runners extracted and confirm all validation checks passed.",
+      "expected_output": "individual-standings.json with proper structure even with different page ranges, validation report showing runner counts by category and confirmation that page range variation was handled correctly",
+      "files": []
+    }
+  ]
+}
