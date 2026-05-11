@@ -292,6 +292,8 @@ If the PDF includes an awards section:
    - Winner's name
    - Winner's club
 
+**Important filtering rule:** Only include individual award winners marked with **"Trophy"** exactly. Exclude entries marked with "(Trophy)" (with parentheses) or blank/empty award indicators. These represent different award types and should not be included in the awards.json output.
+
 3. **JSON structure:**
 
 ```json
