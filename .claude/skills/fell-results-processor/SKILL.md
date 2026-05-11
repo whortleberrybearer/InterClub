@@ -75,32 +75,9 @@ The individual standings file (`individual-standings.json`) contains the season-
 - **Overall categories** (sen-m, sen-f): All runners of a sex ranked together, with `ageCategory` field distinguishing sub-groups
 - **Age-specific categories** (m40, m50, m60, f40, f50): Detailed rankings within each age group
 
-**Critical note:** V60 females are merged into `f50`, not in a separate `f60` category.
+### Parsing Standings from PDF
 
-### Calculating Points
-
-Points are assigned based on finish position within each race:
-- 1st place: 100 points
-- 2nd place: 99 points
-- 3rd place: 98 points
-- ...
-- Nth place: (101 - N) points, minimum 1 point
-
-For a race with 30 finishers: 30th place = 101 - 30 = 71 points.
-
-### Determining Counting Races
-
-Check `config.json` for `maxCountingRaces` (typically 3 for fell).
-
-For each runner:
-- If they ran 1–N races (where N = maxCountingRaces), all are counting
-- If they ran more than N races, identify the top N scores and mark only those as `"counting": true`
-- Recalculate `total` as the sum of counting race points only
-
-**Example:** 4 races with maxCountingRaces: 3
-- Runner's scores: [100, 98, 95, 80]
-- Top 3: [100, 98, 95] → total: 293
-- Mark the 80 as `"counting": false`
+Extract the standings data exactly as it appears in the PDF document. The PDF shows the complete standings with all runner positions, point totals, and race results with counting flags already determined. **Use these values directly with no additional calculating or filtering applied.** The standings should match what is generated in the document exactly.
 
 ### Category Structure in JSON
 
@@ -158,14 +135,10 @@ For each runner:
 - **Category consistency**: 
   - sen-f includes exactly the runners from f40 + f50
   - All sen-m runners appear in exactly one age-specific category (m40, m50, m60, m70)
-  - All V60 females are in f50, NOT in f60
 - **Required fields on every runner**: position, name, club, sex, ageCategory, total, results
 - **Results object** has at least one race entry, no nulls
-- **Point totals match calculation**: Recalculate and verify
-- **Counting races correct**: 
-  - Runners with <3 races: all marked true
-  - Runners with 4+ races: exactly 3 marked true (assuming maxCountingRaces: 3)
 - **Age categories valid**: SEN, V40, V50, V60, V70 for males; F, F40, F50, F60 for females
+- **Data matches PDF exactly**: All values extracted directly from document with no modifications
 
 ---
 
@@ -398,9 +371,8 @@ INDIVIDUAL STANDINGS
   Validation checks:
     ✓ All runners accounted for
     ✓ No duplicates
-    ✓ Category consistency verified (f60 merged into f50)
-    ✓ Point totals verified
-    ✓ Counting races verified (3 of 4 races count)
+    ✓ Category consistency verified
+    ✓ Data matches PDF exactly
   
   Validation: ✓ PASS
 
@@ -425,7 +397,7 @@ TEAM STANDINGS
   Validation checks:
     ✓ All races represented
     ✓ All clubs accounted for
-    ✓ Point totals calculated correctly
+    ✓ Data matches PDF exactly
     ✓ No provisional standings
   
   Validation: ✓ PASS
