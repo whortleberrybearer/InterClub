@@ -46,10 +46,16 @@ Write-Output "Loaded $($runners.Count) runners from CSV"
 function Find-MatchingRunner{
 param([string]$AbbreviatedName,[string]$Club,[array]$Runners)
 $parts=$AbbreviatedName.Trim()-split'\s+'
-if($parts.Count-ne 2){return $null}
+if($parts.Count-lt 2){return $null}
 $firstInitial=$parts[0][0].ToString().ToUpper()
-$surname=$parts[1]
+# For multi-part surnames like "K. Price Edwards", join all parts after the initial
+$surname=$parts[1..($parts.Count-1)]-join' '
+# Try exact match first
 $candidates=@($runners|Where-Object{$_.lastName-eq $surname-and$_.firstName[0].ToString().ToUpper()-eq $firstInitial-and$_.club-eq $Club})
+if($candidates.Count-eq 0){
+  # If no exact match, try matching against the full name in case surname is stored differently
+  $candidates=@($runners|Where-Object{($_.firstName+' '+$_.lastName)-eq $surname-and$_.firstName[0].ToString().ToUpper()-eq $firstInitial-and$_.club-eq $Club})
+}
 if($candidates.Count-eq 0){return $null}
 if($candidates.Count-eq 1){return $candidates[0]}
 return $candidates[0]
@@ -61,7 +67,7 @@ foreach($categoryGroup in $teamResults.categories){
 foreach($clubResult in $categoryGroup.clubs){
 foreach($scorer in $clubResult.scorers){
 $originalName=$scorer.name
-if($originalName-notmatch'^[A-Z]\.\s'){continue}
+if($originalName-notmatch'^[A-Z]\.'){continue}
 $matched=Find-MatchingRunner -AbbreviatedName $originalName -Club $clubResult.club -Runners $runners
 if($matched){
 $newName="$($matched.firstName) $($matched.lastName)"
