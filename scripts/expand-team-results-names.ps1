@@ -45,11 +45,16 @@ $runners+=@{firstName=$record["first_name"];lastName=$record["last_name"];club=$
 Write-Output "Loaded $($runners.Count) runners from CSV"
 function Find-MatchingRunner{
 param([string]$AbbreviatedName,[string]$Club,[array]$Runners)
-$parts=$AbbreviatedName.Trim()-split'\s+'
-if($parts.Count-lt 2){return $null}
-$firstInitial=$parts[0][0].ToString().ToUpper()
-# For multi-part surnames like "K. Price Edwards", join all parts after the initial
-$surname=$parts[1..($parts.Count-1)]-join' '
+$AbbreviatedName=$AbbreviatedName.Trim()
+# Check if name starts with initial and dot (handles both "D.Rigby" and "D. Rigby" formats)
+if($AbbreviatedName-notmatch '^[A-Z]\.'){return $null}
+$firstInitial=$AbbreviatedName[0].ToString().ToUpper()
+# Extract everything after the initial and dot, handling both formats
+$surname=$AbbreviatedName.Substring(2).Trim()
+if([string]::IsNullOrWhiteSpace($surname)){return $null}
+# Split on space in case of multi-part surnames and rejoin
+$surnameParts=$surname-split'\s+'
+$surname=$surnameParts-join' '
 # Try exact match first
 $candidates=@($runners|Where-Object{$_.lastName-eq $surname-and$_.firstName[0].ToString().ToUpper()-eq $firstInitial-and$_.club-eq $Club})
 if($candidates.Count-eq 0){
