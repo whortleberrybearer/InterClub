@@ -46,11 +46,22 @@ Write-Output "Loaded $($runners.Count) runners from CSV"
 function Find-MatchingRunner{
 param([string]$AbbreviatedName,[string]$Club,[array]$Runners)
 $AbbreviatedName=$AbbreviatedName.Trim()
-# Check if name starts with initial and dot (handles both "D.Rigby" and "D. Rigby" formats)
-if($AbbreviatedName-notmatch '^[A-Z]\.'){return $null}
+# Check if name starts with initial (with or without dot)
+if($AbbreviatedName-notmatch '^[A-Z]'){return $null}
 $firstInitial=$AbbreviatedName[0].ToString().ToUpper()
-# Extract everything after the initial and dot, handling both formats
-$surname=$AbbreviatedName.Substring(2).Trim()
+$surname=$null
+# Pattern 1: Has dot after initial ("D." or "D. ")
+if($AbbreviatedName-match '^[A-Z]\.(.+)$'){
+$surname=$matches[1].Trim()
+}
+# Pattern 2: Has space after initial ("D Rigby")
+elseif($AbbreviatedName-match '^[A-Z]\s(.+)$'){
+$surname=$matches[1].Trim()
+}
+# Pattern 3: No dot, no space - directly concatenated ("DRigby")
+elseif($AbbreviatedName.Length-gt 1){
+$surname=$AbbreviatedName.Substring(1)
+}
 if([string]::IsNullOrWhiteSpace($surname)){return $null}
 # Split on space in case of multi-part surnames and rejoin
 $surnameParts=$surname-split'\s+'
@@ -72,7 +83,8 @@ foreach($categoryGroup in $teamResults.categories){
 foreach($clubResult in $categoryGroup.clubs){
 foreach($scorer in $clubResult.scorers){
 $originalName=$scorer.name
-if($originalName-notmatch'^[A-Z]\.'){continue}
+# Skip if name doesn't start with initial letter (with or without dot)
+if($originalName-notmatch'^[A-Z]'){continue}
 $matched=Find-MatchingRunner -AbbreviatedName $originalName -Club $clubResult.club -Runners $runners
 if($matched){
 $newName="$($matched.firstName) $($matched.lastName)"
