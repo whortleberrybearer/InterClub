@@ -8,10 +8,12 @@
   ],
   "maxCountingRaces": 3,
   "individualCategories": [
-    {
-      "id": "overall",
-      "name": "Overall"
-    }
+    { "id": "overall", "name": "Overall" },
+    { "id": "vets",    "name": "Vets" },
+    { "id": "v50",     "name": "Vet 50s" },
+    { "id": "v60",     "name": "Vet 60s" },
+    { "id": "v70",     "name": "Vet 70s" },
+    { "id": "ladies",  "name": "Ladies", "sex": "F" }
   ],
   "teamCategories": [
     {
