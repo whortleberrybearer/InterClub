@@ -7,13 +7,28 @@ export interface SiteConfig {
 export interface Race {
   id: string;
   name: string;
+  shortName?: string;
   date: string;       // ISO date string: "2026-06-07"
   time?: string;      // "HH:MM", e.g. "10:30"
   location?: string;
   distance?: string;
+  ascent?: string;    // e.g. "150m"
+  startAddress?: string;
+  mapEmbedUrl?: string;      // Google Maps embed URL (from Share → Embed a map)
+  parking?: string;          // free-text parking instructions
+  routeImage?: string;       // filename relative to /public/images/
+  routeDescription?: string; // free-text route description
+  courseRecords?: CourseRecord[];
+  postRaceVenue?: string;    // free-text post-race venue description
   detailsUrl?: string;
   image?: string;     // filename relative to /public/images/
-  shortName?: string;
+}
+
+export interface CourseRecord {
+  sex: 'M' | 'F';
+  time: string;   // "MM:SS", e.g. "24:15"
+  name: string;   // e.g. "J. Smith"
+  year: number;
 }
 
 export interface RaceResult {
