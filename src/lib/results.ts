@@ -296,3 +296,30 @@ export function getAwards(year: number, series: Series): SeriesAwards | null {
   const files = awardsFilesForSeries(series);
   return files[`../data/${year}/${series}/awards.json`]?.default ?? null;
 }
+
+export interface YearlyAwardsData {
+  year: number;
+  awards: SeriesAwards;
+  clubs: Club[];
+  config: SeriesConfig;
+}
+
+export function getAllAwardsByYear(series: Series): YearlyAwardsData[] {
+  const awardsFiles = awardsFilesForSeries(series);
+  const awardsList: YearlyAwardsData[] = [];
+
+  Object.keys(awardsFiles).forEach(path => {
+    const match = path.match(/\/data\/(\d+)\//);
+    if (!match) return;
+
+    const year = parseInt(match[1], 10);
+    const awards = awardsFiles[path].default;
+    const clubs = getClubs(year);
+    const config = getSeriesConfig(year, series);
+
+    awardsList.push({ year, awards, clubs, config });
+  });
+
+  // Sort by year descending (newest first)
+  return awardsList.sort((a, b) => b.year - a.year);
+}
