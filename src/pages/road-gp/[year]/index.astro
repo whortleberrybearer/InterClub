@@ -69,15 +69,13 @@ if (hasAwards(year, 'road-gp')) {
 ---
 
 <Layout title={`Road Grand Prix ${year}`}>
-  <div class="container mx-auto px-4 py-4">
-    <div class="flex gap-2 mb-4">
-      <a href="/road-gp/history/teams" class="btn btn-sm btn-outline">
-        📊 Team Winners History
-      </a>
-      <a href="/road-gp/history/individuals" class="btn btn-sm btn-outline">
-        🏃 Individual Winners History
-      </a>
-    </div>
+  <div class="flex gap-2 mb-6">
+    <a href={siteUrl('/road-gp/history/teams')} class="btn btn-sm btn-outline">
+      Team Winners History
+    </a>
+    <a href={siteUrl('/road-gp/history/individuals')} class="btn btn-sm btn-outline">
+      Individual Winners History
+    </a>
   </div>
   <HistoryRaceList
     races={races}
