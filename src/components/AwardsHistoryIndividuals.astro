@@ -1,0 +1,83 @@
+---
+import type { Series, IndividualCategory } from '../lib/types';
+
+interface ResolvedAwardEntry {
+  position: number;
+  name: string;
+  clubName: string;
+  ageCategory?: string;
+  runnerUrl?: string;
+}
+
+interface ResolvedCategory {
+  categoryName: string;
+  awards: ResolvedAwardEntry[];
+}
+
+interface YearlyIndividualAwards {
+  year: number;
+  categories: ResolvedCategory[];
+}
+
+interface Props {
+  series: Series;
+  yearlyData: YearlyIndividualAwards[];
+}
+
+const { yearlyData } = Astro.props;
+
+function positionLabel(pos: number): string {
+  if (pos === 1) return '🥇';
+  if (pos === 2) return '🥈';
+  if (pos === 3) return '🥉';
+  const mod10 = pos % 10;
+  const mod100 = pos % 100;
+  const suffix =
+    mod10 === 1 && mod100 !== 11 ? 'st' :
+    mod10 === 2 && mod100 !== 12 ? 'nd' :
+    mod10 === 3 && mod100 !== 13 ? 'rd' : 'th';
+  return `${pos}${suffix}`;
+}
+---
+
+<div class="space-y-6">
+  {yearlyData.map(yearly => (
+    <div class="card bg-base-200">
+      <div class="card-body p-6">
+        <h2 class="card-title text-2xl mb-4">{yearly.year}</h2>
+
+        {yearly.categories.length === 0 ? (
+          <p class="text-base-content/60">No individual awards</p>
+        ) : (
+          <div class="space-y-4">
+            {yearly.categories.map(cat => (
+              <div class="bg-base-100 rounded-lg p-4">
+                <p class="text-sm font-semibold text-base-content/70 mb-3">{cat.categoryName}</p>
+                <div class="space-y-2">
+                  {cat.awards.map(award => (
+                    <div class="flex items-baseline gap-3 text-sm">
+                      <span class="w-6 shrink-0 text-lg">{positionLabel(award.position)}</span>
+                      <div class="flex-1 min-w-0">
+                        {award.runnerUrl ? (
+                          <a href={award.runnerUrl} class="font-medium link link-hover">
+                            {award.name}
+                          </a>
+                        ) : (
+                          <span class="font-medium">{award.name}</span>
+                        )}
+                      </div>
+                      <span class="text-base-content/50 text-xs shrink-0">{award.clubName}</span>
+                      {award.ageCategory && (
+                        <span class="text-base-content/50 text-xs shrink-0">{award.ageCategory}</span>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  ))}
+</div>
