@@ -1,4 +1,122 @@
 {
-  "teamAwards": [],
-  "individualAwards": []
+  "individualAwards": [
+    {
+      "category": "sen-male",
+      "awards": [
+        {
+          "position": 1,
+          "name": "Richard Smith",
+          "club": "preston",
+          "ageCategory": "SEN"
+        },
+        {
+          "position": 3,
+          "name": "Andrew Christie",
+          "club": "red-rose",
+          "ageCategory": "SEN"
+        }
+      ]
+    },
+    {
+      "category": "v40-male",
+      "awards": [
+        {
+          "position": 1,
+          "name": "Darren Fishwick",
+          "club": "chorley",
+          "ageCategory": "V45"
+        },
+        {
+          "position": 2,
+          "name": "Chris Charnley",
+          "club": "chorley",
+          "ageCategory": "V40"
+        }
+      ]
+    },
+    {
+      "category": "v50-male",
+      "awards": [
+        {
+          "position": 1,
+          "name": "John Griffiths",
+          "club": "preston",
+          "ageCategory": "V50"
+        },
+        {
+          "position": 2,
+          "name": "Mark Ellithorn",
+          "club": "chorley",
+          "ageCategory": "V50"
+        }
+      ]
+    },
+    {
+      "category": "v60-male",
+      "awards": [
+        {
+          "position": 1,
+          "name": "John Collier",
+          "club": "wesham",
+          "ageCategory": "V60"
+        },
+        {
+          "position": 2,
+          "name": "Alan Appleby",
+          "club": "preston",
+          "ageCategory": "V65"
+        }
+      ]
+    },
+    {
+      "category": "sen-female",
+      "awards": [
+        {
+          "position": 1,
+          "name": "Debbie Cooper",
+          "club": "lytham",
+          "ageCategory": "V40"
+        }
+      ]
+    },
+    {
+      "category": "v50-female",
+      "awards": [
+        {
+          "position": 1,
+          "name": "Paula Plowman",
+          "club": "red-rose",
+          "ageCategory": "V50"
+        },
+        {
+          "position": 2,
+          "name": "Alison Mercer",
+          "club": "red-rose",
+          "ageCategory": "V55"
+        }
+      ]
+    }
+  ],
+  "teamAwards": [
+    {
+      "club": "preston",
+      "category": "open"
+    },
+    {
+      "club": "chorley",
+      "category": "v40"
+    },
+    {
+      "club": "preston",
+      "category": "v50"
+    },
+    {
+      "club": "preston",
+      "category": "v60"
+    },
+    {
+      "club": "red-rose",
+      "category": "ladies"
+    }
+  ]
 }
