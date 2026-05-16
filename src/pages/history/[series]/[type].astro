@@ -1,0 +1,123 @@
+---
+import Layout from '../../../components/Layout.astro';
+import AwardsHistoryTeams from '../../../components/AwardsHistoryTeams.astro';
+import AwardsHistoryIndividuals from '../../../components/AwardsHistoryIndividuals.astro';
+import { getAllAwardsByYear } from '../../../lib/results';
+import { buildRunnerUrlMap } from '../../../lib/runners';
+import type { Series, TeamCategory } from '../../../lib/types';
+
+export function getStaticPaths() {
+  return [
+    { params: { series: 'road-gp', type: 'teams' } },
+    { params: { series: 'road-gp', type: 'individuals' } },
+    { params: { series: 'fell', type: 'teams' } },
+    { params: { series: 'fell', type: 'individuals' } },
+  ];
+}
+
+const { series, type } = Astro.params as { series: Series; type: 'teams' | 'individuals' };
+
+const allYearlyAwards = getAllAwardsByYear(series);
+
+const seriesLabel = series === 'road-gp' ? 'Road Grand Prix' : 'Fell Championship';
+const pageTitle = type === 'teams' ? `${seriesLabel} Team Winners` : `${seriesLabel} Individual Winners`;
+const backLink = series === 'road-gp' ? '/road-gp' : '/fell';
+
+// Prepare team data
+let allCategories: TeamCategory[] = [];
+let yearlyTeamData: Array<{ year: number; categoryWinners: Record<string, string | null> }> = [];
+
+if (type === 'teams') {
+  // Create team category objects with names from the first year that has each category
+  const categoryMap = new Map<string, TeamCategory>();
+  allYearlyAwards.forEach(yearly => {
+    yearly.config.teamCategories?.forEach(cat => {
+      if (!categoryMap.has(cat.id)) {
+        categoryMap.set(cat.id, cat);
+      }
+    });
+  });
+  allCategories = Array.from(categoryMap.values());
+
+  // Build yearly data
+  yearlyTeamData = allYearlyAwards.map(yearly => {
+    const categoryWinners: Record<string, string | null> = {};
+
+    allCategories.forEach(cat => {
+      const award = yearly.awards.teamAwards.find(ta => ta.category === cat.id);
+      if (award) {
+        const clubName = yearly.clubs.find(c => c.id === award.club)?.name ?? award.club;
+        categoryWinners[cat.id] = clubName;
+      } else {
+        categoryWinners[cat.id] = null;
+      }
+    });
+
+    return {
+      year: yearly.year,
+      categoryWinners,
+    };
+  });
+}
+
+// Prepare individual data
+interface IndividualCategory {
+  categoryName: string;
+  awards: Array<{
+    position: number;
+    name: string;
+    clubName: string;
+    ageCategory: undefined;
+    runnerUrl?: string;
+  }>;
+}
+
+let yearlyIndividualData: Array<{ year: number; categories: IndividualCategory[] }> = [];
+
+if (type === 'individuals') {
+  yearlyIndividualData = allYearlyAwards.map(yearly => {
+    const runnerUrlMap = buildRunnerUrlMap(yearly.year, series);
+
+    const categories = yearly.awards.individualAwards.map(ia => {
+      const cat = yearly.config.individualCategories?.find(c => c.id === ia.category);
+
+      return {
+        categoryName: cat?.name ?? ia.category,
+        awards: ia.awards.map(a => ({
+          position: a.position,
+          name: a.name,
+          clubName: yearly.clubs.find(c => c.id === a.club)?.name ?? a.club,
+          ageCategory: undefined,
+          runnerUrl: a.seriesRunnerId != null ? runnerUrlMap[a.seriesRunnerId] : undefined,
+        })),
+      };
+    });
+
+    return {
+      year: yearly.year,
+      categories,
+    };
+  });
+}
+---
+
+<Layout title={pageTitle}>
+  <div class="container mx-auto px-4 py-6">
+    <div class="mb-6">
+      <a href={backLink} class="btn btn-sm btn-ghost">← Back</a>
+    </div>
+    <h1 class="text-3xl font-bold mb-6">{pageTitle}</h1>
+    {type === 'teams' ? (
+      <AwardsHistoryTeams
+        series={series}
+        yearlyData={yearlyTeamData}
+        allCategories={allCategories}
+      />
+    ) : (
+      <AwardsHistoryIndividuals
+        series={series}
+        yearlyData={yearlyIndividualData}
+      />
+    )}
+  </div>
+</Layout>
