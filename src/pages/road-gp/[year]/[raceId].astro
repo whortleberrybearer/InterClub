@@ -8,26 +8,42 @@ import { siteUrl } from '../../../lib/url';
 import type { Race } from '../../../lib/types';
 
 export async function getStaticPaths() {
-  const years = getAvailableYears('road-gp');
-  return years.flatMap(year =>
-    getRaces(year, 'road-gp').map(race => ({
-      params: { year: String(year), raceId: race.id },
-      props: { race, year },
-    }))
+  const allYears = getAvailableYears('road-gp');
+  return allYears.flatMap(year =>
+    getRaces(year, 'road-gp').map(race => {
+      // race ids are stable across years (each club hosts the same race annually)
+      const pastResults = allYears
+        .filter(y => y < year && hasResults(y, 'road-gp', race.id))
+        .sort((a, b) => b - a)
+        .map(y => ({ year: y, url: siteUrl(`/road-gp/${y}/${race.id}/results/`) }));
+      return {
+        params: { year: String(year), raceId: race.id },
+        props: { race, year, pastResults },
+      };
+    })
   );
 }
 
 interface Props {
   race: Race;
   year: number;
+  pastResults: { year: number; url: string }[];
 }
 
-const { race, year } = Astro.props;
-const { name, date, time, location, distance, detailsUrl, image } = race;
+const { race, year, pastResults } = Astro.props;
+const {
+  name, date, time, location, distance, ascent,
+  detailsUrl, image, startAddress, mapEmbedUrl,
+  parking, routeImage, routeDescription, courseRecords,
+  postRaceVenue,
+} = race;
 const formattedDate = formatRaceDate(date, time);
 const currentYear = getCurrentYear();
 const backUrl = year === currentYear ? siteUrl('/road-gp/') : siteUrl(`/road-gp/${year}/`);
 const resultsExist = hasResults(year, 'road-gp', race.id);
+const hasAddressText = !!(startAddress || parking);
+const hasCourseContent = !!(routeDescription || routeImage || (courseRecords && courseRecords.length > 0));
+const hasRouteText = !!(routeDescription || (courseRecords && courseRecords.length > 0));
 ---
 
 <Layout title={name}>
@@ -41,27 +57,131 @@ const resultsExist = hasResults(year, 'road-gp', race.id);
         <img src={siteUrl(`/images/${image}`)} alt={name} class="w-full h-56 object-cover" />
       </figure>
     )}
-    <div class="card-body gap-3">
+    <div class="card-body gap-4">
+
+      <!-- Header -->
       <p class="text-sm text-base-content/50 uppercase tracking-wide font-medium">{formattedDate}</p>
       <h1 class="text-2xl font-bold">{name}</h1>
+      {location && <p class="text-base-content/70">{location}</p>}
+      {(distance || ascent) && (
+        <div class="flex flex-wrap gap-2">
+          {distance && <span class="badge badge-outline">{distance}</span>}
+          {ascent && <span class="badge badge-outline">↑ {ascent}</span>}
+        </div>
+      )}
 
-      <div class="divider my-1"></div>
+      <!-- Getting Here -->
+      {(startAddress || mapEmbedUrl) && (
+        <>
+          <div class="divider my-1 text-sm font-semibold">Getting Here</div>
+          {hasAddressText ? (
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <dl class="flex flex-col gap-3">
+                {startAddress && (
+                  <div>
+                    <dt class="text-xs text-base-content/50 uppercase tracking-wide mb-1">Start location</dt>
+                    <dd class="font-medium">{startAddress}</dd>
+                  </div>
+                )}
+                {parking && (
+                  <div>
+                    <dt class="text-xs text-base-content/50 uppercase tracking-wide mb-1">Parking</dt>
+                    <dd class="text-base-content/80">{parking}</dd>
+                  </div>
+                )}
+              </dl>
+              {mapEmbedUrl && (
+                <iframe
+                  src={mapEmbedUrl}
+                  class="w-full h-64 rounded-lg border-0"
+                  loading="lazy"
+                  referrerpolicy="no-referrer-when-downgrade"
+                ></iframe>
+              )}
+            </div>
+          ) : (
+            <iframe
+              src={mapEmbedUrl}
+              class="w-full h-64 rounded-lg border-0"
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"
+            ></iframe>
+          )}
+        </>
+      )}
 
-      <dl class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-        {location && (
-          <div>
-            <dt class="text-xs text-base-content/50 uppercase tracking-wide">Location</dt>
-            <dd class="font-medium">{location}</dd>
+      <!-- The Course -->
+      {hasCourseContent && (
+        <>
+          <div class="divider my-1 text-sm font-semibold">The Course</div>
+          {hasRouteText ? (
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div class="flex flex-col gap-3">
+                {routeDescription && (
+                  <p class="text-base-content/80">{routeDescription}</p>
+                )}
+                {courseRecords && courseRecords.length > 0 && (
+                  <div>
+                    <p class="text-xs text-base-content/50 uppercase tracking-wide mb-2">Course Records</p>
+                    <div class="flex flex-col gap-1">
+                      {courseRecords.map(record => (
+                        <div class="flex items-center gap-2 text-sm">
+                          <span class={`badge badge-sm ${record.sex === 'M' ? 'badge-info' : 'badge-secondary'}`}>
+                            {record.sex === 'M' ? 'Men' : 'Women'}
+                          </span>
+                          <span class="font-medium font-mono">{record.time}</span>
+                          <span class="text-base-content/70">{record.name}</span>
+                          <span class="text-base-content/50">({record.year})</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+              {routeImage && (
+                <img
+                  src={siteUrl(`/images/${routeImage}`)}
+                  alt={`${name} route`}
+                  class="w-full rounded-lg object-cover"
+                  loading="lazy"
+                />
+              )}
+            </div>
+          ) : (
+            <img
+              src={siteUrl(`/images/${routeImage}`)}
+              alt={`${name} route`}
+              class="w-full rounded-lg object-cover"
+              loading="lazy"
+            />
+          )}
+        </>
+      )}
+
+      <!-- After the Race -->
+      {postRaceVenue && (
+        <>
+          <div class="divider my-1 text-sm font-semibold">After the Race</div>
+          <p class="text-base-content/80">{postRaceVenue}</p>
+        </>
+      )}
+
+      <!-- Past Results -->
+      {pastResults.length > 0 && (
+        <>
+          <div class="divider my-1 text-sm font-semibold">Past Results</div>
+          <div class="flex flex-wrap items-center gap-2">
+            {pastResults.map((r, i) => (
+              <>
+                {i > 0 && <span class="text-base-content/30">·</span>}
+                <a href={r.url} class="link link-hover text-sm">{r.year}</a>
+              </>
+            ))}
           </div>
-        )}
-        {distance && (
-          <div>
-            <dt class="text-xs text-base-content/50 uppercase tracking-wide">Distance</dt>
-            <dd class="font-medium">{distance}</dd>
-          </div>
-        )}
-      </dl>
+        </>
+      )}
 
+      <!-- Actions -->
       {(detailsUrl || resultsExist) && (
         <div class="card-actions mt-2 flex-wrap">
           {detailsUrl && (
@@ -70,12 +190,13 @@ const resultsExist = hasResults(year, 'road-gp', race.id);
             </a>
           )}
           {resultsExist && (
-            <a href={siteUrl(`/road-gp/${year}/${race.id}/results`)} class="btn btn-outline">
+            <a href={siteUrl(`/road-gp/${year}/${race.id}/results/`)} class="btn btn-outline">
               View Results
             </a>
           )}
         </div>
       )}
+
     </div>
   </div>
 </Layout>
