@@ -69,6 +69,16 @@ if (hasAwards(year, 'fell')) {
 ---
 
 <Layout title={`Fell Championship ${year}`}>
+  <div class="container mx-auto px-4 py-4">
+    <div class="flex gap-2 mb-4">
+      <a href="/fell/history/teams" class="btn btn-sm btn-outline">
+        📊 Team Winners History
+      </a>
+      <a href="/fell/history/individuals" class="btn btn-sm btn-outline">
+        🏃 Individual Winners History
+      </a>
+    </div>
+  </div>
   <HistoryRaceList
     races={races}
     year={year}
