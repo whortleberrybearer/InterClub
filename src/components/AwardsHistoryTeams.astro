@@ -1,13 +1,12 @@
 ---
-import type { Series, TeamCategory, Club } from '../lib/types';
+import type { TeamCategory } from '../lib/types';
 
 interface YearlyTeamAwards {
   year: number;
-  categoryWinners: Record<string, string | null>; // categoryId → clubName or null
+  categoryWinners: Record<string, string | null>; // categoryId → club name (string) or null
 }
 
 interface Props {
-  series: Series;
   yearlyData: YearlyTeamAwards[];
   allCategories: TeamCategory[];
 }
@@ -17,11 +16,12 @@ const { yearlyData, allCategories } = Astro.props;
 
 <div class="overflow-x-auto">
   <table class="table table-sm w-full">
+    <caption class="sr-only">Team award winners by year and category</caption>
     <thead>
       <tr>
-        <th class="text-base">Year</th>
-        {allCategories.map(cat => (
-          <th class="text-center text-sm">{cat.name}</th>
+        <th class="text-base" scope="col">Year</th>
+        {allCategories.map(category => (
+          <th class="text-center text-sm" scope="col">{category.name}</th>
         ))}
       </tr>
     </thead>
@@ -29,9 +29,9 @@ const { yearlyData, allCategories } = Astro.props;
       {yearlyData.map(yearly => (
         <tr class="hover">
           <td class="font-semibold">{yearly.year}</td>
-          {allCategories.map(cat => (
+          {allCategories.map(category => (
             <td class="text-center text-sm">
-              {yearly.categoryWinners[cat.id] ?? '—'}
+              {yearly.categoryWinners[category.id] ?? '—'}
             </td>
           ))}
         </tr>
