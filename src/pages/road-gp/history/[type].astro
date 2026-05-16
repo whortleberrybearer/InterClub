@@ -4,31 +4,27 @@ import AwardsHistoryTeams from '../../../components/AwardsHistoryTeams.astro';
 import AwardsHistoryIndividuals from '../../../components/AwardsHistoryIndividuals.astro';
 import { getAllAwardsByYear } from '../../../lib/results';
 import { buildRunnerUrlMap } from '../../../lib/runners';
-import type { Series, TeamCategory } from '../../../lib/types';
+import type { TeamCategory } from '../../../lib/types';
 
 export function getStaticPaths() {
   return [
-    { params: { series: 'road-gp', type: 'teams' } },
-    { params: { series: 'road-gp', type: 'individuals' } },
-    { params: { series: 'fell', type: 'teams' } },
-    { params: { series: 'fell', type: 'individuals' } },
+    { params: { type: 'teams' } },
+    { params: { type: 'individuals' } },
   ];
 }
 
-const { series, type } = Astro.params as { series: Series; type: 'teams' | 'individuals' };
+const series = 'road-gp';
+const { type } = Astro.params as { type: 'teams' | 'individuals' };
 
 const allYearlyAwards = getAllAwardsByYear(series);
 
-const seriesLabel = series === 'road-gp' ? 'Road Grand Prix' : 'Fell Championship';
-const pageTitle = type === 'teams' ? `${seriesLabel} Team Winners` : `${seriesLabel} Individual Winners`;
-const backLink = series === 'road-gp' ? '/road-gp' : '/fell';
+const pageTitle = type === 'teams' ? 'Road Grand Prix Team Winners' : 'Road Grand Prix Individual Winners';
 
 // Prepare team data
 let allCategories: TeamCategory[] = [];
 let yearlyTeamData: Array<{ year: number; categoryWinners: Record<string, string | null> }> = [];
 
 if (type === 'teams') {
-  // Create team category objects with names from the first year that has each category
   const categoryMap = new Map<string, TeamCategory>();
   allYearlyAwards.forEach(yearly => {
     yearly.config.teamCategories?.forEach(cat => {
@@ -39,7 +35,6 @@ if (type === 'teams') {
   });
   allCategories = Array.from(categoryMap.values());
 
-  // Build yearly data
   yearlyTeamData = allYearlyAwards.map(yearly => {
     const categoryWinners: Record<string, string | null> = {};
 
@@ -53,10 +48,7 @@ if (type === 'teams') {
       }
     });
 
-    return {
-      year: yearly.year,
-      categoryWinners,
-    };
+    return { year: yearly.year, categoryWinners };
   });
 }
 
@@ -82,10 +74,7 @@ if (type === 'individuals') {
       };
     });
 
-    return {
-      year: yearly.year,
-      categories,
-    };
+    return { year: yearly.year, categories };
   });
 }
 ---
@@ -93,7 +82,7 @@ if (type === 'individuals') {
 <Layout title={pageTitle}>
   <div class="container mx-auto px-4 py-6">
     <div class="mb-6">
-      <a href={backLink} class="btn btn-sm btn-ghost">← Back</a>
+      <a href="/road-gp" class="btn btn-sm btn-ghost">← Back</a>
     </div>
     <h1 class="text-3xl font-bold mb-6">{pageTitle}</h1>
     {type === 'teams' ? (
