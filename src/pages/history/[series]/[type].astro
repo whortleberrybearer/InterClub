@@ -61,18 +61,7 @@ if (type === 'teams') {
 }
 
 // Prepare individual data
-interface IndividualCategory {
-  categoryName: string;
-  awards: Array<{
-    position: number;
-    name: string;
-    clubName: string;
-    ageCategory: undefined;
-    runnerUrl?: string;
-  }>;
-}
-
-let yearlyIndividualData: Array<{ year: number; categories: IndividualCategory[] }> = [];
+let yearlyIndividualData: Array<{ year: number; categories: Array<{ categoryName: string; awards: Array<{ position: number; name: string; clubName: string; ageCategory: string; runnerUrl?: string }> }> }> = [];
 
 if (type === 'individuals') {
   yearlyIndividualData = allYearlyAwards.map(yearly => {
@@ -87,7 +76,7 @@ if (type === 'individuals') {
           position: a.position,
           name: a.name,
           clubName: yearly.clubs.find(c => c.id === a.club)?.name ?? a.club,
-          ageCategory: undefined,
+          ageCategory: a.category,
           runnerUrl: a.seriesRunnerId != null ? runnerUrlMap[a.seriesRunnerId] : undefined,
         })),
       };
