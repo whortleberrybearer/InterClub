@@ -1,0 +1,56 @@
+---
+import Layout from '../components/Layout.astro';
+import { siteUrl } from '../lib/url';
+---
+
+<Layout title="Contact">
+  <div class="max-w-lg mx-auto">
+    <h1 class="text-2xl font-bold mb-2">Contact</h1>
+    <p class="text-base-content/70 mb-8">
+      Use this form to report result corrections or send a general enquiry.
+    </p>
+
+    <form method="POST" action={siteUrl('/contact/thank-you/')}>
+      <div class="form-control mb-4">
+        <label class="label" for="name">
+          <span class="label-text">Name</span>
+        </label>
+        <input
+          id="name"
+          type="text"
+          name="name"
+          required
+          class="input input-bordered w-full"
+        />
+      </div>
+
+      <div class="form-control mb-4">
+        <label class="label" for="email">
+          <span class="label-text">Email</span>
+        </label>
+        <input
+          id="email"
+          type="email"
+          name="email"
+          required
+          class="input input-bordered w-full"
+        />
+      </div>
+
+      <div class="form-control mb-6">
+        <label class="label" for="message">
+          <span class="label-text">Message</span>
+        </label>
+        <textarea
+          id="message"
+          name="message"
+          required
+          rows="6"
+          class="textarea textarea-bordered w-full"
+        ></textarea>
+      </div>
+
+      <button type="submit" class="btn btn-primary w-full">Send message</button>
+    </form>
+  </div>
+</Layout>
