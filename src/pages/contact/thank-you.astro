@@ -1,0 +1,12 @@
+---
+import Layout from '../../components/Layout.astro';
+import { siteUrl } from '../../lib/url';
+---
+
+<Layout title="Message Sent">
+  <div class="max-w-lg mx-auto text-center py-16">
+    <h1 class="text-2xl font-bold mb-4">Thanks for getting in touch</h1>
+    <p class="text-base-content/70 mb-8">We'll get back to you soon.</p>
+    <a href={siteUrl('/')} class="btn btn-primary">Back to home</a>
+  </div>
+</Layout>
