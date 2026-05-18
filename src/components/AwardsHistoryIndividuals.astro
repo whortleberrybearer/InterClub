@@ -1,83 +1,125 @@
 ---
-import type { Series, IndividualCategory } from '../lib/types';
-
-interface ResolvedAwardEntry {
-  position: number;
-  name: string;
-  clubName: string;
-  ageCategory?: string;
-  runnerUrl?: string;
-}
-
-interface ResolvedCategory {
-  categoryName: string;
-  awards: ResolvedAwardEntry[];
-}
-
-interface YearlyIndividualAwards {
-  year: number;
-  categories: ResolvedCategory[];
-}
+import type { CategoryHistoryData } from '../lib/results';
 
 interface Props {
-  series: Series;
-  yearlyData: YearlyIndividualAwards[];
+  categories: CategoryHistoryData[];
 }
 
-const { yearlyData } = Astro.props;
+const { categories } = Astro.props;
 
-function positionLabel(pos: number): string {
-  if (pos === 1) return '🥇';
-  if (pos === 2) return '🥈';
-  if (pos === 3) return '🥉';
-  const mod10 = pos % 10;
-  const mod100 = pos % 100;
-  const suffix =
-    mod10 === 1 && mod100 !== 11 ? 'st' :
-    mod10 === 2 && mod100 !== 12 ? 'nd' :
-    mod10 === 3 && mod100 !== 13 ? 'rd' : 'th';
-  return `${pos}${suffix}`;
-}
+const groups = [
+  { key: 'M',       label: 'Male',    cats: categories.filter(c => c.sex === 'M') },
+  { key: 'F',       label: 'Female',  cats: categories.filter(c => c.sex === 'F') },
+  { key: 'overall', label: 'Overall', cats: categories.filter(c => c.sex === null) },
+].filter(g => g.cats.length > 0);
 ---
 
-<div class="space-y-6">
-  {yearlyData.map(yearly => (
-    <div class="card bg-base-200">
-      <div class="card-body p-6">
-        <h2 class="card-title text-2xl mb-4">{yearly.year}</h2>
+{groups.length === 0 ? (
+  <p class="text-base-content/60">No individual awards recorded.</p>
+) : (
+  <div>
+    <div role="tablist" class="tabs tabs-border mb-2">
+      {groups.map((group, i) => (
+        <button
+          role="tab"
+          class={`tab${i === 0 ? ' tab-active' : ''}`}
+          data-top-tab={group.key}
+        >
+          {group.label}
+        </button>
+      ))}
+    </div>
 
-        {yearly.categories.length === 0 ? (
-          <p class="text-base-content/60">No individual awards</p>
-        ) : (
-          <div class="space-y-4">
-            {yearly.categories.map(cat => (
-              <div class="bg-base-100 rounded-lg p-4">
-                <p class="text-sm font-semibold text-base-content/70 mb-3">{cat.categoryName}</p>
-                <div class="space-y-2">
-                  {cat.awards.map(award => (
-                    <div class="flex items-baseline gap-3 text-sm">
-                      <span class="w-6 shrink-0 text-lg">{positionLabel(award.position)}</span>
-                      <div class="flex-1 min-w-0">
-                        {award.runnerUrl ? (
-                          <a href={award.runnerUrl} class="font-medium link link-hover">
-                            {award.name}
-                          </a>
-                        ) : (
-                          <span class="font-medium">{award.name}</span>
-                        )}
-                      </div>
-                      <span class="text-base-content/50 text-xs shrink-0">{award.clubName}</span>
-                      {award.ageCategory && (
-                        <span class="text-base-content/50 text-xs shrink-0">{award.ageCategory}</span>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              </div>
+    {groups.map((group, i) => (
+      <div data-top-panel={group.key} class={i > 0 ? 'hidden' : ''}>
+        {group.cats.length > 1 && (
+          <div role="tablist" class="tabs tabs-border mb-4">
+            {group.cats.map((cat, j) => (
+              <button
+                role="tab"
+                class={`tab${j === 0 ? ' tab-active' : ''}`}
+                data-sub-tab={cat.id}
+                data-group={group.key}
+              >
+                {cat.name}
+              </button>
             ))}
           </div>
         )}
+
+        {group.cats.map((cat, j) => (
+          <div
+            data-sub-panel={cat.id}
+            data-group={group.key}
+            class={j > 0 ? 'hidden' : ''}
+          >
+            {cat.rows.length === 0 ? (
+              <p class="text-base-content/60">No awards recorded.</p>
+            ) : (
+              <div class="overflow-x-auto">
+                <table class="table table-sm w-full">
+                  <caption class="sr-only">{cat.name} award winners by year</caption>
+                  <thead>
+                    <tr>
+                      <th scope="col">Year</th>
+                      <th scope="col">1st</th>
+                      <th scope="col">2nd</th>
+                      <th scope="col">3rd</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {cat.rows.map(row => (
+                      <tr class="hover">
+                        <td class="font-semibold">{row.year}</td>
+                        {([1, 2, 3] as const).map(pos => {
+                          const entry = row.positions[pos];
+                          return (
+                            <td class="text-sm">
+                              {entry ? (
+                                <span>
+                                  {entry.runnerUrl ? (
+                                    <a href={entry.runnerUrl} class="link link-hover font-medium">{entry.name}</a>
+                                  ) : (
+                                    <span class="font-medium">{entry.name}</span>
+                                  )}
+                                  <span class="text-base-content/50 ml-1">({entry.clubName})</span>
+                                </span>
+                              ) : <span>—</span>}
+                            </td>
+                          );
+                        })}
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </div>
+        ))}
       </div>
-    </div>
-  ))}
-</div>
+    ))}
+  </div>
+)}
+
+<script>
+  document.querySelectorAll<HTMLButtonElement>('[data-top-tab]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const key = btn.dataset.topTab!;
+      document.querySelectorAll('[data-top-tab]').forEach(t => t.classList.remove('tab-active'));
+      btn.classList.add('tab-active');
+      document.querySelectorAll('[data-top-panel]').forEach(p => p.classList.add('hidden'));
+      document.querySelector(`[data-top-panel="${key}"]`)?.classList.remove('hidden');
+    });
+  });
+
+  document.querySelectorAll<HTMLButtonElement>('[data-sub-tab]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const catId = btn.dataset.subTab!;
+      const group = btn.dataset.group!;
+      document.querySelectorAll(`[data-sub-tab][data-group="${group}"]`).forEach(t => t.classList.remove('tab-active'));
+      btn.classList.add('tab-active');
+      document.querySelectorAll(`[data-sub-panel][data-group="${group}"]`).forEach(p => p.classList.add('hidden'));
+      document.querySelector(`[data-sub-panel="${catId}"][data-group="${group}"]`)?.classList.remove('hidden');
+    });
+  });
+</script>
