@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { runnerSlug, parseSeriesRunnerPath } from '../../src/lib/runners';
+import { runnerSlug, parseSeriesRunnerPath, formatYearRanges } from '../../src/lib/runners';
 import type { GlobalRunner } from '../../src/lib/types';
 
 const makeRunner = (overrides: Partial<GlobalRunner> = {}): GlobalRunner => ({
@@ -46,5 +46,39 @@ describe('parseSeriesRunnerPath', () => {
   it('returns null for non-runner paths', () => {
     expect(parseSeriesRunnerPath('../data/2026/road-gp/races.json')).toBeNull();
     expect(parseSeriesRunnerPath('../data/2026/road-gp/results/bwf-5.csv')).toBeNull();
+  });
+});
+
+describe('formatYearRanges', () => {
+  it('returns empty string for empty input', () => {
+    expect(formatYearRanges([])).toBe('');
+  });
+
+  it('returns a single year as a plain number', () => {
+    expect(formatYearRanges([2025])).toBe('2025');
+  });
+
+  it('collapses two consecutive years into a range', () => {
+    expect(formatYearRanges([2024, 2025])).toBe('2024–2025');
+  });
+
+  it('collapses a contiguous run into a single range', () => {
+    expect(formatYearRanges([2019, 2020, 2021])).toBe('2019–2021');
+  });
+
+  it('separates non-contiguous years with a comma', () => {
+    expect(formatYearRanges([2022, 2025])).toBe('2022, 2025');
+  });
+
+  it('produces a range then a trailing gap year', () => {
+    expect(formatYearRanges([2019, 2020, 2021, 2025])).toBe('2019–2021, 2025');
+  });
+
+  it('handles multiple isolated years', () => {
+    expect(formatYearRanges([2019, 2021, 2023])).toBe('2019, 2021, 2023');
+  });
+
+  it('sorts unsorted input before processing', () => {
+    expect(formatYearRanges([2025, 2019, 2020])).toBe('2019–2020, 2025');
   });
 });
