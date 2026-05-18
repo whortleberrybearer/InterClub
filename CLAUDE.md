@@ -35,6 +35,8 @@ npm test         # run unit tests
 
 > **Note:** TypeScript errors in Astro pages only surface via `npm run build` — `npm test` only runs pure-function unit tests and will not catch type errors in `.astro` files.
 
+> **Note:** When syncing a feature branch with main, use `git rebase origin/main` — merging creates a merge commit that causes GitHub to show false conflicts in the PR.
+
 ## Project Structure
 
 ```
@@ -45,7 +47,7 @@ src/
       clubs.json             # competing clubs for that year (id, name, shortName, logo)
       road-gp/
         races.json           # Road GP schedule
-        config.json          # series config (ageCategories, teamCategories, and optionally individualCategories + maxCountingRaces)
+        config.json          # series config (ageCategories, teamCategories)
         individual-standings.json  # season individual standings (optional; computed externally)
         results/
           {race-id}.csv                      # final individual results
@@ -55,7 +57,7 @@ src/
                                              # (build prefers final over provisional if both exist)
       fell/
         races.json           # Fell Championship schedule
-        config.json          # series config (ageCategories, teamCategories, and optionally individualCategories + maxCountingRaces)
+        config.json          # series config (ageCategories, teamCategories)
         results/
           {race-id}.csv
           {race-id}-provisional.csv
@@ -68,7 +70,7 @@ src/
     format.ts                # date formatting utilities
     years.ts                 # pure helper for extracting years from paths
     data.ts                  # race schedule loading via import.meta.glob
-    results.ts               # CSV + team JSON parsing; results/clubs/config/team loading
+    results.ts               # CSV + team JSON parsing; results/clubs/config/team loading; resolveIndividualCategoryName
     runners.ts               # runner identity loading; buildRunnerUrlMap; getRunnerProfileStaticPaths
   components/
     Layout.astro             # shared nav + footer wrapper
@@ -132,7 +134,7 @@ Runner data degrades gracefully: rows with no `series_runner_id` simply render w
 ### Results CSV schema
 
 ```
-position,ic_position,race_number,first_name,last_name,club,category,sex,time
+position,ic_position,race_number,first_name,last_name,club,age_category,sex,time
 1,1,42,Luke,Minns,blackpool,V35,M,19:35
 9,, ,T.,Guest,Guest,SEN,M,22:14
 ```
@@ -149,7 +151,7 @@ Team results are computed externally and placed alongside the individual results
 {
   "categories": [
     {
-      "category": "open",
+      "id": "open",
       "clubs": [
         {
           "position": 1,
@@ -167,7 +169,7 @@ Team results are computed externally and placed alongside the individual results
 }
 ```
 
-- `category` — id matching `teamCategories[].id` in the series `config.json`
+- `id` — id matching `teamCategories[].id` in the series `config.json`
 - `club` — id matching `clubs.json[].id`
 - `points` — stored explicitly; a club that fails to field enough scorers receives 0 points
 - scorer `position` — the runner's rank within the sex/age group used for team scoring
@@ -192,7 +194,7 @@ Season standings are computed externally and placed at `src/data/{year}/{series}
   "races": ["bwf-5", "chorley-4"],
   "categories": [
     {
-      "category": "open",
+      "id": "open",
       "clubs": [
         {
           "position": 1,
@@ -220,17 +222,18 @@ Season individual standings are computed externally and placed at `src/data/{yea
 ```json
 {
   "provisional": true,
+  "maxCountingRaces": 4,
   "races": ["fell-race-1", "fell-race-2"],
   "categories": [
     {
-      "category": "sen-m",
+      "id": "sen-m",
+      "sex": "M",
+      "ageCategory": "SEN",
       "runners": [
         {
           "position": 1,
           "name": "Luke Minns",
           "club": "blackpool",
-          "sex": "M",
-          "ageCategory": "SEN",
           "total": 47,
           "results": {
             "fell-race-1": { "points": 25, "counting": true },
@@ -243,11 +246,13 @@ Season individual standings are computed externally and placed at `src/data/{yea
 }
 ```
 
-- `category` — id matching `individualCategories[].id` in the series `config.json`
+- `id` — category identifier; referenced by `awards.json`
+- `maxCountingRaces` — optional top-level field; when set, page shows "Best N races count" and marks non-counting results
+- `sex?` / `ageCategory?` / `name?` — optional on category; runners in the category inherit these when omitted on the runner. Broad categories (e.g. "male") set only `sex`; specific categories (e.g. "v40-male") set both
 - `runners[].results` — sparse map keyed by race id; only races the runner actually entered are present (no nulls)
 - `results[raceId].counting` — `false` when this race didn't count toward the runner's total (shown dimmed with strikethrough on the page)
 - `runners[].total` — pre-computed and stored explicitly
-- `runners[].sex` / `runners[].ageCategory` — stored separately for client-side filtering; displayed combined as e.g. `MSEN`, `FV40`
+- `runners[].sex` / `runners[].ageCategory` — optional when set at category level; combined display e.g. `MSEN`, `FV40`
 - `runners[].seriesRunnerId` — optional; references `id` in `src/data/{year}/{series}/runners.json`; enables a link to the runner's profile page
 
 ### Series config.json schema
@@ -255,20 +260,13 @@ Season individual standings are computed externally and placed at `src/data/{yea
 ```json
 {
   "ageCategories": ["SEN", "V40", "V50"],
-  "maxCountingRaces": 3,
-  "individualCategories": [
-    { "id": "sen-m", "name": "Senior Men" },
-    { "id": "v40-f", "name": "V40 Women" }
-  ],
   "teamCategories": [
     { "id": "open", "name": "Open", "scorerCount": 6 }
   ]
 }
 ```
 
-- `ageCategories` — age bands shown in the results filter bar (note: formerly named `categories` — do not use the old name)
-- `maxCountingRaces` — optional; when set, individual standings page shows "Best N races count" and marks non-counting results
-- `individualCategories` — optional; defines which tabs appear on the individual standings page and in what order; `id` is referenced by `individual-standings.json` and `awards.json`; optional `sex: "M" | "F"` field controls column placement on the awards section (absent = Overall, full-width)
+- `ageCategories` — age bands shown in the results filter bar
 - `teamCategories` — defines team scoring groups; `id` is referenced by team results JSON files and `awards.json`
 
 ### Awards JSON schema
@@ -278,14 +276,16 @@ End-of-season award winners are placed at `src/data/{year}/{series}/awards.json`
 ```json
 {
   "teamAwards": [
-    { "category": "open",   "club": "wesham" },
-    { "category": "ladies", "club": "lytham" }
+    { "id": "open",   "club": "wesham" },
+    { "id": "ladies", "club": "lytham" }
   ],
   "individualAwards": [
     {
-      "category": "sen-m",
+      "id": "sen-m",
+      "sex": "M",
+      "ageCategory": "SEN",
       "awards": [
-        { "position": 1, "name": "L. Minns", "club": "blackpool", "seriesRunnerId": 1 },
+        { "position": 1, "name": "L. Minns", "club": "blackpool", "ageCategory": "SEN", "seriesRunnerId": 1 },
         { "position": 3, "name": "T. Guest", "club": "red-rose" }
       ]
     }
@@ -293,9 +293,10 @@ End-of-season award winners are placed at `src/data/{year}/{series}/awards.json`
 }
 ```
 
-- `teamAwards[].category` — id matching `teamCategories[].id` in `config.json`; one award per team category (the winning club only)
-- `individualAwards[].category` — id matching `individualCategories[].id` in `config.json`
+- `teamAwards[].id` — id matching `teamCategories[].id` in `config.json`; one award per team category (the winning club only)
+- `individualAwards[].id` — category identifier; `sex?`/`ageCategory?`/`name?` drive column layout (`sex` absent = full-width overall, `M` = left column, `F` = right column) and display name via `resolveIndividualCategoryName`
 - `individualAwards[].awards[].position` — explicit; gaps are allowed (e.g. position 2 absent means no 2nd-place award was given)
+- `individualAwards[].awards[].ageCategory` — optional; runner's age category, display hint only
 - `individualAwards[].awards[].seriesRunnerId` — optional; references `id` in `src/data/{year}/{series}/runners.json`; enables a link to the runner's profile page
 - `club` — id matching `clubs.json[].id`; display name resolved at build time
 - Awards are placed at `src/data/{year}/{series}/awards.json` for a past year — they are announced the following season, so they belong on the past-year archive page, not the current-year page
