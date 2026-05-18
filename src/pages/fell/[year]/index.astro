@@ -3,7 +3,7 @@
 import Layout from '../../../components/Layout.astro';
 import HistoryRaceList from '../../../components/HistoryRaceList.astro';
 import { getCurrentYear, getAvailableYears, getRaces } from '../../../lib/data';
-import { getAwards, getClubs, getSeriesConfig, hasAwards, hasIndividualStandings, hasTeamStandings } from '../../../lib/results';
+import { getAwards, getClubs, getSeriesConfig, hasAwards, hasIndividualStandings, hasTeamStandings, resolveIndividualCategoryName } from '../../../lib/results';
 import type { ResolvedSeriesAwards } from '../../../lib/types';
 import { buildRunnerUrlMap } from '../../../lib/runners';
 import { siteUrl } from '../../../lib/url';
@@ -35,26 +35,21 @@ if (hasAwards(year, 'fell')) {
   const resolveClub = (id: string) => clubs.find(c => c.id === id)?.name ?? id;
   const resolveTeamCategoryName = (id: string) =>
     config.teamCategories?.find(c => c.id === id)?.name ?? id;
-  const resolveIndividualCategory = (id: string) =>
-    config.individualCategories?.find(c => c.id === id);
 
   const runnerUrlMap = buildRunnerUrlMap(year, 'fell');
 
-  const partitioned = raw.individualAwards.map(ia => {
-    const cat = resolveIndividualCategory(ia.id);
-    return {
-      sex: cat?.sex,
-      resolved: {
-        categoryName: cat?.name ?? ia.id,
-        awards: ia.awards.map(a => ({
-          position: a.position,
-          name: a.name,
-          clubName: resolveClub(a.club),
-          runnerUrl: a.seriesRunnerId != null ? runnerUrlMap[a.seriesRunnerId] : undefined,
-        })),
-      },
-    };
-  });
+  const partitioned = raw.individualAwards.map(ia => ({
+    sex: ia.sex,
+    resolved: {
+      categoryName: resolveIndividualCategoryName(ia.id, ia.sex, ia.ageCategory, ia.name),
+      awards: ia.awards.map(a => ({
+        position: a.position,
+        name: a.name,
+        clubName: resolveClub(a.club),
+        runnerUrl: a.seriesRunnerId != null ? runnerUrlMap[a.seriesRunnerId] : undefined,
+      })),
+    },
+  }));
 
   awards = {
     teamAwards: raw.teamAwards.map(ta => ({

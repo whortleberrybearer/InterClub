@@ -2,7 +2,7 @@
 import Layout from '../../../components/Layout.astro';
 import AwardsHistoryTeams from '../../../components/AwardsHistoryTeams.astro';
 import AwardsHistoryIndividuals from '../../../components/AwardsHistoryIndividuals.astro';
-import { getAllAwardsByYear, pivotIndividualAwardsByCategory } from '../../../lib/results';
+import { getAllAwardsByYear, pivotIndividualAwardsByCategory, resolveIndividualCategoryName } from '../../../lib/results';
 import { buildRunnerUrlMap } from '../../../lib/runners';
 import type { TeamCategory } from '../../../lib/types';
 import type { CategoryHistoryData } from '../../../lib/results';
@@ -59,20 +59,17 @@ if (type === 'individuals') {
     const runnerUrlMap = buildRunnerUrlMap(yearly.year, series);
     return {
       year: yearly.year,
-      categories: yearly.awards.individualAwards.map(ia => {
-        const configCat = yearly.config.individualCategories?.find(c => c.id === ia.id);
-        return {
-          id: ia.id,
-          name: configCat?.name ?? ia.id,
-          sex: configCat?.sex ?? null,
-          awards: ia.awards.map(a => ({
-            position: a.position,
-            name: a.name,
-            clubName: yearly.clubs.find(c => c.id === a.club)?.name ?? a.club ?? '',
-            runnerUrl: a.seriesRunnerId != null ? runnerUrlMap[a.seriesRunnerId] : undefined,
-          })),
-        };
-      }),
+      categories: yearly.awards.individualAwards.map(ia => ({
+        id: ia.id,
+        name: resolveIndividualCategoryName(ia.id, ia.sex, ia.ageCategory, ia.name),
+        sex: ia.sex ?? null,
+        awards: ia.awards.map(a => ({
+          position: a.position,
+          name: a.name,
+          clubName: yearly.clubs.find(c => c.id === a.club)?.name ?? a.club ?? '',
+          runnerUrl: a.seriesRunnerId != null ? runnerUrlMap[a.seriesRunnerId] : undefined,
+        })),
+      })),
     };
   });
   categoryData = pivotIndividualAwardsByCategory(yearlyResolved);
