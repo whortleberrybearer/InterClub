@@ -73,7 +73,7 @@ const clubById = Object.fromEntries(clubs.map(c => [c.id, c]));
 
   <!-- Category panels -->
   {standings.categories.map((cat, i) => {
-    const distinctAgeCats = [...new Set(cat.runners.map(r => r.ageCategory))].sort();
+    const distinctAgeCats = [...new Set(cat.runners.map(r => r.ageCategory ?? cat.ageCategory))].filter(a => a != null).sort();
     return (
       <div id={`cat-panel-${i}`} data-panel class:list={['pt-3', i > 0 && 'hidden']} role="tabpanel">
 

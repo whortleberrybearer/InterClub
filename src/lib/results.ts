@@ -293,13 +293,12 @@ export function getIndividualStandingsStaticPaths(series: Series) {
     const { year } = parsed;
     const standings = files[path].default;
     const clubs = getClubs(year);
-    const config = getSeriesConfig(year, series);
     const linkedRaceIds = standings.races.filter(raceId =>
       hasResults(year, series, raceId)
     );
     return [{
       params: { year: String(year) },
-      props: { year, standings, clubs, config, linkedRaceIds },
+      props: { year, standings, clubs, linkedRaceIds },
     }];
   });
 }
