@@ -1,51 +1,51 @@
-{
+﻿{
   "teamAwards": [
-    { "category": "open", "club": "preston" },
-    { "category": "vets", "club": "preston" },
-    { "category": "v50", "club": "wesham" },
-    { "category": "v60", "club": "chorley" },
-    { "category": "ladies", "club": "red-rose" }
+    { "id": "open", "club": "preston" },
+    { "id": "vets", "club": "preston" },
+    { "id": "v50", "club": "wesham" },
+    { "id": "v60", "club": "chorley" },
+    { "id": "ladies", "club": "red-rose" }
   ],
   "individualAwards": [
     {
-      "category": "overall",
+      "id": "overall",
       "awards": [
         { "position": 1, "name": "Alex Rowe", "club": "wesham" }
       ]
     },
     {
-      "category": "v40",
+      "id": "v40",
       "awards": [
         { "position": 1, "name": "John Griffiths", "club": "preston" },
         { "position": 2, "name": "Shane Cliffe", "club": "red-rose" }
       ]
     },
     {
-      "category": "male",
+      "id": "male",
       "awards": [
         { "position": 1, "name": "Barry Wheeler", "club": "red-rose" }
       ]
     },
     {
-      "category": "v50",
+      "id": "v50",
       "awards": [
         { "position": 2, "name": "John Rainford", "club": "preston" }
       ]
     },
     {
-      "category": "female",
+      "id": "female",
       "awards": [
         { "position": 1, "name": "Nichola Jackson", "club": "preston" }
       ]
     },
     {
-      "category": "female-vet",
+      "id": "female-vet",
       "awards": [
         { "position": 1, "name": "Paula Plowman", "club": "red-rose" }
       ]
     },
     {
-      "category": "v60",
+      "id": "v60",
       "awards": [
         { "position": 1, "name": "Tom Hilton", "club": "chorley" }
       ]

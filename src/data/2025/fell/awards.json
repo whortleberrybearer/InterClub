@@ -1,14 +1,14 @@
-{
+﻿{
   "teamAwards": [
-    { "category": "open", "club": "wesham" },
-    { "category": "ladies", "club": "blackpool" },
-    { "category": "vets", "club": "chorley" },
-    { "category": "v50", "club": "chorley" },
-    { "category": "v60", "club": "red-rose" }
+    { "id": "open", "club": "wesham" },
+    { "id": "ladies", "club": "blackpool" },
+    { "id": "vets", "club": "chorley" },
+    { "id": "v50", "club": "chorley" },
+    { "id": "v60", "club": "red-rose" }
   ],
   "individualAwards": [
     {
-      "category": "male",
+      "id": "male",
       "awards": [
         { "position": 1, "name": "A. Palmer", "club": "preston" },
         { "position": 2, "name": "T. Belcher", "club": "chorley" },
@@ -16,41 +16,41 @@
       ]
     },
     {
-      "category": "female",
+      "id": "female",
       "awards": [
         { "position": 1, "name": "B. Pawelczak", "club": "blackpool" },
         { "position": 2, "name": "O. Wiggans", "club": "chorley" }
       ]
     },
     {
-      "category": "v40-male",
+      "id": "v40-male",
       "awards": [
         { "position": 1, "name": "C. Banks", "club": "wesham" },
         { "position": 2, "name": "A. Walker", "club": "wesham" }
       ]
     },
     {
-      "category": "v40-female",
+      "id": "v40-female",
       "awards": [
         { "position": 1, "name": "J. Hall", "club": "blackpool" },
         { "position": 2, "name": "O. Wiggins", "club": "preston" }
       ]
     },
     {
-      "category": "v50-male",
+      "id": "v50-male",
       "awards": [
         { "position": 1, "name": "D. McDermott", "club": "preston" },
         { "position": 2, "name": "P. Bass", "club": "chorley" }
       ]
     },
     {
-      "category": "v50-female",
+      "id": "v50-female",
       "awards": [
         { "position": 1, "name": "L. Lawler", "club": "blackpool" }
       ]
     },
     {
-      "category": "v60-male",
+      "id": "v60-male",
       "awards": [
         { "position": 1, "name": "J. Griffiths", "club": "preston" },
         { "position": 2, "name": "P. Butler", "club": "red-rose" }

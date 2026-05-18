@@ -1,55 +1,55 @@
-{
+﻿{
   "teamAwards": [
-    { "category": "overall", "club": "preston" },
-    { "category": "m40", "club": "preston" },
-    { "category": "m50", "club": "preston" },
-    { "category": "m60", "club": "preston" },
-    { "category": "women", "club": "red-rose" }
+    { "id": "overall", "club": "preston" },
+    { "id": "m40", "club": "preston" },
+    { "id": "m50", "club": "preston" },
+    { "id": "m60", "club": "preston" },
+    { "id": "women", "club": "red-rose" }
   ],
   "individualAwards": [
     {
-      "category": "sen-m",
+      "id": "sen-m",
       "awards": [
         { "position": 1, "name": "Richard Smith", "club": "preston", "ageCategory": "SEN" },
         { "position": 3, "name": "Simon Collins", "club": "preston", "ageCategory": "SEN" }
       ]
     },
     {
-      "category": "m40",
+      "id": "m40",
       "awards": [
         { "position": 1, "name": "Jon Green", "club": "preston", "ageCategory": "V40" },
         { "position": 2, "name": "Andy Whaley", "club": "preston", "ageCategory": "V40" }
       ]
     },
     {
-      "category": "m50",
+      "id": "m50",
       "awards": [
         { "position": 1, "name": "John Rainford", "club": "preston", "ageCategory": "V50" },
         { "position": 2, "name": "Frank Nightingale", "club": "red-rose", "ageCategory": "V50" }
       ]
     },
     {
-      "category": "m60",
+      "id": "m60",
       "awards": [
         { "position": 1, "name": "Peter Singleton", "club": "blackpool", "ageCategory": "V60" },
         { "position": 2, "name": "Alan Appleby", "club": "preston", "ageCategory": "V70" }
       ]
     },
     {
-      "category": "women",
+      "id": "women",
       "awards": [
         { "position": 1, "name": "Vicki Sherrington", "club": "preston", "ageCategory": "V40" },
         { "position": 2, "name": "Olga Wiggins", "club": "preston", "ageCategory": "SEN" }
       ]
     },
     {
-      "category": "f40",
+      "id": "f40",
       "awards": [
         { "position": 2, "name": "Debbie Porter", "club": "red-rose", "ageCategory": "V40" }
       ]
     },
     {
-      "category": "f50",
+      "id": "f50",
       "awards": [
         { "position": 1, "name": "Alison Mercer", "club": "red-rose", "ageCategory": "V50" },
         { "position": 2, "name": "Lynn Melvin", "club": "red-rose", "ageCategory": "V50" }
