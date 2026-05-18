@@ -99,7 +99,7 @@ const showTeamResults = hasTeamResults(year, 'fell', raceId);
                   : <><span class="sm:hidden">{short}</span><span class="hidden sm:inline">{full}</span></>;
               })()}
             </td>
-            <td>{r.category}</td>
+            <td>{r.ageCategory}</td>
             <td>
               <span class="sm:hidden">{r.club === 'Guest' ? 'Guest' : (clubById[r.club]?.shortName ?? r.club)}</span>
               <span class="hidden sm:inline">{r.club === 'Guest' ? 'Guest' : (clubById[r.club]?.name ?? r.club)}</span>
@@ -130,7 +130,7 @@ const showTeamResults = hasTeamResults(year, 'fell', raceId);
     position: number | null; icPosition: number | null;
     raceNumber: number | null;
     firstName: string; lastName: string;
-    club: string; category: string; sex: string; time: string;
+    club: string; ageCategory: string; sex: string; time: string;
     seriesRunnerId: number | null;
   }> = JSON.parse(document.getElementById('results-data')!.textContent!);
 
@@ -184,7 +184,7 @@ const showTeamResults = hasTeamResults(year, 'fell', raceId);
       <span class="sm:hidden">${shortName}</span>
       <span class="hidden sm:inline">${fullName}</span>
     </td>
-    <td>${esc(r.category)}</td>
+    <td>${esc(r.ageCategory)}</td>
     <td>
       <span class="sm:hidden">${clubShort}</span>
       <span class="hidden sm:inline">${clubFull}</span>
@@ -201,7 +201,7 @@ const showTeamResults = hasTeamResults(year, 'fell', raceId);
     const filtered = allResults.filter(r => {
       if (name && !r.firstName.toLowerCase().includes(name) && !r.lastName.toLowerCase().includes(name) && !(r.raceNumber !== null && String(r.raceNumber).startsWith(name))) return false;
       if (club && r.club !== club) return false;
-      if (cat && r.category !== cat) return false;
+      if (cat && r.ageCategory !== cat) return false;
       if (activeSex && r.sex !== activeSex) return false;
       return true;
     });
