@@ -79,6 +79,14 @@ function Parse-AbbreviatedName {
     return $null
 }
 
+# Returns true for broad categories (male, female, overall) where the runner's
+# age category is not implied and should be stored on the award entry.
+# Age-specific categories (jun-*, sen-*, v35-*, etc.) already encode the age group.
+function Is-BroadCategory {
+    param([string]$CategoryId)
+    return $CategoryId -notmatch '^(jun|sen|v\d+)'
+}
+
 # Infer sex ("M" or "F" or "") from awards category id like "v35-female", "sen-male", "female", "male"
 function Infer-Sex {
     param([string]$CategoryId)
@@ -255,7 +263,7 @@ foreach ($catGroup in $awardsData.individualAwards) {
             if (-not $awardClub) {
                 $award | Add-Member -NotePropertyName club -NotePropertyValue $chosenRunner.club -Force
             }
-            if (-not $awardCat) {
+            if (-not $awardCat -and (Is-BroadCategory $catId)) {
                 $award | Add-Member -NotePropertyName category -NotePropertyValue $chosenRunner.category -Force
             }
         }
