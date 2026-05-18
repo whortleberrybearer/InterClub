@@ -323,3 +323,75 @@ export function getAllAwardsByYear(series: Series): YearlyAwardsData[] {
   // Sort by year descending (newest first)
   return awardsList.sort((a, b) => b.year - a.year);
 }
+
+// ---- Individual history pivot ----
+
+export interface YearlyResolvedIndividual {
+  year: number;
+  categories: Array<{
+    id: string;
+    name: string;
+    sex: 'M' | 'F' | null;
+    awards: Array<{
+      position: number;
+      name: string;
+      clubName: string;
+      runnerUrl?: string;
+    }>;
+  }>;
+}
+
+export interface CategoryHistoryEntry {
+  name: string;
+  clubName: string;
+  runnerUrl?: string;
+}
+
+export interface CategoryHistoryRow {
+  year: number;
+  positions: {
+    1: CategoryHistoryEntry | null;
+    2: CategoryHistoryEntry | null;
+    3: CategoryHistoryEntry | null;
+  };
+}
+
+export interface CategoryHistoryData {
+  id: string;
+  name: string;
+  sex: 'M' | 'F' | null;
+  rows: CategoryHistoryRow[];
+}
+
+export function pivotIndividualAwardsByCategory(
+  yearlyData: YearlyResolvedIndividual[]
+): CategoryHistoryData[] {
+  const categoryMap = new Map<string, { name: string; sex: 'M' | 'F' | null }>();
+  for (const yearly of yearlyData) {
+    for (const cat of yearly.categories) {
+      if (!categoryMap.has(cat.id)) {
+        categoryMap.set(cat.id, { name: cat.name, sex: cat.sex });
+      }
+    }
+  }
+
+  return Array.from(categoryMap.entries()).map(([id, meta]) => {
+    const rows = yearlyData
+      .filter(yearly => yearly.categories.some(c => c.id === id))
+      .map(yearly => {
+        const cat = yearly.categories.find(c => c.id === id)!;
+        const findPos = (pos: number) => cat.awards.find(a => a.position === pos);
+        const mapEntry = (a: ReturnType<typeof findPos>): CategoryHistoryEntry | null =>
+          a ? { name: a.name, clubName: a.clubName, runnerUrl: a.runnerUrl } : null;
+        return {
+          year: yearly.year,
+          positions: {
+            1: mapEntry(findPos(1)),
+            2: mapEntry(findPos(2)),
+            3: mapEntry(findPos(3)),
+          },
+        };
+      });
+    return { id, name: meta.name, sex: meta.sex, rows };
+  });
+}
