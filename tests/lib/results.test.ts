@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { parseResultsCsv, parseTeamResultsPath, parseTeamStandingsPath, parseIndividualStandingsPath, pivotIndividualAwardsByCategory } from '../../src/lib/results';
+import { parseResultsCsv, parseTeamResultsPath, parseTeamStandingsPath, parseIndividualStandingsPath, pivotIndividualAwardsByCategory, resolveIndividualCategoryName } from '../../src/lib/results';
 
 describe('parseResultsCsv', () => {
   const sample = [
@@ -270,5 +270,43 @@ describe('pivotIndividualAwardsByCategory', () => {
     }];
     const result = pivotIndividualAwardsByCategory(input);
     expect(result[0].sex).toBeNull();
+  });
+});
+
+describe('resolveIndividualCategoryName', () => {
+  it('returns name override when provided', () => {
+    expect(resolveIndividualCategoryName('overall', undefined, undefined, 'Overall')).toBe('Overall');
+  });
+
+  it('returns name override regardless of sex/ageCategory', () => {
+    expect(resolveIndividualCategoryName('x', 'M', 'V40', 'Custom')).toBe('Custom');
+  });
+
+  it('derives Senior Men from SEN + M', () => {
+    expect(resolveIndividualCategoryName('sen-male', 'M', 'SEN')).toBe('Senior Men');
+  });
+
+  it('derives Junior Women from JUN + F', () => {
+    expect(resolveIndividualCategoryName('jun-female', 'F', 'JUN')).toBe('Junior Women');
+  });
+
+  it('derives V40 Men from V40 + M', () => {
+    expect(resolveIndividualCategoryName('v40-male', 'M', 'V40')).toBe('V40 Men');
+  });
+
+  it('derives V55 Women from V55 + F', () => {
+    expect(resolveIndividualCategoryName('v55-female', 'F', 'V55')).toBe('V55 Women');
+  });
+
+  it('derives Men from sex M with no ageCategory', () => {
+    expect(resolveIndividualCategoryName('male', 'M')).toBe('Men');
+  });
+
+  it('derives Women from sex F with no ageCategory', () => {
+    expect(resolveIndividualCategoryName('female', 'F')).toBe('Women');
+  });
+
+  it('falls back to raw id when no sex, ageCategory, or name', () => {
+    expect(resolveIndividualCategoryName('something-custom')).toBe('something-custom');
   });
 });
