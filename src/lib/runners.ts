@@ -3,7 +3,7 @@ import type {
   RunnerProfileAward, RunnerProfileRace,
   RunnerYearBlock, RunnerYearSeries, Series, SeriesAwards, SeriesRunner,
 } from './types';
-import { parseResultsCsv, hasResults, getSeriesConfig } from './results';
+import { parseResultsCsv, hasResults, resolveIndividualCategoryName } from './results';
 import { getRaces } from './data';
 import { siteUrl } from './url';
 
@@ -135,12 +135,11 @@ function getAwardsForRunner(year: number, series: Series, seriesLocalId: number)
   const awardsFiles = series === 'road-gp' ? roadAwardsFiles : fellAwardsFiles;
   const raw = awardsFiles[`../data/${year}/${series}/awards.json`]?.default;
   if (!raw) return [];
-  const config = getSeriesConfig(year, series);
   const found: RunnerProfileAward[] = [];
   for (const ia of raw.individualAwards) {
     const entry = ia.awards.find(a => a.seriesRunnerId === seriesLocalId);
     if (entry) {
-      const categoryName = config.individualCategories?.find(c => c.id === ia.id)?.name ?? ia.id;
+      const categoryName = resolveIndividualCategoryName(ia.id, ia.sex, ia.ageCategory, ia.name);
       found.push({ categoryName, position: entry.position });
     }
   }
