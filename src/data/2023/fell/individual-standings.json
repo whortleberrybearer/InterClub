@@ -1,9 +1,9 @@
-{
+﻿{
   "provisional": false,
   "races": ["wardle-skyline", "aggies-staircase", "beetham-sports", "golf-ball"],
   "categories": [
     {
-      "category": "sen-m",
+      "id": "sen-m",
       "runners": [
         {"position": 1, "name": "Alek Walker", "club": "wesham", "sex": "M", "ageCategory": "SEN", "total": 296, "results": {"wardle-skyline": {"points": 100, "counting": true}, "aggies-staircase": {"points": 92, "counting": true}, "beetham-sports": {"points": 96, "counting": true}, "golf-ball": {"points": 100, "counting": false}}},
         {"position": 2, "name": "Darren McDermott", "club": "preston", "sex": "M", "ageCategory": "V50", "total": 295, "results": {"wardle-skyline": {"points": 98, "counting": true}, "aggies-staircase": {"points": 98, "counting": true}, "beetham-sports": {"points": 99, "counting": true}}},
@@ -67,7 +67,7 @@
       ]
     },
     {
-      "category": "m40",
+      "id": "m40",
       "runners": [
         {"position": 1, "name": "David Cowburn", "club": "chorley", "sex": "M", "ageCategory": "V40", "total": 298, "results": {"wardle-skyline": {"points": 100, "counting": true}, "aggies-staircase": {"points": 98, "counting": true}, "beetham-sports": {"points": 100, "counting": true}}},
         {"position": 2, "name": "Steve Myerscough", "club": "wesham", "sex": "M", "ageCategory": "V40", "total": 298, "results": {"wardle-skyline": {"points": 99, "counting": true}, "beetham-sports": {"points": 100, "counting": true}, "golf-ball": {"points": 99, "counting": true}}},
@@ -81,7 +81,7 @@
       ]
     },
     {
-      "category": "m50",
+      "id": "m50",
       "runners": [
         {"position": 1, "name": "Darren McDermott", "club": "preston", "sex": "M", "ageCategory": "V50", "total": 295, "results": {"wardle-skyline": {"points": 98, "counting": true}, "aggies-staircase": {"points": 98, "counting": true}, "beetham-sports": {"points": 99, "counting": true}}},
         {"position": 2, "name": "Carl Groome", "club": "wesham", "sex": "M", "ageCategory": "V50", "total": 290, "results": {"wardle-skyline": {"points": 95, "counting": true}, "aggies-staircase": {"points": 97, "counting": true}, "beetham-sports": {"points": 98, "counting": true}}},
@@ -109,7 +109,7 @@
       ]
     },
     {
-      "category": "m60",
+      "id": "m60",
       "runners": [
         {"position": 1, "name": "Steve Baker", "club": "chorley", "sex": "M", "ageCategory": "V60", "total": 296, "results": {"wardle-skyline": {"points": 97, "counting": true}, "aggies-staircase": {"points": 99, "counting": true}, "beetham-sports": {"points": 100, "counting": true}}},
         {"position": 2, "name": "Philip Butler", "club": "red-rose", "sex": "M", "ageCategory": "V60", "total": 296, "results": {"wardle-skyline": {"points": 99, "counting": true}, "aggies-staircase": {"points": 98, "counting": true}, "golf-ball": {"points": 99, "counting": true}}},
@@ -127,7 +127,7 @@
       ]
     },
     {
-      "category": "f-sen",
+      "id": "f-sen",
       "runners": [
         {"position": 1, "name": "Kay Twist", "club": "wesham", "sex": "F", "ageCategory": "V50", "total": 290, "results": {"wardle-skyline": {"points": 99, "counting": true}, "aggies-staircase": {"points": 94, "counting": true}, "beetham-sports": {"points": 93, "counting": true}, "golf-ball": {"points": 97, "counting": false}}},
         {"position": 2, "name": "Claire McDermott", "club": "preston", "sex": "F", "ageCategory": "V50", "total": 288, "results": {"wardle-skyline": {"points": 96, "counting": true}, "aggies-staircase": {"points": 94, "counting": true}, "beetham-sports": {"points": 98, "counting": true}}},
@@ -157,7 +157,7 @@
       ]
     },
     {
-      "category": "f40",
+      "id": "f40",
       "runners": [
         {"position": 1, "name": "Olga Wiggins", "club": "preston", "sex": "F", "ageCategory": "V40", "total": 297, "results": {"wardle-skyline": {"points": 100, "counting": true}, "aggies-staircase": {"points": 96, "counting": true}, "beetham-sports": {"points": 97, "counting": true}, "golf-ball": {"points": 100, "counting": false}}},
         {"position": 2, "name": "Katherine Klunder", "club": "chorley", "sex": "F", "ageCategory": "V40", "total": 200, "results": {"aggies-staircase": {"points": 100, "counting": true}, "golf-ball": {"points": 100, "counting": true}}},
@@ -168,7 +168,7 @@
       ]
     },
     {
-      "category": "f50",
+      "id": "f50",
       "runners": [
         {"position": 1, "name": "Claire McDermott", "club": "preston", "sex": "F", "ageCategory": "V50", "total": 299, "results": {"wardle-skyline": {"points": 100, "counting": true}, "aggies-staircase": {"points": 99, "counting": true}, "golf-ball": {"points": 100, "counting": true}}},
         {"position": 2, "name": "Kay Twist", "club": "wesham", "sex": "F", "ageCategory": "V50", "total": 298, "results": {"wardle-skyline": {"points": 100, "counting": true}, "aggies-staircase": {"points": 99, "counting": true}, "beetham-sports": {"points": 98, "counting": true}, "golf-ball": {"points": 99, "counting": false}}},

@@ -1,9 +1,9 @@
-{
+﻿{
   "provisional": false,
   "races": ["mearley-clough", "hutton-roof-crags", "walsh-two-lads", "ingleborough"],
   "categories": [
     {
-      "category": "sen-m",
+      "id": "sen-m",
       "runners": [
         {"position": 1, "name": "Darren McDermott", "club": "preston", "sex": "M", "ageCategory": "V50", "total": 288, "results": {"mearley-clough": {"points": 98, "counting": true}, "hutton-roof-crags": {"points": 94, "counting": true}, "walsh-two-lads": {"points": 96, "counting": true}}},
         {"position": 2, "name": "Steve Baker", "club": "chorley", "sex": "M", "ageCategory": "V60", "total": 274, "results": {"mearley-clough": {"points": 94, "counting": true}, "hutton-roof-crags": {"points": 91, "counting": true}, "walsh-two-lads": {"points": 79, "counting": false}, "ingleborough": {"points": 89, "counting": true}}},
@@ -70,7 +70,7 @@
       ]
     },
     {
-      "category": "m40",
+      "id": "m40",
       "runners": [
         {"position": 1, "name": "John Naylor", "club": "red-rose", "sex": "M", "ageCategory": "V40", "total": 293, "results": {"mearley-clough": {"points": 98, "counting": true}, "hutton-roof-crags": {"points": 97, "counting": true}, "walsh-two-lads": {"points": 92, "counting": true}, "ingleborough": {"points": 98, "counting": false}}},
         {"position": 2, "name": "Paul Lancashire", "club": "wesham", "sex": "M", "ageCategory": "V40", "total": 292, "results": {"mearley-clough": {"points": 99, "counting": true}, "hutton-roof-crags": {"points": 94, "counting": true}, "walsh-two-lads": {"points": 99, "counting": true}}},
@@ -94,7 +94,7 @@
       ]
     },
     {
-      "category": "m50",
+      "id": "m50",
       "runners": [
         {"position": 1, "name": "Darren McDermott", "club": "preston", "sex": "M", "ageCategory": "V50", "total": 288, "results": {"mearley-clough": {"points": 100, "counting": true}, "hutton-roof-crags": {"points": 100, "counting": true}, "walsh-two-lads": {"points": 99, "counting": true}}},
         {"position": 2, "name": "Mark Ellithorn", "club": "chorley", "sex": "M", "ageCategory": "V50", "total": 293, "results": {"mearley-clough": {"points": 99, "counting": true}, "hutton-roof-crags": {"points": 97, "counting": true}, "walsh-two-lads": {"points": 97, "counting": true}}},
@@ -122,7 +122,7 @@
       ]
     },
     {
-      "category": "m60",
+      "id": "m60",
       "runners": [
         {"position": 1, "name": "Steve Baker", "club": "chorley", "sex": "M", "ageCategory": "V60", "total": 300, "results": {"mearley-clough": {"points": 100, "counting": true}, "hutton-roof-crags": {"points": 100, "counting": true}, "walsh-two-lads": {"points": 100, "counting": true}, "ingleborough": {"points": 100, "counting": true}}},
         {"position": 2, "name": "John Collier", "club": "wesham", "sex": "M", "ageCategory": "V60", "total": 197, "results": {"mearley-clough": {"points": 99, "counting": true}, "hutton-roof-crags": {"points": 98, "counting": true}}},
@@ -137,7 +137,7 @@
       ]
     },
     {
-      "category": "sen-f",
+      "id": "sen-f",
       "runners": [
         {"position": 1, "name": "Claire McDermott", "club": "preston", "sex": "F", "ageCategory": "V50", "total": 295, "results": {"mearley-clough": {"points": 97, "counting": true}, "hutton-roof-crags": {"points": 99, "counting": true}, "walsh-two-lads": {"points": 93, "counting": true}, "ingleborough": {"points": 99, "counting": false}}},
         {"position": 2, "name": "Claire Markham", "club": "lytham", "sex": "F", "ageCategory": "V40", "total": 284, "results": {"mearley-clough": {"points": 96, "counting": true}, "hutton-roof-crags": {"points": 90, "counting": true}, "walsh-two-lads": {"points": 98, "counting": true}}},
@@ -178,7 +178,7 @@
       ]
     },
     {
-      "category": "f40",
+      "id": "f40",
       "runners": [
         {"position": 1, "name": "Claire Markham", "club": "lytham", "sex": "F", "ageCategory": "V40", "total": 295, "results": {"mearley-clough": {"points": 99, "counting": true}, "hutton-roof-crags": {"points": 96, "counting": true}, "walsh-two-lads": {"points": 100, "counting": true}}},
         {"position": 2, "name": "Olga Wiggins", "club": "preston", "sex": "F", "ageCategory": "V40", "total": 295, "results": {"mearley-clough": {"points": 99, "counting": true}, "hutton-roof-crags": {"points": 98, "counting": true}, "walsh-two-lads": {"points": 94, "counting": true}, "ingleborough": {"points": 98, "counting": false}}},
@@ -197,7 +197,7 @@
       ]
     },
     {
-      "category": "f50",
+      "id": "f50",
       "runners": [
         {"position": 1, "name": "Claire McDermott", "club": "preston", "sex": "F", "ageCategory": "V50", "total": 300, "results": {"mearley-clough": {"points": 100, "counting": true}, "hutton-roof-crags": {"points": 100, "counting": true}, "walsh-two-lads": {"points": 100, "counting": true}, "ingleborough": {"points": 100, "counting": true}}},
         {"position": 2, "name": "Pamela Hardman", "club": "lytham", "sex": "F", "ageCategory": "V60", "total": 294, "results": {"mearley-clough": {"points": 99, "counting": true}, "hutton-roof-crags": {"points": 97, "counting": true}, "walsh-two-lads": {"points": 98, "counting": true}}},

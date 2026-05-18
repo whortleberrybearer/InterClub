@@ -1,9 +1,9 @@
-{
+﻿{
   "provisional": false,
   "races": ["harrock-hill", "great-hill", "20-barriers", "darwen-gala"],
   "categories": [
     {
-      "category": "overall",
+      "id": "overall",
       "runners": [
         { "position": 1, "name": "Joe Greenwood", "club": "lytham", "sex": "M", "ageCategory": "SEN", "total": 7, "results": { "harrock-hill": { "points": 3, "counting": true }, "great-hill": { "points": 1, "counting": true }, "20-barriers": { "points": 1, "counting": true }, "darwen-gala": { "points": 2, "counting": true } } },
         { "position": 2, "name": "Duncan Anderson", "club": "red-rose", "sex": "M", "ageCategory": "SEN", "total": 6, "results": { "20-barriers": { "points": 5, "counting": true }, "darwen-gala": { "points": 1, "counting": true } } },
@@ -85,7 +85,7 @@
       ]
     },
     {
-      "category": "sen-m",
+      "id": "sen-m",
       "runners": [
         { "position": 1, "name": "Joe Greenwood", "club": "lytham", "sex": "M", "ageCategory": "SEN", "total": 7, "results": { "harrock-hill": { "points": 3, "counting": true }, "great-hill": { "points": 1, "counting": true }, "20-barriers": { "points": 1, "counting": true }, "darwen-gala": { "points": 2, "counting": true } } },
         { "position": 2, "name": "Duncan Anderson", "club": "red-rose", "sex": "M", "ageCategory": "SEN", "total": 6, "results": { "20-barriers": { "points": 5, "counting": true }, "darwen-gala": { "points": 1, "counting": true } } },
@@ -111,7 +111,7 @@
       ]
     },
     {
-      "category": "v40-m",
+      "id": "v40-m",
       "runners": [
         { "position": 1, "name": "Chris Charnley", "club": "red-rose", "sex": "M", "ageCategory": "V40", "total": 58, "results": { "harrock-hill": { "points": 8, "counting": true }, "great-hill": { "points": 10, "counting": true }, "darwen-gala": { "points": 11, "counting": true } } },
         { "position": 2, "name": "Andrew Fairbairn", "club": "thornton", "sex": "M", "ageCategory": "V40", "total": 66, "results": { "harrock-hill": { "points": 6, "counting": true }, "great-hill": { "points": 3, "counting": true }, "20-barriers": { "points": 24, "counting": true } } },
@@ -140,7 +140,7 @@
       ]
     },
     {
-      "category": "v50-m",
+      "id": "v50-m",
       "runners": [
         { "position": 1, "name": "Mark Ellithorn", "club": "chorley", "sex": "M", "ageCategory": "V50", "total": 74, "results": { "harrock-hill": { "points": 7, "counting": true }, "great-hill": { "points": 7, "counting": true }, "20-barriers": { "points": 55, "counting": true }, "darwen-gala": { "points": 5, "counting": true } } },
         { "position": 2, "name": "Alex Rowe", "club": "wesham", "sex": "M", "ageCategory": "V50", "total": 72, "results": { "great-hill": { "points": 4, "counting": true }, "20-barriers": { "points": 25, "counting": true }, "darwen-gala": { "points": 7, "counting": true } } },
@@ -169,7 +169,7 @@
       ]
     },
     {
-      "category": "v60-m",
+      "id": "v60-m",
       "runners": [
         { "position": 1, "name": "Terry Hellings", "club": "lytham", "sex": "M", "ageCategory": "V60", "total": 70, "results": { "harrock-hill": { "points": 32, "counting": true }, "great-hill": { "points": 22, "counting": true }, "darwen-gala": { "points": 16, "counting": true } } },
         { "position": 2, "name": "David Miller", "club": "chorley", "sex": "M", "ageCategory": "V60", "total": 74, "results": { "harrock-hill": { "points": 42, "counting": true }, "great-hill": { "points": 32, "counting": true } } },
@@ -191,7 +191,7 @@
       ]
     },
     {
-      "category": "sen-f",
+      "id": "sen-f",
       "runners": [
         { "position": 1, "name": "Joanna Goorney", "club": "lytham", "sex": "F", "ageCategory": "SEN", "total": 31, "results": { "harrock-hill": { "points": 14, "counting": true }, "20-barriers": { "points": 3, "counting": true }, "darwen-gala": { "points": 14, "counting": true } } },
         { "position": 2, "name": "Laura Murphy", "club": "chorley", "sex": "F", "ageCategory": "SEN", "total": 53, "results": { "harrock-hill": { "points": 34, "counting": true }, "great-hill": { "points": 19, "counting": true } } },
@@ -206,7 +206,7 @@
       ]
     },
     {
-      "category": "v40-f",
+      "id": "v40-f",
       "runners": [
         { "position": 1, "name": "Joanna Goorney", "club": "lytham", "sex": "F", "ageCategory": "V40", "total": 31, "results": { "harrock-hill": { "points": 14, "counting": true }, "20-barriers": { "points": 3, "counting": true }, "darwen-gala": { "points": 14, "counting": true } } },
         { "position": 2, "name": "Lynne Clough", "club": "chorley", "sex": "F", "ageCategory": "V40", "total": 38, "results": { "great-hill": { "points": 11, "counting": true }, "20-barriers": { "points": 19, "counting": true }, "darwen-gala": { "points": 8, "counting": true } } },
@@ -228,7 +228,7 @@
       ]
     },
     {
-      "category": "v50-f",
+      "id": "v50-f",
       "runners": [
         { "position": 1, "name": "Paula Plowman", "club": "red-rose", "sex": "F", "ageCategory": "V50", "total": 130, "results": { "harrock-hill": { "points": 56, "counting": true }, "great-hill": { "points": 42, "counting": true }, "20-barriers": { "points": 32, "counting": true } } },
         { "position": 2, "name": "Deborah Myerscough", "club": "wesham", "sex": "F", "ageCategory": "V50", "total": 125, "results": { "great-hill": { "points": 49, "counting": true }, "20-barriers": { "points": 44, "counting": true }, "darwen-gala": { "points": 32, "counting": true } } },
@@ -247,7 +247,7 @@
       ]
     },
     {
-      "category": "v60-f",
+      "id": "v60-f",
       "runners": [
         { "position": 1, "name": "Lydia Plackett", "club": "red-rose", "sex": "F", "ageCategory": "V60", "total": 139, "results": { "harrock-hill": { "points": 75, "counting": true }, "great-hill": { "points": 64, "counting": true } } },
         { "position": 2, "name": "Jenny Ryan", "club": "thornton", "sex": "F", "ageCategory": "V60", "total": 53, "results": { "20-barriers": { "points": 53, "counting": true } } },
