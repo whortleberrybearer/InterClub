@@ -140,7 +140,7 @@ function getAwardsForRunner(year: number, series: Series, seriesLocalId: number)
   for (const ia of raw.individualAwards) {
     const entry = ia.awards.find(a => a.seriesRunnerId === seriesLocalId);
     if (entry) {
-      const categoryName = config.individualCategories?.find(c => c.id === ia.category)?.name ?? ia.category;
+      const categoryName = config.individualCategories?.find(c => c.id === ia.id)?.name ?? ia.id;
       found.push({ categoryName, position: entry.position });
     }
   }
