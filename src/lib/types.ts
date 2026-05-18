@@ -37,7 +37,7 @@ export interface RaceResult {
   firstName: string;
   lastName: string;
   club: string;        // club id (e.g. 'blackpool') or 'Guest'
-  category: string;   // e.g. 'SEN', 'V35', 'U17'
+  ageCategory: string;   // e.g. 'SEN', 'V35', 'U17'
   sex: string;        // 'M' or 'F'
   time: string;       // 'MM:SS', may be empty
   raceNumber: number | null;
@@ -57,7 +57,7 @@ export interface GlobalRunner {
   lastName: string;
   club: string;       // club id matching clubs.json
   sex: string;        // 'M' or 'F'
-  category: string;   // e.g. 'SEN', 'V40'
+  ageCategory: string;   // e.g. 'SEN', 'V40'
 }
 
 export interface SeriesRunner {
@@ -67,7 +67,7 @@ export interface SeriesRunner {
   lastName: string;
   club: string;
   sex: string;
-  category: string;
+  ageCategory: string;
   number?: number;    // optional bib number
 }
 
@@ -146,7 +146,7 @@ export interface TeamClubResult {
 }
 
 export interface TeamCategoryResult {
-  category: string;   // id → TeamCategory lookup via config.teamCategories
+  id: string;   // id → TeamCategory lookup via config.teamCategories
   clubs: TeamClubResult[];
 }
 
@@ -163,7 +163,7 @@ export interface TeamStandingsClub {
 }
 
 export interface TeamStandingsCategory {
-  category: string;
+  id: string;
   clubs: TeamStandingsClub[];
 }
 
@@ -190,7 +190,7 @@ export interface IndividualStandingsRunner {
 }
 
 export interface IndividualStandingsCategory {
-  category: string;   // id → IndividualCategory lookup via config.individualCategories
+  id: string;   // id → IndividualCategory lookup via config.individualCategories
   runners: IndividualStandingsRunner[];
 }
 
@@ -202,7 +202,7 @@ export interface IndividualStandings {
 
 // Raw awards data (from awards.json)
 export interface TeamAward {
-  category: string;  // references teamCategories[].id in config.json
+  id: string;  // references teamCategories[].id in config.json
   club: string;      // references clubs.json id
 }
 
@@ -214,7 +214,7 @@ export interface IndividualAwardEntry {
 }
 
 export interface IndividualAward {
-  category: string;  // references individualCategories[].id in config.json
+  id: string;  // references individualCategories[].id in config.json
   awards: IndividualAwardEntry[];
 }
 
