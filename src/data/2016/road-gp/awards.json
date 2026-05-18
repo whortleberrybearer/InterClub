@@ -1,56 +1,83 @@
-﻿{
-    "individualAwards":  [
-                           {
-                               "id":  "overall",
-                               "awards":  [
-                                              { "position": 1, "name": "R. Danson", "club": "wesham" }
-                                          ]
-                           },
-                           {
-                               "id":  "ladies",
-                               "awards":  [
-                                              { "position": 1, "name": "J. Goorney", "club": "lytham" }
-                                          ]
-                           },
-                           {
-                               "id":  "v40-male",
-                               "awards":  [
-                                              { "position": 1, "name": "R. Affleck", "club": "preston" }
-                                          ]
-                           },
-                           {
-                               "id":  "v50-male",
-                               "awards":  [
-                                              { "position": 1, "name": "J. Wright", "club": "blackpool" }
-                                          ]
-                           },
-                           {
-                               "id":  "v60-male",
-                               "awards":  [
-                                              { "position": 1, "name": "K. Addison", "club": "red-rose" }
-                                          ]
-                           }
-                       ],
-    "teamAwards":  [
-                       {
-                           "club":  "preston",
-                           "id":  "open"
-                       },
-                       {
-                           "club":  "preston",
-                           "id":  "vets"
-                       },
-                       {
-                           "club":  "red-rose",
-                           "id":  "vet50"
-                       },
-                       {
-                           "club":  "red-rose",
-                           "id":  "vet60"
-                       },
-                       {
-                           "club":  "wesham",
-                           "id":  "ladies"
-                       }
-                   ]
+{
+    "individualAwards": [
+        {
+            "id": "overall",
+            "awards": [
+                {
+                    "position": 1,
+                    "name": "R. Danson",
+                    "club": "wesham"
+                }
+            ]
+        },
+        {
+            "id": "ladies",
+            "awards": [
+                {
+                    "position": 1,
+                    "name": "J. Goorney",
+                    "club": "lytham"
+                }
+            ],
+            "sex": "F"
+        },
+        {
+            "id": "v40-male",
+            "awards": [
+                {
+                    "position": 1,
+                    "name": "R. Affleck",
+                    "club": "preston"
+                }
+            ],
+            "sex": "M",
+            "ageCategory": "V40"
+        },
+        {
+            "id": "v50-male",
+            "awards": [
+                {
+                    "position": 1,
+                    "name": "J. Wright",
+                    "club": "blackpool"
+                }
+            ],
+            "sex": "M",
+            "ageCategory": "V50"
+        },
+        {
+            "id": "v60-male",
+            "awards": [
+                {
+                    "position": 1,
+                    "name": "K. Addison",
+                    "club": "red-rose"
+                }
+            ],
+            "sex": "M",
+            "ageCategory": "V60"
+        }
+    ],
+    "teamAwards": [
+        {
+            "club": "preston",
+            "id": "open"
+        },
+        {
+            "club": "preston",
+            "id": "vets"
+        },
+        {
+            "club": "red-rose",
+            "id": "vet50"
+        },
+        {
+            "club": "red-rose",
+            "id": "vet60"
+        },
+        {
+            "club": "wesham",
+            "id": "ladies"
+        }
+    ]
 }

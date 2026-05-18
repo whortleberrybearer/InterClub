@@ -1,62 +1,135 @@
-﻿{
+{
   "teamAwards": [
-    { "id": "open", "club": "red-rose" },
-    { "id": "vets", "club": "chorley" },
-    { "id": "v50", "club": "chorley" },
-    { "id": "v60", "club": "chorley" },
-    { "id": "ladies", "club": "lytham" }
+    {
+      "id": "open",
+      "club": "red-rose"
+    },
+    {
+      "id": "vets",
+      "club": "chorley"
+    },
+    {
+      "id": "v50",
+      "club": "chorley"
+    },
+    {
+      "id": "v60",
+      "club": "chorley"
+    },
+    {
+      "id": "ladies",
+      "club": "lytham"
+    }
   ],
   "individualAwards": [
     {
       "id": "overall",
       "awards": [
-        { "position": 1, "name": "Joe Greenwood", "club": "lytham" }
+        {
+          "position": 1,
+          "name": "Joe Greenwood",
+          "club": "lytham"
+        }
       ]
     },
     {
       "id": "sen-m",
       "awards": [
-        { "position": 2, "name": "Daniel Hughes", "club": "red-rose" }
-      ]
+        {
+          "position": 2,
+          "name": "Daniel Hughes",
+          "club": "red-rose"
+        }
+      ],
+      "sex": "M",
+      "ageCategory": "SEN"
     },
     {
       "id": "v40-m",
       "awards": [
-        { "position": 1, "name": "Chris Charnley", "club": "red-rose" },
-        { "position": 2, "name": "Andrew Fairbairn", "club": "thornton" }
-      ]
+        {
+          "position": 1,
+          "name": "Chris Charnley",
+          "club": "red-rose"
+        },
+        {
+          "position": 2,
+          "name": "Andrew Fairbairn",
+          "club": "thornton"
+        }
+      ],
+      "sex": "M",
+      "ageCategory": "V40"
     },
     {
       "id": "v50-m",
       "awards": [
-        { "position": 1, "name": "Mark Ellithorn", "club": "chorley" },
-        { "position": 2, "name": "Alex Rowe", "club": "wesham" }
-      ]
+        {
+          "position": 1,
+          "name": "Mark Ellithorn",
+          "club": "chorley"
+        },
+        {
+          "position": 2,
+          "name": "Alex Rowe",
+          "club": "wesham"
+        }
+      ],
+      "sex": "M",
+      "ageCategory": "V50"
     },
     {
       "id": "v60-m",
       "awards": [
-        { "position": 1, "name": "Terry Hellings", "club": "lytham" },
-        { "position": 2, "name": "Malcolm Sherwood", "club": "thornton" }
-      ]
+        {
+          "position": 1,
+          "name": "Terry Hellings",
+          "club": "lytham"
+        },
+        {
+          "position": 2,
+          "name": "Malcolm Sherwood",
+          "club": "thornton"
+        }
+      ],
+      "sex": "M",
+      "ageCategory": "V60"
     },
     {
       "id": "sen-f",
       "awards": [
-        { "position": 1, "name": "Joanna Goorney", "club": "lytham" }
-      ]
+        {
+          "position": 1,
+          "name": "Joanna Goorney",
+          "club": "lytham"
+        }
+      ],
+      "sex": "F",
+      "ageCategory": "SEN"
     },
     {
       "id": "v40-f",
       "awards": [
-        { "position": 2, "name": "Lynne Clough", "club": "chorley" }
-      ]
+        {
+          "position": 2,
+          "name": "Lynne Clough",
+          "club": "chorley"
+        }
+      ],
+      "sex": "F",
+      "ageCategory": "V40"
     },
     {
       "id": "v50-f",
       "awards": [
-        { "position": 1, "name": "Deborah Myerscough", "club": "wesham" }
-      ]
+        {
+          "position": 1,
+          "name": "Deborah Myerscough",
+          "club": "wesham"
+        }
+      ],
+      "sex": "F",
+      "ageCategory": "V50"
     }
   ]
 }

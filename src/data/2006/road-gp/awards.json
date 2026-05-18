@@ -1,38 +1,47 @@
-﻿{
-    "individualAwards":  [
-                           {
-                               "id":  "overall",
-                               "awards":  [
-                                              { "position": 1, "name": "A. Sutton", "club": "preston" }
-                                          ]
-                           },
-                           {
-                               "id":  "ladies",
-                               "awards":  [
-                                              { "position": 1, "name": "C. Betmead", "club": "north-fylde" }
-                                          ]
-                           }
-                       ],
-    "teamAwards":  [
-                       {
-                           "club":  "preston",
-                           "id":  "open"
-                       },
-                       {
-                           "club":  "north-fylde",
-                           "id":  "vets"
-                       },
-                       {
-                           "club":  "wesham",
-                           "id":  "vet50"
-                       },
-                       {
-                           "club":  "wesham",
-                           "id":  "vet60"
-                       },
-                       {
-                           "club":  "blackpool-fylde",
-                           "id":  "ladies"
-                       }
-                   ]
+{
+    "individualAwards": [
+        {
+            "id": "overall",
+            "awards": [
+                {
+                    "position": 1,
+                    "name": "A. Sutton",
+                    "club": "preston"
+                }
+            ]
+        },
+        {
+            "id": "ladies",
+            "awards": [
+                {
+                    "position": 1,
+                    "name": "C. Betmead",
+                    "club": "north-fylde"
+                }
+            ],
+            "sex": "F"
+        }
+    ],
+    "teamAwards": [
+        {
+            "club": "preston",
+            "id": "open"
+        },
+        {
+            "club": "north-fylde",
+            "id": "vets"
+        },
+        {
+            "club": "wesham",
+            "id": "vet50"
+        },
+        {
+            "club": "wesham",
+            "id": "vet60"
+        },
+        {
+            "club": "blackpool-fylde",
+            "id": "ladies"
+        }
+    ]
 }

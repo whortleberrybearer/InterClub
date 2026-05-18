@@ -1,52 +1,110 @@
-﻿{
+{
   "teamAwards": [
-    { "id": "open", "club": "chorley" },
-    { "id": "vets", "club": "wesham" },
-    { "id": "v50", "club": "wesham" },
-    { "id": "v60", "club": "chorley" },
-    { "id": "ladies", "club": "wesham" }
+    {
+      "id": "open",
+      "club": "chorley"
+    },
+    {
+      "id": "vets",
+      "club": "wesham"
+    },
+    {
+      "id": "v50",
+      "club": "wesham"
+    },
+    {
+      "id": "v60",
+      "club": "chorley"
+    },
+    {
+      "id": "ladies",
+      "club": "wesham"
+    }
   ],
   "individualAwards": [
     {
       "id": "overall",
       "awards": [
-        { "position": 1, "name": "Lee Barlow" }
+        {
+          "position": 1,
+          "name": "Lee Barlow"
+        }
       ]
     },
     {
       "id": "sen-m",
       "awards": [
-        { "position": 1, "name": "Ben Donoghue" }
-      ]
+        {
+          "position": 1,
+          "name": "Ben Donoghue"
+        }
+      ],
+      "sex": "M",
+      "ageCategory": "SEN"
     },
     {
       "id": "sen-f",
       "awards": [
-        { "position": 1, "name": "Kath Hoyer" },
-        { "position": 2, "name": "Debbie Cooper" },
-        { "position": 3, "name": "Jenny Salt" }
-      ]
+        {
+          "position": 1,
+          "name": "Kath Hoyer"
+        },
+        {
+          "position": 2,
+          "name": "Debbie Cooper"
+        },
+        {
+          "position": 3,
+          "name": "Jenny Salt"
+        }
+      ],
+      "sex": "F",
+      "ageCategory": "SEN"
     },
     {
       "id": "v40-m",
       "awards": [
-        { "position": 2, "name": "Darren Fishwick" },
-        { "position": 3, "name": "Jason Barlow" }
-      ]
+        {
+          "position": 2,
+          "name": "Darren Fishwick"
+        },
+        {
+          "position": 3,
+          "name": "Jason Barlow"
+        }
+      ],
+      "sex": "M",
+      "ageCategory": "V40"
     },
     {
       "id": "v50-m",
       "awards": [
-        { "position": 1, "name": "Alex Rowe" },
-        { "position": 2, "name": "Fred Lynch" },
-        { "position": 3, "name": "John Collier" }
-      ]
+        {
+          "position": 1,
+          "name": "Alex Rowe"
+        },
+        {
+          "position": 2,
+          "name": "Fred Lynch"
+        },
+        {
+          "position": 3,
+          "name": "John Collier"
+        }
+      ],
+      "sex": "M",
+      "ageCategory": "V50"
     },
     {
       "id": "v60-m",
       "awards": [
-        { "position": 1, "name": "Graham Schofield" }
-      ]
+        {
+          "position": 1,
+          "name": "Graham Schofield"
+        }
+      ],
+      "sex": "M",
+      "ageCategory": "V60"
     }
   ]
 }

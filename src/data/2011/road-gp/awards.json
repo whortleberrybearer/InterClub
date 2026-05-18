@@ -1,38 +1,47 @@
-﻿{
-    "individualAwards":  [
-                           {
-                               "id":  "overall",
-                               "awards":  [
-                                              { "position": 1, "name": "S. Robinson", "club": "blackpool" }
-                                          ]
-                           },
-                           {
-                               "id":  "ladies",
-                               "awards":  [
-                                              { "position": 1, "name": "C. Betmead", "club": "blackpool" }
-                                          ]
-                           }
-                       ],
-    "teamAwards":  [
-                       {
-                           "club":  "preston",
-                           "id":  "open"
-                       },
-                       {
-                           "club":  "preston",
-                           "id":  "vets"
-                       },
-                       {
-                           "club":  "wesham",
-                           "id":  "vet50"
-                       },
-                       {
-                           "club":  "wesham",
-                           "id":  "vet60"
-                       },
-                       {
-                           "club":  "blackpool",
-                           "id":  "ladies"
-                       }
-                   ]
+{
+    "individualAwards": [
+        {
+            "id": "overall",
+            "awards": [
+                {
+                    "position": 1,
+                    "name": "S. Robinson",
+                    "club": "blackpool"
+                }
+            ]
+        },
+        {
+            "id": "ladies",
+            "awards": [
+                {
+                    "position": 1,
+                    "name": "C. Betmead",
+                    "club": "blackpool"
+                }
+            ],
+            "sex": "F"
+        }
+    ],
+    "teamAwards": [
+        {
+            "club": "preston",
+            "id": "open"
+        },
+        {
+            "club": "preston",
+            "id": "vets"
+        },
+        {
+            "club": "wesham",
+            "id": "vet50"
+        },
+        {
+            "club": "wesham",
+            "id": "vet60"
+        },
+        {
+            "club": "blackpool",
+            "id": "ladies"
+        }
+    ]
 }

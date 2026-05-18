@@ -1,49 +1,106 @@
-﻿{
+{
   "teamAwards": [
-    { "id": "open", "club": "preston" },
-    { "id": "ladies", "club": "red-rose" },
-    { "id": "vets", "club": "preston" },
-    { "id": "v50", "club": "preston" },
-    { "id": "v60", "club": "lytham" }
+    {
+      "id": "open",
+      "club": "preston"
+    },
+    {
+      "id": "ladies",
+      "club": "red-rose"
+    },
+    {
+      "id": "vets",
+      "club": "preston"
+    },
+    {
+      "id": "v50",
+      "club": "preston"
+    },
+    {
+      "id": "v60",
+      "club": "lytham"
+    }
   ],
   "individualAwards": [
     {
       "id": "male",
       "awards": [
-        { "position": 1, "name": "Patrick Brown", "club": "preston" },
-        { "position": 2, "name": "Alistair Palmer", "club": "preston" }
-      ]
+        {
+          "position": 1,
+          "name": "Patrick Brown",
+          "club": "preston"
+        },
+        {
+          "position": 2,
+          "name": "Alistair Palmer",
+          "club": "preston"
+        }
+      ],
+      "sex": "M"
     },
     {
       "id": "v40-male",
       "awards": [
-        { "position": 1, "name": "Andy Cottam", "club": "chorley" },
-        { "position": 2, "name": "Dan Edwards", "club": "lytham" }
-      ]
+        {
+          "position": 1,
+          "name": "Andy Cottam",
+          "club": "chorley"
+        },
+        {
+          "position": 2,
+          "name": "Dan Edwards",
+          "club": "lytham"
+        }
+      ],
+      "sex": "M",
+      "ageCategory": "V40"
     },
     {
       "id": "v50-male",
       "awards": [
-        { "position": 1, "name": "Paul Bass", "club": "wesham" }
-      ]
+        {
+          "position": 1,
+          "name": "Paul Bass",
+          "club": "wesham"
+        }
+      ],
+      "sex": "M",
+      "ageCategory": "V50"
     },
     {
       "id": "v60-male",
       "awards": [
-        { "position": 1, "name": "Philip Butler", "club": "lytham" }
-      ]
+        {
+          "position": 1,
+          "name": "Philip Butler",
+          "club": "lytham"
+        }
+      ],
+      "sex": "M",
+      "ageCategory": "V60"
     },
     {
       "id": "female",
       "awards": [
-        { "position": 1, "name": "Basia Pawelczak", "club": "blackpool" }
-      ]
+        {
+          "position": 1,
+          "name": "Basia Pawelczak",
+          "club": "blackpool"
+        }
+      ],
+      "sex": "F"
     },
     {
       "id": "v50-female",
       "awards": [
-        { "position": 1, "name": "Kay Twist", "club": "lytham" }
-      ]
+        {
+          "position": 1,
+          "name": "Kay Twist",
+          "club": "lytham"
+        }
+      ],
+      "sex": "F",
+      "ageCategory": "V50"
     }
   ]
 }

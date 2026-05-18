@@ -1,65 +1,131 @@
-﻿{
+{
   "teamAwards": [
-    { "id": "open", "club": "preston" },
-    { "id": "vets", "club": "red-rose" },
-    { "id": "v50", "club": "red-rose" },
-    { "id": "v60", "club": "preston" },
-    { "id": "ladies", "club": "red-rose" }
+    {
+      "id": "open",
+      "club": "preston"
+    },
+    {
+      "id": "vets",
+      "club": "red-rose"
+    },
+    {
+      "id": "v50",
+      "club": "red-rose"
+    },
+    {
+      "id": "v60",
+      "club": "preston"
+    },
+    {
+      "id": "ladies",
+      "club": "red-rose"
+    }
   ],
   "individualAwards": [
     {
       "id": "overall",
       "awards": [
-        { "position": 1, "name": "Richard Smith" }
+        {
+          "position": 1,
+          "name": "Richard Smith"
+        }
       ]
     },
     {
       "id": "male",
       "awards": [
-        { "position": 2, "name": "Duncan Anderson" }
-      ]
+        {
+          "position": 2,
+          "name": "Duncan Anderson"
+        }
+      ],
+      "sex": "M"
     },
     {
       "id": "v40",
       "awards": [
-        { "position": 1, "name": "Chris Wales" },
-        { "position": 2, "name": "Steve Myerscough" }
-      ]
+        {
+          "position": 1,
+          "name": "Chris Wales"
+        },
+        {
+          "position": 2,
+          "name": "Steve Myerscough"
+        }
+      ],
+      "ageCategory": "V40"
     },
     {
       "id": "v50",
       "awards": [
-        { "position": 1, "name": "John Rainford" },
-        { "position": 2, "name": "Philip Butler" },
-        { "position": 3, "name": "Stuart Cann" }
-      ]
+        {
+          "position": 1,
+          "name": "John Rainford"
+        },
+        {
+          "position": 2,
+          "name": "Philip Butler"
+        },
+        {
+          "position": 3,
+          "name": "Stuart Cann"
+        }
+      ],
+      "ageCategory": "V50"
     },
     {
       "id": "v60",
       "awards": [
-        { "position": 1, "name": "Steve Taylor" },
-        { "position": 2, "name": "Michael McLoughlin" }
-      ]
+        {
+          "position": 1,
+          "name": "Steve Taylor"
+        },
+        {
+          "position": 2,
+          "name": "Michael McLoughlin"
+        }
+      ],
+      "ageCategory": "V60"
     },
     {
       "id": "female",
       "awards": [
-        { "position": 1, "name": "Katey Foster" }
-      ]
+        {
+          "position": 1,
+          "name": "Katey Foster"
+        }
+      ],
+      "sex": "F"
     },
     {
       "id": "f40",
       "awards": [
-        { "position": 1, "name": "Sarah Sherratt" },
-        { "position": 2, "name": "Debbie Cooper" }
-      ]
+        {
+          "position": 1,
+          "name": "Sarah Sherratt"
+        },
+        {
+          "position": 2,
+          "name": "Debbie Cooper"
+        }
+      ],
+      "sex": "F",
+      "ageCategory": "V40"
     },
     {
       "id": "f50",
       "awards": [
-        { "position": 1, "name": "Alison Mercer" },
-        { "position": 2, "name": "Karen Clark" }
-      ]
+        {
+          "position": 1,
+          "name": "Alison Mercer"
+        },
+        {
+          "position": 2,
+          "name": "Karen Clark"
+        }
+      ],
+      "sex": "F",
+      "ageCategory": "V50"
     }
   ]
 }
