@@ -11,20 +11,36 @@
 { "id": "v40-male", "name": "V40 Men", "sex": "M" }
 ```
 
-This means every new year requires a full category list in config just to produce display names and drive awards column layout — even when the information is implicit in the id or already present on every runner in the category.
+Similarly, `maxCountingRaces` in config is standings-specific metadata that belongs alongside the standings data it controls, not in the series config.
 
-Additionally, `awards.json` has no sex metadata, so it depends entirely on config for column layout. And the 2025 road-gp awards have stray `"id": "SEN"` / `"id": "V35"` fields on individual award entries — an artefact of the terminology normalisation — which are not in the TypeScript type and currently ignored.
+This means every new year requires boilerplate in config just to produce display names, drive awards column layout, and annotate the standings page — even when the information is implicit in the id or already present on every runner in the category.
+
+Additionally, `awards.json` has no sex or name metadata, so it depends entirely on config for column layout and display names. And the 2025 road-gp awards have stray `"id": "SEN"` / `"id": "V35"` fields on individual award entries — an artefact of the terminology normalisation — which are not in the TypeScript type and currently ignored.
 
 ## Goals
 
 - `individual-standings.json` categories carry their own `sex`, `ageCategory`, and optional `name` override
+- `individual-standings.json` carries `maxCountingRaces`, removing it from config
 - When category-level fields are set, runner objects do not need to repeat them
-- `awards.json` individual award categories carry the same fields, making them self-describing for display and column layout
-- `config.individualCategories` is removed from the schema entirely
-- Stray `"id"` fields on road-gp 2025 award entries are cleaned up (removed)
+- `awards.json` individual award categories carry `sex`, `ageCategory`, and optional `name`, making them self-describing for display and column layout
+- `config.individualCategories` and `config.maxCountingRaces` are removed from the schema entirely
+- Stray `"id"` fields on road-gp 2025 award entries are renamed to `ageCategory` and added to `IndividualAwardEntry`
 - Existing data files remain valid without migration — the new fields are additive
 
 ## Schema Changes
+
+### `IndividualStandings`
+
+Gains `maxCountingRaces`:
+
+```typescript
+interface IndividualStandings {
+  provisional: boolean;
+  maxCountingRaces?: number;  // moved from SeriesConfig; when set, page shows "Best N races count"
+  races: string[];
+  categories: IndividualStandingsCategory[];
+}
+```
 
 ### `IndividualStandingsCategory`
 
@@ -59,7 +75,7 @@ interface IndividualStandingsRunner {
 
 ### `IndividualAward`
 
-Gains the same three optional fields:
+Gains three optional fields:
 
 ```typescript
 interface IndividualAward {
@@ -71,14 +87,27 @@ interface IndividualAward {
 }
 ```
 
+### `IndividualAwardEntry`
+
+Gains an optional `ageCategory` field (formalising the stray `"id"` values that already exist in 2025 road-gp awards):
+
+```typescript
+interface IndividualAwardEntry {
+  position: number;
+  name: string;
+  club: string;
+  ageCategory?: string;   // runner's age category, e.g. "SEN", "V40"; optional display hint
+  seriesRunnerId?: number;
+}
+```
+
 ### `SeriesConfig`
 
-`individualCategories` is removed:
+`individualCategories` and `maxCountingRaces` are removed:
 
 ```typescript
 interface SeriesConfig {
   ageCategories?: string[];
-  maxCountingRaces?: number;
   teamCategories?: TeamCategory[];
   note?: string;
 }
@@ -112,15 +141,27 @@ Age label mapping: `SEN` → `"Senior"`, `JUN` → `"Junior"`, all other values 
 
 ## Stray `"id"` Fields on Award Entries
 
-The 2025 road-gp `awards.json` has `"id": "SEN"` / `"id": "V35"` etc. on individual award entries — artefacts of the automated terminology normalisation that were never added to `IndividualAwardEntry`. These are removed as part of this change. Since `ageCategory` now lives at the category level (not the entry level), no replacement field is needed on entries.
+The 2025 road-gp `awards.json` has `"id": "SEN"` / `"id": "V35"` etc. on individual award entries — artefacts of the automated terminology normalisation that were never added to `IndividualAwardEntry`. These are renamed to `ageCategory` and the field is added to the `IndividualAwardEntry` type as an optional display hint.
 
 ## Backward Compatibility
 
 - `sex` and `ageCategory` on runners remain valid — existing files parse correctly
-- If a runner has no `sex`/`ageCategory` and neither does its category, filter attributes are absent (graceful degradation, same as today for categories with no config entry)
-- No data migration is required for historical files; the new format is opt-in
+- `maxCountingRaces` in `SeriesConfig` continues to parse (TypeScript `unknown` fields are silently ignored) but is no longer read; the standings page reads it from `IndividualStandings` instead
+- If a runner has no `sex`/`ageCategory` and neither does its category, filter attributes are absent (graceful degradation)
+- No data migration is required for historical files; the new fields are additive
 
 ## Data File Format (New Style)
+
+### `individual-standings.json` — top level with maxCountingRaces
+
+```json
+{
+  "provisional": true,
+  "maxCountingRaces": 4,
+  "races": ["pendle", "hutton-roof-crags", "leo-pollard", "waddington"],
+  "categories": [ ... ]
+}
+```
 
 ### `individual-standings.json` — category with shared sex/ageCategory
 
@@ -158,15 +199,33 @@ Category with name override (no sex/ageCategory derivation):
 }
 ```
 
+Award with name override:
+
+```json
+{
+  "id": "overall",
+  "name": "Overall",
+  "awards": [ ... ]
+}
+```
+
+Award entry with runner ageCategory:
+
+```json
+{ "position": 1, "name": "Katie Littlefair", "club": "preston", "ageCategory": "SEN", "seriesRunnerId": 164 }
+```
+
 ## Code Changes
 
 ### `src/lib/types.ts`
 
+- Update `IndividualStandings` — add `maxCountingRaces?`
 - Update `IndividualStandingsCategory` — add `sex?`, `ageCategory?`, `name?`
 - Update `IndividualStandingsRunner` — make `sex` and `ageCategory` optional
 - Update `IndividualAward` — add `sex?`, `ageCategory?`, `name?`
+- Update `IndividualAwardEntry` — add `ageCategory?`
 - Remove `IndividualCategory` interface
-- Remove `individualCategories?` from `SeriesConfig`
+- Remove `individualCategories?` and `maxCountingRaces?` from `SeriesConfig`
 - Update `ResolvedSeriesAwards` comments to remove references to `config category`
 
 ### `src/lib/results.ts`
@@ -177,7 +236,9 @@ Exported and unit-tested as a pure function.
 
 ### `src/pages/fell/[year]/individual-standings.astro` and `src/pages/road-gp/[year]/individual-standings.astro`
 
-Replace `categoryById` config lookup with `resolveIndividualCategoryName` called on the category object. For runner rows, compute `effectiveSex = runner.sex ?? cat.sex` and `effectiveAgeCategory = runner.ageCategory ?? cat.ageCategory` inline in the template — no data transformation in the loader.
+- Replace `categoryById` config lookup with `resolveIndividualCategoryName` called on the category object
+- Read `maxCountingRaces` from `standings.maxCountingRaces` instead of `config.maxCountingRaces`
+- For runner rows, compute `effectiveSex = runner.sex ?? cat.sex` and `effectiveAgeCategory = runner.ageCategory ?? cat.ageCategory` inline in the template — no data transformation in the loader
 
 ### `src/pages/fell/[year]/index.astro` and `src/pages/road-gp/[year]/index.astro`
 
@@ -189,15 +250,16 @@ Replace config `individualCategories` lookup with `resolveIndividualCategoryName
 
 ### `src/data/2025/road-gp/awards.json`
 
-Remove stray `"id"` fields from all `IndividualAwardEntry` objects.
+Rename stray `"id"` fields on `IndividualAwardEntry` objects to `"ageCategory"`.
 
 ### `src/data/config` files (all years)
 
-Remove `individualCategories` arrays. No other changes needed — existing runner-level `sex`/`ageCategory` fields continue to work.
+Remove `individualCategories` and `maxCountingRaces` from all `config.json` files. Existing runner-level `sex`/`ageCategory` fields continue to work.
 
 ## Out of Scope
 
 - Migrating existing `individual-standings.json` files to use category-level fields (opt-in; old format continues to work)
 - Migrating existing `awards.json` files to add category-level `sex`/`ageCategory` (opt-in)
+- Moving `maxCountingRaces` into existing historical `individual-standings.json` files (opt-in)
 - Tightening `sex: string` to `sex: 'M' | 'F'` on runner types (separate concern)
 - Changes to team categories or team standings
