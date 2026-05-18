@@ -95,6 +95,23 @@ export interface RunnerYearBlock {
   fell?: RunnerYearSeries;
 }
 
+export interface RunnerClubHistory {
+  clubId: string;
+  clubName: string;
+  yearRanges: string;   // pre-formatted, e.g. "2019–2021, 2025"
+}
+
+export interface RunnerAwardSummaryEntry {
+  categoryName: string;
+  position: number;
+  count: number;
+}
+
+export interface RunnerAwardSummary {
+  roadGp: RunnerAwardSummaryEntry[];
+  fell: RunnerAwardSummaryEntry[];
+}
+
 export interface IndividualCategory {
   id: string;
   name: string;
