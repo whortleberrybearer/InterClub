@@ -1,9 +1,9 @@
-{
+﻿{
   "provisional": false,
   "races": ["mearley-clough", "edenfield", "hameldon-quarry", "pendleton"],
   "categories": [
     {
-      "category": "open",
+      "id": "open",
       "clubs": [
         { "position": 1, "club": "preston", "points": [7, 7, 7, 7], "total": 28, "tiebreaker": null },
         { "position": 2, "club": "wesham", "points": [5, 5, 6, 1], "total": 17, "tiebreaker": null },
@@ -15,7 +15,7 @@
       ]
     },
     {
-      "category": "vets",
+      "id": "vets",
       "clubs": [
         { "position": 1, "club": "preston", "points": [6, 6, 6, 5], "total": 23, "tiebreaker": null },
         { "position": 2, "club": "chorley", "points": [2, 3, 5, 6], "total": 16, "tiebreaker": null },
@@ -27,7 +27,7 @@
       ]
     },
     {
-      "category": "v50",
+      "id": "v50",
       "clubs": [
         { "position": 1, "club": "preston", "points": [6, 7, 3, 6], "total": 22, "tiebreaker": null },
         { "position": 2, "club": "chorley", "points": [4, 6, 6, 5], "total": 21, "tiebreaker": null },
@@ -39,7 +39,7 @@
       ]
     },
     {
-      "category": "v60",
+      "id": "v60",
       "clubs": [
         { "position": 1, "club": "preston", "points": [6, 6, 5, 7], "total": 24, "tiebreaker": null },
         { "position": 2, "club": "red-rose", "points": [4, 4, 6, 5], "total": 19, "tiebreaker": null },
@@ -51,7 +51,7 @@
       ]
     },
     {
-      "category": "ladies",
+      "id": "ladies",
       "clubs": [
         { "position": 1, "club": "lytham", "points": [5, 5, 7, 7], "total": 24, "tiebreaker": null },
         { "position": 2, "club": "red-rose", "points": [4, 7, 6, 6], "total": 23, "tiebreaker": null },

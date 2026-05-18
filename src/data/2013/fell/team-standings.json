@@ -1,9 +1,9 @@
-{
+﻿{
   "provisional": false,
   "races": ["wardle-skyline", "wray-caton", "harrock-hill", "farleton-knott"],
   "categories": [
     {
-      "category": "open",
+      "id": "open",
       "clubs": [
         {"position": 1, "club": "chorley", "points": [6, 6, 5, 5], "total": 22, "tiebreaker": null},
         {"position": 2, "club": "wesham", "points": [4, 5, 6, 6], "total": 21, "tiebreaker": null},
@@ -14,7 +14,7 @@
       ]
     },
     {
-      "category": "vets",
+      "id": "vets",
       "clubs": [
         {"position": 1, "club": "wesham", "points": [5, 5, 6, 6], "total": 22, "tiebreaker": "83"},
         {"position": 2, "club": "chorley", "points": [6, 6, 5, 5], "total": 22, "tiebreaker": "90"},
@@ -25,7 +25,7 @@
       ]
     },
     {
-      "category": "v50",
+      "id": "v50",
       "clubs": [
         {"position": 1, "club": "wesham", "points": [6, 5, 6, 6], "total": 23, "tiebreaker": null},
         {"position": 2, "club": "red-rose", "points": [5, 6, 5, 5], "total": 21, "tiebreaker": null},
@@ -36,7 +36,7 @@
       ]
     },
     {
-      "category": "v60",
+      "id": "v60",
       "clubs": [
         {"position": 1, "club": "chorley", "points": [6, 6, 6, 6], "total": 24, "tiebreaker": null},
         {"position": 2, "club": "preston", "points": [5, 4, 3, 5], "total": 17, "tiebreaker": null},
@@ -47,7 +47,7 @@
       ]
     },
     {
-      "category": "ladies",
+      "id": "ladies",
       "clubs": [
         {"position": 1, "club": "wesham", "points": [5, 6, 6, 6], "total": 23, "tiebreaker": null},
         {"position": 2, "club": "chorley", "points": [6, 3, 3, 5], "total": 17, "tiebreaker": null},

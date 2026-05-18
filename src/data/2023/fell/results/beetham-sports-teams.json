@@ -1,7 +1,7 @@
-{
+﻿{
   "categories": [
     {
-      "category": "overall",
+      "id": "overall",
       "clubs": [
         {"position": 1, "points": 7, "club": "chorley", "total": 32, "scorers": [{"position": 1}, {"position": 4}, {"position": 5}, {"position": 9}, {"position": 13}]},
         {"position": 2, "points": 5, "club": "wesham", "total": 45, "scorers": [{"position": 3}, {"position": 6}, {"position": 8}, {"position": 11}, {"position": 17}]},
@@ -13,7 +13,7 @@
       ]
     },
     {
-      "category": "vet40",
+      "id": "vet40",
       "clubs": [
         {"position": 1, "points": 7, "club": "chorley", "total": 20, "scorers": [{"position": 2}, {"position": 3}, {"position": 6}, {"position": 9}]},
         {"position": 2, "points": 5, "club": "wesham", "total": 57, "scorers": [{"position": 5}, {"position": 7}, {"position": 20}, {"position": 25}]},
@@ -25,7 +25,7 @@
       ]
     },
     {
-      "category": "vet50",
+      "id": "vet50",
       "clubs": [
         {"position": 1, "points": 7, "club": "chorley", "total": 14, "scorers": [{"position": 2}, {"position": 5}, {"position": 7}]},
         {"position": 2, "points": 5, "club": "wesham", "total": 33, "scorers": [{"position": 6}, {"position": 11}, {"position": 16}]},
@@ -37,7 +37,7 @@
       ]
     },
     {
-      "category": "vet60",
+      "id": "vet60",
       "clubs": [
         {"position": 1, "points": 7, "club": "red-rose", "total": 13, "scorers": [{"position": 1}]},
         {"position": 2, "points": 5, "club": "chorley", "total": 4, "scorers": [{"position": 4}, {"position": 11}, {"position": 15}]},
@@ -49,7 +49,7 @@
       ]
     },
     {
-      "category": "women",
+      "id": "women",
       "clubs": [
         {"position": 1, "points": 7, "club": "red-rose", "total": 123, "scorers": [{"position": 5}, {"position": 10}, {"position": 11}, {"position": 26}]},
         {"position": 2, "points": 5, "club": "chorley", "total": 6, "scorers": [{"position": 8}, {"position": 12}, {"position": 16}, {"position": 36}]},
