@@ -53,7 +53,7 @@ const clubById = Object.fromEntries(clubs.map(c => [c.id, c]));
   <div class="overflow-x-auto -mx-4 px-4 mb-1">
     <div class="flex border-b border-base-200 min-w-max" role="tablist">
       {standings.categories.map((cat, i) => {
-        const label = categoryById[cat.category]?.name ?? cat.category;
+        const label = categoryById[cat.id]?.name ?? cat.id;
         return (
           <button
             class:list={[
