@@ -26,6 +26,23 @@ export function parseResultsCsv(csv: string): RaceResult[] {
   });
 }
 
+export function resolveIndividualCategoryName(
+  id: string,
+  sex?: string,
+  ageCategory?: string,
+  name?: string,
+): string {
+  if (name) return name;
+  if (!sex) return id;
+  const sexLabel = sex === 'M' ? 'Men' : 'Women';
+  if (!ageCategory) return sexLabel;
+  const ageLabel =
+    ageCategory === 'SEN' ? 'Senior' :
+    ageCategory === 'JUN' ? 'Junior' :
+    ageCategory;
+  return `${ageLabel} ${sexLabel}`;
+}
+
 const csvFiles = import.meta.glob<string>('../data/*/road-gp/results/*.csv', {
   query: '?raw', import: 'default', eager: true,
 });
