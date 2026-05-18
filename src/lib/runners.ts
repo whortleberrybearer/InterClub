@@ -1,5 +1,6 @@
 import type {
-  Club, GlobalRunner, RunnerProfileAward, RunnerProfileRace,
+  Club, GlobalRunner, RunnerClubHistory, RunnerAwardSummary, RunnerAwardSummaryEntry,
+  RunnerProfileAward, RunnerProfileRace,
   RunnerYearBlock, RunnerYearSeries, Series, SeriesAwards, SeriesRunner,
 } from './types';
 import { parseResultsCsv, hasResults, getSeriesConfig } from './results';
@@ -155,18 +156,55 @@ function resolveClubName(clubId: string): string {
   return clubId;
 }
 
+function buildClubHistory(entries: Array<{ year: number; club: string }>): RunnerClubHistory[] {
+  const clubYears = new Map<string, Set<number>>();
+  for (const { year, club } of entries) {
+    if (!clubYears.has(club)) clubYears.set(club, new Set());
+    clubYears.get(club)!.add(year);
+  }
+  return [...clubYears.entries()]
+    .map(([clubId, yearsSet]) => {
+      const years = [...yearsSet].sort((a, b) => a - b);
+      return { clubId, clubName: resolveClubName(clubId), yearRanges: formatYearRanges(years), firstYear: years[0] };
+    })
+    .sort((a, b) => a.firstYear - b.firstYear)
+    .map(({ clubId, clubName, yearRanges }) => ({ clubId, clubName, yearRanges }));
+}
+
+function buildAwardSummary(yearBlocks: RunnerYearBlock[]): RunnerAwardSummary {
+  const roadGpCounts = new Map<string, RunnerAwardSummaryEntry>();
+  const fellCounts = new Map<string, RunnerAwardSummaryEntry>();
+
+  function tally(map: Map<string, RunnerAwardSummaryEntry>, award: RunnerProfileAward) {
+    const key = `${award.categoryName}|${award.position}`;
+    const entry = map.get(key) ?? { categoryName: award.categoryName, position: award.position, count: 0 };
+    entry.count++;
+    map.set(key, entry);
+  }
+
+  for (const block of yearBlocks) {
+    for (const award of block.roadGp?.awards ?? []) tally(roadGpCounts, award);
+    for (const award of block.fell?.awards ?? []) tally(fellCounts, award);
+  }
+
+  return {
+    roadGp: [...roadGpCounts.values()],
+    fell: [...fellCounts.values()],
+  };
+}
+
 export function getRunnerProfileStaticPaths() {
   const globalRunners = getGlobalRunners();
   const allSeriesFiles = { ...roadSeriesRunnerFiles, ...fellSeriesRunnerFiles };
 
-  // Build: globalRunnerId → [{ year, series, seriesLocalId }]
-  const globalToSeries = new Map<number, Array<{ year: number; series: Series; seriesLocalId: number }>>();
+  // Build: globalRunnerId → [{ year, series, seriesLocalId, club }]
+  const globalToSeries = new Map<number, Array<{ year: number; series: Series; seriesLocalId: number; club: string }>>();
   for (const [path, fileData] of Object.entries(allSeriesFiles)) {
     const parsed = parseSeriesRunnerPath(path);
     if (!parsed) continue;
     for (const sr of fileData.default) {
       const list = globalToSeries.get(sr.runnerId) ?? [];
-      list.push({ year: parsed.year, series: parsed.series, seriesLocalId: sr.id });
+      list.push({ year: parsed.year, series: parsed.series, seriesLocalId: sr.id, club: sr.club });
       globalToSeries.set(sr.runnerId, list);
     }
   }
@@ -189,11 +227,12 @@ export function getRunnerProfileStaticPaths() {
     }
 
     const yearBlocks = [...byYear.values()].sort((a, b) => b.year - a.year);
-    const clubName = resolveClubName(runner.club);
+    const clubHistory = buildClubHistory(entries);
+    const awardSummary = buildAwardSummary(yearBlocks);
 
     return {
       params: { slug },
-      props: { runner, clubName, yearBlocks },
+      props: { runner, clubHistory, awardSummary, yearBlocks },
     };
   });
 }
