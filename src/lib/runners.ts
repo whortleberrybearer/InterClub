@@ -187,9 +187,12 @@ function buildAwardSummary(yearBlocks: RunnerYearBlock[]): RunnerAwardSummary {
     for (const award of block.fell?.awards ?? []) tally(fellCounts, award);
   }
 
+  const sortEntries = (entries: RunnerAwardSummaryEntry[]) =>
+    entries.sort((a, b) => a.position !== b.position ? a.position - b.position : a.categoryName.localeCompare(b.categoryName));
+
   return {
-    roadGp: [...roadGpCounts.values()],
-    fell: [...fellCounts.values()],
+    roadGp: sortEntries([...roadGpCounts.values()]),
+    fell: sortEntries([...fellCounts.values()]),
   };
 }
 
