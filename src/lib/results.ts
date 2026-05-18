@@ -17,7 +17,7 @@ export function parseResultsCsv(csv: string): RaceResult[] {
       firstName: get('first_name'),
       lastName: get('last_name'),
       club: get('club'),
-      category: get('category'),
+      ageCategory: get('age_category'),
       sex: get('sex'),
       time: get('time'),
       raceNumber: num('race_number'),
