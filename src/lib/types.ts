@@ -112,16 +112,8 @@ export interface RunnerAwardSummary {
   fell: RunnerAwardSummaryEntry[];
 }
 
-export interface IndividualCategory {
-  id: string;
-  name: string;
-  sex?: 'M' | 'F';
-}
-
 export interface SeriesConfig {
   ageCategories?: string[];          // renamed from categories; now optional
-  maxCountingRaces?: number;         // optional; when set, the page shows "Best N races count"
-  individualCategories?: IndividualCategory[];
   teamCategories?: TeamCategory[];
   note?: string;                     // optional; used for suspended seasons
 }
@@ -182,20 +174,24 @@ export interface IndividualStandingsRunner {
   position: number;
   name: string;
   club: string;
-  sex: string;          // 'M' or 'F'
-  ageCategory: string;  // e.g. 'SEN', 'V40'
+  sex?: string;          // 'M' or 'F'; optional when inherited from category
+  ageCategory?: string;  // e.g. 'SEN', 'V40'; optional when inherited from category
   total: number;
   results: Record<string, IndividualRaceResult>;  // keyed by race id; only races the runner entered
   seriesRunnerId?: number;   // optional; links standing entry to a runner profile
 }
 
 export interface IndividualStandingsCategory {
-  id: string;   // id → IndividualCategory lookup via config.individualCategories
+  id: string;
+  sex?: 'M' | 'F';       // when set, runners in this category inherit it
+  ageCategory?: string;   // when set, runners in this category inherit it
+  name?: string;          // explicit display name override (e.g. "Overall", "Men")
   runners: IndividualStandingsRunner[];
 }
 
 export interface IndividualStandings {
   provisional: boolean;
+  maxCountingRaces?: number;  // moved from SeriesConfig; page shows "Best N races count"
   races: string[];    // ordered list of race ids; defines column order
   categories: IndividualStandingsCategory[];
 }
@@ -210,11 +206,15 @@ export interface IndividualAwardEntry {
   position: number;
   name: string;
   club: string;      // references clubs.json id
+  ageCategory?: string;
   seriesRunnerId?: number;   // optional; links award to a runner profile
 }
 
 export interface IndividualAward {
-  id: string;  // references individualCategories[].id in config.json
+  id: string;
+  sex?: 'M' | 'F';       // drives overall/male/female column split in SeriesAwards
+  ageCategory?: string;
+  name?: string;
   awards: IndividualAwardEntry[];
 }
 
@@ -243,7 +243,7 @@ export interface ResolvedIndividualAward {
 
 export interface ResolvedSeriesAwards {
   teamAwards: ResolvedTeamAward[];
-  overallAwards: ResolvedIndividualAward[];  // sex field absent on config category
-  maleAwards: ResolvedIndividualAward[];     // sex === 'M' on config category
-  femaleAwards: ResolvedIndividualAward[];   // sex === 'F' on config category
+  overallAwards: ResolvedIndividualAward[];  // sex absent on award
+  maleAwards: ResolvedIndividualAward[];     // sex === 'M' on award
+  femaleAwards: ResolvedIndividualAward[];   // sex === 'F' on award
 }
