@@ -1,7 +1,7 @@
-{
+﻿{
   "categories": [
     {
-      "category": "open",
+      "id": "open",
       "clubs": [
         {"position": 1, "club": "chorley", "points": 18, "scorers": [{"position": 1}, {"position": 2}, {"position": 4}, {"position": 5}, {"position": 6}]},
         {"position": 2, "club": "wesham", "points": 85, "scorers": [{"position": 3}, {"position": 13}, {"position": 14}, {"position": 20}, {"position": 35}]},
@@ -12,7 +12,7 @@
       ]
     },
     {
-      "category": "ladies",
+      "id": "ladies",
       "clubs": [
         {"position": 1, "club": "chorley", "points": 18, "scorers": [{"position": 1}, {"position": 2}, {"position": 4}]},
         {"position": 2, "club": "red-rose", "points": 7, "scorers": [{"position": 1}, {"position": 2}, {"position": 4}]},
@@ -23,7 +23,7 @@
       ]
     },
     {
-      "category": "vets",
+      "id": "vets",
       "clubs": [
         {"position": 1, "club": "chorley", "points": 18, "scorers": [{"position": 1}, {"position": 2}, {"position": 4}, {"position": 5}]},
         {"position": 2, "club": "red-rose", "points": 12, "scorers": [{"position": 1}, {"position": 2}, {"position": 4}, {"position": 5}]},
@@ -35,7 +35,7 @@
       ]
     },
     {
-      "category": "v50",
+      "id": "v50",
       "clubs": [
         {"position": 1, "club": "chorley", "points": 26, "scorers": [{"position": 2}, {"position": 3}, {"position": 4}]},
         {"position": 2, "club": "red-rose", "points": 12, "scorers": [{"position": 3}, {"position": 4}, {"position": 5}]},
@@ -46,7 +46,7 @@
       ]
     },
     {
-      "category": "v60",
+      "id": "v60",
       "clubs": [
         {"position": 1, "club": "chorley", "points": 6, "scorers": [{"position": 1}, {"position": 5}]},
         {"position": 2, "club": "red-rose", "points": 6, "scorers": [{"position": 1}, {"position": 5}]},

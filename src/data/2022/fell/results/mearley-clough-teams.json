@@ -1,7 +1,7 @@
-{
+﻿{
   "categories": [
     {
-      "category": "open",
+      "id": "open",
       "clubs": [
         {"position": 3, "club": "preston", "points": 19, "scorers": [{"position": 1}, {"position": 2}, {"position": 3}, {"position": 6}, {"position": 7}]},
         {"position": 4, "club": "blackpool", "points": 58, "scorers": [{"position": 8}, {"position": 11}, {"position": 12}, {"position": 13}, {"position": 14}]},
@@ -11,7 +11,7 @@
       ]
     },
     {
-      "category": "ladies",
+      "id": "ladies",
       "clubs": [
         {"position": 2, "club": "red-rose", "points": 10, "scorers": [{"position": 1}, {"position": 4}, {"position": 5}]},
         {"position": 3, "club": "blackpool", "points": 13, "scorers": [{"position": 2}, {"position": 3}, {"position": 8}]},
@@ -19,7 +19,7 @@
       ]
     },
     {
-      "category": "vets",
+      "id": "vets",
       "clubs": [
         {"position": 2, "club": "red-rose", "points": 10, "scorers": [{"position": 1}, {"position": 2}, {"position": 3}, {"position": 4}]},
         {"position": 3, "club": "preston", "points": 29, "scorers": [{"position": 5}, {"position": 7}, {"position": 8}, {"position": 9}]},
@@ -28,7 +28,7 @@
       ]
     },
     {
-      "category": "v50",
+      "id": "v50",
       "clubs": [
         {"position": 2, "club": "red-rose", "points": 6, "scorers": [{"position": 1}, {"position": 2}, {"position": 3}]},
         {"position": 3, "club": "preston", "points": 18, "scorers": [{"position": 5}, {"position": 6}, {"position": 7}]},
@@ -36,7 +36,7 @@
       ]
     },
     {
-      "category": "v60",
+      "id": "v60",
       "clubs": [
         {"position": 2, "club": "chorley", "points": 6, "scorers": [{"position": 2}, {"position": 4}]},
         {"position": 3, "club": "preston", "points": 1, "scorers": [{"position": 1}]},
