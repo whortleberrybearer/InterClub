@@ -1,5 +1,6 @@
 ﻿{
     "provisional":  false,
+    "maxCountingRaces":  3,
     "races":  [
                   "wardle-skyline",
                   "wray-caton",
@@ -4886,12 +4887,12 @@
                        },
                        {
                            "id":  "v70",
+                           "sex":  "M",
+                           "ageCategory":  "V70",
                            "runners":  [
                                            {
                                                "position":  1,
                                                "name":  "George Arnold",
-                                               "sex":  "M",
-                                               "ageCategory":  "V70",
                                                "total":  4,
                                                "results":  {
                                                                "wardle-skyline":  {
@@ -4911,8 +4912,6 @@
                                            {
                                                "position":  2,
                                                "name":  "John Minton",
-                                               "sex":  "M",
-                                               "ageCategory":  "V70",
                                                "total":  2,
                                                "results":  {
                                                                "harrock-hill":  {

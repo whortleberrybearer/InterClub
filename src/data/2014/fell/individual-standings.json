@@ -1,5 +1,6 @@
 ﻿{
     "provisional":  false,
+    "maxCountingRaces":  3,
     "races":  [
                   "great-hameldon",
                   "aggies-staircase",
@@ -1644,12 +1645,12 @@
                        },
                        {
                            "id":  "v40",
+                           "sex":  "M",
+                           "ageCategory":  "V40",
                            "runners":  [
                                            {
                                                "position":  1,
                                                "name":  "Darren Fishwick",
-                                               "sex":  "M",
-                                               "ageCategory":  "V40",
                                                "total":  5,
                                                "results":  {
                                                                "great-hameldon":  {
@@ -1673,8 +1674,6 @@
                                            {
                                                "position":  2,
                                                "name":  "Mark Ellithorn",
-                                               "sex":  "M",
-                                               "ageCategory":  "V40",
                                                "total":  12,
                                                "results":  {
                                                                "great-hameldon":  {
@@ -1698,8 +1697,6 @@
                                            {
                                                "position":  3,
                                                "name":  "Steve Myerscough",
-                                               "sex":  "M",
-                                               "ageCategory":  "V40",
                                                "total":  22,
                                                "results":  {
                                                                "great-hameldon":  {
@@ -1723,8 +1720,6 @@
                                            {
                                                "position":  4,
                                                "name":  "Bill Beckett",
-                                               "sex":  "M",
-                                               "ageCategory":  "V40",
                                                "total":  33,
                                                "results":  {
                                                                "great-hameldon":  {
@@ -1748,8 +1743,6 @@
                                            {
                                                "position":  5,
                                                "name":  "Greg Oulton",
-                                               "sex":  "M",
-                                               "ageCategory":  "V40",
                                                "total":  79,
                                                "results":  {
                                                                "great-hameldon":  {
@@ -1773,8 +1766,6 @@
                                            {
                                                "position":  6,
                                                "name":  "David Maudsley",
-                                               "sex":  "M",
-                                               "ageCategory":  "V40",
                                                "total":  33,
                                                "results":  {
                                                                "great-hameldon":  {
@@ -1790,8 +1781,6 @@
                                            {
                                                "position":  7,
                                                "name":  "Richard Storey",
-                                               "sex":  "M",
-                                               "ageCategory":  "V40",
                                                "total":  71,
                                                "results":  {
                                                                "great-hameldon":  {
@@ -1807,8 +1796,6 @@
                                            {
                                                "position":  8,
                                                "name":  "Dominic Raby",
-                                               "sex":  "M",
-                                               "ageCategory":  "V40",
                                                "total":  4,
                                                "results":  {
                                                                "aggies-staircase":  {
@@ -1820,8 +1807,6 @@
                                            {
                                                "position":  9,
                                                "name":  "Chris Charnley",
-                                               "sex":  "M",
-                                               "ageCategory":  "V40",
                                                "total":  5,
                                                "results":  {
                                                                "harrock-hill":  {
@@ -1833,8 +1818,6 @@
                                            {
                                                "position":  10,
                                                "name":  "Lee Barlow",
-                                               "sex":  "M",
-                                               "ageCategory":  "V40",
                                                "total":  7,
                                                "results":  {
                                                                "great-hameldon":  {
@@ -1846,8 +1829,6 @@
                                            {
                                                "position":  11,
                                                "name":  "Yewan Bennison",
-                                               "sex":  "M",
-                                               "ageCategory":  "V40",
                                                "total":  9,
                                                "results":  {
                                                                "aggies-staircase":  {
@@ -1859,8 +1840,6 @@
                                            {
                                                "position":  12,
                                                "name":  "Phil Iddon",
-                                               "sex":  "M",
-                                               "ageCategory":  "V40",
                                                "total":  10,
                                                "results":  {
                                                                "harrock-hill":  {
@@ -1872,8 +1851,6 @@
                                            {
                                                "position":  13,
                                                "name":  "Chris Lane",
-                                               "sex":  "M",
-                                               "ageCategory":  "V40",
                                                "total":  12,
                                                "results":  {
                                                                "harrock-hill":  {
@@ -1885,8 +1862,6 @@
                                            {
                                                "position":  14,
                                                "name":  "Jonathan Burgess",
-                                               "sex":  "M",
-                                               "ageCategory":  "V40",
                                                "total":  15,
                                                "results":  {
                                                                "harrock-hill":  {
@@ -1898,8 +1873,6 @@
                                            {
                                                "position":  15,
                                                "name":  "Paul Bass",
-                                               "sex":  "M",
-                                               "ageCategory":  "V40",
                                                "total":  16,
                                                "results":  {
                                                                "harrock-hill":  {
@@ -1911,8 +1884,6 @@
                                            {
                                                "position":  16,
                                                "name":  "Martin Quinn",
-                                               "sex":  "M",
-                                               "ageCategory":  "V40",
                                                "total":  18,
                                                "results":  {
                                                                "aggies-staircase":  {
@@ -1924,8 +1895,6 @@
                                            {
                                                "position":  17,
                                                "name":  "Rob Mather",
-                                               "sex":  "M",
-                                               "ageCategory":  "V40",
                                                "total":  19,
                                                "results":  {
                                                                "great-hameldon":  {
@@ -1937,8 +1906,6 @@
                                            {
                                                "position":  18,
                                                "name":  "Alan Martin",
-                                               "sex":  "M",
-                                               "ageCategory":  "V40",
                                                "total":  19,
                                                "results":  {
                                                                "aggies-staircase":  {
@@ -1950,8 +1917,6 @@
                                            {
                                                "position":  19,
                                                "name":  "Anthony Murphy",
-                                               "sex":  "M",
-                                               "ageCategory":  "V40",
                                                "total":  20,
                                                "results":  {
                                                                "harrock-hill":  {
@@ -1963,8 +1928,6 @@
                                            {
                                                "position":  20,
                                                "name":  "Paul Jackson",
-                                               "sex":  "M",
-                                               "ageCategory":  "V40",
                                                "total":  21,
                                                "results":  {
                                                                "harrock-hill":  {
@@ -1976,8 +1939,6 @@
                                            {
                                                "position":  21,
                                                "name":  "Rob Mather",
-                                               "sex":  "M",
-                                               "ageCategory":  "V40",
                                                "total":  24,
                                                "results":  {
                                                                "aggies-staircase":  {
@@ -1989,8 +1950,6 @@
                                            {
                                                "position":  22,
                                                "name":  "Richard Crompton",
-                                               "sex":  "M",
-                                               "ageCategory":  "V40",
                                                "total":  31,
                                                "results":  {
                                                                "harrock-hill":  {
@@ -2002,8 +1961,6 @@
                                            {
                                                "position":  23,
                                                "name":  "Ian Wharton",
-                                               "sex":  "M",
-                                               "ageCategory":  "V40",
                                                "total":  33,
                                                "results":  {
                                                                "harrock-hill":  {
@@ -2015,8 +1972,6 @@
                                            {
                                                "position":  24,
                                                "name":  "Lisa Hyde",
-                                               "sex":  "M",
-                                               "ageCategory":  "V40",
                                                "total":  36,
                                                "results":  {
                                                                "warton-crag":  {
@@ -2029,12 +1984,12 @@
                        },
                        {
                            "id":  "v50",
+                           "sex":  "M",
+                           "ageCategory":  "V50",
                            "runners":  [
                                            {
                                                "position":  1,
                                                "name":  "Alex Rowe",
-                                               "sex":  "M",
-                                               "ageCategory":  "V50",
                                                "total":  11,
                                                "results":  {
                                                                "great-hameldon":  {
@@ -2054,8 +2009,6 @@
                                            {
                                                "position":  2,
                                                "name":  "Stuart Cann",
-                                               "sex":  "M",
-                                               "ageCategory":  "V50",
                                                "total":  39,
                                                "results":  {
                                                                "great-hameldon":  {
@@ -2075,8 +2028,6 @@
                                            {
                                                "position":  3,
                                                "name":  "Frank Nightingale",
-                                               "sex":  "M",
-                                               "ageCategory":  "V50",
                                                "total":  40,
                                                "results":  {
                                                                "great-hameldon":  {
@@ -2100,8 +2051,6 @@
                                            {
                                                "position":  4,
                                                "name":  "Stephen Baker",
-                                               "sex":  "M",
-                                               "ageCategory":  "V50",
                                                "total":  69,
                                                "results":  {
                                                                "great-hameldon":  {
@@ -2125,8 +2074,6 @@
                                            {
                                                "position":  5,
                                                "name":  "Phil McCullagh",
-                                               "sex":  "M",
-                                               "ageCategory":  "V50",
                                                "total":  95,
                                                "results":  {
                                                                "great-hameldon":  {
@@ -2150,8 +2097,6 @@
                                            {
                                                "position":  6,
                                                "name":  "John Rainford",
-                                               "sex":  "M",
-                                               "ageCategory":  "V50",
                                                "total":  15,
                                                "results":  {
                                                                "aggies-staircase":  {
@@ -2167,8 +2112,6 @@
                                            {
                                                "position":  7,
                                                "name":  "Philip Davidson",
-                                               "sex":  "M",
-                                               "ageCategory":  "V50",
                                                "total":  30,
                                                "results":  {
                                                                "warton-crag":  {
@@ -2184,8 +2127,6 @@
                                            {
                                                "position":  8,
                                                "name":  "Geoffrey Haworth",
-                                               "sex":  "M",
-                                               "ageCategory":  "V50",
                                                "total":  34,
                                                "results":  {
                                                                "great-hameldon":  {
@@ -2201,8 +2142,6 @@
                                            {
                                                "position":  9,
                                                "name":  "Steve Taylor",
-                                               "sex":  "M",
-                                               "ageCategory":  "V50",
                                                "total":  43,
                                                "results":  {
                                                                "aggies-staircase":  {
@@ -2218,8 +2157,6 @@
                                            {
                                                "position":  10,
                                                "name":  "Peter Bolton",
-                                               "sex":  "M",
-                                               "ageCategory":  "V50",
                                                "total":  48,
                                                "results":  {
                                                                "great-hameldon":  {
@@ -2235,8 +2172,6 @@
                                            {
                                                "position":  11,
                                                "name":  "Colin Laidlaw",
-                                               "sex":  "M",
-                                               "ageCategory":  "V50",
                                                "total":  51,
                                                "results":  {
                                                                "great-hameldon":  {
@@ -2252,8 +2187,6 @@
                                            {
                                                "position":  12,
                                                "name":  "Steve Coey",
-                                               "sex":  "M",
-                                               "ageCategory":  "V50",
                                                "total":  52,
                                                "results":  {
                                                                "aggies-staircase":  {
@@ -2269,8 +2202,6 @@
                                            {
                                                "position":  13,
                                                "name":  "Phil Lakeland",
-                                               "sex":  "M",
-                                               "ageCategory":  "V50",
                                                "total":  57,
                                                "results":  {
                                                                "great-hameldon":  {
@@ -2286,8 +2217,6 @@
                                            {
                                                "position":  14,
                                                "name":  "John Plowman",
-                                               "sex":  "M",
-                                               "ageCategory":  "V50",
                                                "total":  65,
                                                "results":  {
                                                                "great-hameldon":  {
@@ -2303,8 +2232,6 @@
                                            {
                                                "position":  15,
                                                "name":  "Dave Parkington",
-                                               "sex":  "M",
-                                               "ageCategory":  "V50",
                                                "total":  6,
                                                "results":  {
                                                                "aggies-staircase":  {
@@ -2316,8 +2243,6 @@
                                            {
                                                "position":  16,
                                                "name":  "Malc Christie",
-                                               "sex":  "M",
-                                               "ageCategory":  "V50",
                                                "total":  7,
                                                "results":  {
                                                                "warton-crag":  {
@@ -2329,8 +2254,6 @@
                                            {
                                                "position":  17,
                                                "name":  "Paul Wareing",
-                                               "sex":  "M",
-                                               "ageCategory":  "V50",
                                                "total":  11,
                                                "results":  {
                                                                "warton-crag":  {
@@ -2342,8 +2265,6 @@
                                            {
                                                "position":  18,
                                                "name":  "Peter Singleton",
-                                               "sex":  "M",
-                                               "ageCategory":  "V50",
                                                "total":  12,
                                                "results":  {
                                                                "warton-crag":  {
@@ -2355,8 +2276,6 @@
                                            {
                                                "position":  19,
                                                "name":  "Billy Johnstone",
-                                               "sex":  "M",
-                                               "ageCategory":  "V50",
                                                "total":  13,
                                                "results":  {
                                                                "aggies-staircase":  {
@@ -2368,8 +2287,6 @@
                                            {
                                                "position":  20,
                                                "name":  "Gordon Thompson",
-                                               "sex":  "M",
-                                               "ageCategory":  "V50",
                                                "total":  14,
                                                "results":  {
                                                                "warton-crag":  {
@@ -2381,8 +2298,6 @@
                                            {
                                                "position":  21,
                                                "name":  "Gary Platt",
-                                               "sex":  "M",
-                                               "ageCategory":  "V50",
                                                "total":  19,
                                                "results":  {
                                                                "harrock-hill":  {
@@ -2394,8 +2309,6 @@
                                            {
                                                "position":  22,
                                                "name":  "Fred Lynch",
-                                               "sex":  "M",
-                                               "ageCategory":  "V50",
                                                "total":  21,
                                                "results":  {
                                                                "aggies-staircase":  {
@@ -2407,8 +2320,6 @@
                                            {
                                                "position":  23,
                                                "name":  "Simon Townsend",
-                                               "sex":  "M",
-                                               "ageCategory":  "V50",
                                                "total":  29,
                                                "results":  {
                                                                "harrock-hill":  {
@@ -2420,8 +2331,6 @@
                                            {
                                                "position":  24,
                                                "name":  "Gavin Beetham",
-                                               "sex":  "M",
-                                               "ageCategory":  "V50",
                                                "total":  35,
                                                "results":  {
                                                                "aggies-staircase":  {
@@ -2433,8 +2342,6 @@
                                            {
                                                "position":  25,
                                                "name":  "Roger Johnson",
-                                               "sex":  "M",
-                                               "ageCategory":  "V50",
                                                "total":  38,
                                                "results":  {
                                                                "aggies-staircase":  {
@@ -2446,8 +2353,6 @@
                                            {
                                                "position":  26,
                                                "name":  "Peter Cooke",
-                                               "sex":  "M",
-                                               "ageCategory":  "V50",
                                                "total":  42,
                                                "results":  {
                                                                "harrock-hill":  {
@@ -2460,11 +2365,11 @@
                        },
                        {
                            "id":  "v60",
+                           "sex":  "M",
                            "runners":  [
                                            {
                                                "position":  1,
                                                "name":  "George Fletcher",
-                                               "sex":  "M",
                                                "ageCategory":  "V70",
                                                "total":  103,
                                                "results":  {
@@ -2485,7 +2390,6 @@
                                            {
                                                "position":  2,
                                                "name":  "Tom Hilton",
-                                               "sex":  "M",
                                                "ageCategory":  "V60",
                                                "total":  126,
                                                "results":  {
@@ -2506,7 +2410,6 @@
                                            {
                                                "position":  3,
                                                "name":  "Mike Coppin",
-                                               "sex":  "M",
                                                "ageCategory":  "V70",
                                                "total":  137,
                                                "results":  {
@@ -2527,7 +2430,6 @@
                                            {
                                                "position":  4,
                                                "name":  "John Collier",
-                                               "sex":  "M",
                                                "ageCategory":  "V60",
                                                "total":  20,
                                                "results":  {
@@ -2544,7 +2446,6 @@
                                            {
                                                "position":  5,
                                                "name":  "Robert Massey",
-                                               "sex":  "M",
                                                "ageCategory":  "V60",
                                                "total":  49,
                                                "results":  {
@@ -2561,7 +2462,6 @@
                                            {
                                                "position":  6,
                                                "name":  "Les Paul",
-                                               "sex":  "M",
                                                "ageCategory":  "V60",
                                                "total":  78,
                                                "results":  {
@@ -2578,7 +2478,6 @@
                                            {
                                                "position":  7,
                                                "name":  "Alan Appleby",
-                                               "sex":  "M",
                                                "ageCategory":  "V60",
                                                "total":  19,
                                                "results":  {
@@ -2591,7 +2490,6 @@
                                            {
                                                "position":  8,
                                                "name":  "Terry Hellings",
-                                               "sex":  "M",
                                                "ageCategory":  "V60",
                                                "total":  22,
                                                "results":  {
@@ -2604,7 +2502,6 @@
                                            {
                                                "position":  9,
                                                "name":  "David Miller",
-                                               "sex":  "M",
                                                "ageCategory":  "V60",
                                                "total":  24,
                                                "results":  {
@@ -2617,7 +2514,6 @@
                                            {
                                                "position":  10,
                                                "name":  "Bernard Singleton",
-                                               "sex":  "M",
                                                "ageCategory":  "V60",
                                                "total":  26,
                                                "results":  {
@@ -2630,7 +2526,6 @@
                                            {
                                                "position":  11,
                                                "name":  "Graham Schofield",
-                                               "sex":  "M",
                                                "ageCategory":  "V60",
                                                "total":  27,
                                                "results":  {
@@ -2643,7 +2538,6 @@
                                            {
                                                "position":  12,
                                                "name":  "Philip Weaver",
-                                               "sex":  "M",
                                                "ageCategory":  "V60",
                                                "total":  30,
                                                "results":  {
@@ -2656,7 +2550,6 @@
                                            {
                                                "position":  13,
                                                "name":  "David Roberts",
-                                               "sex":  "M",
                                                "ageCategory":  "V60",
                                                "total":  36,
                                                "results":  {
@@ -2669,7 +2562,6 @@
                                            {
                                                "position":  14,
                                                "name":  "George Arnold",
-                                               "sex":  "M",
                                                "ageCategory":  "V70",
                                                "total":  39,
                                                "results":  {
@@ -2682,7 +2574,6 @@
                                            {
                                                "position":  15,
                                                "name":  "Dave Waywell",
-                                               "sex":  "M",
                                                "ageCategory":  "V70",
                                                "total":  40,
                                                "results":  {
@@ -2695,7 +2586,6 @@
                                            {
                                                "position":  16,
                                                "name":  "Jim Robinson",
-                                               "sex":  "M",
                                                "ageCategory":  "V60",
                                                "total":  42,
                                                "results":  {
@@ -2708,7 +2598,6 @@
                                            {
                                                "position":  17,
                                                "name":  "John Minton",
-                                               "sex":  "M",
                                                "ageCategory":  "V70",
                                                "total":  43,
                                                "results":  {
@@ -2721,7 +2610,6 @@
                                            {
                                                "position":  18,
                                                "name":  "Eddie Murray",
-                                               "sex":  "M",
                                                "ageCategory":  "V70",
                                                "total":  50,
                                                "results":  {
@@ -2735,11 +2623,11 @@
                        },
                        {
                            "id":  "female",
+                           "sex":  "F",
                            "runners":  [
                                            {
                                                "position":  1,
                                                "name":  "Joanna Goorney",
-                                               "sex":  "F",
                                                "ageCategory":  "V40",
                                                "total":  5,
                                                "results":  {
@@ -2760,7 +2648,6 @@
                                            {
                                                "position":  2,
                                                "name":  "Paula Plowman",
-                                               "sex":  "F",
                                                "ageCategory":  "V50",
                                                "total":  9,
                                                "results":  {
@@ -2785,7 +2672,6 @@
                                            {
                                                "position":  3,
                                                "name":  "Margaret Lupton",
-                                               "sex":  "F",
                                                "ageCategory":  "V40",
                                                "total":  9,
                                                "results":  {
@@ -2806,7 +2692,6 @@
                                            {
                                                "position":  4,
                                                "name":  "Debbie Porter",
-                                               "sex":  "F",
                                                "ageCategory":  "V40",
                                                "total":  15,
                                                "results":  {
@@ -2831,7 +2716,6 @@
                                            {
                                                "position":  5,
                                                "name":  "Debbie Cooper",
-                                               "sex":  "F",
                                                "ageCategory":  "SEN",
                                                "total":  16,
                                                "results":  {
@@ -2852,7 +2736,6 @@
                                            {
                                                "position":  6,
                                                "name":  "Julia Rolfe",
-                                               "sex":  "F",
                                                "ageCategory":  "V50",
                                                "total":  24,
                                                "results":  {
@@ -2873,7 +2756,6 @@
                                            {
                                                "position":  7,
                                                "name":  "Sally Cape",
-                                               "sex":  "F",
                                                "ageCategory":  "V40",
                                                "total":  26,
                                                "results":  {
@@ -2898,7 +2780,6 @@
                                            {
                                                "position":  8,
                                                "name":  "Pita Oates",
-                                               "sex":  "F",
                                                "ageCategory":  "V40",
                                                "total":  31,
                                                "results":  {
@@ -2923,7 +2804,6 @@
                                            {
                                                "position":  9,
                                                "name":  "Lynne Clough",
-                                               "sex":  "F",
                                                "ageCategory":  "V40",
                                                "total":  2,
                                                "results":  {
@@ -2940,7 +2820,6 @@
                                            {
                                                "position":  10,
                                                "name":  "Pamela Hardman",
-                                               "sex":  "F",
                                                "ageCategory":  "V50",
                                                "total":  18,
                                                "results":  {
@@ -2957,7 +2836,6 @@
                                            {
                                                "position":  11,
                                                "name":  "Aimee Midgley",
-                                               "sex":  "F",
                                                "ageCategory":  "SEN",
                                                "total":  20,
                                                "results":  {
@@ -2974,7 +2852,6 @@
                                            {
                                                "position":  12,
                                                "name":  "Jenny Gornall",
-                                               "sex":  "F",
                                                "ageCategory":  "SEN",
                                                "total":  1,
                                                "results":  {
@@ -2987,7 +2864,6 @@
                                            {
                                                "position":  13,
                                                "name":  "Janine Needham",
-                                               "sex":  "F",
                                                "ageCategory":  "SEN",
                                                "total":  3,
                                                "results":  {
@@ -3000,7 +2876,6 @@
                                            {
                                                "position":  14,
                                                "name":  "Rachael Gibson",
-                                               "sex":  "F",
                                                "ageCategory":  "SEN",
                                                "total":  4,
                                                "results":  {
@@ -3013,7 +2888,6 @@
                                            {
                                                "position":  15,
                                                "name":  "Kate Lakeland",
-                                               "sex":  "F",
                                                "ageCategory":  "SEN",
                                                "total":  6,
                                                "results":  {
@@ -3026,7 +2900,6 @@
                                            {
                                                "position":  16,
                                                "name":  "Anne Wallworth",
-                                               "sex":  "F",
                                                "ageCategory":  "V50",
                                                "total":  7,
                                                "results":  {
@@ -3039,7 +2912,6 @@
                                            {
                                                "position":  17,
                                                "name":  "Kath Hoyer",
-                                               "sex":  "F",
                                                "ageCategory":  "V50",
                                                "total":  9,
                                                "results":  {
@@ -3052,7 +2924,6 @@
                                            {
                                                "position":  18,
                                                "name":  "Karen Clark",
-                                               "sex":  "F",
                                                "ageCategory":  "V50",
                                                "total":  9,
                                                "results":  {
@@ -3065,7 +2936,6 @@
                                            {
                                                "position":  19,
                                                "name":  "Tanya Barlow",
-                                               "sex":  "F",
                                                "ageCategory":  "V40",
                                                "total":  10,
                                                "results":  {
@@ -3078,7 +2948,6 @@
                                            {
                                                "position":  20,
                                                "name":  "Pam Binns",
-                                               "sex":  "F",
                                                "ageCategory":  "V60",
                                                "total":  11,
                                                "results":  {
@@ -3091,7 +2960,6 @@
                                            {
                                                "position":  21,
                                                "name":  "Dawn Lock",
-                                               "sex":  "F",
                                                "ageCategory":  "V60",
                                                "total":  11,
                                                "results":  {
@@ -3104,7 +2972,6 @@
                                            {
                                                "position":  22,
                                                "name":  "Jenny Fairclough",
-                                               "sex":  "F",
                                                "ageCategory":  "V50",
                                                "total":  12,
                                                "results":  {
@@ -3117,7 +2984,6 @@
                                            {
                                                "position":  23,
                                                "name":  "Rebecca Willetts",
-                                               "sex":  "F",
                                                "ageCategory":  "V40",
                                                "total":  13,
                                                "results":  {
@@ -3130,7 +2996,6 @@
                                            {
                                                "position":  24,
                                                "name":  "Helen Orson",
-                                               "sex":  "F",
                                                "ageCategory":  "V40",
                                                "total":  13,
                                                "results":  {
@@ -3143,7 +3008,6 @@
                                            {
                                                "position":  25,
                                                "name":  "Ann Donoghue",
-                                               "sex":  "F",
                                                "ageCategory":  "SEN",
                                                "total":  15,
                                                "results":  {
