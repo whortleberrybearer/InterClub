@@ -1,9 +1,9 @@
-{
+﻿{
   "provisional": false,
   "races": ["great-hameldon", "aggies-staircase", "bull-hill", "chipping-show"],
   "categories": [
     {
-      "category": "overall",
+      "id": "overall",
       "runners": [
         { "position": 1, "name": "Alex Rowe", "club": "wesham", "sex": "M", "ageCategory": "V50", "total": 7, "results": { "great-hameldon": { "points": 1, "counting": true }, "aggies-staircase": { "points": 6, "counting": true }, "bull-hill": { "points": 4, "counting": true }, "chipping-show": { "points": 2, "counting": true } } },
         { "position": 2, "name": "John Rainford", "club": "preston", "sex": "M", "ageCategory": "V50", "total": 14, "results": { "aggies-staircase": { "points": 5, "counting": true }, "bull-hill": { "points": 5, "counting": true }, "chipping-show": { "points": 4, "counting": true } } },
@@ -117,7 +117,7 @@
       ]
     },
     {
-      "category": "vets",
+      "id": "vets",
       "runners": [
         { "position": 1, "name": "Alex Rowe", "club": "wesham", "sex": "M", "ageCategory": "V50", "total": 5, "results": { "great-hameldon": { "points": 1, "counting": true }, "aggies-staircase": { "points": 3, "counting": true }, "bull-hill": { "points": 2, "counting": true }, "chipping-show": { "points": 2, "counting": true } } },
         { "position": 2, "name": "John Griffiths", "club": "preston", "sex": "M", "ageCategory": "V40", "total": 11, "results": { "great-hameldon": { "points": 2, "counting": true }, "aggies-staircase": { "points": 5, "counting": true }, "bull-hill": { "points": 5, "counting": true }, "chipping-show": { "points": 4, "counting": true } } },
@@ -130,7 +130,7 @@
       ]
     },
     {
-      "category": "v50",
+      "id": "v50",
       "runners": [
         { "position": 1, "name": "Alex Rowe", "club": "wesham", "sex": "M", "ageCategory": "V50", "total": 3, "results": { "great-hameldon": { "points": 1, "counting": true }, "aggies-staircase": { "points": 2, "counting": true }, "bull-hill": { "points": 1, "counting": true }, "chipping-show": { "points": 1, "counting": true } } },
         { "position": 2, "name": "John Rainford", "club": "preston", "sex": "M", "ageCategory": "V50", "total": 5, "results": { "aggies-staircase": { "points": 2, "counting": true }, "bull-hill": { "points": 3, "counting": true }, "chipping-show": { "points": 3, "counting": true } } },
@@ -164,7 +164,7 @@
       ]
     },
     {
-      "category": "v60",
+      "id": "v60",
       "runners": [
         { "position": 1, "name": "Tom Hilton", "club": "chorley", "sex": "M", "ageCategory": "V60", "total": 10, "results": { "great-hameldon": { "points": 2, "counting": true }, "aggies-staircase": { "points": 8, "counting": true }, "bull-hill": { "points": 6, "counting": true }, "chipping-show": { "points": 2, "counting": true } } },
         { "position": 2, "name": "Pete McDermott", "club": "preston", "sex": "M", "ageCategory": "V60", "total": 3, "results": { "aggies-staircase": { "points": 1, "counting": true }, "chipping-show": { "points": 1, "counting": true } } },
@@ -182,7 +182,7 @@
       ]
     },
     {
-      "category": "ladies",
+      "id": "ladies",
       "runners": [
         { "position": 1, "name": "Nichola Jackson", "club": "preston", "sex": "F", "ageCategory": "JUN", "total": 4, "results": { "aggies-staircase": { "points": 2, "counting": true }, "bull-hill": { "points": 1, "counting": true }, "chipping-show": { "points": 1, "counting": true } } },
         { "position": 2, "name": "Melanie Koth", "club": "lytham", "sex": "F", "ageCategory": "SEN", "total": 6, "results": { "great-hameldon": { "points": 1, "counting": true }, "aggies-staircase": { "points": 3, "counting": true }, "bull-hill": { "points": 3, "counting": true }, "chipping-show": { "points": 2, "counting": true } } },

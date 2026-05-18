@@ -1,4 +1,4 @@
-{
+﻿{
   "provisional": false,
   "races": [
     "cake-race",
@@ -8,7 +8,7 @@
   ],
   "categories": [
     {
-      "category": "overall",
+      "id": "overall",
       "runners": [
         {"position": 1, "name": "Richard Smith", "club": "preston", "sex": "M", "ageCategory": "SEN", "total": 300, "results": {"cake-race": {"points": 100, "counting": true}, "walsh-two-lads": {"points": 100, "counting": true}, "bull-hill": {"points": 100, "counting": true}, "boulsworth": {"points": null, "counting": false}}},
         {"position": 2, "name": "Darren Fishwick", "club": "chorley", "sex": "M", "ageCategory": "M45", "total": 296, "results": {"cake-race": {"points": 100, "counting": true}, "walsh-two-lads": {"points": 97, "counting": true}, "bull-hill": {"points": 99, "counting": true}, "boulsworth": {"points": null, "counting": false}}},
@@ -107,7 +107,7 @@
       ]
     },
     {
-      "category": "m40",
+      "id": "m40",
       "runners": [
         {"position": 1, "name": "Darren Fishwick", "club": "chorley", "sex": "M", "ageCategory": "M45", "total": 300, "results": {"cake-race": {"points": 100, "counting": true}, "walsh-two-lads": {"points": 100, "counting": true}, "bull-hill": {"points": 100, "counting": true}, "boulsworth": {"points": null, "counting": false}}},
         {"position": 2, "name": "Chris Charnley", "club": "chorley", "sex": "M", "ageCategory": "M40", "total": 298, "results": {"cake-race": {"points": 99, "counting": true}, "walsh-two-lads": {"points": 99, "counting": true}, "bull-hill": {"points": 99, "counting": true}, "boulsworth": {"points": 100, "counting": true}}},
@@ -127,7 +127,7 @@
       ]
     },
     {
-      "category": "m50",
+      "id": "m50",
       "runners": [
         {"position": 1, "name": "John Griffiths", "club": "preston", "sex": "M", "ageCategory": "M50", "total": 299, "results": {"cake-race": {"points": 99, "counting": true}, "walsh-two-lads": {"points": 100, "counting": true}, "bull-hill": {"points": 98, "counting": true}, "boulsworth": {"points": 100, "counting": true}}},
         {"position": 2, "name": "Mark Ellithorn", "club": "chorley", "sex": "M", "ageCategory": "M50", "total": 297, "results": {"cake-race": {"points": 95, "counting": true}, "walsh-two-lads": {"points": 99, "counting": true}, "bull-hill": {"points": 99, "counting": true}, "boulsworth": {"points": 99, "counting": true}}},
@@ -157,7 +157,7 @@
       ]
     },
     {
-      "category": "m60",
+      "id": "m60",
       "runners": [
         {"position": 1, "name": "John Collier", "club": "wesham", "sex": "M", "ageCategory": "M60", "total": 300, "results": {"cake-race": {"points": 100, "counting": true}, "walsh-two-lads": {"points": 100, "counting": true}, "bull-hill": {"points": 100, "counting": true}, "boulsworth": {"points": 100, "counting": true}}},
         {"position": 2, "name": "Alan Appleby", "club": "preston", "sex": "M", "ageCategory": "M65", "total": 295, "results": {"cake-race": {"points": null, "counting": false}, "walsh-two-lads": {"points": 99, "counting": true}, "bull-hill": {"points": 98, "counting": true}, "boulsworth": {"points": 98, "counting": true}}},
@@ -176,7 +176,7 @@
       ]
     },
     {
-      "category": "f40",
+      "id": "f40",
       "runners": [
         {"position": 1, "name": "Debbie Cooper", "club": "lytham", "sex": "F", "ageCategory": "F40", "total": 297, "results": {"cake-race": {"points": 97, "counting": true}, "walsh-two-lads": {"points": 100, "counting": true}, "bull-hill": {"points": 99, "counting": true}, "boulsworth": {"points": 98, "counting": true}}},
         {"position": 2, "name": "Joanna Goorney", "club": "lytham", "sex": "F", "ageCategory": "F45", "total": 200, "results": {"cake-race": {"points": 100, "counting": true}, "walsh-two-lads": {"points": null, "counting": false}, "bull-hill": {"points": 100, "counting": true}, "boulsworth": {"points": null, "counting": false}}},
@@ -193,7 +193,7 @@
       ]
     },
     {
-      "category": "f50",
+      "id": "f50",
       "runners": [
         {"position": 1, "name": "Paula Plowman", "club": "red-rose", "sex": "F", "ageCategory": "F50", "total": 300, "results": {"cake-race": {"points": 100, "counting": true}, "walsh-two-lads": {"points": 100, "counting": true}, "bull-hill": {"points": null, "counting": false}, "boulsworth": {"points": 100, "counting": true}}},
         {"position": 2, "name": "Alison Mercer", "club": "red-rose", "sex": "F", "ageCategory": "F55", "total": 296, "results": {"cake-race": {"points": 98, "counting": true}, "walsh-two-lads": {"points": 96, "counting": true}, "bull-hill": {"points": 100, "counting": true}, "boulsworth": {"points": 98, "counting": true}}},

@@ -1,9 +1,9 @@
-{
+﻿{
   "provisional": false,
   "races": ["mearley-clough", "edenfield", "hameldon-quarry", "pendleton"],
   "categories": [
     {
-      "category": "male",
+      "id": "male",
       "runners": [
         { "position": 1, "name": "Patrick Brown", "club": "preston", "sex": "M", "ageCategory": "SEN", "total": 299, "results": { "mearley-clough": { "points": 99, "counting": true }, "edenfield": { "points": 100, "counting": true }, "hameldon-quarry": { "points": 100, "counting": true }, "pendleton": null } },
         { "position": 2, "name": "Alistair Palmer", "club": "preston", "sex": "M", "ageCategory": "SEN", "total": 299, "results": { "mearley-clough": { "points": 100, "counting": true }, "edenfield": { "points": 99, "counting": true }, "hameldon-quarry": { "points": 100, "counting": true }, "pendleton": { "points": 99, "counting": false } } },
@@ -52,7 +52,7 @@
       ]
     },
     {
-      "category": "v40-male",
+      "id": "v40-male",
       "runners": [
         { "position": 1, "name": "Andy Cottam", "club": "preston", "sex": "M", "ageCategory": "V40", "total": 300, "results": { "mearley-clough": { "points": 100, "counting": true }, "edenfield": { "points": 100, "counting": true }, "hameldon-quarry": { "points": 100, "counting": true }, "pendleton": null } },
         { "position": 2, "name": "Dan Edwards", "club": "chorley", "sex": "M", "ageCategory": "V40", "total": 293, "results": { "mearley-clough": { "points": 98, "counting": true }, "edenfield": { "points": 97, "counting": true }, "hameldon-quarry": { "points": 98, "counting": true }, "pendleton": null } },
@@ -77,7 +77,7 @@
       ]
     },
     {
-      "category": "v50-male",
+      "id": "v50-male",
       "runners": [
         { "position": 1, "name": "Darren McDermott", "club": "preston", "sex": "M", "ageCategory": "V50", "total": 299, "results": { "mearley-clough": { "points": 100, "counting": true }, "edenfield": null, "hameldon-quarry": { "points": 99, "counting": true }, "pendleton": { "points": 100, "counting": true } } },
         { "position": 2, "name": "Paul Bass", "club": "chorley", "sex": "M", "ageCategory": "V50", "total": 294, "results": { "mearley-clough": { "points": 98, "counting": true }, "edenfield": { "points": 98, "counting": true }, "hameldon-quarry": { "points": 98, "counting": true }, "pendleton": { "points": 98, "counting": false } } },
@@ -101,7 +101,7 @@
       ]
     },
     {
-      "category": "v60-male",
+      "id": "v60-male",
       "runners": [
         { "position": 1, "name": "John Griffiths", "club": "preston", "sex": "M", "ageCategory": "V60", "total": 299, "results": { "mearley-clough": { "points": 100, "counting": true }, "edenfield": { "points": 100, "counting": true }, "hameldon-quarry": { "points": 99, "counting": true }, "pendleton": null } },
         { "position": 2, "name": "Philip Butler", "club": "red-rose", "sex": "M", "ageCategory": "V60", "total": 292, "results": { "mearley-clough": { "points": 96, "counting": true }, "edenfield": { "points": 96, "counting": true }, "hameldon-quarry": { "points": 98, "counting": true }, "pendleton": { "points": 98, "counting": false } } },
@@ -131,7 +131,7 @@
       ]
     },
     {
-      "category": "female",
+      "id": "female",
       "runners": [
         { "position": 1, "name": "Samantha Edwards", "club": "red-rose", "sex": "F", "ageCategory": "SEN", "total": 298, "results": { "mearley-clough": { "points": 100, "counting": true }, "edenfield": { "points": 99, "counting": true }, "hameldon-quarry": { "points": 99, "counting": true }, "pendleton": null } },
         { "position": 2, "name": "Basia Pawelczak", "club": "blackpool", "sex": "F", "ageCategory": "SEN", "total": 295, "results": { "mearley-clough": { "points": 99, "counting": true }, "edenfield": { "points": 98, "counting": true }, "hameldon-quarry": { "points": 98, "counting": true }, "pendleton": null } },
@@ -165,7 +165,7 @@
       ]
     },
     {
-      "category": "v40-female",
+      "id": "v40-female",
       "runners": [
         { "position": 1, "name": "Olga Wiggins", "club": "preston", "sex": "F", "ageCategory": "V40", "total": 296, "results": { "mearley-clough": { "points": 97, "counting": true }, "edenfield": { "points": 100, "counting": true }, "hameldon-quarry": { "points": 99, "counting": true }, "pendleton": { "points": 97, "counting": false } } },
         { "position": 2, "name": "Cass Chisholm", "club": "lytham", "sex": "F", "ageCategory": "V40", "total": 200, "results": { "mearley-clough": { "points": 100, "counting": true }, "edenfield": { "points": 100, "counting": true }, "hameldon-quarry": null, "pendleton": null } },
@@ -181,7 +181,7 @@
       ]
     },
     {
-      "category": "v50-female",
+      "id": "v50-female",
       "runners": [
         { "position": 1, "name": "Laura Lawler", "club": "blackpool", "sex": "F", "ageCategory": "V50", "total": 300, "results": { "mearley-clough": null, "edenfield": { "points": 100, "counting": true }, "hameldon-quarry": { "points": 100, "counting": true }, "pendleton": { "points": 100, "counting": true } } },
         { "position": 2, "name": "Kay Twist", "club": "wesham", "sex": "F", "ageCategory": "V50", "total": 296, "results": { "mearley-clough": { "points": 98, "counting": true }, "edenfield": { "points": 99, "counting": true }, "hameldon-quarry": { "points": 99, "counting": true }, "pendleton": null } },
