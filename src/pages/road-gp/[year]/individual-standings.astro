@@ -2,8 +2,8 @@
 // src/pages/road-gp/[year]/individual-standings.astro
 import Layout from '../../../components/Layout.astro';
 import { getRaces } from '../../../lib/data';
-import { getIndividualStandingsStaticPaths } from '../../../lib/results';
-import type { Club, SeriesConfig, IndividualStandings } from '../../../lib/types';
+import { getIndividualStandingsStaticPaths, resolveIndividualCategoryName } from '../../../lib/results';
+import type { Club, IndividualStandings } from '../../../lib/types';
 import { buildRunnerUrlMap } from '../../../lib/runners';
 import { siteUrl } from '../../../lib/url';
 
@@ -18,16 +18,14 @@ interface Props {
   year: number;
   standings: IndividualStandings;
   clubs: Club[];
-  config: SeriesConfig;
   linkedRaceIds: string[];
   runnerUrlMap: Record<number, string>;
 }
 
-const { year, standings, clubs, config, runnerUrlMap } = Astro.props;
+const { year, standings, clubs, runnerUrlMap } = Astro.props;
 const linkedRaceIds = new Set(Astro.props.linkedRaceIds);
 const races = getRaces(year, 'road-gp');
 const raceById = Object.fromEntries(races.map(r => [r.id, r]));
-const categoryById = Object.fromEntries((config.individualCategories ?? []).map(c => [c.id, c]));
 const clubById = Object.fromEntries(clubs.map(c => [c.id, c]));
 ---
 
@@ -44,8 +42,8 @@ const clubById = Object.fromEntries(clubs.map(c => [c.id, c]));
       )}
     </div>
     <p class="text-sm text-base-content/60 mt-1">{year} Inter Club Road Grand Prix</p>
-    {config.maxCountingRaces && (
-      <p class="text-sm text-base-content/60 mt-0.5">Best {config.maxCountingRaces} races count</p>
+    {standings.maxCountingRaces && (
+      <p class="text-sm text-base-content/60 mt-0.5">Best {standings.maxCountingRaces} races count</p>
     )}
   </div>
 
@@ -53,7 +51,7 @@ const clubById = Object.fromEntries(clubs.map(c => [c.id, c]));
   <div class="overflow-x-auto -mx-4 px-4 mb-1">
     <div class="flex border-b border-base-200 min-w-max" role="tablist">
       {standings.categories.map((cat, i) => {
-        const label = categoryById[cat.id]?.name ?? cat.id;
+        const label = resolveIndividualCategoryName(cat.id, cat.sex, cat.ageCategory, cat.name);
         return (
           <button
             class:list={[
@@ -123,12 +121,14 @@ const clubById = Object.fromEntries(clubs.map(c => [c.id, c]));
             <tbody>
               {cat.runners.map(runner => {
                 const clubName = clubById[runner.club]?.name ?? runner.club;
-                const catLabel = `${runner.sex}${runner.ageCategory}`;
+                const effectiveSex = runner.sex ?? cat.sex ?? '';
+                const effectiveAgeCategory = runner.ageCategory ?? cat.ageCategory ?? '';
+                const catLabel = `${effectiveSex}${effectiveAgeCategory}`;
                 return (
                   <tr
                     class="border-b border-base-200/50 last:border-0 hover:bg-base-200/30"
-                    data-sex={runner.sex}
-                    data-age-cat={runner.ageCategory}
+                    data-sex={runner.sex ?? cat.sex}
+                    data-age-cat={runner.ageCategory ?? cat.ageCategory}
                   >
                     <td class="py-2.5 pr-3 text-base-content/40 tabular-nums">{runner.position}</td>
                     <td class="py-2.5 pr-4 font-semibold">
@@ -184,13 +184,15 @@ const clubById = Object.fromEntries(clubs.map(c => [c.id, c]));
 
           {cat.runners.map((runner, runnerIdx) => {
             const clubName = clubById[runner.club]?.name ?? runner.club;
-            const catLabel = `${runner.sex}${runner.ageCategory}`;
+            const effectiveSex = runner.sex ?? cat.sex ?? '';
+            const effectiveAgeCategory = runner.ageCategory ?? cat.ageCategory ?? '';
+            const catLabel = `${effectiveSex}${effectiveAgeCategory}`;
             const detailId = `detail-${i}-${runnerIdx}`;
             return (
               <div
                 class="runner-card border-b border-base-200 last:border-0"
-                data-sex={runner.sex}
-                data-age-cat={runner.ageCategory}
+                data-sex={runner.sex ?? cat.sex}
+                data-age-cat={runner.ageCategory ?? cat.ageCategory}
               >
                 <button
                   class="standings-toggle w-full flex items-center gap-2 py-2.5 text-left"
