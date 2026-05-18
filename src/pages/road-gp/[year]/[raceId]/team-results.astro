@@ -45,7 +45,7 @@ const categoryById = Object.fromEntries((config.teamCategories ?? []).map(c => [
   <div class="overflow-x-auto -mx-4 px-4 mb-1">
     <div class="flex border-b border-base-200 min-w-max" role="tablist">
       {teamResults.categories.map((cat, i) => {
-        const label = categoryById[cat.category]?.name ?? cat.category;
+        const label = categoryById[cat.id]?.name ?? cat.id;
         return (
           <button
             class:list={[
@@ -67,7 +67,7 @@ const categoryById = Object.fromEntries((config.teamCategories ?? []).map(c => [
 
   <!-- Category panels -->
   {teamResults.categories.map((cat, i) => {
-    const catConfig = categoryById[cat.category];
+    const catConfig = categoryById[cat.id];
     return (
       <div id={`cat-panel-${i}`} class:list={['pt-3', i > 0 && 'hidden']} role="tabpanel">
         {catConfig && (
