@@ -1,26 +1,26 @@
-{
+﻿{
   "teamAwards": [
-    { "category": "open", "club": "chorley" },
-    { "category": "vets", "club": "wesham" },
-    { "category": "v50", "club": "wesham" },
-    { "category": "v60", "club": "chorley" },
-    { "category": "ladies", "club": "wesham" }
+    { "id": "open", "club": "chorley" },
+    { "id": "vets", "club": "wesham" },
+    { "id": "v50", "club": "wesham" },
+    { "id": "v60", "club": "chorley" },
+    { "id": "ladies", "club": "wesham" }
   ],
   "individualAwards": [
     {
-      "category": "overall",
+      "id": "overall",
       "awards": [
         { "position": 1, "name": "Lee Barlow" }
       ]
     },
     {
-      "category": "sen-m",
+      "id": "sen-m",
       "awards": [
         { "position": 1, "name": "Ben Donoghue" }
       ]
     },
     {
-      "category": "sen-f",
+      "id": "sen-f",
       "awards": [
         { "position": 1, "name": "Kath Hoyer" },
         { "position": 2, "name": "Debbie Cooper" },
@@ -28,14 +28,14 @@
       ]
     },
     {
-      "category": "v40-m",
+      "id": "v40-m",
       "awards": [
         { "position": 2, "name": "Darren Fishwick" },
         { "position": 3, "name": "Jason Barlow" }
       ]
     },
     {
-      "category": "v50-m",
+      "id": "v50-m",
       "awards": [
         { "position": 1, "name": "Alex Rowe" },
         { "position": 2, "name": "Fred Lynch" },
@@ -43,7 +43,7 @@
       ]
     },
     {
-      "category": "v60-m",
+      "id": "v60-m",
       "awards": [
         { "position": 1, "name": "Graham Schofield" }
       ]

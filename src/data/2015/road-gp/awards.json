@@ -1,31 +1,31 @@
 ﻿{
     "individualAwards":  [
                            {
-                               "category":  "overall",
+                               "id":  "overall",
                                "awards":  [
                                               { "position": 1, "name": "R. Danson", "club": "wesham" }
                                           ]
                            },
                            {
-                               "category":  "ladies",
+                               "id":  "ladies",
                                "awards":  [
                                               { "position": 1, "name": "E. Japp", "club": "blackpool" }
                                           ]
                            },
                            {
-                               "category":  "v40-male",
+                               "id":  "v40-male",
                                "awards":  [
                                               { "position": 1, "name": "R. Affleck", "club": "preston" }
                                           ]
                            },
                            {
-                               "category":  "v50-male",
+                               "id":  "v50-male",
                                "awards":  [
                                               { "position": 1, "name": "J. Wright", "club": "blackpool" }
                                           ]
                            },
                            {
-                               "category":  "v60-male",
+                               "id":  "v60-male",
                                "awards":  [
                                               { "position": 1, "name": "J. Collier", "club": "wesham" }
                                           ]
@@ -34,23 +34,23 @@
     "teamAwards":  [
                        {
                            "club":  "preston",
-                           "category":  "open"
+                           "id":  "open"
                        },
                        {
                            "club":  "preston",
-                           "category":  "vets"
+                           "id":  "vets"
                        },
                        {
                            "club":  "red-rose",
-                           "category":  "vet50"
+                           "id":  "vet50"
                        },
                        {
                            "club":  "blackpool",
-                           "category":  "vet60"
+                           "id":  "vet60"
                        },
                        {
                            "club":  "blackpool",
-                           "category":  "ladies"
+                           "id":  "ladies"
                        }
                    ]
 }

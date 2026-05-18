@@ -1,53 +1,53 @@
-{
+﻿{
   "individualAwards": [
     {
-      "category": "female",
+      "id": "female",
       "awards": [
         {
           "position": 1,
           "name": "S. Pilkington",
           "club": "red-rose",
-          "category": "SEN"
+          "id": "SEN"
         },
         {
           "position": 2,
           "name": "M. Koth",
           "club": "lytham",
-          "category": "V45"
+          "id": "V45"
         },
         {
           "position": 3,
           "name": "J. Goorney",
           "club": "lytham",
-          "category": "V50"
+          "id": "V50"
         }
       ]
     },
     {
-      "category": "male",
+      "id": "male",
       "awards": [
         {
           "position": 1,
           "name": "R. Danson",
           "club": "wesham",
-          "category": "SEN"
+          "id": "SEN"
         },
         {
           "position": 2,
           "name": "S. Evans",
           "club": "preston",
-          "category": "SEN"
+          "id": "SEN"
         },
         {
           "position": 3,
           "name": "R. McKelvie",
           "club": "lytham",
-          "category": "SEN"
+          "id": "SEN"
         }
       ]
     },
     {
-      "category": "jun-female",
+      "id": "jun-female",
       "awards": [
         {
           "position": 1,
@@ -60,7 +60,7 @@
       ]
     },
     {
-      "category": "jun-male",
+      "id": "jun-male",
       "awards": [
         {
           "position": 1,
@@ -73,7 +73,7 @@
       ]
     },
     {
-      "category": "sen-female",
+      "id": "sen-female",
       "awards": [
         {
           "position": 1,
@@ -86,7 +86,7 @@
       ]
     },
     {
-      "category": "sen-male",
+      "id": "sen-male",
       "awards": [
         {
           "position": 1,
@@ -99,7 +99,7 @@
       ]
     },
     {
-      "category": "v35-female",
+      "id": "v35-female",
       "awards": [
         {
           "position": 1,
@@ -112,7 +112,7 @@
       ]
     },
     {
-      "category": "v40-female",
+      "id": "v40-female",
       "awards": [
         {
           "position": 1,
@@ -125,7 +125,7 @@
       ]
     },
     {
-      "category": "v40-male",
+      "id": "v40-male",
       "awards": [
         {
           "position": 1,
@@ -138,7 +138,7 @@
       ]
     },
     {
-      "category": "v45-female",
+      "id": "v45-female",
       "awards": [
         {
           "position": 1,
@@ -151,7 +151,7 @@
       ]
     },
     {
-      "category": "v45-male",
+      "id": "v45-male",
       "awards": [
         {
           "position": 1,
@@ -164,7 +164,7 @@
       ]
     },
     {
-      "category": "v50-female",
+      "id": "v50-female",
       "awards": [
         {
           "position": 1,
@@ -177,7 +177,7 @@
       ]
     },
     {
-      "category": "v50-male",
+      "id": "v50-male",
       "awards": [
         {
           "position": 1,
@@ -190,7 +190,7 @@
       ]
     },
     {
-      "category": "v55-female",
+      "id": "v55-female",
       "awards": [
         {
           "position": 1,
@@ -203,7 +203,7 @@
       ]
     },
     {
-      "category": "v55-male",
+      "id": "v55-male",
       "awards": [
         {
           "position": 1,
@@ -216,7 +216,7 @@
       ]
     },
     {
-      "category": "v60-female",
+      "id": "v60-female",
       "awards": [
         {
           "position": 1,
@@ -229,7 +229,7 @@
       ]
     },
     {
-      "category": "v60-male",
+      "id": "v60-male",
       "awards": [
         {
           "position": 1,
@@ -242,7 +242,7 @@
       ]
     },
     {
-      "category": "v65-female",
+      "id": "v65-female",
       "awards": [
         {
           "position": 1,
@@ -251,7 +251,7 @@
       ]
     },
     {
-      "category": "v65-male",
+      "id": "v65-male",
       "awards": [
         {
           "position": 1,
@@ -264,7 +264,7 @@
       ]
     },
     {
-      "category": "v70-female",
+      "id": "v70-female",
       "awards": [
         {
           "position": 1,
@@ -273,7 +273,7 @@
       ]
     },
     {
-      "category": "v70-male",
+      "id": "v70-male",
       "awards": [
         {
           "position": 1,
@@ -286,7 +286,7 @@
       ]
     },
     {
-      "category": "v75-female",
+      "id": "v75-female",
       "awards": [
         {
           "position": 1,
@@ -295,7 +295,7 @@
       ]
     },
     {
-      "category": "v75-male",
+      "id": "v75-male",
       "awards": [
         {
           "position": 1,
@@ -307,27 +307,27 @@
   "teamAwards": [
     {
       "club": "blackpool",
-      "category": "open"
+      "id": "open"
     },
     {
       "club": "blackpool",
-      "category": "vets"
+      "id": "vets"
     },
     {
       "club": "preston",
-      "category": "vet50"
+      "id": "vet50"
     },
     {
       "club": "red-rose",
-      "category": "vet60"
+      "id": "vet60"
     },
     {
       "club": "lytham",
-      "category": "ladies"
+      "id": "ladies"
     },
     {
       "club": "lytham",
-      "category": "ladyvets"
+      "id": "ladyvets"
     }
   ]
 }

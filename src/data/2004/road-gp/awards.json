@@ -1,7 +1,7 @@
 ﻿{
     "individualAwards":  [
                            {
-                               "category":  "overall",
+                               "id":  "overall",
                                "awards":  [
                                               { "position": 1, "name": "J. Prowse", "club": "blackpool-fylde" }
                                           ]
@@ -10,15 +10,15 @@
     "teamAwards":  [
                        {
                            "club":  "wesham",
-                           "category":  "open"
+                           "id":  "open"
                        },
                        {
                            "club":  "wesham",
-                           "category":  "vets"
+                           "id":  "vets"
                        },
                        {
                            "club":  "north-fylde",
-                           "category":  "ladies"
+                           "id":  "ladies"
                        }
                    ]
 }

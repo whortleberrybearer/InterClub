@@ -1,55 +1,55 @@
-{
+﻿{
   "teamAwards": [
-    {"category": "overall", "club": "chorley"},
-    {"category": "m40", "club": "chorley"},
-    {"category": "m50", "club": "chorley"},
-    {"category": "m60", "club": "red-rose"},
-    {"category": "women", "club": "red-rose"}
+    {"id": "overall", "club": "chorley"},
+    {"id": "m40", "club": "chorley"},
+    {"id": "m50", "club": "chorley"},
+    {"id": "m60", "club": "red-rose"},
+    {"id": "women", "club": "red-rose"}
   ],
   "individualAwards": [
     {
-      "category": "sen-m",
+      "id": "sen-m",
       "awards": [
         {"position": 1, "name": "Alek Walker", "club": "wesham", "ageCategory": "M"},
         {"position": 3, "name": "Christopher Bridge", "club": "red-rose", "ageCategory": "M"}
       ]
     },
     {
-      "category": "m40",
+      "id": "m40",
       "awards": [
         {"position": 1, "name": "David Cowburn", "club": "chorley", "ageCategory": "M40"},
         {"position": 2, "name": "Steve Myerscough", "club": "wesham", "ageCategory": "M40"}
       ]
     },
     {
-      "category": "m50",
+      "id": "m50",
       "awards": [
         {"position": 1, "name": "Darren McDermott", "club": "preston", "ageCategory": "M50"},
         {"position": 2, "name": "Carl Groome", "club": "wesham", "ageCategory": "M50"}
       ]
     },
     {
-      "category": "m60",
+      "id": "m60",
       "awards": [
         {"position": 1, "name": "Steve Baker", "club": "chorley", "ageCategory": "M60"},
         {"position": 2, "name": "Philip Butler", "club": "red-rose", "ageCategory": "M60"}
       ]
     },
     {
-      "category": "f-sen",
+      "id": "f-sen",
       "awards": [
         {"position": 1, "name": "Kay Twist", "club": "wesham", "ageCategory": "F50"},
         {"position": 3, "name": "Julia Rolfe", "club": "lytham", "ageCategory": "F60"}
       ]
     },
     {
-      "category": "f40",
+      "id": "f40",
       "awards": [
         {"position": 1, "name": "Olga Wiggins", "club": "preston", "ageCategory": "F40"}
       ]
     },
     {
-      "category": "f50",
+      "id": "f50",
       "awards": [
         {"position": 1, "name": "Claire McDermott", "club": "preston", "ageCategory": "F50"}
       ]

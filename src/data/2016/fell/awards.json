@@ -1,33 +1,33 @@
-{
+﻿{
   "teamAwards": [
-    { "category": "open", "club": "preston" },
-    { "category": "vets", "club": "red-rose" },
-    { "category": "v50", "club": "red-rose" },
-    { "category": "v60", "club": "preston" },
-    { "category": "ladies", "club": "red-rose" }
+    { "id": "open", "club": "preston" },
+    { "id": "vets", "club": "red-rose" },
+    { "id": "v50", "club": "red-rose" },
+    { "id": "v60", "club": "preston" },
+    { "id": "ladies", "club": "red-rose" }
   ],
   "individualAwards": [
     {
-      "category": "overall",
+      "id": "overall",
       "awards": [
         { "position": 1, "name": "Richard Smith" }
       ]
     },
     {
-      "category": "male",
+      "id": "male",
       "awards": [
         { "position": 2, "name": "Duncan Anderson" }
       ]
     },
     {
-      "category": "v40",
+      "id": "v40",
       "awards": [
         { "position": 1, "name": "Chris Wales" },
         { "position": 2, "name": "Steve Myerscough" }
       ]
     },
     {
-      "category": "v50",
+      "id": "v50",
       "awards": [
         { "position": 1, "name": "John Rainford" },
         { "position": 2, "name": "Philip Butler" },
@@ -35,27 +35,27 @@
       ]
     },
     {
-      "category": "v60",
+      "id": "v60",
       "awards": [
         { "position": 1, "name": "Steve Taylor" },
         { "position": 2, "name": "Michael McLoughlin" }
       ]
     },
     {
-      "category": "female",
+      "id": "female",
       "awards": [
         { "position": 1, "name": "Katey Foster" }
       ]
     },
     {
-      "category": "f40",
+      "id": "f40",
       "awards": [
         { "position": 1, "name": "Sarah Sherratt" },
         { "position": 2, "name": "Debbie Cooper" }
       ]
     },
     {
-      "category": "f50",
+      "id": "f50",
       "awards": [
         { "position": 1, "name": "Alison Mercer" },
         { "position": 2, "name": "Karen Clark" }

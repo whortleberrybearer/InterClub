@@ -1,7 +1,7 @@
-{
+﻿{
   "individualAwards": [
     {
-      "category": "sen-male",
+      "id": "sen-male",
       "awards": [
         {
           "position": 1,
@@ -18,7 +18,7 @@
       ]
     },
     {
-      "category": "v40-male",
+      "id": "v40-male",
       "awards": [
         {
           "position": 1,
@@ -35,7 +35,7 @@
       ]
     },
     {
-      "category": "v50-male",
+      "id": "v50-male",
       "awards": [
         {
           "position": 1,
@@ -52,7 +52,7 @@
       ]
     },
     {
-      "category": "v60-male",
+      "id": "v60-male",
       "awards": [
         {
           "position": 1,
@@ -69,7 +69,7 @@
       ]
     },
     {
-      "category": "sen-female",
+      "id": "sen-female",
       "awards": [
         {
           "position": 1,
@@ -80,7 +80,7 @@
       ]
     },
     {
-      "category": "v50-female",
+      "id": "v50-female",
       "awards": [
         {
           "position": 1,
@@ -100,23 +100,23 @@
   "teamAwards": [
     {
       "club": "preston",
-      "category": "open"
+      "id": "open"
     },
     {
       "club": "chorley",
-      "category": "v40"
+      "id": "v40"
     },
     {
       "club": "preston",
-      "category": "v50"
+      "id": "v50"
     },
     {
       "club": "preston",
-      "category": "v60"
+      "id": "v60"
     },
     {
       "club": "red-rose",
-      "category": "ladies"
+      "id": "ladies"
     }
   ]
 }

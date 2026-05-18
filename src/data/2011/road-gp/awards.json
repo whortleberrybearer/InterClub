@@ -1,13 +1,13 @@
 ﻿{
     "individualAwards":  [
                            {
-                               "category":  "overall",
+                               "id":  "overall",
                                "awards":  [
                                               { "position": 1, "name": "S. Robinson", "club": "blackpool" }
                                           ]
                            },
                            {
-                               "category":  "ladies",
+                               "id":  "ladies",
                                "awards":  [
                                               { "position": 1, "name": "C. Betmead", "club": "blackpool" }
                                           ]
@@ -16,23 +16,23 @@
     "teamAwards":  [
                        {
                            "club":  "preston",
-                           "category":  "open"
+                           "id":  "open"
                        },
                        {
                            "club":  "preston",
-                           "category":  "vets"
+                           "id":  "vets"
                        },
                        {
                            "club":  "wesham",
-                           "category":  "vet50"
+                           "id":  "vet50"
                        },
                        {
                            "club":  "wesham",
-                           "category":  "vet60"
+                           "id":  "vet60"
                        },
                        {
                            "club":  "blackpool",
-                           "category":  "ladies"
+                           "id":  "ladies"
                        }
                    ]
 }
