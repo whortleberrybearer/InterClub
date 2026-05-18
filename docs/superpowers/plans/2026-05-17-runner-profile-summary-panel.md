@@ -17,7 +17,7 @@
 | `src/lib/types.ts` | Add `RunnerClubHistory`, `RunnerAwardSummaryEntry`, `RunnerAwardSummary` interfaces |
 | `src/lib/runners.ts` | Export `formatYearRanges`; add `buildClubHistory`, `buildAwardSummary`; update `getRunnerProfileStaticPaths` return (drop `clubName`, add `clubHistory` + `awardSummary`); include `club` in series entry accumulation |
 | `src/pages/runners/[slug].astro` | Update `Props`, remove `clubName` from destructure, update subtitle, add stats panel |
-| `tests/runners.test.ts` | New file — unit tests for `formatYearRanges` |
+| `tests/lib/runners.test.ts` | New file — unit tests for `formatYearRanges` |
 
 ---
 
