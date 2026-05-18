@@ -41,11 +41,11 @@ if (hasAwards(year, 'fell')) {
   const runnerUrlMap = buildRunnerUrlMap(year, 'fell');
 
   const partitioned = raw.individualAwards.map(ia => {
-    const cat = resolveIndividualCategory(ia.category);
+    const cat = resolveIndividualCategory(ia.id);
     return {
       sex: cat?.sex,
       resolved: {
-        categoryName: cat?.name ?? ia.category,
+        categoryName: cat?.name ?? ia.id,
         awards: ia.awards.map(a => ({
           position: a.position,
           name: a.name,
@@ -58,7 +58,7 @@ if (hasAwards(year, 'fell')) {
 
   awards = {
     teamAwards: raw.teamAwards.map(ta => ({
-      categoryName: resolveTeamCategoryName(ta.category),
+      categoryName: resolveTeamCategoryName(ta.id),
       clubName: resolveClub(ta.club),
     })),
     overallAwards: partitioned.filter(x => !x.sex).map(x => x.resolved),
