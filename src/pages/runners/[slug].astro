@@ -2,7 +2,7 @@
 import Layout from '../../components/Layout.astro';
 import { getRunnerProfileStaticPaths } from '../../lib/runners';
 import { siteUrl } from '../../lib/url';
-import type { GlobalRunner, RunnerYearBlock } from '../../lib/types';
+import type { GlobalRunner, RunnerYearBlock, RunnerClubHistory, RunnerAwardSummary } from '../../lib/types';
 
 export async function getStaticPaths() {
   return getRunnerProfileStaticPaths();
@@ -10,13 +10,15 @@ export async function getStaticPaths() {
 
 interface Props {
   runner: GlobalRunner;
-  clubName: string;
+  clubHistory: RunnerClubHistory[];
+  awardSummary: RunnerAwardSummary;
   yearBlocks: RunnerYearBlock[];
 }
 
-const { runner, clubName, yearBlocks } = Astro.props;
+const { runner, clubHistory, awardSummary, yearBlocks } = Astro.props;
 const title = `${runner.firstName} ${runner.lastName}`;
 const allYears = yearBlocks.map(b => b.year);
+const hasAwards = awardSummary.roadGp.length + awardSummary.fell.length > 0;
 
 function formatDateShort(isoDate: string): string {
   const d = new Date(isoDate);
@@ -35,9 +37,43 @@ function positionLabel(pos: number): string {
 
 <Layout title={title}>
   <h1 class="text-2xl font-bold mb-1">{title}</h1>
-  <p class="text-sm text-base-content/60 mb-6">
-    {clubName} &middot; {runner.sex === 'M' ? 'Men' : 'Women'} &middot; {runner.category}
+  <p class="text-sm text-base-content/60 mb-4">
+    {runner.sex === 'M' ? 'Men' : 'Women'} &middot; {runner.category}
   </p>
+
+  <!-- Stats panel -->
+  <div class={`bg-base-100 border border-base-200 rounded-lg p-4 mb-6 grid gap-6 ${hasAwards ? 'grid-cols-2' : 'grid-cols-1'}`}>
+    <div>
+      <h2 class="text-xs font-bold uppercase tracking-wider text-base-content/50 mb-2">Competed for</h2>
+      {clubHistory.map(ch => (
+        <div class="flex justify-between gap-4 text-sm mb-1">
+          <span class="font-medium">{ch.clubName}</span>
+          <span class="text-base-content/60">{ch.yearRanges}</span>
+        </div>
+      ))}
+    </div>
+    {hasAwards && (
+      <div>
+        <h2 class="text-xs font-bold uppercase tracking-wider text-base-content/50 mb-2">Awards</h2>
+        {awardSummary.roadGp.length > 0 && (
+          <div class="mb-3">
+            <div class="text-xs font-bold uppercase tracking-wider text-base-content/40 mb-1">Road GP</div>
+            {awardSummary.roadGp.map(a => (
+              <div class="text-sm">{a.categoryName} &mdash; {positionLabel(a.position)}{a.count > 1 ? ` ×${a.count}` : ''}</div>
+            ))}
+          </div>
+        )}
+        {awardSummary.fell.length > 0 && (
+          <div>
+            <div class="text-xs font-bold uppercase tracking-wider text-base-content/40 mb-1">Fell</div>
+            {awardSummary.fell.map(a => (
+              <div class="text-sm">{a.categoryName} &mdash; {positionLabel(a.position)}{a.count > 1 ? ` ×${a.count}` : ''}</div>
+            ))}
+          </div>
+        )}
+      </div>
+    )}
+  </div>
 
   <!-- Filter bar -->
   <div class="bg-base-100 border border-base-200 rounded-lg p-3 mb-6 flex flex-wrap gap-2 items-center">
