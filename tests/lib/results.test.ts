@@ -3,7 +3,7 @@ import { parseResultsCsv, parseTeamResultsPath, parseTeamStandingsPath, parseInd
 
 describe('parseResultsCsv', () => {
   const sample = [
-    'position,ic_position,first_name,last_name,club,category,sex,time',
+    'position,ic_position,first_name,last_name,club,age_category,sex,time',
     '1,1,Luke,Minns,blackpool,V35,M,19:35',
     '2,2,Rob,Danson,preston,V35,M,19:38',
     '3,,T.,Guest,Guest,SEN,M,20:00',
@@ -25,7 +25,7 @@ describe('parseResultsCsv', () => {
   });
 
   it('parses position as null when empty', () => {
-    const csv = 'position,ic_position,first_name,last_name,club,category,sex,time\n,,Jane,Smith,wesham,SEN,F,25:00';
+    const csv = 'position,ic_position,first_name,last_name,club,age_category,sex,time\n,,Jane,Smith,wesham,SEN,F,25:00';
     const [row] = parseResultsCsv(csv);
     expect(row.position).toBeNull();
   });
@@ -35,7 +35,7 @@ describe('parseResultsCsv', () => {
     expect(first.firstName).toBe('Luke');
     expect(first.lastName).toBe('Minns');
     expect(first.club).toBe('blackpool');
-    expect(first.category).toBe('V35');
+    expect(first.ageCategory).toBe('V35');
     expect(first.sex).toBe('M');
     expect(first.time).toBe('19:35');
   });
@@ -46,7 +46,7 @@ describe('parseResultsCsv', () => {
   });
 
   it('returns empty array for header-only CSV', () => {
-    expect(parseResultsCsv('position,ic_position,first_name,last_name,club,category,sex,time')).toHaveLength(0);
+    expect(parseResultsCsv('position,ic_position,first_name,last_name,club,age_category,sex,time')).toHaveLength(0);
   });
 
   it('returns empty array for empty string', () => {
@@ -54,26 +54,26 @@ describe('parseResultsCsv', () => {
   });
 
   it('parses raceNumber as a number when present', () => {
-    const csv = 'position,ic_position,race_number,first_name,last_name,club,category,sex,time\n1,1,42,Luke,Minns,blackpool,V35,M,19:35';
+    const csv = 'position,ic_position,race_number,first_name,last_name,club,age_category,sex,time\n1,1,42,Luke,Minns,blackpool,V35,M,19:35';
     const [row] = parseResultsCsv(csv);
     expect(row.raceNumber).toBe(42);
   });
 
   it('parses raceNumber as null when the column is empty', () => {
-    const csv = 'position,ic_position,race_number,first_name,last_name,club,category,sex,time\n1,1,,Luke,Minns,blackpool,V35,M,19:35';
+    const csv = 'position,ic_position,race_number,first_name,last_name,club,age_category,sex,time\n1,1,,Luke,Minns,blackpool,V35,M,19:35';
     const [row] = parseResultsCsv(csv);
     expect(row.raceNumber).toBeNull();
   });
 
   it('parses raceNumber as null when the column is absent (old CSV format)', () => {
-    const csv = 'position,ic_position,first_name,last_name,club,category,sex,time\n1,1,Luke,Minns,blackpool,V35,M,19:35';
+    const csv = 'position,ic_position,first_name,last_name,club,age_category,sex,time\n1,1,Luke,Minns,blackpool,V35,M,19:35';
     const [row] = parseResultsCsv(csv);
     expect(row.raceNumber).toBeNull();
   });
 
   it('parses seriesRunnerId when column is present', () => {
     const csv = [
-      'position,ic_position,first_name,last_name,club,category,sex,time,series_runner_id',
+      'position,ic_position,first_name,last_name,club,age_category,sex,time,series_runner_id',
       '1,1,Luke,Minns,blackpool,V35,M,19:35,2',
       '11,,T.,Guest,Guest,SEN,M,21:44,',
     ].join('\n');
