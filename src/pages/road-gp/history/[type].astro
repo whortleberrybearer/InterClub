@@ -39,7 +39,7 @@ if (type === 'teams') {
   yearlyTeamData = allYearlyAwards.map(yearly => {
     const categoryWinners: Record<string, string | null> = {};
     allCategories.forEach(cat => {
-      const award = yearly.awards.teamAwards.find(ta => ta.category === cat.id);
+      const award = yearly.awards.teamAwards.find(ta => ta.id === cat.id);
       if (award) {
         const clubName = yearly.clubs.find(c => c.id === award.club)?.name ?? award.club;
         categoryWinners[cat.id] = clubName;
@@ -60,10 +60,10 @@ if (type === 'individuals') {
     return {
       year: yearly.year,
       categories: yearly.awards.individualAwards.map(ia => {
-        const configCat = yearly.config.individualCategories?.find(c => c.id === ia.category);
+        const configCat = yearly.config.individualCategories?.find(c => c.id === ia.id);
         return {
-          id: ia.category,
-          name: configCat?.name ?? ia.category,
+          id: ia.id,
+          name: configCat?.name ?? ia.id,
           sex: configCat?.sex ?? null,
           awards: ia.awards.map(a => ({
             position: a.position,
