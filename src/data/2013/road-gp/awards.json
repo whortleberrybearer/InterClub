@@ -1,38 +1,47 @@
-﻿{
-    "individualAwards":  [
-                           {
-                               "id":  "overall",
-                               "awards":  [
-                                              { "position": 1, "name": "R. Affleck", "club": "preston" }
-                                          ]
-                           },
-                           {
-                               "id":  "ladies",
-                               "awards":  [
-                                              { "position": 1, "name": "J. Goorney", "club": "wesham" }
-                                          ]
-                           }
-                       ],
-    "teamAwards":  [
-                       {
-                           "club":  "preston",
-                           "id":  "open"
-                       },
-                       {
-                           "club":  "preston",
-                           "id":  "vets"
-                       },
-                       {
-                           "club":  "preston",
-                           "id":  "vet50"
-                       },
-                       {
-                           "club":  "wesham",
-                           "id":  "vet60"
-                       },
-                       {
-                           "club":  "wesham",
-                           "id":  "ladies"
-                       }
-                   ]
+{
+    "individualAwards": [
+        {
+            "id": "overall",
+            "awards": [
+                {
+                    "position": 1,
+                    "name": "R. Affleck",
+                    "club": "preston"
+                }
+            ]
+        },
+        {
+            "id": "ladies",
+            "awards": [
+                {
+                    "position": 1,
+                    "name": "J. Goorney",
+                    "club": "wesham"
+                }
+            ],
+            "sex": "F"
+        }
+    ],
+    "teamAwards": [
+        {
+            "club": "preston",
+            "id": "open"
+        },
+        {
+            "club": "preston",
+            "id": "vets"
+        },
+        {
+            "club": "preston",
+            "id": "vet50"
+        },
+        {
+            "club": "wesham",
+            "id": "vet60"
+        },
+        {
+            "club": "wesham",
+            "id": "ladies"
+        }
+    ]
 }

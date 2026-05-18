@@ -1,60 +1,143 @@
-﻿{
+{
   "teamAwards": [
-    { "id": "open", "club": "wesham" },
-    { "id": "ladies", "club": "blackpool" },
-    { "id": "vets", "club": "chorley" },
-    { "id": "v50", "club": "chorley" },
-    { "id": "v60", "club": "red-rose" }
+    {
+      "id": "open",
+      "club": "wesham"
+    },
+    {
+      "id": "ladies",
+      "club": "blackpool"
+    },
+    {
+      "id": "vets",
+      "club": "chorley"
+    },
+    {
+      "id": "v50",
+      "club": "chorley"
+    },
+    {
+      "id": "v60",
+      "club": "red-rose"
+    }
   ],
   "individualAwards": [
     {
       "id": "male",
       "awards": [
-        { "position": 1, "name": "A. Palmer", "club": "preston" },
-        { "position": 2, "name": "T. Belcher", "club": "chorley" },
-        { "position": 3, "name": "T. Crabtree", "club": "wesham" }
-      ]
+        {
+          "position": 1,
+          "name": "A. Palmer",
+          "club": "preston"
+        },
+        {
+          "position": 2,
+          "name": "T. Belcher",
+          "club": "chorley"
+        },
+        {
+          "position": 3,
+          "name": "T. Crabtree",
+          "club": "wesham"
+        }
+      ],
+      "sex": "M"
     },
     {
       "id": "female",
       "awards": [
-        { "position": 1, "name": "B. Pawelczak", "club": "blackpool" },
-        { "position": 2, "name": "O. Wiggans", "club": "chorley" }
-      ]
+        {
+          "position": 1,
+          "name": "B. Pawelczak",
+          "club": "blackpool"
+        },
+        {
+          "position": 2,
+          "name": "O. Wiggans",
+          "club": "chorley"
+        }
+      ],
+      "sex": "F"
     },
     {
       "id": "v40-male",
       "awards": [
-        { "position": 1, "name": "C. Banks", "club": "wesham" },
-        { "position": 2, "name": "A. Walker", "club": "wesham" }
-      ]
+        {
+          "position": 1,
+          "name": "C. Banks",
+          "club": "wesham"
+        },
+        {
+          "position": 2,
+          "name": "A. Walker",
+          "club": "wesham"
+        }
+      ],
+      "sex": "M",
+      "ageCategory": "V40"
     },
     {
       "id": "v40-female",
       "awards": [
-        { "position": 1, "name": "J. Hall", "club": "blackpool" },
-        { "position": 2, "name": "O. Wiggins", "club": "preston" }
-      ]
+        {
+          "position": 1,
+          "name": "J. Hall",
+          "club": "blackpool"
+        },
+        {
+          "position": 2,
+          "name": "O. Wiggins",
+          "club": "preston"
+        }
+      ],
+      "sex": "F",
+      "ageCategory": "V40"
     },
     {
       "id": "v50-male",
       "awards": [
-        { "position": 1, "name": "D. McDermott", "club": "preston" },
-        { "position": 2, "name": "P. Bass", "club": "chorley" }
-      ]
+        {
+          "position": 1,
+          "name": "D. McDermott",
+          "club": "preston"
+        },
+        {
+          "position": 2,
+          "name": "P. Bass",
+          "club": "chorley"
+        }
+      ],
+      "sex": "M",
+      "ageCategory": "V50"
     },
     {
       "id": "v50-female",
       "awards": [
-        { "position": 1, "name": "L. Lawler", "club": "blackpool" }
-      ]
+        {
+          "position": 1,
+          "name": "L. Lawler",
+          "club": "blackpool"
+        }
+      ],
+      "sex": "F",
+      "ageCategory": "V50"
     },
     {
       "id": "v60-male",
       "awards": [
-        { "position": 1, "name": "J. Griffiths", "club": "preston" },
-        { "position": 2, "name": "P. Butler", "club": "red-rose" }
-      ]
+        {
+          "position": 1,
+          "name": "J. Griffiths",
+          "club": "preston"
+        },
+        {
+          "position": 2,
+          "name": "P. Butler",
+          "club": "red-rose"
+        }
+      ],
+      "sex": "M",
+      "ageCategory": "V60"
     }
   ]
 }

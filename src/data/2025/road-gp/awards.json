@@ -1,392 +1,452 @@
-﻿{
-    "teamAwards":  [
-                       { "id": "open",      "club": "preston" },
-                       { "id": "ladies",    "club": "preston" },
-                       { "id": "vets",      "club": "wesham"  },
-                       { "id": "lady-vets", "club": "lytham"  },
-                       { "id": "v50",       "club": "preston" },
-                       { "id": "v60",       "club": "preston" }
-                   ],
-    "individualAwards":  [
-                             {
-                                 "id":  "female",
-                                 "awards":  [
-                                                {
-                                                    "position":  1,
-                                                    "name":  "Katie Littlefair",
-                                                    "club":  "preston",
-                                                    "ageCategory": "SEN",
-                                                    "seriesRunnerId":  164
-                                                },
-                                                {
-                                                    "position":  2,
-                                                    "name":  "Emma Watson",
-                                                    "club":  "preston",
-                                                    "ageCategory": "V35",
-                                                    "seriesRunnerId":  185
-                                                },
-                                                {
-                                                    "position":  3,
-                                                    "name":  "Cass Chisholm",
-                                                    "club":  "lytham",
-                                                    "ageCategory": "V40",
-                                                    "seriesRunnerId":  497
-                                                }
-                                            ]
-                             },
-                             {
-                                 "id":  "male",
-                                 "awards":  [
-                                                {
-                                                    "position":  1,
-                                                    "name":  "Luke Minns",
-                                                    "club":  "blackpool",
-                                                    "ageCategory": "SEN",
-                                                    "seriesRunnerId":  474
-                                                },
-                                                {
-                                                    "position":  2,
-                                                    "name":  "Rob Danson",
-                                                    "club":  "preston",
-                                                    "ageCategory": "SEN",
-                                                    "seriesRunnerId":  100
-                                                },
-                                                {
-                                                    "position":  3,
-                                                    "name":  "Sam Evans",
-                                                    "club":  "preston",
-                                                    "ageCategory": "SEN",
-                                                    "seriesRunnerId":  475
-                                                }
-                                            ]
-                             },
-                             {
-                                 "id":  "jun-female",
-                                 "awards":  [
-                                                {
-                                                    "position":  1,
-                                                    "name":  "Lucy Dewhurst",
-                                                    "seriesRunnerId":  358,
-                                                    "club":  "red-rose"
-                                                }
-                                            ]
-                             },
-                             {
-                                 "id":  "jun-male",
-                                 "awards":  [
-                                                {
-                                                    "position":  1,
-                                                    "name":  "Luke Suffolk",
-                                                    "seriesRunnerId":  105,
-                                                    "club":  "preston"
-                                                },
-                                                {
-                                                    "position":  2,
-                                                    "name":  "Craig Sarson",
-                                                    "seriesRunnerId":  134,
-                                                    "club":  "chorley"
-                                                }
-                                            ]
-                             },
-                             {
-                                 "id":  "sen-female",
-                                 "awards":  [
-                                                {
-                                                    "position":  1,
-                                                    "name":  "Melissa Metcalf",
-                                                    "seriesRunnerId":  504,
-                                                    "club":  "preston"
-                                                },
-                                                {
-                                                    "position":  2,
-                                                    "name":  "Charlotte Gregory",
-                                                    "seriesRunnerId":  368,
-                                                    "club":  "preston"
-                                                }
-                                            ]
-                             },
-                             {
-                                 "id":  "sen-male",
-                                 "awards":  [
-                                                {
-                                                    "position":  1,
-                                                    "name":  "Mike Toft",
-                                                    "seriesRunnerId":  102,
-                                                    "club":  "lytham"
-                                                },
-                                                {
-                                                    "position":  2,
-                                                    "name":  "Adam Wilding",
-                                                    "seriesRunnerId":  103,
-                                                    "club":  "wesham"
-                                                }
-                                            ]
-                             },
-                             {
-                                 "id":  "v35-female",
-                                 "awards":  [
-                                                {
-                                                    "position":  1,
-                                                    "name":  "Leanne Neild",
-                                                    "seriesRunnerId":  192,
-                                                    "club":  "lytham"
-                                                },
-                                                {
-                                                    "position":  2,
-                                                    "name":  "Hannah Bruce",
-                                                    "seriesRunnerId":  212,
-                                                    "club":  "preston"
-                                                }
-                                            ]
-                             },
-                             {
-                                 "id":  "v40-female",
-                                 "awards":  [
-                                                {
-                                                    "position":  1,
-                                                    "name":  "Gill Draper",
-                                                    "seriesRunnerId":  166,
-                                                    "club":  "lytham"
-                                                },
-                                                {
-                                                    "position":  2,
-                                                    "name":  "Emma Lund",
-                                                    "seriesRunnerId":  287,
-                                                    "club":  "wesham"
-                                                }
-                                            ]
-                             },
-                             {
-                                 "id":  "v40-male",
-                                 "awards":  [
-                                                {
-                                                    "position":  1,
-                                                    "name":  "Simon Croft",
-                                                    "seriesRunnerId":  478,
-                                                    "club":  "red-rose"
-                                                },
-                                                {
-                                                    "position":  2,
-                                                    "name":  "Mark Belfield",
-                                                    "seriesRunnerId":  124,
-                                                    "club":  "wesham"
-                                                }
-                                            ]
-                             },
-                             {
-                                 "id":  "v45-female",
-                                 "awards":  [
-                                                {
-                                                    "position":  1,
-                                                    "name":  "Janette Rayton",
-                                                    "seriesRunnerId":  518,
-                                                    "club":  "red-rose"
-                                                },
-                                                {
-                                                    "position":  2,
-                                                    "name":  "Clare Taylor",
-                                                    "seriesRunnerId":  253,
-                                                    "club":  "lytham"
-                                                }
-                                            ]
-                             },
-                             {
-                                 "id":  "v45-male",
-                                 "awards":  [
-                                                {
-                                                    "position":  1,
-                                                    "name":  "Tom Bamber",
-                                                    "seriesRunnerId":  106,
-                                                    "club":  "wesham"
-                                                },
-                                                {
-                                                    "position":  2,
-                                                    "name":  "Andy Cottam",
-                                                    "seriesRunnerId":  127,
-                                                    "club":  "preston"
-                                                }
-                                            ]
-                             },
-                             {
-                                 "id":  "v50-female",
-                                 "awards":  [
-                                                {
-                                                    "position":  1,
-                                                    "name":  "Elizabeth Horne",
-                                                    "seriesRunnerId":  245,
-                                                    "club":  "preston"
-                                                },
-                                                {
-                                                    "position":  2,
-                                                    "name":  "Tracey Mullan",
-                                                    "seriesRunnerId":  236,
-                                                    "club":  "thornton"
-                                                }
-                                            ]
-                             },
-                             {
-                                 "id":  "v50-male",
-                                 "awards":  [
-                                                {
-                                                    "position":  1,
-                                                    "name":  "Robert Walsh",
-                                                    "seriesRunnerId":  125,
-                                                    "club":  "chorley"
-                                                },
-                                                {
-                                                    "position":  2,
-                                                    "name":  "Jonathan Tuck",
-                                                    "seriesRunnerId":  491,
-                                                    "club":  "lytham"
-                                                }
-                                            ]
-                             },
-                             {
-                                 "id":  "v55-female",
-                                 "awards":  [
-                                                {
-                                                    "position":  1,
-                                                    "name":  "Susan Coulthurst",
-                                                    "seriesRunnerId":  219,
-                                                    "club":  "wesham"
-                                                },
-                                                {
-                                                    "position":  2,
-                                                    "name":  "Jo Goorney",
-                                                    "seriesRunnerId":  241,
-                                                    "club":  "lytham"
-                                                }
-                                            ]
-                             },
-                             {
-                                 "id":  "v55-male",
-                                 "awards":  [
-                                                {
-                                                    "position":  1,
-                                                    "name":  "David Parkinson",
-                                                    "seriesRunnerId":  168,
-                                                    "club":  "red-rose"
-                                                },
-                                                {
-                                                    "position":  2,
-                                                    "name":  "Carl Groome",
-                                                    "seriesRunnerId":  186,
-                                                    "club":  "wesham"
-                                                }
-                                            ]
-                             },
-                             {
-                                 "id":  "v60-female",
-                                 "awards":  [
-                                                {
-                                                    "position":  1,
-                                                    "name":  "Jane Hodkinson",
-                                                    "seriesRunnerId":  326,
-                                                    "club":  "preston"
-                                                },
-                                                {
-                                                    "position":  2,
-                                                    "name":  "Alison Bowden",
-                                                    "seriesRunnerId":  311,
-                                                    "club":  "thornton"
-                                                }
-                                            ]
-                             },
-                             {
-                                 "id":  "v60-male",
-                                 "awards":  [
-                                                {
-                                                    "position":  1,
-                                                    "name":  "Mark Lee",
-                                                    "seriesRunnerId":  171,
-                                                    "club":  "preston"
-                                                },
-                                                {
-                                                    "position":  2,
-                                                    "name":  "David Lea",
-                                                    "seriesRunnerId":  144,
-                                                    "club":  "preston"
-                                                }
-                                            ]
-                             },
-                             {
-                                 "id":  "v65-female",
-                                 "awards":  [
-                                                {
-                                                    "position":  1,
-                                                    "name":  "Barbara Holmes",
-                                                    "seriesRunnerId":  527,
-                                                    "club":  "lytham"
-                                                },
-                                                {
-                                                    "position":  2,
-                                                    "name":  "Heather Whelan",
-                                                    "seriesRunnerId":  413,
-                                                    "club":  "red-rose"
-                                                }
-                                            ]
-                             },
-                             {
-                                 "id":  "v65-male",
-                                 "awards":  [
-                                                {
-                                                    "position":  1,
-                                                    "name":  "Michael Edge",
-                                                    "seriesRunnerId":  223,
-                                                    "club":  "wesham"
-                                                },
-                                                {
-                                                    "position":  2,
-                                                    "name":  "Nigel Shepherd",
-                                                    "seriesRunnerId":  244,
-                                                    "club":  "wesham"
-                                                }
-                                            ]
-                             },
-                             {
-                                 "id":  "v70-female",
-                                 "awards":  [
-                                                {
-                                                    "position":  1,
-                                                    "name":  "Maureen Kirkby",
-                                                    "seriesRunnerId":  441,
-                                                    "club":  "preston"
-                                                }
-                                            ]
-                             },
-                             {
-                                 "id":  "v70-male",
-                                 "awards":  [
-                                                {
-                                                    "position":  1,
-                                                    "name":  "Philip Quibell",
-                                                    "seriesRunnerId":  222,
-                                                    "club":  "wesham"
-                                                },
-                                                {
-                                                    "position":  2,
-                                                    "name":  "Graham Webster",
-                                                    "seriesRunnerId":  308,
-                                                    "club":  "lytham"
-                                                }
-                                            ]
-                             },
-                             {
-                                 "id":  "v75-male",
-                                 "awards":  [
-                                                {
-                                                    "position":  1,
-                                                    "name":  "Alan Appleby",
-                                                    "seriesRunnerId":  373,
-                                                    "club":  "preston"
-                                                },
-                                                {
-                                                    "position":  2,
-                                                    "name":  "Simon David Young",
-                                                    "seriesRunnerId":  564,
-                                                    "club":  "wesham"
-                                                }
-                                            ]
-                             }
-                         ]
+{
+    "teamAwards": [
+        {
+            "id": "open",
+            "club": "preston"
+        },
+        {
+            "id": "ladies",
+            "club": "preston"
+        },
+        {
+            "id": "vets",
+            "club": "wesham"
+        },
+        {
+            "id": "lady-vets",
+            "club": "lytham"
+        },
+        {
+            "id": "v50",
+            "club": "preston"
+        },
+        {
+            "id": "v60",
+            "club": "preston"
+        }
+    ],
+    "individualAwards": [
+        {
+            "id": "female",
+            "awards": [
+                {
+                    "position": 1,
+                    "name": "Katie Littlefair",
+                    "club": "preston",
+                    "ageCategory": "SEN",
+                    "seriesRunnerId": 164
+                },
+                {
+                    "position": 2,
+                    "name": "Emma Watson",
+                    "club": "preston",
+                    "ageCategory": "V35",
+                    "seriesRunnerId": 185
+                },
+                {
+                    "position": 3,
+                    "name": "Cass Chisholm",
+                    "club": "lytham",
+                    "ageCategory": "V40",
+                    "seriesRunnerId": 497
+                }
+            ],
+            "sex": "F"
+        },
+        {
+            "id": "male",
+            "awards": [
+                {
+                    "position": 1,
+                    "name": "Luke Minns",
+                    "club": "blackpool",
+                    "ageCategory": "SEN",
+                    "seriesRunnerId": 474
+                },
+                {
+                    "position": 2,
+                    "name": "Rob Danson",
+                    "club": "preston",
+                    "ageCategory": "SEN",
+                    "seriesRunnerId": 100
+                },
+                {
+                    "position": 3,
+                    "name": "Sam Evans",
+                    "club": "preston",
+                    "ageCategory": "SEN",
+                    "seriesRunnerId": 475
+                }
+            ],
+            "sex": "M"
+        },
+        {
+            "id": "jun-female",
+            "awards": [
+                {
+                    "position": 1,
+                    "name": "Lucy Dewhurst",
+                    "seriesRunnerId": 358,
+                    "club": "red-rose"
+                }
+            ],
+            "sex": "F",
+            "ageCategory": "JUN"
+        },
+        {
+            "id": "jun-male",
+            "awards": [
+                {
+                    "position": 1,
+                    "name": "Luke Suffolk",
+                    "seriesRunnerId": 105,
+                    "club": "preston"
+                },
+                {
+                    "position": 2,
+                    "name": "Craig Sarson",
+                    "seriesRunnerId": 134,
+                    "club": "chorley"
+                }
+            ],
+            "sex": "M",
+            "ageCategory": "JUN"
+        },
+        {
+            "id": "sen-female",
+            "awards": [
+                {
+                    "position": 1,
+                    "name": "Melissa Metcalf",
+                    "seriesRunnerId": 504,
+                    "club": "preston"
+                },
+                {
+                    "position": 2,
+                    "name": "Charlotte Gregory",
+                    "seriesRunnerId": 368,
+                    "club": "preston"
+                }
+            ],
+            "sex": "F",
+            "ageCategory": "SEN"
+        },
+        {
+            "id": "sen-male",
+            "awards": [
+                {
+                    "position": 1,
+                    "name": "Mike Toft",
+                    "seriesRunnerId": 102,
+                    "club": "lytham"
+                },
+                {
+                    "position": 2,
+                    "name": "Adam Wilding",
+                    "seriesRunnerId": 103,
+                    "club": "wesham"
+                }
+            ],
+            "sex": "M",
+            "ageCategory": "SEN"
+        },
+        {
+            "id": "v35-female",
+            "awards": [
+                {
+                    "position": 1,
+                    "name": "Leanne Neild",
+                    "seriesRunnerId": 192,
+                    "club": "lytham"
+                },
+                {
+                    "position": 2,
+                    "name": "Hannah Bruce",
+                    "seriesRunnerId": 212,
+                    "club": "preston"
+                }
+            ],
+            "sex": "F",
+            "ageCategory": "V35"
+        },
+        {
+            "id": "v40-female",
+            "awards": [
+                {
+                    "position": 1,
+                    "name": "Gill Draper",
+                    "seriesRunnerId": 166,
+                    "club": "lytham"
+                },
+                {
+                    "position": 2,
+                    "name": "Emma Lund",
+                    "seriesRunnerId": 287,
+                    "club": "wesham"
+                }
+            ],
+            "sex": "F",
+            "ageCategory": "V40"
+        },
+        {
+            "id": "v40-male",
+            "awards": [
+                {
+                    "position": 1,
+                    "name": "Simon Croft",
+                    "seriesRunnerId": 478,
+                    "club": "red-rose"
+                },
+                {
+                    "position": 2,
+                    "name": "Mark Belfield",
+                    "seriesRunnerId": 124,
+                    "club": "wesham"
+                }
+            ],
+            "sex": "M",
+            "ageCategory": "V40"
+        },
+        {
+            "id": "v45-female",
+            "awards": [
+                {
+                    "position": 1,
+                    "name": "Janette Rayton",
+                    "seriesRunnerId": 518,
+                    "club": "red-rose"
+                },
+                {
+                    "position": 2,
+                    "name": "Clare Taylor",
+                    "seriesRunnerId": 253,
+                    "club": "lytham"
+                }
+            ],
+            "sex": "F",
+            "ageCategory": "V45"
+        },
+        {
+            "id": "v45-male",
+            "awards": [
+                {
+                    "position": 1,
+                    "name": "Tom Bamber",
+                    "seriesRunnerId": 106,
+                    "club": "wesham"
+                },
+                {
+                    "position": 2,
+                    "name": "Andy Cottam",
+                    "seriesRunnerId": 127,
+                    "club": "preston"
+                }
+            ],
+            "sex": "M",
+            "ageCategory": "V45"
+        },
+        {
+            "id": "v50-female",
+            "awards": [
+                {
+                    "position": 1,
+                    "name": "Elizabeth Horne",
+                    "seriesRunnerId": 245,
+                    "club": "preston"
+                },
+                {
+                    "position": 2,
+                    "name": "Tracey Mullan",
+                    "seriesRunnerId": 236,
+                    "club": "thornton"
+                }
+            ],
+            "sex": "F",
+            "ageCategory": "V50"
+        },
+        {
+            "id": "v50-male",
+            "awards": [
+                {
+                    "position": 1,
+                    "name": "Robert Walsh",
+                    "seriesRunnerId": 125,
+                    "club": "chorley"
+                },
+                {
+                    "position": 2,
+                    "name": "Jonathan Tuck",
+                    "seriesRunnerId": 491,
+                    "club": "lytham"
+                }
+            ],
+            "sex": "M",
+            "ageCategory": "V50"
+        },
+        {
+            "id": "v55-female",
+            "awards": [
+                {
+                    "position": 1,
+                    "name": "Susan Coulthurst",
+                    "seriesRunnerId": 219,
+                    "club": "wesham"
+                },
+                {
+                    "position": 2,
+                    "name": "Jo Goorney",
+                    "seriesRunnerId": 241,
+                    "club": "lytham"
+                }
+            ],
+            "sex": "F",
+            "ageCategory": "V55"
+        },
+        {
+            "id": "v55-male",
+            "awards": [
+                {
+                    "position": 1,
+                    "name": "David Parkinson",
+                    "seriesRunnerId": 168,
+                    "club": "red-rose"
+                },
+                {
+                    "position": 2,
+                    "name": "Carl Groome",
+                    "seriesRunnerId": 186,
+                    "club": "wesham"
+                }
+            ],
+            "sex": "M",
+            "ageCategory": "V55"
+        },
+        {
+            "id": "v60-female",
+            "awards": [
+                {
+                    "position": 1,
+                    "name": "Jane Hodkinson",
+                    "seriesRunnerId": 326,
+                    "club": "preston"
+                },
+                {
+                    "position": 2,
+                    "name": "Alison Bowden",
+                    "seriesRunnerId": 311,
+                    "club": "thornton"
+                }
+            ],
+            "sex": "F",
+            "ageCategory": "V60"
+        },
+        {
+            "id": "v60-male",
+            "awards": [
+                {
+                    "position": 1,
+                    "name": "Mark Lee",
+                    "seriesRunnerId": 171,
+                    "club": "preston"
+                },
+                {
+                    "position": 2,
+                    "name": "David Lea",
+                    "seriesRunnerId": 144,
+                    "club": "preston"
+                }
+            ],
+            "sex": "M",
+            "ageCategory": "V60"
+        },
+        {
+            "id": "v65-female",
+            "awards": [
+                {
+                    "position": 1,
+                    "name": "Barbara Holmes",
+                    "seriesRunnerId": 527,
+                    "club": "lytham"
+                },
+                {
+                    "position": 2,
+                    "name": "Heather Whelan",
+                    "seriesRunnerId": 413,
+                    "club": "red-rose"
+                }
+            ],
+            "sex": "F",
+            "ageCategory": "V65"
+        },
+        {
+            "id": "v65-male",
+            "awards": [
+                {
+                    "position": 1,
+                    "name": "Michael Edge",
+                    "seriesRunnerId": 223,
+                    "club": "wesham"
+                },
+                {
+                    "position": 2,
+                    "name": "Nigel Shepherd",
+                    "seriesRunnerId": 244,
+                    "club": "wesham"
+                }
+            ],
+            "sex": "M",
+            "ageCategory": "V65"
+        },
+        {
+            "id": "v70-female",
+            "awards": [
+                {
+                    "position": 1,
+                    "name": "Maureen Kirkby",
+                    "seriesRunnerId": 441,
+                    "club": "preston"
+                }
+            ],
+            "sex": "F",
+            "ageCategory": "V70"
+        },
+        {
+            "id": "v70-male",
+            "awards": [
+                {
+                    "position": 1,
+                    "name": "Philip Quibell",
+                    "seriesRunnerId": 222,
+                    "club": "wesham"
+                },
+                {
+                    "position": 2,
+                    "name": "Graham Webster",
+                    "seriesRunnerId": 308,
+                    "club": "lytham"
+                }
+            ],
+            "sex": "M",
+            "ageCategory": "V70"
+        },
+        {
+            "id": "v75-male",
+            "awards": [
+                {
+                    "position": 1,
+                    "name": "Alan Appleby",
+                    "seriesRunnerId": 373,
+                    "club": "preston"
+                },
+                {
+                    "position": 2,
+                    "name": "Simon David Young",
+                    "seriesRunnerId": 564,
+                    "club": "wesham"
+                }
+            ],
+            "sex": "M",
+            "ageCategory": "V75"
+        }
+    ]
 }

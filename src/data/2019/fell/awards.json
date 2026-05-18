@@ -1,57 +1,129 @@
-﻿{
+{
   "teamAwards": [
-    { "id": "overall", "club": "preston" },
-    { "id": "v40", "club": "preston" },
-    { "id": "v50", "club": "preston" },
-    { "id": "v60", "club": "preston" },
-    { "id": "women", "club": "red-rose" }
+    {
+      "id": "overall",
+      "club": "preston"
+    },
+    {
+      "id": "v40",
+      "club": "preston"
+    },
+    {
+      "id": "v50",
+      "club": "preston"
+    },
+    {
+      "id": "v60",
+      "club": "preston"
+    },
+    {
+      "id": "women",
+      "club": "red-rose"
+    }
   ],
   "individualAwards": [
     {
       "id": "sen-m",
       "awards": [
-        { "position": 1, "name": "Daniel Hughes", "club": "red-rose" },
-        { "position": 2, "name": "Barry Wheeler", "club": "red-rose" }
-      ]
+        {
+          "position": 1,
+          "name": "Daniel Hughes",
+          "club": "red-rose"
+        },
+        {
+          "position": 2,
+          "name": "Barry Wheeler",
+          "club": "red-rose"
+        }
+      ],
+      "sex": "M",
+      "ageCategory": "SEN"
     },
     {
       "id": "v40-m",
       "awards": [
-        { "position": 1, "name": "Neil Whipp", "club": "wesham" },
-        { "position": 2, "name": "Chris Charnley", "club": "red-rose" }
-      ]
+        {
+          "position": 1,
+          "name": "Neil Whipp",
+          "club": "wesham"
+        },
+        {
+          "position": 2,
+          "name": "Chris Charnley",
+          "club": "red-rose"
+        }
+      ],
+      "sex": "M",
+      "ageCategory": "V40"
     },
     {
       "id": "v50-m",
       "awards": [
-        { "position": 1, "name": "Stephen Woodruff", "club": "red-rose" },
-        { "position": 2, "name": "Frank Nightingale", "club": "red-rose" }
-      ]
+        {
+          "position": 1,
+          "name": "Stephen Woodruff",
+          "club": "red-rose"
+        },
+        {
+          "position": 2,
+          "name": "Frank Nightingale",
+          "club": "red-rose"
+        }
+      ],
+      "sex": "M",
+      "ageCategory": "V50"
     },
     {
       "id": "v60-m",
       "awards": [
-        { "position": 1, "name": "Graham Schofield", "club": "chorley" }
-      ]
+        {
+          "position": 1,
+          "name": "Graham Schofield",
+          "club": "chorley"
+        }
+      ],
+      "sex": "M",
+      "ageCategory": "V60"
     },
     {
       "id": "f",
       "awards": [
-        { "position": 1, "name": "Nicola Hughes", "club": "red-rose" }
-      ]
+        {
+          "position": 1,
+          "name": "Nicola Hughes",
+          "club": "red-rose"
+        }
+      ],
+      "sex": "F"
     },
     {
       "id": "v40-f",
       "awards": [
-        { "position": 1, "name": "Vicki Sherrington", "club": "preston" },
-        { "position": 2, "name": "Amanda Fuller", "club": "blackpool" }
-      ]
+        {
+          "position": 1,
+          "name": "Vicki Sherrington",
+          "club": "preston"
+        },
+        {
+          "position": 2,
+          "name": "Amanda Fuller",
+          "club": "blackpool"
+        }
+      ],
+      "sex": "F",
+      "ageCategory": "V40"
     },
     {
       "id": "v50-f",
       "awards": [
-        { "position": 1, "name": "Paula Plowman", "club": "red-rose" }
-      ]
+        {
+          "position": 1,
+          "name": "Paula Plowman",
+          "club": "red-rose"
+        }
+      ],
+      "sex": "F",
+      "ageCategory": "V50"
     }
   ]
 }

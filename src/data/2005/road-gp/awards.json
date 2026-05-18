@@ -1,34 +1,43 @@
-﻿{
-    "individualAwards":  [
-                           {
-                               "id":  "overall",
-                               "awards":  [
-                                              { "position": 1, "name": "S. Hallas", "club": "preston" }
-                                          ]
-                           },
-                           {
-                               "id":  "ladies",
-                               "awards":  [
-                                              { "position": 1, "name": "G. Titterington", "club": "blackpool-fylde" }
-                                          ]
-                           }
-                       ],
-    "teamAwards":  [
-                       {
-                           "club":  "north-fylde",
-                           "id":  "open"
-                       },
-                       {
-                           "club":  "north-fylde",
-                           "id":  "vets"
-                       },
-                       {
-                           "club":  "wesham",
-                           "id":  "vet50"
-                       },
-                       {
-                           "club":  "north-fylde",
-                           "id":  "ladies"
-                       }
-                   ]
+{
+    "individualAwards": [
+        {
+            "id": "overall",
+            "awards": [
+                {
+                    "position": 1,
+                    "name": "S. Hallas",
+                    "club": "preston"
+                }
+            ]
+        },
+        {
+            "id": "ladies",
+            "awards": [
+                {
+                    "position": 1,
+                    "name": "G. Titterington",
+                    "club": "blackpool-fylde"
+                }
+            ],
+            "sex": "F"
+        }
+    ],
+    "teamAwards": [
+        {
+            "club": "north-fylde",
+            "id": "open"
+        },
+        {
+            "club": "north-fylde",
+            "id": "vets"
+        },
+        {
+            "club": "wesham",
+            "id": "vet50"
+        },
+        {
+            "club": "north-fylde",
+            "id": "ladies"
+        }
+    ]
 }
