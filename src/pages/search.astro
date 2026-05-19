@@ -34,7 +34,7 @@ import Layout from '../components/Layout.astro';
 
 <script>
   import Fuse from 'fuse.js'
-  import { createFuse, loadIndex, typeLabel } from '../lib/search-client'
+  import { createFuse, loadIndex } from '../lib/search-client'
   import type { SearchRecord } from '../lib/search-client'
 
   const LIMIT = 50
@@ -63,7 +63,6 @@ import Layout from '../components/Layout.astro';
     sectionId: string,
     listId: string,
     items: SearchRecord[],
-    showBadge: boolean
   ): void {
     const section = document.getElementById(sectionId)!
     const list = document.getElementById(listId)!
@@ -73,7 +72,6 @@ import Layout from '../components/Layout.astro';
     }
     list.innerHTML = items.map(r =>
       `<li><a href="${escapeHtml(r.url)}" class="flex items-center gap-2 py-1.5 hover:text-primary text-sm">` +
-      (showBadge ? `<span class="badge badge-ghost badge-sm shrink-0">${escapeHtml(typeLabel(r.type))}</span>` : '') +
       `<span class="flex flex-col">` +
       `<span>${escapeHtml(r.label)}</span>` +
       (r.subtitle ? `<span class="text-xs text-base-content/50">${escapeHtml(r.subtitle)}</span>` : '') +
@@ -87,9 +85,9 @@ import Layout from '../components/Layout.astro';
     const races = results.filter(r => r.type === 'race-detail' || r.type === 'race-results')
     const pages = results.filter(r => r.type === 'year' || r.type === 'standings')
 
-    renderSection('results-runners', 'list-runners', runners, false)
-    renderSection('results-races', 'list-races', races, true)
-    renderSection('results-pages', 'list-pages', pages, true)
+    renderSection('results-runners', 'list-runners', runners)
+    renderSection('results-races', 'list-races', races)
+    renderSection('results-pages', 'list-pages', pages)
 
     if (results.length === 0) {
       status.textContent = `No results for "${query}".`
