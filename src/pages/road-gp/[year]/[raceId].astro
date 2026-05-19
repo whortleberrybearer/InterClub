@@ -8,20 +8,18 @@ import { siteUrl } from '../../../lib/url';
 import type { Race } from '../../../lib/types';
 
 export async function getStaticPaths() {
+  const currentYear = getCurrentYear();
   const allYears = getAvailableYears('road-gp');
-  return allYears.flatMap(year =>
-    getRaces(year, 'road-gp').map(race => {
-      // race ids are stable across years (each club hosts the same race annually)
-      const pastResults = allYears
-        .filter(y => y < year && hasResults(y, 'road-gp', race.id))
-        .sort((a, b) => b - a)
-        .map(y => ({ year: y, url: siteUrl(`/road-gp/${y}/${race.id}/results/`) }));
-      return {
-        params: { year: String(year), raceId: race.id },
-        props: { race, year, pastResults },
-      };
-    })
-  );
+  return getRaces(currentYear, 'road-gp').map(race => {
+    const pastResults = allYears
+      .filter(y => y < currentYear && hasResults(y, 'road-gp', race.id))
+      .sort((a, b) => b - a)
+      .map(y => ({ year: y, url: siteUrl(`/road-gp/${y}/${race.id}/results/`) }));
+    return {
+      params: { year: String(currentYear), raceId: race.id },
+      props: { race, year: currentYear, pastResults },
+    };
+  });
 }
 
 interface Props {
