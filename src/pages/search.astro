@@ -26,6 +26,11 @@ import Layout from '../components/Layout.astro';
     <ul id="list-races" class="flex flex-col gap-1"></ul>
   </div>
 
+  <div id="results-standings" class="mb-8 hidden">
+    <h2 class="text-lg font-semibold mb-3">Standings</h2>
+    <ul id="list-standings" class="flex flex-col gap-1"></ul>
+  </div>
+
   <div id="results-pages" class="mb-8 hidden">
     <h2 class="text-lg font-semibold mb-3">Pages</h2>
     <ul id="list-pages" class="flex flex-col gap-1"></ul>
@@ -83,10 +88,12 @@ import Layout from '../components/Layout.astro';
   function displayResults(results: SearchRecord[], query: string, total: number): void {
     const runners = results.filter(r => r.type === 'runner')
     const races = results.filter(r => r.type === 'race-detail' || r.type === 'race-results')
-    const pages = results.filter(r => r.type === 'year' || r.type === 'standings')
+    const standings = results.filter(r => r.type === 'standings')
+    const pages = results.filter(r => r.type === 'year')
 
     renderSection('results-runners', 'list-runners', runners)
     renderSection('results-races', 'list-races', races)
+    renderSection('results-standings', 'list-standings', standings)
     renderSection('results-pages', 'list-pages', pages)
 
     if (results.length === 0) {
@@ -99,7 +106,7 @@ import Layout from '../components/Layout.astro';
   }
 
   function clearResults(): void {
-    for (const id of ['results-runners', 'results-races', 'results-pages']) {
+    for (const id of ['results-runners', 'results-races', 'results-standings', 'results-pages']) {
       document.getElementById(id)!.classList.add('hidden')
     }
   }
