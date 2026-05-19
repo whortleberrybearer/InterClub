@@ -51,7 +51,10 @@ import Layout from '../components/Layout.astro';
 
   async function ensureFuse(): Promise<Fuse<SearchRecord>> {
     if (!fusePromise) {
-      fusePromise = loadIndex().then(records => createFuse(records))
+      fusePromise = loadIndex().then(records => createFuse(records)).catch(err => {
+        fusePromise = null
+        throw err
+      })
     }
     return fusePromise
   }
@@ -69,7 +72,7 @@ import Layout from '../components/Layout.astro';
       return
     }
     list.innerHTML = items.map(r =>
-      `<li><a href="${r.url}" class="flex items-center gap-2 py-1.5 hover:text-primary text-sm">` +
+      `<li><a href="${escapeHtml(r.url)}" class="flex items-center gap-2 py-1.5 hover:text-primary text-sm">` +
       (showBadge ? `<span class="badge badge-ghost badge-sm shrink-0">${escapeHtml(typeLabel(r.type))}</span>` : '') +
       `<span>${escapeHtml(r.label)}</span></a></li>`
     ).join('')
