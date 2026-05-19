@@ -1,5 +1,5 @@
 import type { APIRoute } from 'astro'
-import { getGlobalRunners, runnerSlug } from '../lib/runners'
+import { getGlobalRunners, runnerSlug, resolveClubName } from '../lib/runners'
 import { getAvailableYears, getRaces, getCurrentYear } from '../lib/data'
 import { hasResults, hasTeamStandings, hasIndividualStandings } from '../lib/results'
 import { siteUrl } from '../lib/url'
@@ -17,6 +17,7 @@ export const GET: APIRoute = () => {
       type: 'runner',
       label: `${runner.firstName} ${runner.lastName}`,
       url: siteUrl(`/runners/${runnerSlug(runner)}/`),
+      subtitle: resolveClubName(runner.club),
     })
   }
 

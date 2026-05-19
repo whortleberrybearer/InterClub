@@ -74,7 +74,10 @@ import Layout from '../components/Layout.astro';
     list.innerHTML = items.map(r =>
       `<li><a href="${escapeHtml(r.url)}" class="flex items-center gap-2 py-1.5 hover:text-primary text-sm">` +
       (showBadge ? `<span class="badge badge-ghost badge-sm shrink-0">${escapeHtml(typeLabel(r.type))}</span>` : '') +
-      `<span>${escapeHtml(r.label)}</span></a></li>`
+      `<span class="flex flex-col">` +
+      `<span>${escapeHtml(r.label)}</span>` +
+      (r.subtitle ? `<span class="text-xs text-base-content/50">${escapeHtml(r.subtitle)}</span>` : '') +
+      `</span></a></li>`
     ).join('')
     section.classList.remove('hidden')
   }

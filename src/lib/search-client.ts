@@ -5,6 +5,7 @@ export type SearchRecord = {
   type: 'runner' | 'race-detail' | 'race-results' | 'year' | 'standings'
   label: string
   url: string
+  subtitle?: string
 }
 
 export function createFuse(records: SearchRecord[]): Fuse<SearchRecord> {

@@ -146,7 +146,7 @@ function getAwardsForRunner(year: number, series: Series, seriesLocalId: number)
   return found;
 }
 
-function resolveClubName(clubId: string): string {
+export function resolveClubName(clubId: string): string {
   // allClubFiles is at module level (Vite requires import.meta.glob at module scope)
   for (const clubs of Object.values(allClubFiles)) {
     const club = clubs.default.find(c => c.id === clubId);
