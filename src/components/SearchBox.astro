@@ -18,31 +18,24 @@
 
 <script>
   import Fuse from 'fuse.js'
-  import { createFuse, loadIndex, runSearch } from '../lib/search-client'
+  import { createFuse, loadIndex, runSearch, typeLabel } from '../lib/search-client'
   import type { SearchRecord } from '../lib/search-client'
 
   const input = document.getElementById('search-input') as HTMLInputElement
   const dropdown = document.getElementById('search-dropdown') as HTMLUListElement
   const base = import.meta.env.BASE_URL.replace(/\/$/, '')
 
-  let fuseInstance: Fuse<SearchRecord> | null = null
+  let fusePromise: Promise<Fuse<SearchRecord>> | null = null
 
   async function ensureFuse(): Promise<Fuse<SearchRecord>> {
-    if (fuseInstance) return fuseInstance
-    const records = await loadIndex()
-    fuseInstance = createFuse(records)
-    return fuseInstance
+    if (!fusePromise) {
+      fusePromise = loadIndex().then(records => createFuse(records))
+    }
+    return fusePromise
   }
 
-  function typeLabel(type: SearchRecord['type']): string {
-    const labels: Record<SearchRecord['type'], string> = {
-      'runner': 'Runner',
-      'race-detail': 'Race',
-      'race-results': 'Results',
-      'year': 'Archive',
-      'standings': 'Standings',
-    }
-    return labels[type]
+  function escapeHtml(s: string): string {
+    return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')
   }
 
   function renderDropdown(results: SearchRecord[], query: string): void {
@@ -52,8 +45,8 @@
     }
     const items = results.slice(0, 8).map(r =>
       `<li><a href="${r.url}" class="flex items-center gap-2 px-3 py-2 hover:bg-base-200 text-sm">` +
-      `<span class="badge badge-ghost badge-sm shrink-0">${typeLabel(r.type)}</span>` +
-      `<span class="truncate">${r.label}</span></a></li>`
+      `<span class="badge badge-ghost badge-sm shrink-0">${escapeHtml(typeLabel(r.type))}</span>` +
+      `<span class="truncate">${escapeHtml(r.label)}</span></a></li>`
     ).join('')
     const footer =
       `<li class="border-t border-base-200">` +
