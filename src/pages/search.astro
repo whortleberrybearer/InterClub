@@ -1,0 +1,130 @@
+---
+// src/pages/search.astro
+import Layout from '../components/Layout.astro';
+---
+
+<Layout title="Search">
+  <h1 class="text-2xl font-bold mb-4">Search</h1>
+
+  <input
+    id="search-input"
+    type="search"
+    placeholder="Search runners, races, history…"
+    autocomplete="off"
+    class="input input-bordered w-full mb-3"
+  />
+
+  <p id="search-status" class="text-sm text-base-content/60 mb-6">Type at least 3 characters to search.</p>
+
+  <div id="results-runners" class="mb-8 hidden">
+    <h2 class="text-lg font-semibold mb-3">Runners</h2>
+    <ul id="list-runners" class="flex flex-col gap-1"></ul>
+  </div>
+
+  <div id="results-races" class="mb-8 hidden">
+    <h2 class="text-lg font-semibold mb-3">Races</h2>
+    <ul id="list-races" class="flex flex-col gap-1"></ul>
+  </div>
+
+  <div id="results-pages" class="mb-8 hidden">
+    <h2 class="text-lg font-semibold mb-3">Pages</h2>
+    <ul id="list-pages" class="flex flex-col gap-1"></ul>
+  </div>
+</Layout>
+
+<script>
+  import Fuse from 'fuse.js'
+  import { createFuse, loadIndex, runSearch, typeLabel } from '../lib/search-client'
+  import type { SearchRecord } from '../lib/search-client'
+
+  const LIMIT = 50
+
+  const input = document.getElementById('search-input') as HTMLInputElement
+  const status = document.getElementById('search-status') as HTMLParagraphElement
+  const base = import.meta.env.BASE_URL.replace(/\/$/, '')
+
+  let fusePromise: Promise<Fuse<SearchRecord>> | null = null
+
+  function escapeHtml(s: string): string {
+    return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')
+  }
+
+  async function ensureFuse(): Promise<Fuse<SearchRecord>> {
+    if (!fusePromise) {
+      fusePromise = loadIndex().then(records => createFuse(records))
+    }
+    return fusePromise
+  }
+
+  function renderSection(
+    sectionId: string,
+    listId: string,
+    items: SearchRecord[],
+    showBadge: boolean
+  ): void {
+    const section = document.getElementById(sectionId)!
+    const list = document.getElementById(listId)!
+    if (items.length === 0) {
+      section.classList.add('hidden')
+      return
+    }
+    list.innerHTML = items.map(r =>
+      `<li><a href="${r.url}" class="flex items-center gap-2 py-1.5 hover:text-primary text-sm">` +
+      (showBadge ? `<span class="badge badge-ghost badge-sm shrink-0">${escapeHtml(typeLabel(r.type))}</span>` : '') +
+      `<span>${escapeHtml(r.label)}</span></a></li>`
+    ).join('')
+    section.classList.remove('hidden')
+  }
+
+  function displayResults(results: SearchRecord[], query: string, total: number): void {
+    const runners = results.filter(r => r.type === 'runner')
+    const races = results.filter(r => r.type === 'race-detail' || r.type === 'race-results')
+    const pages = results.filter(r => r.type === 'year' || r.type === 'standings')
+
+    renderSection('results-runners', 'list-runners', runners, false)
+    renderSection('results-races', 'list-races', races, true)
+    renderSection('results-pages', 'list-pages', pages, true)
+
+    if (results.length === 0) {
+      status.textContent = `No results for "${query}".`
+    } else if (total > LIMIT) {
+      status.textContent = `Showing ${LIMIT} of ${total} results — try a more specific search.`
+    } else {
+      status.textContent = `${results.length} result${results.length === 1 ? '' : 's'} for "${query}".`
+    }
+  }
+
+  function clearResults(): void {
+    for (const id of ['results-runners', 'results-races', 'results-pages']) {
+      document.getElementById(id)!.classList.add('hidden')
+    }
+  }
+
+  async function search(query: string): Promise<void> {
+    if (query.trim().length < 3) {
+      clearResults()
+      status.textContent = 'Type at least 3 characters to search.'
+      return
+    }
+    if (!fusePromise) {
+      status.textContent = 'Loading…'
+    }
+    const fuse = await ensureFuse()
+    const allResults = fuse.search(query)
+    const limited = allResults.slice(0, LIMIT).map(r => r.item)
+    displayResults(limited, query, allResults.length)
+  }
+
+  // On load: read ?q= from URL and run search
+  const params = new URLSearchParams(window.location.search)
+  const initialQuery = params.get('q') ?? ''
+  input.value = initialQuery
+  if (initialQuery) search(initialQuery)
+
+  // Live updates
+  input.addEventListener('input', () => {
+    const q = input.value.trim()
+    history.replaceState(null, '', q ? `${base}/search?q=${encodeURIComponent(q)}` : `${base}/search`)
+    search(q)
+  })
+</script>
