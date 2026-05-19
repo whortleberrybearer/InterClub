@@ -14,7 +14,8 @@
     "test:watch": "vitest"
   },
   "dependencies": {
-    "astro": "^6.1.9"
+    "astro": "^6.1.9",
+    "fuse.js": "^7.3.0"
   },
   "devDependencies": {
     "@tailwindcss/vite": "^4.2.4",
