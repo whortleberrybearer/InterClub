@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import SearchBox from './SearchBox.astro';
 
 interface Props {
   title: string;
@@ -42,6 +43,7 @@ function isActive(path: string): boolean {
             href={`${base}/contact/`}
             class={`btn btn-ghost btn-sm ${isActive('/contact') ? 'btn-active' : ''}`}
           >Contact</a>
+          <SearchBox />
         </div>
       </div>
     </header>
