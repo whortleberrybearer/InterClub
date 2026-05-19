@@ -1,0 +1,93 @@
+---
+// src/components/SearchBox.astro
+---
+
+<div class="relative" id="search-box">
+  <input
+    id="search-input"
+    type="search"
+    placeholder="Search…"
+    autocomplete="off"
+    class="input input-bordered input-sm w-32 sm:w-44 transition-all focus:w-44 sm:focus:w-56"
+  />
+  <ul
+    id="search-dropdown"
+    class="hidden absolute right-0 top-full mt-1 w-72 bg-base-100 rounded-box shadow-lg border border-base-200 z-50 overflow-hidden"
+  ></ul>
+</div>
+
+<script>
+  import Fuse from 'fuse.js'
+  import { createFuse, loadIndex, runSearch } from '../lib/search-client'
+  import type { SearchRecord } from '../lib/search-client'
+
+  const input = document.getElementById('search-input') as HTMLInputElement
+  const dropdown = document.getElementById('search-dropdown') as HTMLUListElement
+  const base = import.meta.env.BASE_URL.replace(/\/$/, '')
+
+  let fuseInstance: Fuse<SearchRecord> | null = null
+
+  async function ensureFuse(): Promise<Fuse<SearchRecord>> {
+    if (fuseInstance) return fuseInstance
+    const records = await loadIndex()
+    fuseInstance = createFuse(records)
+    return fuseInstance
+  }
+
+  function typeLabel(type: SearchRecord['type']): string {
+    const labels: Record<SearchRecord['type'], string> = {
+      'runner': 'Runner',
+      'race-detail': 'Race',
+      'race-results': 'Results',
+      'year': 'Archive',
+      'standings': 'Standings',
+    }
+    return labels[type]
+  }
+
+  function renderDropdown(results: SearchRecord[], query: string): void {
+    if (results.length === 0) {
+      dropdown.classList.add('hidden')
+      return
+    }
+    const items = results.slice(0, 8).map(r =>
+      `<li><a href="${r.url}" class="flex items-center gap-2 px-3 py-2 hover:bg-base-200 text-sm">` +
+      `<span class="badge badge-ghost badge-sm shrink-0">${typeLabel(r.type)}</span>` +
+      `<span class="truncate">${r.label}</span></a></li>`
+    ).join('')
+    const footer =
+      `<li class="border-t border-base-200">` +
+      `<a href="${base}/search?q=${encodeURIComponent(query)}" class="block px-3 py-2 text-sm text-primary hover:bg-base-200">` +
+      `See all results →</a></li>`
+    dropdown.innerHTML = items + footer
+    dropdown.classList.remove('hidden')
+  }
+
+  async function handleQuery(query: string): Promise<void> {
+    if (query.trim().length < 3) {
+      dropdown.classList.add('hidden')
+      return
+    }
+    const fuse = await ensureFuse()
+    renderDropdown(runSearch(fuse, query, 8), query)
+  }
+
+  input.addEventListener('focus', () => handleQuery(input.value))
+  input.addEventListener('input', () => handleQuery(input.value))
+
+  input.addEventListener('keydown', (e: KeyboardEvent) => {
+    if (e.key === 'Escape') {
+      dropdown.classList.add('hidden')
+      input.blur()
+    }
+    if (e.key === 'Enter' && input.value.trim().length >= 3) {
+      window.location.href = `${base}/search?q=${encodeURIComponent(input.value.trim())}`
+    }
+  })
+
+  document.addEventListener('click', (e: MouseEvent) => {
+    if (!document.getElementById('search-box')?.contains(e.target as Node)) {
+      dropdown.classList.add('hidden')
+    }
+  })
+</script>
