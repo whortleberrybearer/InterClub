@@ -13,7 +13,7 @@ export const GET: APIRoute = () => {
 
   // Runners
   for (const runner of getGlobalRunners()) {
-    const details = [runner.sex, runner.ageCategory].filter(Boolean).join(' ')
+    const details = [runner.sex, runner.ageCategory].filter(Boolean).join('')
     records.push({
       type: 'runner',
       label: `${runner.firstName} ${runner.lastName}`,
