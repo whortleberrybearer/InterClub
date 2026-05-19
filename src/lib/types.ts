@@ -57,7 +57,8 @@ export interface GlobalRunner {
   lastName: string;
   club: string;       // club id matching clubs.json
   sex: string;        // 'M' or 'F'
-  ageCategory: string;   // e.g. 'SEN', 'V40'
+  ageCategory: string;        // e.g. 'SEN', 'V40'
+  ageCategoryYear?: number;   // year the ageCategory was recorded
 }
 
 export interface SeriesRunner {
