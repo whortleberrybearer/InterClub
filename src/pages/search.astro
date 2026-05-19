@@ -7,7 +7,7 @@ import Layout from '../components/Layout.astro';
   <h1 class="text-2xl font-bold mb-4">Search</h1>
 
   <input
-    id="search-input"
+    id="search-page-input"
     type="search"
     placeholder="Search runners, races, history…"
     autocomplete="off"
@@ -34,12 +34,12 @@ import Layout from '../components/Layout.astro';
 
 <script>
   import Fuse from 'fuse.js'
-  import { createFuse, loadIndex, runSearch, typeLabel } from '../lib/search-client'
+  import { createFuse, loadIndex, typeLabel } from '../lib/search-client'
   import type { SearchRecord } from '../lib/search-client'
 
   const LIMIT = 50
 
-  const input = document.getElementById('search-input') as HTMLInputElement
+  const input = document.getElementById('search-page-input') as HTMLInputElement
   const status = document.getElementById('search-status') as HTMLParagraphElement
   const base = import.meta.env.BASE_URL.replace(/\/$/, '')
 
