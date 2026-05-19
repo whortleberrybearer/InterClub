@@ -13,11 +13,12 @@ export const GET: APIRoute = () => {
 
   // Runners
   for (const runner of getGlobalRunners()) {
+    const details = [runner.sex, runner.ageCategory].filter(Boolean).join(' ')
     records.push({
       type: 'runner',
       label: `${runner.firstName} ${runner.lastName}`,
       url: siteUrl(`/runners/${runnerSlug(runner)}/`),
-      subtitle: resolveClubName(runner.club),
+      subtitle: details ? `${resolveClubName(runner.club)} · ${details}` : resolveClubName(runner.club),
     })
   }
 
