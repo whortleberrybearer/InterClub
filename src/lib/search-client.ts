@@ -20,3 +20,14 @@ export async function loadIndex(): Promise<SearchRecord[]> {
   const res = await fetch(`${import.meta.env.BASE_URL}search-index.json`)
   return res.json()
 }
+
+export function typeLabel(type: SearchRecord['type']): string {
+  const labels: Record<SearchRecord['type'], string> = {
+    'runner': 'Runner',
+    'race-detail': 'Race',
+    'race-results': 'Results',
+    'year': 'Archive',
+    'standings': 'Standings',
+  }
+  return labels[type]
+}
