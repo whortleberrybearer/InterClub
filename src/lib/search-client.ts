@@ -18,7 +18,8 @@ export function runSearch(fuse: Fuse<SearchRecord>, query: string, limit = 50): 
 }
 
 export async function loadIndex(): Promise<SearchRecord[]> {
-  const res = await fetch(`${import.meta.env.BASE_URL}search-index.json`)
+  const base = import.meta.env.BASE_URL.replace(/\/$/, '')
+  const res = await fetch(`${base}/search-index.json`)
   return res.json()
 }
 
