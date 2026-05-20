@@ -11,7 +11,9 @@ export default defineConfig({
   base: '/InterClub',
   integrations: [
     sitemap(),
-    robotsTxt(),
+    robotsTxt({
+      policy: [{ userAgent: '*', disallow: '/' }],
+    }),
   ],
   vite: {
     plugins: [tailwindcss()]
