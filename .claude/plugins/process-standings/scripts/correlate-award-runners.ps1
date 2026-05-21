@@ -217,7 +217,7 @@ foreach ($catGroup in $awardsData.individualAwards) {
             if ($BatchMode) {
                 $ambiguities.Add([ordered]@{
                     categoryId  = $catId
-                    position    = $award.position
+                    position    = [int]$award.position
                     name        = $displayName
                     club        = $awardClub
                     inferredSex = $inferSex
