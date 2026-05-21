@@ -58,10 +58,10 @@ Run `parse-results.ps1`. This script is interactive — it will prompt for missi
   [-Provisional]
 ```
 
-On success, report: runner count, IC runner count, team categories found, and the three output files written:
+On success, report: runner count, IC runner count, team categories found, and the output files written:
 - `src/data/<Year>/<Series>/results/<RaceId>[–provisional].csv`
 - `src/data/<Year>/<Series>/results/<RaceId>-teams[–provisional].json`
-- `src/data/<Year>/<Series>/team-standings.json`
+- `src/data/<Year>/<Series>/team-standings.json` (series directory, not results/)
 
 Stop and report if the script errors.
 
