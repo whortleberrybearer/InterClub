@@ -92,7 +92,7 @@ Collect into the batch:
 
 ## Step 4 — Correlate award runners
 
-Only run this step if `awards.json` exists.
+Only run this step if `src/data/<Year>/<Series>/awards.json` exists.
 
 ```
 <skill_dir>/scripts/correlate-award-runners.ps1
@@ -102,7 +102,7 @@ Only run this step if `awards.json` exists.
   -BatchMode
 ```
 
-Read the ambiguity report written to `src/data/<Year>/<Series>/awards.json.ambiguities.json`. Add each entry to the disambiguation batch, noting: `categoryId`, `position`, `name`, `club`, `inferredSex`, and `candidates`.
+The script prints the absolute path of the report file on exit (e.g. `Batch mode: 3 ambiguities written to: C:\...\awards.json.ambiguities.json`). Read the report from that path. Each JSON object in the array contains: `categoryId`, `position`, `name`, `club`, `inferredSex`, and `candidates` — add all entries to the disambiguation batch.
 
 ---
 
