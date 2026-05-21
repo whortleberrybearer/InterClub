@@ -70,12 +70,12 @@ function isNext(races: Race[], race: Race): boolean {
     <div class="flex items-center justify-between mb-4">
       <h2 class="text-xl font-bold">Road Grand Prix</h2>
       {roadStandingsUrl && (
-        <a href={roadStandingsUrl} class="text-sm text-primary hover:underline">Standings →</a>
+        <a href={roadStandingsUrl} class="text-sm text-amber hover:underline">Standings →</a>
       )}
     </div>
 
     {heroRace && heroMode && (
-      <div class={`card shadow mb-4 ${heroMode === 'recent' ? 'bg-success text-success-content' : 'bg-primary text-primary-content'}`}>
+      <div class={`card shadow mb-4 ${heroMode === 'recent' ? 'bg-success text-white' : 'bg-amber text-white'}`}>
         <div class="card-body flex-row items-center justify-between flex-wrap gap-4 py-4">
           <div>
             <div class="text-xs uppercase tracking-wide opacity-70 mb-1">{heroLabel}</div>
@@ -86,11 +86,11 @@ function isNext(races: Race[], race: Race): boolean {
             </p>
           </div>
           {heroMode === 'recent' ? (
-            <a href={siteUrl(`/road-gp/${currentYear}/${heroRace.id}/results`)} class={`btn btn-sm border-0 shrink-0 bg-white text-success hover:bg-base-200`}>
+            <a href={siteUrl(`/road-gp/${currentYear}/${heroRace.id}/results`)} class={`btn btn-sm border-0 shrink-0 bg-white text-success hover:bg-canvas`}>
               View results →
             </a>
           ) : (
-            <a href={siteUrl(`/road-gp/${currentYear}/${heroRace.id}`)} class={`btn btn-sm border-0 shrink-0 bg-white text-primary hover:bg-base-200`}>
+            <a href={siteUrl(`/road-gp/${currentYear}/${heroRace.id}`)} class={`btn btn-sm border-0 shrink-0 bg-white text-amber hover:bg-canvas`}>
               Race info →
             </a>
           )}
@@ -99,14 +99,14 @@ function isNext(races: Race[], race: Race): boolean {
     )}
 
     <div class="overflow-x-auto">
-      <table class="table table-sm bg-base-100 rounded-box shadow-sm w-full">
+      <table class="table table-sm bg-surface rounded-xl shadow-sm w-full">
         <tbody>
           {roadRaces.map(race => {
             const past = isPast(race);
             const next = isNext(roadRaces, race);
             return (
-              <tr class:list={[{ 'opacity-40': past, 'bg-primary/5': next }]}>
-                <td class:list={['text-sm w-28', { 'text-base-content/70': past }]}>
+              <tr class:list={[{ 'opacity-40': past, 'bg-amber/5': next }]}>
+                <td class:list={['text-sm w-28', { 'text-content/70': past }]}>
                   {formatRaceDate(race.date)}
                 </td>
                 <td class:list={['text-sm', { 'font-bold': next }]}>
@@ -134,19 +134,19 @@ function isNext(races: Race[], race: Race): boolean {
     <div class="flex items-center justify-between mb-4">
       <h2 class="text-xl font-bold">Fell Championship</h2>
       {fellStandingsUrl && (
-        <a href={fellStandingsUrl} class="text-sm text-primary hover:underline">Standings →</a>
+        <a href={fellStandingsUrl} class="text-sm text-amber hover:underline">Standings →</a>
       )}
     </div>
 
     <div class="overflow-x-auto">
-      <table class="table table-sm bg-base-100 rounded-box shadow-sm w-full">
+      <table class="table table-sm bg-surface rounded-xl shadow-sm w-full">
         <tbody>
           {fellRaces.map(race => {
             const past = isPast(race);
             const next = isNext(fellRaces, race);
             return (
-              <tr class:list={[{ 'opacity-40': past, 'bg-primary/5': next }]}>
-                <td class:list={['text-sm w-28', { 'text-base-content/70': past }]}>
+              <tr class:list={[{ 'opacity-40': past, 'bg-amber/5': next }]}>
+                <td class:list={['text-sm w-28', { 'text-content/70': past }]}>
                   {formatRaceDate(race.date)}
                 </td>
                 <td class:list={['text-sm', { 'font-bold': next }]}>
