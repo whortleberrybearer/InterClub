@@ -38,8 +38,8 @@
 
 [CmdletBinding()]
 param(
-    [string]$JsonFile,
-    [string]$Year,
+    [Parameter(Mandatory)][string]$JsonFile,
+    [Parameter(Mandatory)][string]$Year,
     [ValidateSet("road-gp", "fell")]
     [string]$Series = "road-gp",
     [string]$ProjectRoot,
@@ -48,18 +48,15 @@ param(
 
 $ErrorActionPreference = "Stop"
 
-# --- Helpers ------------------------------------------------------------------
-
-function Prompt-Value {
-    param([string]$Prompt, [string]$Default = "")
-    if ($Default) {
-        $val = Read-Host "$Prompt [$Default]"
-        if (-not $val) { return $Default }
-        return $val
-    }
-    do { $val = Read-Host $Prompt } while (-not $val)
-    return $val
+if (-not $ProjectRoot) {
+    $ProjectRoot = (git -C $PSScriptRoot rev-parse --show-toplevel 2>$null)
+    if (-not $ProjectRoot) { throw "ProjectRoot not supplied and could not be resolved from git" }
 }
+$ProjectRoot = [System.IO.Path]::GetFullPath($ProjectRoot)
+$JsonFile    = [System.IO.Path]::GetFullPath($JsonFile)
+if (-not (Test-Path $JsonFile)) { throw "JSON file not found: $JsonFile" }
+
+# --- Helpers ------------------------------------------------------------------
 
 function Normalize {
     param([string]$s)
@@ -82,24 +79,6 @@ Write-Host ""
 Write-Host "InterClub Team Runner Correlator" -ForegroundColor Cyan
 Write-Host "================================" -ForegroundColor Cyan
 Write-Host ""
-
-# Collect missing parameters interactively
-if (-not $ProjectRoot) {
-    $defaultRoot = Split-Path -Parent $PSScriptRoot
-    $ProjectRoot = Prompt-Value "Project root directory" $defaultRoot
-}
-$ProjectRoot = [System.IO.Path]::GetFullPath($ProjectRoot)
-if (-not (Test-Path $ProjectRoot)) { throw "Project root not found: $ProjectRoot" }
-
-if (-not $Year) {
-    $Year = Prompt-Value "Series year (e.g. 2026)" "2026"
-}
-
-if (-not $JsonFile) {
-    $JsonFile = Prompt-Value "Team results JSON file path"
-}
-$JsonFile = [System.IO.Path]::GetFullPath($JsonFile)
-if (-not (Test-Path $JsonFile)) { throw "JSON file not found: $JsonFile" }
 
 # Derived paths
 $seriesDir         = Join-Path $ProjectRoot "src\data\$Year\$Series"
