@@ -79,7 +79,7 @@ Write-Host "Loaded $($seriesRunners.Count) series runner(s)." -ForegroundColor D
 # Exact index: "first|last|club|category" -> runner
 $exactIndex = @{}
 foreach ($r in $seriesRunners) {
-    $key = "$(Normalize $r.firstName)|$(Normalize $r.lastName)|$(Normalize $r.club)|$(Normalize $r.ageCategory)"
+    $key = "$(Normalize $r.firstName)|$(Normalize $r.lastName)|$(Normalize $r.club)|$(Normalize $r.category)"
     if (-not $exactIndex.ContainsKey($key)) { $exactIndex[$key] = $r }
 }
 
