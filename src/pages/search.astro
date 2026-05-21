@@ -11,10 +11,10 @@ import Layout from '../components/Layout.astro';
     type="search"
     placeholder="Search runners, races, history…"
     autocomplete="off"
-    class="input input-bordered w-full mb-3"
+    class="input w-full mb-3"
   />
 
-  <p id="search-status" class="text-sm text-base-content/60 mb-6">Type at least 3 characters to search.</p>
+  <p id="search-status" class="text-sm text-content/60 mb-6">Type at least 3 characters to search.</p>
 
   <div id="results-runners" class="mb-8 hidden">
     <h2 class="text-lg font-semibold mb-3">Runners</h2>
@@ -76,10 +76,10 @@ import Layout from '../components/Layout.astro';
       return
     }
     list.innerHTML = items.map(r =>
-      `<li><a href="${escapeHtml(r.url)}" class="flex items-center gap-2 py-1.5 hover:text-primary text-sm">` +
+      `<li><a href="${escapeHtml(r.url)}" class="flex items-center gap-2 py-1.5 hover:text-amber text-sm">` +
       `<span class="flex flex-col">` +
       `<span>${escapeHtml(r.label)}</span>` +
-      (r.subtitle ? `<span class="text-xs text-base-content/50">${escapeHtml(r.subtitle)}</span>` : '') +
+      (r.subtitle ? `<span class="text-xs text-content/50">${escapeHtml(r.subtitle)}</span>` : '') +
       `</span></a></li>`
     ).join('')
     section.classList.remove('hidden')
