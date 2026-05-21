@@ -103,7 +103,8 @@ Write-Host "==================================" -ForegroundColor Cyan
 Write-Host ""
 
 if (-not $ProjectRoot) {
-    $defaultRoot = Split-Path -Parent $PSScriptRoot
+    $defaultRoot = (git -C $PSScriptRoot rev-parse --show-toplevel 2>$null)
+    if (-not $defaultRoot) { $defaultRoot = "" }
     $ProjectRoot = Prompt-Value "Project root directory" $defaultRoot
 }
 $ProjectRoot = [System.IO.Path]::GetFullPath($ProjectRoot)
