@@ -38,12 +38,12 @@ const categoryById = Object.fromEntries((config.teamCategories ?? []).map(c => [
         <span class="badge badge-warning badge-lg">Provisional</span>
       )}
     </div>
-    {race && <p class="text-sm text-base-content/60 mt-1">{year}</p>}
+    {race && <p class="text-sm text-content/60 mt-1">{year}</p>}
   </div>
 
   <!-- Category tabs -->
   <div class="overflow-x-auto -mx-4 px-4 mb-1">
-    <div class="flex border-b border-base-200 min-w-max" role="tablist">
+    <div class="flex border-b border-line min-w-max" role="tablist">
       {teamResults.categories.map((cat, i) => {
         const label = categoryById[cat.id]?.name ?? cat.id;
         return (
@@ -51,8 +51,8 @@ const categoryById = Object.fromEntries((config.teamCategories ?? []).map(c => [
             class:list={[
               'tab-btn px-4 py-2 text-sm border-b-2 -mb-px whitespace-nowrap transition-colors',
               i === 0
-                ? 'border-primary font-medium'
-                : 'border-transparent text-base-content/50 hover:text-base-content',
+                ? 'border-amber font-medium'
+                : 'border-transparent text-content/50 hover:text-content',
             ]}
             data-target={`cat-panel-${i}`}
             role="tab"
@@ -71,7 +71,7 @@ const categoryById = Object.fromEntries((config.teamCategories ?? []).map(c => [
     return (
       <div id={`cat-panel-${i}`} class:list={['pt-3', i > 0 && 'hidden']} role="tabpanel">
         {catConfig && (
-          <p class="text-xs text-base-content/40 mb-3">
+          <p class="text-xs text-content/40 mb-3">
             {catConfig.scorerCount} scorers · lower score wins
           </p>
         )}
@@ -79,31 +79,31 @@ const categoryById = Object.fromEntries((config.teamCategories ?? []).map(c => [
           const club = clubById[clubResult.club];
           const clubName = club?.name ?? clubResult.club;
           return (
-            <div class="border-b border-base-200 py-3 sm:grid sm:grid-cols-2 sm:gap-x-8 sm:items-start last:border-0">
+            <div class="border-b border-line py-3 sm:grid sm:grid-cols-2 sm:gap-x-8 sm:items-start last:border-0">
               <!-- Club info: position | name | points -->
               <div class="flex items-baseline gap-2">
-                <span class="w-5 shrink-0 text-sm text-base-content/40 tabular-nums">
+                <span class="w-5 shrink-0 text-sm text-content/40 tabular-nums">
                   {clubResult.position}
                 </span>
                 <span class="font-semibold">{clubName}</span>
                 <span class="ml-auto text-sm">
-                  <strong class="text-base-content/70">{clubResult.points}</strong>
-                  <span class="text-base-content/40"> {clubResult.points === 1 ? 'pt' : 'pts'}</span>
+                  <strong class="text-content/70">{clubResult.points}</strong>
+                  <span class="text-content/40"> {clubResult.points === 1 ? 'pt' : 'pts'}</span>
                 </span>
               </div>
               <!-- Scorers: collapsible on mobile, always open on desktop -->
               <details class="scorer-details mt-1 sm:mt-0">
-                <summary class="sm:hidden list-none cursor-pointer select-none text-xs text-base-content/40 py-1">
+                <summary class="sm:hidden list-none cursor-pointer select-none text-xs text-content/40 py-1">
                   Show scorers
                 </summary>
                 <ul class="mt-1">
                   {clubResult.scorers.map(scorer => (
                     <li class="flex justify-between py-0.5 text-sm">
-                      <span class="text-base-content/70">{scorer.name || '–'}</span>
-                      <span class="tabular-nums text-base-content/50">{scorer.position}</span>
+                      <span class="text-content/70">{scorer.name || '–'}</span>
+                      <span class="tabular-nums text-content/50">{scorer.position}</span>
                     </li>
                   ))}
-                  <li class="flex justify-between pt-1.5 mt-1 border-t border-base-200 text-sm font-semibold">
+                  <li class="flex justify-between pt-1.5 mt-1 border-t border-line text-sm font-semibold">
                     <span>Total</span>
                     <span class="tabular-nums">{clubResult.total}</span>
                   </li>
@@ -125,10 +125,10 @@ const categoryById = Object.fromEntries((config.teamCategories ?? []).map(c => [
       const targetId = btn.dataset.target!;
       tabs.forEach(t => {
         const active = t === btn;
-        t.classList.toggle('border-primary', active);
+        t.classList.toggle('border-amber', active);
         t.classList.toggle('font-medium', active);
         t.classList.toggle('border-transparent', !active);
-        t.classList.toggle('text-base-content/50', !active);
+        t.classList.toggle('text-content/50', !active);
         t.setAttribute('aria-selected', active ? 'true' : 'false');
       });
       document.querySelectorAll<HTMLElement>('[id^="cat-panel-"]').forEach(panel => {
