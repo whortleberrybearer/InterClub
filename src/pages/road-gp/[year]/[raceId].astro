@@ -49,7 +49,7 @@ const hasRouteText = !!(routeDescription || (courseRecords && courseRecords.leng
     <a href={backUrl} class="btn btn-ghost btn-sm gap-1 -ml-3">← Road Grand Prix</a>
   </div>
 
-  <div class="card bg-base-100 shadow-sm border border-base-200">
+  <div class="card shadow-sm">
     {image && (
       <figure>
         <img src={siteUrl(`/images/${image}`)} alt={name} class="w-full h-56 object-cover" />
@@ -58,9 +58,9 @@ const hasRouteText = !!(routeDescription || (courseRecords && courseRecords.leng
     <div class="card-body gap-4">
 
       <!-- Header -->
-      <p class="text-sm text-base-content/50 uppercase tracking-wide font-medium">{formattedDate}</p>
+      <p class="text-sm text-content/50 uppercase tracking-wide font-medium">{formattedDate}</p>
       <h1 class="text-2xl font-bold">{name}</h1>
-      {location && <p class="text-base-content/70">{location}</p>}
+      {location && <p class="text-content/70">{location}</p>}
       {(distance || ascent) && (
         <div class="flex flex-wrap gap-2">
           {distance && <span class="badge badge-outline">{distance}</span>}
@@ -77,14 +77,14 @@ const hasRouteText = !!(routeDescription || (courseRecords && courseRecords.leng
               <dl class="flex flex-col gap-3">
                 {startAddress && (
                   <div>
-                    <dt class="text-xs text-base-content/50 uppercase tracking-wide mb-1">Start location</dt>
+                    <dt class="text-xs text-content/50 uppercase tracking-wide mb-1">Start location</dt>
                     <dd class="font-medium">{startAddress}</dd>
                   </div>
                 )}
                 {parking && (
                   <div>
-                    <dt class="text-xs text-base-content/50 uppercase tracking-wide mb-1">Parking</dt>
-                    <dd class="text-base-content/80">{parking}</dd>
+                    <dt class="text-xs text-content/50 uppercase tracking-wide mb-1">Parking</dt>
+                    <dd class="text-content/80">{parking}</dd>
                   </div>
                 )}
               </dl>
@@ -116,11 +116,11 @@ const hasRouteText = !!(routeDescription || (courseRecords && courseRecords.leng
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div class="flex flex-col gap-3">
                 {routeDescription && (
-                  <p class="text-base-content/80">{routeDescription}</p>
+                  <p class="text-content/80">{routeDescription}</p>
                 )}
                 {courseRecords && courseRecords.length > 0 && (
                   <div>
-                    <p class="text-xs text-base-content/50 uppercase tracking-wide mb-2">Course Records</p>
+                    <p class="text-xs text-content/50 uppercase tracking-wide mb-2">Course Records</p>
                     <div class="flex flex-col gap-1">
                       {courseRecords.map(record => (
                         <div class="flex items-center gap-2 text-sm">
@@ -128,8 +128,8 @@ const hasRouteText = !!(routeDescription || (courseRecords && courseRecords.leng
                             {record.sex === 'M' ? 'Men' : 'Women'}
                           </span>
                           <span class="font-medium font-mono">{record.time}</span>
-                          <span class="text-base-content/70">{record.name}</span>
-                          <span class="text-base-content/50">({record.year})</span>
+                          <span class="text-content/70">{record.name}</span>
+                          <span class="text-content/50">({record.year})</span>
                         </div>
                       ))}
                     </div>
@@ -160,7 +160,7 @@ const hasRouteText = !!(routeDescription || (courseRecords && courseRecords.leng
       {postRaceVenue && (
         <>
           <div class="divider my-1 text-sm font-semibold">After the Race</div>
-          <p class="text-base-content/80">{postRaceVenue}</p>
+          <p class="text-content/80">{postRaceVenue}</p>
         </>
       )}
 
@@ -171,7 +171,7 @@ const hasRouteText = !!(routeDescription || (courseRecords && courseRecords.leng
           <div class="flex flex-wrap items-center gap-2">
             {pastResults.map((r, i) => (
               <>
-                {i > 0 && <span class="text-base-content/30">·</span>}
+                {i > 0 && <span class="text-content/30">·</span>}
                 <a href={r.url} class="link link-hover text-sm">{r.year}</a>
               </>
             ))}
