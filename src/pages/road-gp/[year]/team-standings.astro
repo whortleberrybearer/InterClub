@@ -38,12 +38,12 @@ const categoryById = Object.fromEntries((config.teamCategories ?? []).map(c => [
         <span class="badge badge-warning badge-lg">Provisional</span>
       )}
     </div>
-    <p class="text-sm text-base-content/60 mt-1">{year} Inter Club Road Grand Prix</p>
+    <p class="text-sm text-content/60 mt-1">{year} Inter Club Road Grand Prix</p>
   </div>
 
   <!-- Category tabs -->
   <div class="overflow-x-auto -mx-4 px-4 mb-1">
-    <div class="flex border-b border-base-200 min-w-max" role="tablist">
+    <div class="flex border-b border-line min-w-max" role="tablist">
       {standings.categories.map((cat, i) => {
         const label = categoryById[cat.id]?.name ?? cat.id;
         return (
@@ -51,8 +51,8 @@ const categoryById = Object.fromEntries((config.teamCategories ?? []).map(c => [
             class:list={[
               'tab-btn px-4 py-2 text-sm border-b-2 -mb-px whitespace-nowrap transition-colors',
               i === 0
-                ? 'border-primary font-medium'
-                : 'border-transparent text-base-content/50 hover:text-base-content',
+                ? 'border-amber font-medium'
+                : 'border-transparent text-content/50 hover:text-content',
             ]}
             data-target={`cat-panel-${i}`}
             role="tab"
@@ -73,9 +73,9 @@ const categoryById = Object.fromEntries((config.teamCategories ?? []).map(c => [
       <div class="hidden sm:block overflow-x-auto">
         <table class="w-full border-collapse text-sm">
           <thead>
-            <tr class="border-b border-base-200">
-              <th class="text-left py-2 pr-3 text-base-content/40 font-medium w-8">#</th>
-              <th class="text-left py-2 pr-4 text-base-content/40 font-medium">Club</th>
+            <tr class="border-b border-line">
+              <th class="text-left py-2 pr-3 text-content/40 font-medium w-8">#</th>
+              <th class="text-left py-2 pr-4 text-content/40 font-medium">Club</th>
               {standings.races.map(raceId => {
                 const race = raceById[raceId];
                 const label = race?.shortName ?? raceId;
@@ -85,31 +85,31 @@ const categoryById = Object.fromEntries((config.teamCategories ?? []).map(c => [
                 return (
                   <th class="text-right py-2 px-2 font-medium whitespace-nowrap">
                     {href
-                      ? <a href={href} class="text-primary hover:underline">{label}</a>
-                      : <span class="text-base-content/20">{label}</span>
+                      ? <a href={href} class="text-amber hover:underline">{label}</a>
+                      : <span class="text-content/20">{label}</span>
                     }
                   </th>
                 );
               })}
-              <th class="text-right py-2 pl-4 text-base-content/40 font-medium">Total</th>
+              <th class="text-right py-2 pl-4 text-content/40 font-medium">Total</th>
             </tr>
           </thead>
           <tbody>
             {cat.clubs.map(clubResult => {
               const clubName = clubById[clubResult.club]?.name ?? clubResult.club;
               return (
-                <tr class="border-b border-base-200/50 last:border-0 hover:bg-base-200/30">
-                  <td class="py-2.5 pr-3 text-base-content/40 tabular-nums">{clubResult.position}</td>
+                <tr class="border-b border-line/50 last:border-0 hover:bg-canvas/30">
+                  <td class="py-2.5 pr-3 text-content/40 tabular-nums">{clubResult.position}</td>
                   <td class="py-2.5 pr-4 font-semibold">{clubName}</td>
                   {clubResult.points.map(pts => (
-                    <td class:list={['py-2.5 px-2 text-right tabular-nums', pts === null && 'text-base-content/20']}>
+                    <td class:list={['py-2.5 px-2 text-right tabular-nums', pts === null && 'text-content/20']}>
                       {pts ?? '—'}
                     </td>
                   ))}
                   <td class="py-2.5 pl-4 text-right">
-                    <strong class="text-base-content/80">{clubResult.total}</strong>
+                    <strong class="text-content/80">{clubResult.total}</strong>
                     {clubResult.tiebreaker && (
-                      <span class="block text-xs text-base-content/40 mt-0.5">{clubResult.tiebreaker}</span>
+                      <span class="block text-xs text-content/40 mt-0.5">{clubResult.tiebreaker}</span>
                     )}
                   </td>
                 </tr>
@@ -122,7 +122,7 @@ const categoryById = Object.fromEntries((config.teamCategories ?? []).map(c => [
       <!-- Mobile view (below sm) -->
       <div class="sm:hidden">
         <!-- Race legend -->
-        <div class="flex flex-wrap gap-x-3 gap-y-1 py-3 border-b border-base-200 mb-1 text-xs text-base-content/40">
+        <div class="flex flex-wrap gap-x-3 gap-y-1 py-3 border-b border-line mb-1 text-xs text-content/40">
           {standings.races.map(raceId => {
             const race = raceById[raceId];
             const label = race?.shortName ?? raceId;
@@ -132,7 +132,7 @@ const categoryById = Object.fromEntries((config.teamCategories ?? []).map(c => [
             return (
               <span>
                 {href
-                  ? <a href={href} class="text-primary">{label}</a>
+                  ? <a href={href} class="text-amber">{label}</a>
                   : label
                 }
                 {' = '}{race?.name ?? raceId}
@@ -146,16 +146,16 @@ const categoryById = Object.fromEntries((config.teamCategories ?? []).map(c => [
           const clubName = clubById[clubResult.club]?.name ?? clubResult.club;
           const detailId = `detail-${i}-${clubResult.club}`;
           return (
-            <div class="border-b border-base-200 last:border-0">
+            <div class="border-b border-line last:border-0">
               <button
                 class="standings-toggle w-full flex items-center gap-2 py-2.5 text-left"
                 data-target={detailId}
                 aria-expanded="false"
               >
-                <span class="w-6 shrink-0 text-sm text-base-content/40 tabular-nums">{clubResult.position}</span>
+                <span class="w-6 shrink-0 text-sm text-content/40 tabular-nums">{clubResult.position}</span>
                 <span class="flex-1 font-semibold">{clubName}</span>
-                <strong class="text-base-content/80">{clubResult.total}</strong>
-                <span class="chevron text-base-content/30 text-xs ml-1 transition-transform">▾</span>
+                <strong class="text-content/80">{clubResult.total}</strong>
+                <span class="chevron text-content/30 text-xs ml-1 transition-transform">▾</span>
               </button>
               <div id={detailId} class="hidden pb-3">
                 <div class="flex flex-wrap gap-1.5 pl-8">
@@ -170,19 +170,19 @@ const categoryById = Object.fromEntries((config.teamCategories ?? []).map(c => [
                     return (
                       <div class:list={[
                         'rounded px-2.5 py-1 text-center text-sm min-w-[44px]',
-                        isEmpty ? 'bg-base-200/40' : 'bg-base-200',
+                        isEmpty ? 'bg-canvas/40' : 'bg-canvas',
                       ]}>
                         {href
-                          ? <a href={href} class="block text-[10px] text-primary mb-0.5">{label}</a>
-                          : <span class:list={['block text-[10px] mb-0.5', isEmpty ? 'text-base-content/20' : 'text-base-content/40']}>{label}</span>
+                          ? <a href={href} class="block text-[10px] text-amber mb-0.5">{label}</a>
+                          : <span class:list={['block text-[10px] mb-0.5', isEmpty ? 'text-content/20' : 'text-content/40']}>{label}</span>
                         }
-                        <span class:list={[isEmpty ? 'text-base-content/20' : 'font-semibold']}>{pts ?? '—'}</span>
+                        <span class:list={[isEmpty ? 'text-content/20' : 'font-semibold']}>{pts ?? '—'}</span>
                       </div>
                     );
                   })}
                 </div>
                 {clubResult.tiebreaker && (
-                  <p class="pl-8 mt-1.5 text-xs text-base-content/40">{clubResult.tiebreaker}</p>
+                  <p class="pl-8 mt-1.5 text-xs text-content/40">{clubResult.tiebreaker}</p>
                 )}
               </div>
             </div>
@@ -202,10 +202,10 @@ const categoryById = Object.fromEntries((config.teamCategories ?? []).map(c => [
       const targetId = btn.dataset.target!;
       tabs.forEach(t => {
         const active = t === btn;
-        t.classList.toggle('border-primary', active);
+        t.classList.toggle('border-amber', active);
         t.classList.toggle('font-medium', active);
         t.classList.toggle('border-transparent', !active);
-        t.classList.toggle('text-base-content/50', !active);
+        t.classList.toggle('text-content/50', !active);
         t.setAttribute('aria-selected', active ? 'true' : 'false');
       });
       document.querySelectorAll<HTMLElement>('[id^="cat-panel-"]').forEach(panel => {
