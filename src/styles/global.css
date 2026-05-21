@@ -13,6 +13,13 @@
   --color-success:    oklch(58% 0.16 145);
 }
 
+/* ── Font families ── */
+:root {
+  --ff-head: 'Barlow Condensed', sans-serif;
+  --ff-body: 'Barlow', sans-serif;
+  --ff-mono: 'DM Mono', monospace;
+}
+
 /* ── Base ── */
 *, *::before, *::after { box-sizing: border-box; }
 body { color: var(--color-content); }
