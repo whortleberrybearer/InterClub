@@ -15,7 +15,7 @@ const groups = [
 ---
 
 {groups.length === 0 ? (
-  <p class="text-base-content/60">No individual awards recorded.</p>
+  <p class="text-content/60">No individual awards recorded.</p>
 ) : (
   <div>
     <div role="tablist" class="tabs tabs-border mb-2">
@@ -54,7 +54,7 @@ const groups = [
             class={j > 0 ? 'hidden' : ''}
           >
             {cat.rows.length === 0 ? (
-              <p class="text-base-content/60">No awards recorded.</p>
+              <p class="text-content/60">No awards recorded.</p>
             ) : (
               <div class="overflow-x-auto">
                 <table class="table table-sm w-full">
@@ -82,7 +82,7 @@ const groups = [
                                   ) : (
                                     <span class="font-medium">{entry.name}</span>
                                   )}
-                                  <span class="text-base-content/50 ml-1">({entry.clubName})</span>
+                                  <span class="text-content/50 ml-1">({entry.clubName})</span>
                                 </span>
                               ) : <span>—</span>}
                             </td>
