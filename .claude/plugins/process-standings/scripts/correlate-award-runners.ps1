@@ -43,7 +43,8 @@ param(
     [ValidateSet("road-gp", "fell")]
     [string]$Series = "road-gp",
     [string]$ProjectRoot,
-    [switch]$DryRun
+    [switch]$DryRun,
+    [switch]$BatchMode
 )
 
 $ErrorActionPreference = "Stop"
@@ -147,6 +148,7 @@ $awardsData = Get-Content $AwardsFile -Raw | ConvertFrom-Json
 
 Write-Host ""
 Write-Host "Correlating award winners..." -ForegroundColor Yellow
+$ambiguities = [System.Collections.Generic.List[object]]::new()
 Write-Host ""
 
 $matched  = 0
@@ -212,48 +214,68 @@ foreach ($catGroup in $awardsData.individualAwards) {
             $sexHint = if ($inferSex) { " sex=$inferSex" } else { "" }
             Write-Host "  [AUTO] [$catId] '$displayName' -> id=$($chosenRunner.id)  $($chosenRunner.firstName) $($chosenRunner.lastName) ($($chosenRunner.club))$sexHint" -ForegroundColor Green
         } else {
-            # Need user input
-            Write-Host ""
-            if ($candidates.Count -eq 0) {
-                Write-Host "  [?] [$catId] pos=$($award.position) '$displayName'" -ForegroundColor Yellow
-                if ($awardClub) { Write-Host "      club: $awardClub" -ForegroundColor DarkGray }
-                if ($awardCat)  { Write-Host "      category: $awardCat" -ForegroundColor DarkGray }
-                if ($inferSex)  { Write-Host "      inferred sex: $inferSex" -ForegroundColor DarkGray }
-                Write-Host "      No match found in runners.json." -ForegroundColor Red
+            if ($BatchMode) {
+                $ambiguities.Add([ordered]@{
+                    categoryId  = $catId
+                    position    = $award.position
+                    name        = $displayName
+                    club        = $awardClub
+                    inferredSex = $inferSex
+                    candidates  = @($candidates | ForEach-Object {
+                        [ordered]@{
+                            id        = [int]$_.id
+                            firstName = $_.firstName
+                            lastName  = $_.lastName
+                            club      = $_.club
+                            sex       = $_.sex
+                            category  = $_.category
+                        }
+                    })
+                })
+            } else {
+                # Interactive mode — existing Read-Host logic unchanged
+                Write-Host ""
+                if ($candidates.Count -eq 0) {
+                    Write-Host "  [?] [$catId] pos=$($award.position) '$displayName'" -ForegroundColor Yellow
+                    if ($awardClub) { Write-Host "      club: $awardClub" -ForegroundColor DarkGray }
+                    if ($awardCat)  { Write-Host "      category: $awardCat" -ForegroundColor DarkGray }
+                    if ($inferSex)  { Write-Host "      inferred sex: $inferSex" -ForegroundColor DarkGray }
+                    Write-Host "      No match found in runners.json." -ForegroundColor Red
 
-                # Show all runners with matching surname as a hint
-                $surnameHints = @($seriesRunners | Where-Object { (Normalize $_.lastName) -eq (Normalize $lastName) })
-                if ($surnameHints.Count -gt 0) {
-                    Write-Host "      Same surname in runners.json:" -ForegroundColor DarkGray
-                    foreach ($h in $surnameHints) {
-                        Write-Host "        id=$($h.id)  $($h.firstName) $($h.lastName)  club=$($h.club)  sex=$($h.sex)  cat=$($h.category)" -ForegroundColor DarkGray
+                    # Show all runners with matching surname as a hint
+                    $surnameHints = @($seriesRunners | Where-Object { (Normalize $_.lastName) -eq (Normalize $lastName) })
+                    if ($surnameHints.Count -gt 0) {
+                        Write-Host "      Same surname in runners.json:" -ForegroundColor DarkGray
+                        foreach ($h in $surnameHints) {
+                            Write-Host "        id=$($h.id)  $($h.firstName) $($h.lastName)  club=$($h.club)  sex=$($h.sex)  cat=$($h.category)" -ForegroundColor DarkGray
+                        }
+                    }
+                } else {
+                    Write-Host "  [?] [$catId] pos=$($award.position) '$displayName' -- $($candidates.Count) candidates:" -ForegroundColor Yellow
+                    foreach ($c in $candidates) {
+                        Write-Host "      id=$($c.id)  $($c.firstName) $($c.lastName)  club=$($c.club)  sex=$($c.sex)  cat=$($c.category)" -ForegroundColor DarkGray
                     }
                 }
-            } else {
-                Write-Host "  [?] [$catId] pos=$($award.position) '$displayName' -- $($candidates.Count) candidates:" -ForegroundColor Yellow
-                foreach ($c in $candidates) {
-                    Write-Host "      id=$($c.id)  $($c.firstName) $($c.lastName)  club=$($c.club)  sex=$($c.sex)  cat=$($c.category)" -ForegroundColor DarkGray
-                }
-            }
 
-            $input = Read-Host "      Enter runner ID to assign (or blank to skip)"
-            $input = $input.Trim()
+                $input = Read-Host "      Enter runner ID to assign (or blank to skip)"
+                $input = $input.Trim()
 
-            if ($input -match '^\d+$') {
-                $rid = [int]$input
-                $chosenRunner = $seriesRunners | Where-Object { [int]$_.id -eq $rid } | Select-Object -First 1
-                if (-not $chosenRunner) {
-                    Write-Host "      ID $rid not found -- skipping." -ForegroundColor Red
-                    $unresolved.Add("[$catId] '$displayName' -- ID $rid not found")
+                if ($input -match '^\d+$') {
+                    $rid = [int]$input
+                    $chosenRunner = $seriesRunners | Where-Object { [int]$_.id -eq $rid } | Select-Object -First 1
+                    if (-not $chosenRunner) {
+                        Write-Host "      ID $rid not found -- skipping." -ForegroundColor Red
+                        $unresolved.Add("[$catId] '$displayName' -- ID $rid not found")
+                    } else {
+                        Write-Host "      Assigned id=$rid  $($chosenRunner.firstName) $($chosenRunner.lastName)" -ForegroundColor Green
+                        $prompted++
+                    }
                 } else {
-                    Write-Host "      Assigned id=$rid  $($chosenRunner.firstName) $($chosenRunner.lastName)" -ForegroundColor Green
-                    $prompted++
+                    Write-Host "      Skipped." -ForegroundColor DarkGray
+                    $unresolved.Add("[$catId] '$displayName' -- skipped by user")
                 }
-            } else {
-                Write-Host "      Skipped." -ForegroundColor DarkGray
-                $unresolved.Add("[$catId] '$displayName' -- skipped by user")
+                Write-Host ""
             }
-            Write-Host ""
         }
 
         if ($chosenRunner) {
@@ -269,6 +291,15 @@ foreach ($catGroup in $awardsData.individualAwards) {
             }
         }
     }
+}
+
+# Batch mode: write report and exit if ambiguities exist
+if ($BatchMode -and $ambiguities.Count -gt 0) {
+    $reportPath = "$AwardsFile.ambiguities.json"
+    ($ambiguities | ConvertTo-Json -Depth 5) | Set-Content -Path $reportPath -Encoding UTF8
+    Write-Host ""
+    Write-Host "Batch mode: $($ambiguities.Count) ambiguit$(if ($ambiguities.Count -eq 1) {'y'} else {'ies'}) written to: $reportPath" -ForegroundColor Yellow
+    exit 1
 }
 
 # --- Summary ------------------------------------------------------------------
