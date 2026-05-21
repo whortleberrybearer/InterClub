@@ -4,9 +4,31 @@ import { siteUrl } from '../../lib/url';
 ---
 
 <Layout title="Message Sent">
-  <div class="max-w-lg mx-auto text-center py-16">
-    <h1 class="text-2xl font-bold mb-4">Thanks for getting in touch</h1>
-    <p class="text-content/70 mb-8">We'll get back to you soon.</p>
-    <a href={siteUrl('/')} class="btn btn-primary">Back to home</a>
+  <div class="max-w-[560px] mx-auto px-5 pt-16 pb-16">
+
+    <!-- Amber check circle -->
+    <div class="w-12 h-12 rounded-full bg-amber flex items-center justify-center mb-6">
+      <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+        <path d="M5 11l4 4 8-8" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+
+    <p class="font-head text-[11px] font-bold tracking-[0.16em] uppercase text-amber mb-3">
+      Message sent
+    </p>
+
+    <h1 class="font-head text-[clamp(1.75rem,4vw,3rem)] font-extrabold tracking-[-0.025em] leading-[1.05] text-content mb-3">
+      Thanks for getting in touch.
+    </h1>
+
+    <p class="text-[15px] leading-relaxed text-muted mb-8">
+      We'll get back to you soon.
+    </p>
+
+    <a href={siteUrl('/')}
+       class="inline-block font-head text-sm font-bold tracking-[0.05em] uppercase px-6 py-3 rounded-lg bg-surface text-content border border-line no-underline">
+      Back to home
+    </a>
+
   </div>
 </Layout>

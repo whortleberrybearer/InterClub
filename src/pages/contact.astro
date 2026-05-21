@@ -4,53 +4,63 @@ import { siteUrl } from '../lib/url';
 ---
 
 <Layout title="Contact">
-  <div class="max-w-lg mx-auto">
-    <h1 class="text-2xl font-bold mb-2">Contact</h1>
-    <p class="text-content/70 mb-8">
-      Use this form to report result corrections or send a general enquiry.
-    </p>
+  <div class="max-w-[960px] mx-auto px-5 pt-10 pb-16">
 
-    <form method="POST" action={siteUrl('/contact/thank-you/')}>
-      <div class="form-control mb-4">
-        <label class="label" for="name">
-          <span class="label-text">Name</span>
-        </label>
-        <input
-          id="name"
-          type="text"
-          name="name"
-          required
-          class="input w-full"
-        />
+    <div class="grid gap-10 md:grid-cols-[1fr_1.1fr] md:items-start">
+
+      <!-- Editorial copy -->
+      <div>
+        <p class="font-head text-[11px] font-bold tracking-[0.16em] uppercase text-amber mb-3">
+          Get in touch
+        </p>
+        <h1 class="font-head text-[clamp(2rem,5vw,3.5rem)] font-extrabold tracking-[-0.025em] leading-[1] text-content mb-4">
+          Contact
+        </h1>
+        <p class="text-[15px] leading-relaxed text-muted max-w-[380px]">
+          Use this form to report result corrections or send a general enquiry.
+        </p>
       </div>
 
-      <div class="form-control mb-4">
-        <label class="label" for="email">
-          <span class="label-text">Email</span>
-        </label>
-        <input
-          id="email"
-          type="email"
-          name="email"
-          required
-          class="input w-full"
-        />
+      <!-- Form card -->
+      <div class="bg-surface border border-line rounded-xl p-6">
+        <form method="POST" action={siteUrl('/contact/thank-you/')}>
+
+          <div class="mb-5">
+            <label for="name" class="block font-head text-[11px] font-bold tracking-[0.12em] uppercase text-muted mb-1.5">
+              Name
+            </label>
+            <input id="name" type="text" name="name" required
+              class="w-full text-sm px-3.5 py-2.5 border border-line rounded-lg bg-surface text-content outline-none focus:border-amber transition-colors" />
+          </div>
+
+          <div class="mb-5">
+            <label for="email" class="block font-head text-[11px] font-bold tracking-[0.12em] uppercase text-muted mb-1.5">
+              Email
+            </label>
+            <input id="email" type="email" name="email" required
+              class="w-full text-sm px-3.5 py-2.5 border border-line rounded-lg bg-surface text-content outline-none focus:border-amber transition-colors" />
+          </div>
+
+          <div class="mb-6">
+            <div class="flex justify-between items-baseline mb-1.5">
+              <label for="message" class="font-head text-[11px] font-bold tracking-[0.12em] uppercase text-muted">
+                Message
+              </label>
+              <span id="char-count" class="font-mono text-[11px] text-muted">0 / 2000</span>
+            </div>
+            <textarea id="message" name="message" required rows="5" maxlength="2000"
+              class="w-full text-sm px-3.5 py-2.5 border border-line rounded-lg bg-surface text-content outline-none focus:border-amber transition-colors resize-y font-body"
+              oninput="document.getElementById('char-count').textContent = this.value.length + ' / 2000'"></textarea>
+          </div>
+
+          <button type="submit"
+            class="font-head text-sm font-bold tracking-[0.05em] uppercase px-6 py-3 rounded-lg bg-amber text-white border-none cursor-pointer">
+            Send message
+          </button>
+
+        </form>
       </div>
 
-      <div class="form-control mb-6">
-        <label class="label" for="message">
-          <span class="label-text">Message</span>
-        </label>
-        <textarea
-          id="message"
-          name="message"
-          required
-          rows="6"
-          class="textarea w-full"
-        ></textarea>
-      </div>
-
-      <button type="submit" class="btn btn-primary w-full">Send message</button>
-    </form>
+    </div>
   </div>
 </Layout>
