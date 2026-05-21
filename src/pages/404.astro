@@ -4,208 +4,59 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
 
 <Layout title="404 · Not Found">
-  <div class="nf-outer">
+  <div class="flex flex-col" style="min-height:calc(100vh - 106px)">
+    <div class="flex-1 px-5 pt-12 pb-10 max-w-[960px] mx-auto w-full">
 
-    <div class="nf-inner">
+      <p class="font-head text-[11px] font-bold tracking-[0.16em] uppercase text-amber mb-[18px]">
+        Error · 404
+      </p>
 
-      <div class="nf-eyebrow">Error · 404</div>
+      <div class="font-head text-[clamp(80px,22vw,320px)] font-extrabold tracking-[-0.06em] leading-[0.85] text-content mb-5 -ml-1">
+        404
+      </div>
 
-      <div class="nf-numeral">404</div>
-
-      <div class="nf-grid">
+      <div class="grid gap-7 md:grid-cols-[1.1fr_1fr] md:gap-16 md:items-center">
 
         <!-- Copy + CTAs -->
         <div>
-          <h1 class="nf-heading">We couldn't find that page.</h1>
-
-          <p class="nf-body">
+          <h1 class="font-head text-[clamp(1.75rem,4vw,3.5rem)] font-extrabold tracking-[-0.025em] leading-[1.05] mb-3 text-content">
+            We couldn't find that page.
+          </h1>
+          <p class="text-[15px] leading-relaxed text-muted mb-6 max-w-[460px]">
             It may have moved, been retired with last season's fixtures, or never existed in the first place.
           </p>
-
-          <div class="nf-btns">
-            <a href={`${base}/`} class="nf-btn-primary">Back to home</a>
-            <a href={`${base}/road-gp/`} class="nf-btn-outline">Browse all races</a>
+          <div class="flex flex-col gap-2.5 mb-8 md:flex-row">
+            <a href={`${base}/`}
+               class="block text-center font-head text-sm font-bold tracking-[0.05em] uppercase px-[22px] py-3 rounded-lg bg-amber text-white no-underline md:inline-block">
+              Back to home
+            </a>
+            <a href={`${base}/road-gp/`}
+               class="block text-center font-head text-sm font-bold tracking-[0.05em] uppercase px-[22px] py-3 rounded-lg bg-surface text-content border border-line no-underline md:inline-block">
+              Browse all races
+            </a>
           </div>
         </div>
 
         <!-- Suggested links -->
-        <div class="nf-suggestions">
-          <div class="nf-suggestions-label">Try one of these</div>
+        <div class="bg-surface border border-line rounded-xl overflow-hidden">
+          <div class="px-[18px] pt-[14px] pb-[10px] border-b border-line font-head text-[10px] font-bold tracking-[0.14em] uppercase text-muted">
+            Try one of these
+          </div>
           {[
             { label: 'Road Grand Prix', path: `${base}/road-gp/` },
             { label: 'Fell Championship', path: `${base}/fell/` },
           ].map(l => (
-            <a href={l.path} class="nf-suggestion-row">
+            <a href={l.path} class="flex justify-between items-center px-[18px] py-3 border-b border-line last:border-b-0 no-underline">
               <div>
-                <div class="nf-suggestion-title">{l.label}</div>
-                <div class="nf-suggestion-path">{l.path}</div>
+                <div class="text-sm font-medium text-content">{l.label}</div>
+                <div class="font-mono text-[11px] text-muted mt-0.5">{l.path}</div>
               </div>
-              <span class="nf-arrow">→</span>
+              <span class="text-amber text-base">→</span>
             </a>
           ))}
         </div>
 
       </div>
     </div>
-
   </div>
 </Layout>
-
-<style>
-  .nf-outer {
-    min-height: calc(100vh - 57px - 49px);
-    display: flex;
-    flex-direction: column;
-  }
-
-  .nf-inner {
-    flex: 1;
-    padding: 48px 20px 40px;
-    max-width: 960px;
-    margin: 0 auto;
-    width: 100%;
-  }
-
-  .nf-eyebrow {
-    font-family: var(--ff-head);
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: var(--color-amber);
-    margin-bottom: 18px;
-  }
-
-  .nf-numeral {
-    font-family: var(--ff-head);
-    font-size: clamp(80px, 22vw, 320px);
-    font-weight: 800;
-    letter-spacing: -0.06em;
-    line-height: 0.85;
-    color: var(--color-content);
-    margin-bottom: 20px;
-    margin-left: -4px;
-  }
-
-  .nf-grid {
-    display: grid;
-    gap: 28px;
-  }
-
-  .nf-heading {
-    font-family: var(--ff-head);
-    font-size: clamp(1.75rem, 4vw, 3.5rem);
-    font-weight: 800;
-    letter-spacing: -0.025em;
-    line-height: 1.05;
-    margin-bottom: 12px;
-    color: var(--color-content);
-  }
-
-  .nf-body {
-    font-size: 15px;
-    line-height: 1.5;
-    color: var(--color-muted);
-    margin-bottom: 24px;
-    max-width: 460px;
-  }
-
-  .nf-btns {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin-bottom: 32px;
-  }
-
-  .nf-btn-primary,
-  .nf-btn-outline {
-    display: block;
-    font-family: var(--ff-head);
-    font-size: 14px;
-    font-weight: 700;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-    padding: 12px 22px;
-    border-radius: 8px;
-    text-decoration: none;
-    text-align: center;
-  }
-
-  .nf-btn-primary {
-    background: var(--color-amber);
-    color: #fff;
-  }
-
-  .nf-btn-outline {
-    background: var(--color-surface);
-    color: var(--color-content);
-    border: 1px solid var(--color-line);
-  }
-
-  .nf-suggestions {
-    background: var(--color-surface);
-    border: 1px solid var(--color-line);
-    border-radius: 12px;
-    overflow: hidden;
-  }
-
-  .nf-suggestions-label {
-    padding: 14px 18px 10px;
-    border-bottom: 1px solid var(--color-line);
-    font-family: var(--ff-head);
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--color-muted);
-  }
-
-  .nf-suggestion-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 12px 18px;
-    border-bottom: 1px solid var(--color-line);
-    text-decoration: none;
-  }
-
-  .nf-suggestion-row:last-child {
-    border-bottom: none;
-  }
-
-  .nf-suggestion-title {
-    font-size: 14px;
-    font-weight: 500;
-    color: var(--color-content);
-  }
-
-  .nf-suggestion-path {
-    font-family: var(--ff-mono);
-    font-size: 11px;
-    color: var(--color-muted);
-    margin-top: 2px;
-  }
-
-  .nf-arrow {
-    color: var(--color-amber);
-    font-size: 16px;
-  }
-
-  /* Desktop: side-by-side layout */
-  @media (min-width: 768px) {
-    .nf-grid {
-      grid-template-columns: 1.1fr 1fr;
-      gap: 64px;
-      align-items: center;
-    }
-
-    .nf-btns {
-      flex-direction: row;
-    }
-
-    .nf-btn-primary,
-    .nf-btn-outline {
-      display: inline-block;
-    }
-  }
-</style>
