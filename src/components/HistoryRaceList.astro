@@ -52,7 +52,7 @@ const {
   )}
 
   {races.length > 0 && (
-    <div class="divide-y divide-base-200">
+    <div class="divide-y divide-line">
       {races.map(race => {
         const resultsUrl = hasResults(year, series, race.id)
           ? siteUrl(`/${series}/${year}/${race.id}/results/`)
@@ -62,7 +62,7 @@ const {
           : null;
         return (
           <div class="flex items-baseline gap-4 py-3">
-            <span class="text-sm text-base-content/50 w-28 shrink-0">
+            <span class="text-sm text-content/50 w-28 shrink-0">
               {formatRaceDate(race.date)}
             </span>
             <span class="flex-1 font-medium">{race.name}</span>
@@ -74,7 +74,7 @@ const {
                 <a href={teamResultsUrl} class="link link-hover">Team Results</a>
               )}
               {!resultsUrl && !teamResultsUrl && (
-                <span class="text-base-content/30">—</span>
+                <span class="text-content/30">—</span>
               )}
             </div>
           </div>
@@ -83,7 +83,7 @@ const {
     </div>
   )}
 
-  {note && <p class="text-base-content/60 italic text-sm mt-2">{note}</p>}
+  {note && <p class="text-content/60 italic text-sm mt-2">{note}</p>}
 
   {awards && (
     <div class="mt-8">

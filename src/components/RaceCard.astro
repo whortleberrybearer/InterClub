@@ -20,7 +20,7 @@ const href = isFell
   : siteUrl(`/${series}/${year}/${id}/`);
 const isExternal = isFell && !!detailsUrl;
 
-const cardClasses = "card bg-base-100 shadow-sm border border-base-200 no-underline";
+const cardClasses = "card shadow-sm no-underline";
 const linkClasses = `${cardClasses} hover:shadow-md transition-shadow`;
 ---
 
@@ -36,10 +36,10 @@ const linkClasses = `${cardClasses} hover:shadow-md transition-shadow`;
       </figure>
     )}
     <div class="card-body gap-1 py-4">
-      <p class="text-xs text-base-content/50 uppercase tracking-wide font-medium">{formattedDate}</p>
+      <p class="text-xs text-content/50 uppercase tracking-wide font-medium">{formattedDate}</p>
       <h2 class="card-title text-base font-bold">{name}</h2>
       {(location || distance) && (
-        <p class="text-sm text-base-content/70">
+        <p class="text-sm text-content/70">
           {location}{location && distance && ' · '}{distance}
         </p>
       )}
@@ -66,10 +66,10 @@ const linkClasses = `${cardClasses} hover:shadow-md transition-shadow`;
       </figure>
     )}
     <div class="card-body gap-1 py-4">
-      <p class="text-xs text-base-content/50 uppercase tracking-wide font-medium">{formattedDate}</p>
+      <p class="text-xs text-content/50 uppercase tracking-wide font-medium">{formattedDate}</p>
       <h2 class="card-title text-base font-bold">{name}</h2>
       {(location || distance) && (
-        <p class="text-sm text-base-content/70">
+        <p class="text-sm text-content/70">
           {location}{location && distance && ' · '}{distance}
         </p>
       )}

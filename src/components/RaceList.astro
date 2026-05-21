@@ -52,7 +52,7 @@ const { races, year, series, availableYears, currentYear, seriesBasePath, series
   {awards && <SeriesAwards awards={awards} />}
 
   {races.length === 0 ? (
-    <p class="text-base-content/60">No races found for {year}.</p>
+    <p class="text-content/60">No races found for {year}.</p>
   ) : (
     <div class="flex flex-col gap-4">
       {races.map(race => (
