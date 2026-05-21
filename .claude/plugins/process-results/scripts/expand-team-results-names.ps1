@@ -26,6 +26,7 @@ if (-not $ProjectRoot) {
     $ProjectRoot = (git -C $PSScriptRoot rev-parse --show-toplevel 2>$null)
     if (-not $ProjectRoot) { throw "ProjectRoot not supplied and could not be resolved from git" }
 }
+$ProjectRoot = [System.IO.Path]::GetFullPath($ProjectRoot)
 $srcDir  = Join-Path $ProjectRoot "src"
 $dataDir = Join-Path $srcDir "data"
 $yearDir = Join-Path $dataDir $Year
@@ -35,8 +36,8 @@ $CsvPath  = Join-Path $DataDir "$RaceId.csv"
 $JsonPath = Join-Path $DataDir "$RaceId-teams.json"
 Write-Output "Reading CSV: $CsvPath"
 Write-Output "Reading JSON: $JsonPath"
-if(-not(Test-Path $CsvPath)){Write-Error "CSV file not found: $CsvPath"}
-if(-not(Test-Path $JsonPath)){Write-Error "Team results JSON not found: $JsonPath"}
+if (-not (Test-Path $CsvPath))  { throw "CSV file not found: $CsvPath" }
+if (-not (Test-Path $JsonPath)) { throw "Team results JSON not found: $JsonPath" }
 $csvContent=Get-Content $CsvPath -Raw
 $lines=$csvContent-split "`n"
 $headers=$lines[0]-split','
