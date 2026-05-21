@@ -17,20 +17,18 @@ function isActive(path: string): boolean {
 ---
 
 <!doctype html>
-<html lang="en" data-theme="light">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{title} — Inter Club</title>
     <link rel="icon" type="image/svg+xml" href={`${base}/favicon.svg`} />
   </head>
-  <body class="min-h-screen bg-base-200 flex flex-col">
-    <header class="bg-base-100 shadow-sm">
-      <div class="navbar max-w-4xl mx-auto px-4">
-        <div class="navbar-start">
-          <a href={`${base}/`} class="btn btn-ghost text-lg font-bold tracking-tight">Inter Club</a>
-        </div>
-        <div class="navbar-end gap-1">
+  <body class="min-h-screen bg-canvas flex flex-col">
+    <header class="bg-surface shadow-sm">
+      <div class="flex items-center justify-between max-w-4xl mx-auto px-4 h-14">
+        <a href={`${base}/`} class="btn btn-ghost text-lg font-bold tracking-tight">Inter Club</a>
+        <div class="flex items-center gap-1">
           <a
             href={`${base}/road-gp/`}
             class={`btn btn-ghost btn-sm ${isActive('/road-gp') ? 'btn-active' : ''}`}
@@ -52,7 +50,7 @@ function isActive(path: string): boolean {
       <slot />
     </main>
 
-    <footer class="footer footer-center p-4 bg-base-100 text-base-content/60 text-sm mt-8">
+    <footer class="flex justify-center p-4 bg-surface text-content/60 text-sm mt-8">
       <p>Inter Club Running Competition · Lancashire</p>
     </footer>
   </body>
