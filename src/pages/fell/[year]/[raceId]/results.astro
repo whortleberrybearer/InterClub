@@ -43,22 +43,22 @@ const showTeamResults = hasTeamResults(year, 'fell', raceId);
         <span class="badge badge-warning badge-lg">Provisional</span>
       )}
     </div>
-    {race && <p class="text-sm text-base-content/60 mt-1">{year}</p>}
+    {race && <p class="text-sm text-content/60 mt-1">{year}</p>}
   </div>
 
   <!-- Filter bar -->
-  <div class="bg-base-100 border border-base-200 rounded-lg p-3 mb-4 flex flex-col sm:flex-row gap-2 sm:items-center flex-wrap">
+  <div class="bg-surface border border-line rounded-lg p-3 mb-4 flex flex-col sm:flex-row gap-2 sm:items-center flex-wrap">
     <input
       id="filter-name"
       type="search"
       placeholder="Search name or number…"
-      class="input input-bordered input-sm w-full sm:w-40"
+      class="input input-sm w-full sm:w-40"
     />
-    <select id="filter-club" class="select select-bordered select-sm w-full sm:w-auto">
+    <select id="filter-club" class="select select-sm w-full sm:w-auto">
       <option value="">All Clubs</option>
       {clubs.map(c => <option value={c.id}>{c.name}</option>)}
     </select>
-    <select id="filter-cat" class="select select-bordered select-sm w-full sm:w-auto">
+    <select id="filter-cat" class="select select-sm w-full sm:w-auto">
       <option value="">All Categories</option>
       {(config.ageCategories ?? []).map(cat => <option value={cat}>{cat}</option>)}
     </select>
