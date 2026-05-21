@@ -4,63 +4,94 @@ import { siteUrl } from '../lib/url';
 ---
 
 <Layout title="Contact">
-  <div class="max-w-[960px] mx-auto px-5 pt-10 pb-16">
 
-    <div class="grid gap-10 md:grid-cols-[1fr_1.1fr] md:items-start">
-
-      <!-- Editorial copy -->
-      <div>
-        <p class="font-head text-[11px] font-bold tracking-[0.16em] uppercase text-amber mb-3">
-          Get in touch
-        </p>
-        <h1 class="font-head text-[clamp(2rem,5vw,3.5rem)] font-extrabold tracking-[-0.025em] leading-[1] text-content mb-4">
-          Contact
-        </h1>
-        <p class="text-[15px] leading-relaxed text-muted max-w-[380px]">
-          Use this form to report result corrections or send a general enquiry.
-        </p>
-      </div>
-
-      <!-- Form card -->
-      <div class="bg-surface border border-line rounded-xl p-6">
-        <form method="POST" action={siteUrl('/contact/thank-you/')}>
-
-          <div class="mb-5">
-            <label for="name" class="block font-head text-[11px] font-bold tracking-[0.12em] uppercase text-muted mb-1.5">
-              Name
-            </label>
-            <input id="name" type="text" name="name" required
-              class="w-full text-sm px-3.5 py-2.5 border border-line rounded-lg bg-surface text-content outline-none focus:border-amber transition-colors" />
-          </div>
-
-          <div class="mb-5">
-            <label for="email" class="block font-head text-[11px] font-bold tracking-[0.12em] uppercase text-muted mb-1.5">
-              Email
-            </label>
-            <input id="email" type="email" name="email" required
-              class="w-full text-sm px-3.5 py-2.5 border border-line rounded-lg bg-surface text-content outline-none focus:border-amber transition-colors" />
-          </div>
-
-          <div class="mb-6">
-            <div class="flex justify-between items-baseline mb-1.5">
-              <label for="message" class="font-head text-[11px] font-bold tracking-[0.12em] uppercase text-muted">
-                Message
-              </label>
-              <span id="char-count" class="font-mono text-[11px] text-muted">0 / 2000</span>
-            </div>
-            <textarea id="message" name="message" required rows="5" maxlength="2000"
-              class="w-full text-sm px-3.5 py-2.5 border border-line rounded-lg bg-surface text-content outline-none focus:border-amber transition-colors resize-y font-body"
-              oninput="document.getElementById('char-count').textContent = this.value.length + ' / 2000'"></textarea>
-          </div>
-
-          <button type="submit"
-            class="font-head text-sm font-bold tracking-[0.05em] uppercase px-6 py-3 rounded-lg bg-amber text-white border-none cursor-pointer">
-            Send message
-          </button>
-
-        </form>
-      </div>
-
+  <!-- Editorial header band -->
+  <div class="bg-surface border-b border-line -mx-4 px-4 py-8 mb-8">
+    <div class="max-w-[720px]">
+      <p class="font-head text-[11px] font-bold tracking-[0.16em] uppercase text-amber mb-3 flex items-center gap-2.5">
+        <span class="inline-block w-5 h-px bg-amber"></span>
+        Contact
+      </p>
+      <h1 class="font-head text-[clamp(2rem,5vw,3.5rem)] font-extrabold tracking-[-0.025em] leading-[1] text-content mb-4">
+        Get in touch.
+      </h1>
+      <p class="text-[15px] leading-relaxed text-muted max-w-[380px]">
+        Result query, fixture suggestion, or anything else — drop us a line and we'll get back to you.
+      </p>
     </div>
   </div>
+
+  <!-- Two-column layout on desktop -->
+  <div class="grid gap-10 md:grid-cols-[1fr_1.1fr] md:gap-20 md:items-start">
+
+    <!-- Left: contact details (desktop only supplement) -->
+    <div class="hidden md:block">
+      <div class="border-t border-line pt-5 grid gap-4">
+        <div>
+          <div class="font-head text-[10px] font-bold tracking-[0.14em] uppercase text-muted mb-1">Email</div>
+          <a href="mailto:admin@interclub.run" class="font-mono text-sm text-content no-underline">admin@interclub.run</a>
+        </div>
+        <div>
+          <div class="font-head text-[10px] font-bold tracking-[0.14em] uppercase text-muted mb-1">Response time</div>
+          <div class="text-sm text-content">Usually within 2–3 days</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Form card -->
+    <div class="bg-surface border border-line rounded-[14px] p-6 md:p-7">
+      <form method="POST" action={siteUrl('/contact/thank-you/')}>
+
+        <div class="mb-[18px]">
+          <label for="name" class="flex justify-between items-baseline font-head text-[11px] font-bold tracking-[0.12em] uppercase text-muted mb-1.5">
+            Name
+          </label>
+          <input id="name" type="text" name="name" required placeholder="Your name"
+            class="w-full text-[15px] px-3.5 py-[11px] border border-line rounded-[10px] bg-surface text-content outline-none focus:border-amber transition-colors font-body" />
+        </div>
+
+        <div class="mb-[18px]">
+          <label for="email" class="flex justify-between items-baseline font-head text-[11px] font-bold tracking-[0.12em] uppercase text-muted mb-1.5">
+            Email
+          </label>
+          <input id="email" type="email" name="email" required placeholder="you@example.com"
+            class="w-full text-[15px] px-3.5 py-[11px] border border-line rounded-[10px] bg-surface text-content outline-none focus:border-amber transition-colors font-body" />
+        </div>
+
+        <div class="mb-[22px]">
+          <label for="message" class="flex justify-between items-baseline font-head text-[11px] font-bold tracking-[0.12em] uppercase text-muted mb-1.5">
+            <span>Message</span>
+            <span id="char-count" class="font-mono text-[10px] font-medium tracking-[0.04em] text-muted normal-case">0 / 2000</span>
+          </label>
+          <textarea id="message" name="message" required rows="5" maxlength="2000"
+            placeholder="Tell us what's on your mind…"
+            class="w-full text-[15px] px-3.5 py-[11px] border border-line rounded-[10px] bg-surface text-content outline-none focus:border-amber transition-colors resize-y leading-relaxed font-body"
+            oninput="document.getElementById('char-count').textContent = this.value.length + ' / 2000'"></textarea>
+        </div>
+
+        <!-- Mobile: full-width button -->
+        <div class="flex flex-col gap-3 md:hidden">
+          <button type="submit"
+            class="w-full font-head text-sm font-bold tracking-[0.06em] uppercase py-[14px] rounded-lg bg-amber text-white border-none cursor-pointer">
+            Send message
+          </button>
+          <p class="font-mono text-[11px] text-muted text-center">
+            Or email <a href="mailto:admin@interclub.run" class="text-amber no-underline">admin@interclub.run</a> directly.
+          </p>
+        </div>
+
+        <!-- Desktop: privacy note + button inline -->
+        <div class="hidden md:flex items-center justify-between gap-4">
+          <p class="font-mono text-[11px] text-muted">We never share your email.</p>
+          <button type="submit"
+            class="font-head text-sm font-bold tracking-[0.06em] uppercase px-[26px] py-3 rounded-lg bg-amber text-white border-none cursor-pointer whitespace-nowrap">
+            Send message
+          </button>
+        </div>
+
+      </form>
+    </div>
+
+  </div>
+
 </Layout>

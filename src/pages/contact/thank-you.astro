@@ -4,31 +4,85 @@ import { siteUrl } from '../../lib/url';
 ---
 
 <Layout title="Message Sent">
-  <div class="max-w-[560px] mx-auto px-5 pt-16 pb-16">
 
-    <!-- Amber check circle -->
-    <div class="w-12 h-12 rounded-full bg-amber flex items-center justify-center mb-6">
-      <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
-        <path d="M5 11l4 4 8-8" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
+  <div class="grid gap-12 md:grid-cols-[1.1fr_1fr] md:gap-16 md:items-center" style="min-height: calc(100vh - 200px);">
+
+    <!-- Left: editorial confirmation -->
+    <div>
+      <!-- Pill badge -->
+      <div class="inline-flex items-center gap-2.5 bg-amber-bg text-amber px-3 py-1.5 rounded-full mb-6" style="padding-left: 8px;">
+        <span class="w-[18px] h-[18px] rounded-full bg-amber text-white inline-flex items-center justify-center flex-shrink-0">
+          <svg width="10" height="8" viewBox="0 0 10 8" fill="none">
+            <path d="M1 4l2.5 2.5L9 1" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
+        <span class="font-head text-[11px] font-bold tracking-[0.14em] uppercase">Message sent</span>
+      </div>
+
+      <h1 class="font-head text-[clamp(2.25rem,5vw,4.5rem)] font-extrabold tracking-[-0.03em] leading-[0.95] text-content mb-5">
+        Thanks — we'll get back to you.
+      </h1>
+
+      <p class="text-[15px] leading-relaxed text-muted mb-7 max-w-[480px]">
+        Your message is in. We read every one and usually reply within two to three days. Keep an eye on your inbox (and the spam folder, just in case).
+      </p>
+
+      <!-- Mobile: receipt meta -->
+      <div class="border-t border-b border-line py-3 grid grid-cols-2 gap-4 mb-7 md:hidden">
+        <div>
+          <div class="font-head text-[10px] font-bold tracking-[0.14em] uppercase text-muted mb-1">Sent</div>
+          <div class="font-mono text-[13px] text-content" id="sent-time">—</div>
+        </div>
+        <div>
+          <div class="font-head text-[10px] font-bold tracking-[0.14em] uppercase text-muted mb-1">Response</div>
+          <div class="font-mono text-[13px] text-content">2–3 days</div>
+        </div>
+      </div>
+
+      <div class="flex flex-col gap-2.5 md:flex-row">
+        <a href={siteUrl('/')}
+           class="block text-center font-head text-sm font-bold tracking-[0.05em] uppercase px-6 py-3 rounded-lg bg-amber text-white no-underline md:inline-block">
+          Back to home
+        </a>
+        <a href={siteUrl('/road-gp/')}
+           class="block text-center font-head text-sm font-bold tracking-[0.05em] uppercase px-6 py-3 rounded-lg bg-surface text-content border border-line no-underline md:inline-block">
+          Browse all races
+        </a>
+      </div>
     </div>
 
-    <p class="font-head text-[11px] font-bold tracking-[0.16em] uppercase text-amber mb-3">
-      Message sent
-    </p>
+    <!-- Right: receipt card (desktop only) -->
+    <div class="hidden md:block bg-surface border border-line rounded-[14px] p-6">
+      <div class="font-head text-[10px] font-bold tracking-[0.14em] uppercase text-amber mb-4">Receipt</div>
 
-    <h1 class="font-head text-[clamp(1.75rem,4vw,3rem)] font-extrabold tracking-[-0.025em] leading-[1.05] text-content mb-3">
-      Thanks for getting in touch.
-    </h1>
+      <div class="font-mono text-[13px] text-muted leading-[1.8]">
+        <div class="flex justify-between border-b border-dashed border-line py-1.5">
+          <span>sent</span>
+          <span class="text-content" id="receipt-time">—</span>
+        </div>
+        <div class="flex justify-between border-b border-dashed border-line py-1.5">
+          <span>reply to</span>
+          <span class="text-content">your email</span>
+        </div>
+        <div class="flex justify-between py-1.5">
+          <span>expect reply</span>
+          <span class="text-content">within 2–3 days</span>
+        </div>
+      </div>
 
-    <p class="text-[15px] leading-relaxed text-muted mb-8">
-      We'll get back to you soon.
-    </p>
-
-    <a href={siteUrl('/')}
-       class="inline-block font-head text-sm font-bold tracking-[0.05em] uppercase px-6 py-3 rounded-lg bg-surface text-content border border-line no-underline">
-      Back to home
-    </a>
+      <div class="mt-4 pt-4 border-t border-line text-[12px] text-muted leading-relaxed">
+        Need to add something? Reply to the confirmation we just sent.
+      </div>
+    </div>
 
   </div>
+
 </Layout>
+
+<script>
+  // Populate sent time client-side since this is a static page
+  const now = new Date();
+  const formatted = now.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })
+    + ' · ' + now.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+  document.querySelectorAll('#sent-time, #receipt-time').forEach(el => el.textContent = formatted);
+</script>
