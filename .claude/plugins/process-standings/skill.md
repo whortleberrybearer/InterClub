@@ -32,7 +32,7 @@ The skill scripts are at `<skill_dir>/scripts/` where `<skill_dir>` is the base 
 
 ## Disambiguation Batch
 
-Collect ambiguities from Steps 3–5 into a single list. Resolve all at once in Step 6.
+Collect ambiguities from Steps 2–4 into a single list. Resolve all at once in Step 5.
 
 For each item, record: step, name, club, sex/category context, candidates list, file and field to patch.
 
