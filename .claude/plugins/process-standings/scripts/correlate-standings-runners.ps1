@@ -5,7 +5,7 @@
 .DESCRIPTION
     For each runner in individual-standings.json without a seriesRunnerId:
       - Splits the runner name into first/last on the final space.
-      - Looks for an exact match in series runners.json by firstName, lastName, club, and sex.
+      - Looks for an exact match in series runners.json by firstName, lastName, club, and category.
       - If found, sets seriesRunnerId on the standings entry.
       - If name matches but club/sex differs, reports for review and skips.
       - If no match, reports failure and skips.
@@ -76,10 +76,10 @@ $seriesRunners = [System.Collections.Generic.List[object]]::new()
 foreach ($r in (Get-Content $runnersFile -Raw | ConvertFrom-Json)) { $seriesRunners.Add($r) }
 Write-Host "Loaded $($seriesRunners.Count) series runner(s)." -ForegroundColor DarkGray
 
-# Exact index: "first|last|club|sex" -> runner
+# Exact index: "first|last|club|category" -> runner
 $exactIndex = @{}
 foreach ($r in $seriesRunners) {
-    $key = "$(Normalize $r.firstName)|$(Normalize $r.lastName)|$(Normalize $r.club)|$(Normalize $r.sex)"
+    $key = "$(Normalize $r.firstName)|$(Normalize $r.lastName)|$(Normalize $r.club)|$(Normalize $r.ageCategory)"
     if (-not $exactIndex.ContainsKey($key)) { $exactIndex[$key] = $r }
 }
 
@@ -111,11 +111,13 @@ foreach ($cat in $standings.categories) {
             continue
         }
 
-        $np   = Split-FullName $runner.name
-        $club = if ($runner.PSObject.Properties['club']) { $runner.club } else { "" }
-        $sex  = if ($runner.PSObject.Properties['sex'])  { $runner.sex }  else { "" }
+        $np       = Split-FullName $runner.name
+        $club     = if ($runner.PSObject.Properties['club'])        { $runner.club }        else { "" }
+        $ageCat   = if ($runner.PSObject.Properties['ageCategory']) { $runner.ageCategory } `
+                    elseif ($cat.PSObject.Properties['ageCategory']) { $cat.ageCategory }   `
+                    else { "" }
 
-        $exactKey = "$(Normalize $np.First)|$(Normalize $np.Last)|$(Normalize $club)|$(Normalize $sex)"
+        $exactKey = "$(Normalize $np.First)|$(Normalize $np.Last)|$(Normalize $club)|$(Normalize $ageCat)"
         $nameKey  = "$(Normalize $np.First)|$(Normalize $np.Last)"
 
         if ($exactIndex.ContainsKey($exactKey)) {
@@ -126,10 +128,10 @@ foreach ($cat in $standings.categories) {
         } elseif ($nameIndex.ContainsKey($nameKey)) {
             $candidates = $nameIndex[$nameKey]
             $opts = ($candidates | ForEach-Object { "id=$($_.id) club=$($_.club) sex=$($_.sex) cat=$($_.category)" }) -join "; "
-            Write-Warning "Possible match for '$($runner.name)' [$($cat.id)] club=$club sex=$sex -- candidates: $opts"
+            Write-Warning "Possible match for '$($runner.name)' [$($cat.id)] club=$club cat=$ageCat -- candidates: $opts"
             $needsReview++
         } else {
-            Write-Warning "No match for '$($runner.name)' [$($cat.id)] club=$club sex=$sex"
+            Write-Warning "No match for '$($runner.name)' [$($cat.id)] club=$club cat=$ageCat"
             $failed++
         }
     }
