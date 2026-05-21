@@ -36,8 +36,8 @@
 
 [CmdletBinding()]
 param(
-    [string]$CsvFile,
-    [string]$Year,
+    [Parameter(Mandatory)][string]$CsvFile,
+    [Parameter(Mandatory)][string]$Year,
     [ValidateSet("road-gp", "fell")]
     [string]$Series = "road-gp",
     [string]$ProjectRoot,
@@ -46,18 +46,15 @@ param(
 
 $ErrorActionPreference = "Stop"
 
-# --- Helpers ------------------------------------------------------------------
-
-function Prompt-Value {
-    param([string]$Prompt, [string]$Default = "")
-    if ($Default) {
-        $val = Read-Host "$Prompt [$Default]"
-        if (-not $val) { return $Default }
-        return $val
-    }
-    do { $val = Read-Host $Prompt } while (-not $val)
-    return $val
+if (-not $ProjectRoot) {
+    $ProjectRoot = (git -C $PSScriptRoot rev-parse --show-toplevel 2>$null)
+    if (-not $ProjectRoot) { throw "ProjectRoot not supplied and could not be resolved from git" }
 }
+$ProjectRoot = [System.IO.Path]::GetFullPath($ProjectRoot)
+$CsvFile     = [System.IO.Path]::GetFullPath($CsvFile)
+if (-not (Test-Path $CsvFile)) { throw "CSV file not found: $CsvFile" }
+
+# --- Helpers ------------------------------------------------------------------
 
 function Normalize-Name {
     param([string]$Name)
@@ -76,24 +73,6 @@ Write-Host ""
 Write-Host "InterClub Runner Correlator" -ForegroundColor Cyan
 Write-Host "===========================" -ForegroundColor Cyan
 Write-Host ""
-
-# Collect missing parameters interactively
-if (-not $ProjectRoot) {
-    $defaultRoot = Split-Path -Parent $PSScriptRoot
-    $ProjectRoot = Prompt-Value "Project root directory" $defaultRoot
-}
-$ProjectRoot = [System.IO.Path]::GetFullPath($ProjectRoot)
-if (-not (Test-Path $ProjectRoot)) { throw "Project root not found: $ProjectRoot" }
-
-if (-not $Year) {
-    $Year = Prompt-Value "Series year (e.g. 2026)" "2026"
-}
-
-if (-not $CsvFile) {
-    $CsvFile = Prompt-Value "Results CSV file path"
-}
-$CsvFile = [System.IO.Path]::GetFullPath($CsvFile)
-if (-not (Test-Path $CsvFile)) { throw "CSV file not found: $CsvFile" }
 
 # Derived paths
 $seriesDir         = Join-Path $ProjectRoot "src\data\$Year\$Series"

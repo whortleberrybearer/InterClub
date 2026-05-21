@@ -37,7 +37,7 @@
 [CmdletBinding()]
 param(
     [string]$AwardsFile,
-    [string]$Year,
+    [Parameter(Mandatory)][string]$Year,
     [ValidateSet("road-gp", "fell")]
     [string]$Series = "road-gp",
     [string]$ProjectRoot,
@@ -46,18 +46,22 @@ param(
 
 $ErrorActionPreference = "Stop"
 
-# --- Helpers ------------------------------------------------------------------
-
-function Prompt-Value {
-    param([string]$Prompt, [string]$Default = "")
-    if ($Default) {
-        $val = Read-Host "$Prompt [$Default]"
-        if (-not $val) { return $Default }
-        return $val
-    }
-    do { $val = Read-Host $Prompt } while (-not $val)
-    return $val
+if (-not $ProjectRoot) {
+    $ProjectRoot = (git -C $PSScriptRoot rev-parse --show-toplevel 2>$null)
+    if (-not $ProjectRoot) { throw "ProjectRoot not supplied and could not be resolved from git" }
 }
+$ProjectRoot = [System.IO.Path]::GetFullPath($ProjectRoot)
+
+$seriesDir = Join-Path $ProjectRoot "src\data\$Year\$Series"
+$seriesRunnersFile = Join-Path $seriesDir "runners.json"
+
+if (-not $AwardsFile) {
+    $AwardsFile = Join-Path $seriesDir "awards.json"
+}
+$AwardsFile = [System.IO.Path]::GetFullPath($AwardsFile)
+if (-not (Test-Path $AwardsFile)) { throw "Awards file not found: $AwardsFile" }
+
+# --- Helpers ------------------------------------------------------------------
 
 function Normalize { param([string]$s) return $s.Trim().ToLower() }
 
@@ -118,27 +122,6 @@ Write-Host ""
 Write-Host "InterClub Award Name Expander" -ForegroundColor Cyan
 Write-Host "==============================" -ForegroundColor Cyan
 Write-Host ""
-
-if (-not $ProjectRoot) {
-    $defaultRoot = Split-Path -Parent $PSScriptRoot
-    $ProjectRoot = Prompt-Value "Project root directory" $defaultRoot
-}
-$ProjectRoot = [System.IO.Path]::GetFullPath($ProjectRoot)
-if (-not (Test-Path $ProjectRoot)) { throw "Project root not found: $ProjectRoot" }
-
-if (-not $Year) {
-    $Year = Prompt-Value "Series year (e.g. 2025)" "2025"
-}
-
-$seriesDir         = Join-Path $ProjectRoot "src\data\$Year\$Series"
-$seriesRunnersFile = Join-Path $seriesDir "runners.json"
-
-if (-not $AwardsFile) {
-    $default = Join-Path $seriesDir "awards.json"
-    $AwardsFile = Prompt-Value "Awards JSON file path" $default
-}
-$AwardsFile = [System.IO.Path]::GetFullPath($AwardsFile)
-if (-not (Test-Path $AwardsFile)) { throw "Awards file not found: $AwardsFile" }
 
 Write-Host "Configuration" -ForegroundColor Yellow
 Write-Host "  Awards:         $AwardsFile"

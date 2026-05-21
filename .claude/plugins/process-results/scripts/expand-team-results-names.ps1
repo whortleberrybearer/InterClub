@@ -15,18 +15,24 @@
     .\scripts\expand-team-results-names.ps1 -Year 2026 -RaceId blackpool
 #>
 [CmdletBinding()]
-param([string]$Year,[string]$RaceId,[ValidateSet("road-gp","fell")][string]$Series="road-gp",[string]$ProjectRoot)
-$ErrorActionPreference="Stop"
-if(-not $ProjectRoot){$ProjectRoot=Split-Path -Parent $PSScriptRoot}
-if(-not $Year){$Year=Read-Host "Enter series year (e.g. 2026)"}
-if(-not $RaceId){$RaceId=Read-Host "Enter race ID (e.g. blackpool)"}
-$srcDir=Join-Path -Path $ProjectRoot -ChildPath "src"
-$dataDir=Join-Path -Path $srcDir -ChildPath "data"
-$yearDir=Join-Path -Path $dataDir -ChildPath $Year
-$seriesDir=Join-Path -Path $yearDir -ChildPath $Series
-$DataDir=Join-Path -Path $seriesDir -ChildPath "results"
-$CsvPath=Join-Path -Path $DataDir -ChildPath "$RaceId.csv"
-$JsonPath=Join-Path -Path $DataDir -ChildPath "$RaceId-teams.json"
+param(
+    [Parameter(Mandatory)][string]$Year,
+    [Parameter(Mandatory)][string]$RaceId,
+    [ValidateSet("road-gp","fell")][string]$Series = "road-gp",
+    [string]$ProjectRoot
+)
+$ErrorActionPreference = "Stop"
+if (-not $ProjectRoot) {
+    $ProjectRoot = (git -C $PSScriptRoot rev-parse --show-toplevel 2>$null)
+    if (-not $ProjectRoot) { throw "ProjectRoot not supplied and could not be resolved from git" }
+}
+$srcDir  = Join-Path $ProjectRoot "src"
+$dataDir = Join-Path $srcDir "data"
+$yearDir = Join-Path $dataDir $Year
+$seriesDir = Join-Path $yearDir $Series
+$DataDir = Join-Path $seriesDir "results"
+$CsvPath  = Join-Path $DataDir "$RaceId.csv"
+$JsonPath = Join-Path $DataDir "$RaceId-teams.json"
 Write-Output "Reading CSV: $CsvPath"
 Write-Output "Reading JSON: $JsonPath"
 if(-not(Test-Path $CsvPath)){Write-Error "CSV file not found: $CsvPath"}
