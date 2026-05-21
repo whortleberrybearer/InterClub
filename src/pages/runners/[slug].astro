@@ -37,27 +37,27 @@ function positionLabel(pos: number): string {
 
 <Layout title={title}>
   <h1 class="text-2xl font-bold mb-1">{title}</h1>
-  <p class="text-sm text-base-content/60 mb-4">
+  <p class="text-sm text-content/60 mb-4">
     {runner.sex === 'M' ? 'Men' : 'Women'} &middot; {runner.ageCategory}
   </p>
 
   <!-- Stats panel -->
-  <div class={`bg-base-100 border border-base-200 rounded-lg p-4 mb-6 grid gap-6 ${hasAwards ? 'grid-cols-2' : 'grid-cols-1'}`}>
+  <div class={`bg-surface border border-line rounded-lg p-4 mb-6 grid gap-6 ${hasAwards ? 'grid-cols-2' : 'grid-cols-1'}`}>
     <div>
-      <h2 class="text-xs font-bold uppercase tracking-wider text-base-content/50 mb-2">Competed for</h2>
+      <h2 class="text-xs font-bold uppercase tracking-wider text-content/50 mb-2">Competed for</h2>
       {clubHistory.map(ch => (
         <div class="flex justify-between gap-4 text-sm mb-1">
           <span class="font-medium">{ch.clubName}</span>
-          <span class="text-base-content/60">{ch.yearRanges}</span>
+          <span class="text-content/60">{ch.yearRanges}</span>
         </div>
       ))}
     </div>
     {hasAwards && (
       <div>
-        <h2 class="text-xs font-bold uppercase tracking-wider text-base-content/50 mb-2">Awards</h2>
+        <h2 class="text-xs font-bold uppercase tracking-wider text-content/50 mb-2">Awards</h2>
         {awardSummary.roadGp.length > 0 && (
           <div class="mb-3">
-            <div class="text-xs font-bold uppercase tracking-wider text-base-content/40 mb-1">Road GP</div>
+            <div class="text-xs font-bold uppercase tracking-wider text-content/40 mb-1">Road GP</div>
             {awardSummary.roadGp.map(a => (
               <div class="text-sm">{a.categoryName} &mdash; {positionLabel(a.position)}{a.count > 1 ? ` ×${a.count}` : ''}</div>
             ))}
@@ -65,7 +65,7 @@ function positionLabel(pos: number): string {
         )}
         {awardSummary.fell.length > 0 && (
           <div>
-            <div class="text-xs font-bold uppercase tracking-wider text-base-content/40 mb-1">Fell</div>
+            <div class="text-xs font-bold uppercase tracking-wider text-content/40 mb-1">Fell</div>
             {awardSummary.fell.map(a => (
               <div class="text-sm">{a.categoryName} &mdash; {positionLabel(a.position)}{a.count > 1 ? ` ×${a.count}` : ''}</div>
             ))}
@@ -76,17 +76,17 @@ function positionLabel(pos: number): string {
   </div>
 
   <!-- Filter bar -->
-  <div class="bg-base-100 border border-base-200 rounded-lg p-3 mb-6 flex flex-wrap gap-2 items-center">
+  <div class="bg-surface border border-line rounded-lg p-3 mb-6 flex flex-wrap gap-2 items-center">
     <div class="flex gap-1">
       <button class="btn btn-sm btn-active" data-series-filter="all">All</button>
       <button class="btn btn-sm btn-ghost" data-series-filter="road-gp">Road GP</button>
       <button class="btn btn-sm btn-ghost" data-series-filter="fell">Fell</button>
     </div>
-    <select id="filter-year" class="select select-bordered select-sm">
+    <select id="filter-year" class="select select-sm">
       <option value="">All Years</option>
       {allYears.map(y => <option value={String(y)}>{y}</option>)}
     </select>
-    <select id="filter-race" class="select select-bordered select-sm">
+    <select id="filter-race" class="select select-sm">
       <option value="">All Races</option>
     </select>
   </div>
@@ -95,11 +95,11 @@ function positionLabel(pos: number): string {
   <div id="profile-content">
     {yearBlocks.map(block => (
       <div data-year={String(block.year)} class="mb-8">
-        <h2 class="text-lg font-bold text-primary border-b border-base-200 pb-1 mb-4">{block.year}</h2>
+        <h2 class="text-lg font-bold text-amber border-b border-line pb-1 mb-4">{block.year}</h2>
 
         {block.roadGp && (
           <div data-series="road-gp" class="mb-5">
-            <h3 class="text-xs font-bold uppercase tracking-wider text-base-content/50 mb-2">Road GP</h3>
+            <h3 class="text-xs font-bold uppercase tracking-wider text-content/50 mb-2">Road GP</h3>
             {block.roadGp.awards.map(award => (
               <a href={siteUrl(`/road-gp/${block.year}/`)} class="inline-flex items-center gap-1 text-sm text-success hover:underline mb-2">
                 🏆 {award.categoryName} — {positionLabel(award.position)}
@@ -109,7 +109,7 @@ function positionLabel(pos: number): string {
               <tbody>
                 {block.roadGp.races.map(race => (
                   <tr data-race-id={race.raceId} data-race-name={race.raceName}>
-                    <td class="text-base-content/50 text-xs w-12 tabular-nums">{formatDateShort(race.date)}</td>
+                    <td class="text-content/50 text-xs w-12 tabular-nums">{formatDateShort(race.date)}</td>
                     <td>
                       {race.hasResults
                         ? <a href={siteUrl(`/road-gp/${block.year}/${race.raceId}/results`)} class="link link-hover">{race.raceName}</a>
@@ -125,7 +125,7 @@ function positionLabel(pos: number): string {
 
         {block.fell && (
           <div data-series="fell" class="mb-5">
-            <h3 class="text-xs font-bold uppercase tracking-wider text-base-content/50 mb-2">Fell</h3>
+            <h3 class="text-xs font-bold uppercase tracking-wider text-content/50 mb-2">Fell</h3>
             {block.fell.awards.map(award => (
               <a href={siteUrl(`/fell/${block.year}/`)} class="inline-flex items-center gap-1 text-sm text-success hover:underline mb-2">
                 🏆 {award.categoryName} — {positionLabel(award.position)}
@@ -135,7 +135,7 @@ function positionLabel(pos: number): string {
               <tbody>
                 {block.fell.races.map(race => (
                   <tr data-race-id={race.raceId} data-race-name={race.raceName}>
-                    <td class="text-base-content/50 text-xs w-12 tabular-nums">{formatDateShort(race.date)}</td>
+                    <td class="text-content/50 text-xs w-12 tabular-nums">{formatDateShort(race.date)}</td>
                     <td>
                       {race.hasResults
                         ? <a href={siteUrl(`/fell/${block.year}/${race.raceId}/results`)} class="link link-hover">{race.raceName}</a>
