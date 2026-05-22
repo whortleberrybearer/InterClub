@@ -1,6 +1,7 @@
 ---
 // src/pages/fell/[year]/team-standings.astro
 import Layout from '../../../components/Layout.astro';
+import StandingsHeader from '../../../components/StandingsHeader.astro';
 import { getRaces } from '../../../lib/data';
 import { getTeamStandingsStaticPaths } from '../../../lib/results';
 import type { Club, SeriesConfig, TeamStandings } from '../../../lib/types';
@@ -20,39 +21,63 @@ interface Props {
 
 const { year, standings, clubs, config } = Astro.props;
 const linkedRaceIds = new Set(Astro.props.linkedRaceIds);
+// All scheduled races — used for columns so unrun races still appear
 const races = getRaces(year, 'fell');
 const raceById = Object.fromEntries(races.map(r => [r.id, r]));
 const clubById = Object.fromEntries(clubs.map(c => [c.id, c]));
 const categoryById = Object.fromEntries((config.teamCategories ?? []).map(c => [c.id, c]));
+
+// Map standings race IDs → their index in the points array
+const standingsRaceIdx = Object.fromEntries(standings.races.map((id, i) => [id, i]));
+
+// Count races that have been run (have non-null points in standings)
+const racesRun = standings.races.filter((_, idx) =>
+  standings.categories.some(cat => cat.clubs.some(club => club.points[idx] !== null))
+).length;
+const racesRemaining = races.length - racesRun;
+
+// Shared table header class strings (avoids @apply in scoped Astro styles)
+const tabTh = 'font-head text-[10px] font-bold tracking-[0.1em] uppercase text-muted py-2.5 px-2 bg-surface border-b-2 border-content';
+const dtTh  = 'font-head text-[10px] font-bold tracking-[0.1em] uppercase text-muted py-2.5 px-2 bg-surface';
 ---
 
 <Layout title={`Fell Championship ${year} — Team Standings`}>
-  <div class="mb-4">
-    <a href={siteUrl(`/fell/${year}`)} class="btn btn-ghost btn-sm gap-1 -ml-3">← Fell Championship {year}</a>
-  </div>
 
-  <div class="mb-6">
+  <StandingsHeader
+    slot="hero"
+    backHref={siteUrl(`/fell/${year}`)}
+    backLabel={`← Fell Championship ${year}`}
+    activeTab="team"
+    individualHref={siteUrl(`/fell/${year}/individual-standings`)}
+    teamHref={siteUrl(`/fell/${year}/team-standings`)}
+  >
+    <p class="font-head text-[10px] font-bold tracking-[0.14em] uppercase text-muted mb-1">Season Standings</p>
     <div class="flex items-center gap-3 flex-wrap">
-      <h1 class="text-2xl font-bold">Team Standings</h1>
+      <h1 class="font-head text-[28px] lg:text-[32px] font-extrabold tracking-tight leading-none">Team Standings</h1>
       {standings.provisional && (
-        <span class="badge badge-warning badge-lg">Provisional</span>
+        <span class="badge badge-warning">Provisional</span>
       )}
     </div>
-    <p class="text-sm text-content/60 mt-1">{year} Inter Club Fell Championship</p>
-  </div>
+    <p class="text-sm text-muted mt-2">
+      <span class="font-mono">{racesRun} of {races.length}</span> races run
+      {racesRemaining > 0 && (
+        <> · <span class="font-mono text-amber">{racesRemaining}</span> remaining</>
+      )}
+    </p>
+  </StandingsHeader>
 
-  <!-- Category tabs -->
-  <div class="overflow-x-auto -mx-4 px-4 mb-1">
-    <div class="flex border-b border-line min-w-max" role="tablist">
+  <!-- ── Category chips (mobile + tablet, hidden on desktop) ── -->
+  <div class="lg:hidden overflow-x-auto -mx-4 px-4 mb-4">
+    <div class="flex gap-1.5 pb-1 min-w-max" role="tablist">
       {standings.categories.map((cat, i) => {
         const label = categoryById[cat.id]?.name ?? cat.id;
         return (
           <button
             class:list={[
-              'tab-btn px-4 py-2 text-sm border-b-2 -mb-px whitespace-nowrap transition-colors',
+              'chip-btn font-head text-xs font-bold tracking-[0.06em] uppercase px-3.5 py-[7px] rounded-full border transition-colors whitespace-nowrap',
               i === 0
-                ? 'border-amber font-medium'
-                : 'border-transparent text-content/50 hover:text-content',
+                ? 'bg-amber border-amber text-white'
+                : 'bg-surface border-line text-muted hover:text-content',
             ]}
             data-target={`cat-panel-${i}`}
             role="tab"
@@ -65,145 +90,318 @@ const categoryById = Object.fromEntries((config.teamCategories ?? []).map(c => [
     </div>
   </div>
 
-  <!-- Category panels -->
-  {standings.categories.map((cat, i) => (
-    <div id={`cat-panel-${i}`} class:list={['pt-3', i > 0 && 'hidden']} role="tabpanel">
+  <!-- ══════════════════════════════════════════════
+       DESKTOP (lg+): sticky sidebar + stacked tables
+  ══════════════════════════════════════════════ -->
+  <div class="hidden lg:grid grid-cols-[200px_1fr] gap-8 items-start">
 
-      <!-- Desktop table -->
-      <div class="hidden sm:block overflow-x-auto">
-        <table class="w-full border-collapse text-sm">
-          <thead>
-            <tr class="border-b border-line">
-              <th class="text-left py-2 pr-3 text-content/40 font-medium w-8">#</th>
-              <th class="text-left py-2 pr-4 text-content/40 font-medium">Club</th>
-              {standings.races.map(raceId => {
-                const race = raceById[raceId];
-                const label = race?.shortName ?? raceId;
-                const href = linkedRaceIds.has(raceId)
-                  ? siteUrl(`/fell/${year}/${raceId}/team-results`)
-                  : null;
-                return (
-                  <th class="text-right py-2 px-2 font-medium whitespace-nowrap">
-                    {href
-                      ? <a href={href} class="text-amber hover:underline">{label}</a>
-                      : <span class="text-content/20">{label}</span>
-                    }
-                  </th>
-                );
-              })}
-              <th class="text-right py-2 pl-4 text-content/40 font-medium">Total</th>
-            </tr>
-          </thead>
-          <tbody>
-            {cat.clubs.map(clubResult => {
-              const clubName = clubById[clubResult.club]?.name ?? clubResult.club;
-              return (
-                <tr class="border-b border-line/50 last:border-0 hover:bg-canvas/30">
-                  <td class="py-2.5 pr-3 text-content/40 tabular-nums">{clubResult.position}</td>
-                  <td class="py-2.5 pr-4 font-semibold">{clubName}</td>
-                  {clubResult.points.map(pts => (
-                    <td class:list={['py-2.5 px-2 text-right tabular-nums', pts === null && 'text-content/20']}>
-                      {pts ?? '—'}
-                    </td>
-                  ))}
-                  <td class="py-2.5 pl-4 text-right">
-                    <strong class="text-content/80">{clubResult.total}</strong>
-                    {clubResult.tiebreaker && (
-                      <span class="block text-xs text-content/40 mt-0.5">{clubResult.tiebreaker}</span>
-                    )}
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
+    <!-- Sticky sidebar -->
+    <aside class="sticky top-6 self-start">
+      <p class="font-head text-[10px] font-bold tracking-[0.12em] uppercase text-muted mb-2 pl-1">Jump to category</p>
+      <nav class="flex flex-col">
+        {standings.categories.map((cat) => {
+          const label = categoryById[cat.id]?.name ?? cat.id;
+          return (
+            <a
+              href={`#cat-${cat.id}`}
+              class="flex items-center px-3 py-2 rounded-lg no-underline text-content hover:bg-canvas border-l-2 border-transparent hover:border-amber transition-colors"
+            >
+              <span class="font-head text-[13px] font-bold tracking-[0.04em] uppercase">{label}</span>
+            </a>
+          );
+        })}
+      </nav>
 
-      <!-- Mobile view -->
-      <div class="sm:hidden">
-        <div class="flex flex-wrap gap-x-3 gap-y-1 py-3 border-b border-line mb-1 text-xs text-content/40">
-          {standings.races.map(raceId => {
-            const race = raceById[raceId];
-            const label = race?.shortName ?? raceId;
-            const href = linkedRaceIds.has(raceId)
-              ? `/fell/${year}/${raceId}/team-results`
-              : null;
+      <!-- Race key -->
+      <div class="mt-7 pt-5 border-t border-line">
+        <p class="font-head text-[10px] font-bold tracking-[0.12em] uppercase text-muted mb-2.5 pl-1">Race Key</p>
+        <div class="flex flex-col gap-1 pl-1">
+          {races.map((race, ri) => {
+            const label = race.shortName ?? race.id;
+            const ran = racesRun > ri;
+            const href = linkedRaceIds.has(race.id) ? siteUrl(`/fell/${year}/${race.id}/team-results`) : null;
             return (
-              <span>
+              <div class:list={['flex items-center gap-2 text-xs', !ran && 'opacity-50']}>
+                <span class="font-mono text-[10px] font-semibold bg-canvas px-1.5 py-0.5 rounded min-w-[36px] text-center tracking-[0.04em]">
+                  {label}
+                </span>
                 {href
-                  ? <a href={href} class="text-amber">{label}</a>
-                  : label
+                  ? <a href={href} class="text-amber hover:underline">{race.name}</a>
+                  : <span>{race.name}</span>
                 }
-                {' = '}{race?.name ?? raceId}
-              </span>
+              </div>
             );
           })}
         </div>
+      </div>
+    </aside>
 
-        {cat.clubs.map(clubResult => {
-          const clubName = clubById[clubResult.club]?.name ?? clubResult.club;
-          const detailId = `detail-${i}-${clubResult.club}`;
-          return (
-            <div class="border-b border-line last:border-0">
-              <button
-                class="standings-toggle w-full flex items-center gap-2 py-2.5 text-left"
-                data-target={detailId}
-                aria-expanded="false"
-              >
-                <span class="w-6 shrink-0 text-sm text-content/40 tabular-nums">{clubResult.position}</span>
-                <span class="flex-1 font-semibold">{clubName}</span>
-                <strong class="text-content/80">{clubResult.total}</strong>
-                <span class="chevron text-content/30 text-xs ml-1 transition-transform">▾</span>
-              </button>
-              <div id={detailId} class="hidden pb-3">
-                <div class="flex flex-wrap gap-1.5 pl-8">
-                  {clubResult.points.map((pts, raceIdx) => {
-                    const raceId = standings.races[raceIdx];
-                    const race = raceById[raceId];
-                    const label = race?.shortName ?? raceId;
-                    const href = linkedRaceIds.has(raceId)
-                      ? siteUrl(`/fell/${year}/${raceId}/team-results`)
-                      : null;
-                    const isEmpty = pts === null;
+    <!-- Stacked category sections -->
+    <div class="flex flex-col gap-9">
+      {standings.categories.map((cat) => {
+        const label = categoryById[cat.id]?.name ?? cat.id;
+        return (
+          <section id={`cat-${cat.id}`} class="scroll-mt-5">
+
+            <!-- Category header -->
+            <div class="pb-3 mb-3.5 border-b-2 border-content">
+              <h2 class="font-head text-[26px] font-extrabold tracking-tight leading-none">{label}</h2>
+            </div>
+
+            <table class="w-full border-collapse text-sm">
+              <thead>
+                <tr>
+                  <th class={`${dtTh} w-9 text-center`}>#</th>
+                  <th class={`${dtTh} text-left`}>Club</th>
+                  {races.map((race, ri) => {
+                    const ran = racesRun > ri;
+                    const href = linkedRaceIds.has(race.id) ? siteUrl(`/fell/${year}/${race.id}/team-results`) : null;
                     return (
-                      <div class:list={[
-                        'rounded px-2.5 py-1 text-center text-sm min-w-[44px]',
-                        isEmpty ? 'bg-canvas/40' : 'bg-canvas',
-                      ]}>
+                      <th class:list={[`${dtTh} w-14 text-center`, !ran && 'opacity-50']}>
                         {href
-                          ? <a href={href} class="block text-[10px] text-amber mb-0.5">{label}</a>
-                          : <span class:list={['block text-[10px] mb-0.5', isEmpty ? 'text-content/20' : 'text-content/40']}>{label}</span>
+                          ? <a href={href} class="text-amber hover:underline">{race.shortName ?? race.id}</a>
+                          : (race.shortName ?? race.id)
                         }
-                        <span class:list={[isEmpty ? 'text-content/20' : 'font-semibold']}>{pts ?? '—'}</span>
-                      </div>
+                      </th>
                     );
                   })}
-                </div>
-                {clubResult.tiebreaker && (
-                  <p class="pl-8 mt-1.5 text-xs text-content/40">{clubResult.tiebreaker}</p>
-                )}
-              </div>
-            </div>
-          );
-        })}
-      </div>
+                  <th class={`${dtTh} w-16 text-right border-l-2 border-content pr-0.5`}>Total</th>
+                </tr>
+              </thead>
+              <tbody>
+                {cat.clubs.map((clubResult) => {
+                  const clubName = clubById[clubResult.club]?.name ?? clubResult.club;
+                  return (
+                    <tr class="border-b border-line last:border-0 hover:bg-canvas/50">
+                      <td class="py-2.5 px-2 text-center align-middle font-mono text-xs font-medium text-muted tabular-nums">
+                        {clubResult.position}
+                      </td>
+                      <td class="py-2.5 px-2 align-middle">
+                        <div class="font-semibold text-[14px]">{clubName}</div>
+                        {clubResult.tiebreaker && (
+                          <div class="font-mono text-[10px] text-muted mt-0.5 tracking-[0.04em]">{clubResult.tiebreaker}</div>
+                        )}
+                      </td>
+                      {races.map((race, ri) => {
+                        const sIdx = standingsRaceIdx[race.id];
+                        const pts = sIdx !== undefined ? (clubResult.points[sIdx] ?? null) : null;
+                        const ran = racesRun > ri;
+                        return (
+                          <td class:list={[
+                            'py-2.5 px-1 text-center font-mono text-[13px] align-middle tabular-nums',
+                            pts === null ? 'text-content/20' : (ran ? 'font-medium' : 'text-muted'),
+                          ]}>
+                            {pts ?? '—'}
+                          </td>
+                        );
+                      })}
+                      <td class="py-2.5 pl-3 pr-0.5 text-right font-mono text-[17px] font-bold align-middle border-l-2 border-content tabular-nums">
+                        {clubResult.total}
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
 
+          </section>
+        );
+      })}
     </div>
-  ))}
+  </div>
+
+  <!-- ══════════════════════════════════════════════
+       MOBILE + TABLET: per-category panels
+  ══════════════════════════════════════════════ -->
+  <div class="lg:hidden">
+    {standings.categories.map((cat, i) => {
+      const label = categoryById[cat.id]?.name ?? cat.id;
+      return (
+        <div id={`cat-panel-${i}`} class:list={[i > 0 && 'hidden']} role="tabpanel">
+
+          <!-- Category title -->
+          <div class="mb-3 md:mb-4">
+            <h2 class="font-head text-[22px] md:text-[26px] font-extrabold tracking-tight">{label}</h2>
+          </div>
+
+          <!-- ── TABLET (md to lg): table in a card ── -->
+          <div class="hidden md:block overflow-x-auto">
+            <div class="bg-surface border border-line rounded-xl overflow-hidden">
+              <table class="w-full border-collapse text-sm">
+                <thead>
+                  <tr>
+                    <th class={`${tabTh} w-10 text-center`}>#</th>
+                    <th class={`${tabTh} text-left pl-2`}>Club</th>
+                    {races.map((race, ri) => {
+                      const ran = racesRun > ri;
+                      const href = linkedRaceIds.has(race.id) ? siteUrl(`/fell/${year}/${race.id}/team-results`) : null;
+                      return (
+                        <th class:list={[`${tabTh} w-11 text-center`, !ran && 'opacity-55']}>
+                          {href
+                            ? <a href={href} class="text-amber hover:underline">{race.shortName ?? race.id}</a>
+                            : (race.shortName ?? race.id)
+                          }
+                        </th>
+                      );
+                    })}
+                    <th class={`${tabTh} w-16 text-right border-l-2 border-content pr-3.5`}>Total</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {cat.clubs.map((clubResult) => {
+                    const clubName = clubById[clubResult.club]?.name ?? clubResult.club;
+                    return (
+                      <tr class="border-b border-line last:border-0 hover:bg-canvas/50">
+                        <td class="py-3 pl-3.5 pr-2 text-center align-middle font-mono text-xs font-medium text-muted tabular-nums">
+                          {clubResult.position}
+                        </td>
+                        <td class="py-3 pl-2 pr-2 align-middle">
+                          <div class="font-semibold text-[14px]">{clubName}</div>
+                          {clubResult.tiebreaker && (
+                            <div class="font-mono text-[10px] text-muted mt-0.5 tracking-[0.04em]">{clubResult.tiebreaker}</div>
+                          )}
+                        </td>
+                        {races.map((race, ri) => {
+                          const sIdx = standingsRaceIdx[race.id];
+                          const pts = sIdx !== undefined ? (clubResult.points[sIdx] ?? null) : null;
+                          return (
+                            <td class:list={[
+                              'py-3 px-1 text-center font-mono text-[13px] align-middle tabular-nums',
+                              pts === null ? 'text-content/20' : (racesRun > ri ? 'font-medium' : 'text-muted'),
+                            ]}>
+                              {pts ?? '—'}
+                            </td>
+                          );
+                        })}
+                        <td class="py-3 pl-3 pr-3.5 text-right font-mono text-[16px] font-bold align-middle border-l-2 border-content tabular-nums">
+                          {clubResult.total}
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Race legend (tablet) -->
+            <div class="flex flex-wrap gap-x-3.5 gap-y-1.5 pt-3.5 text-xs text-muted">
+              {races.map((race, ri) => {
+                const ran = racesRun > ri;
+                const href = linkedRaceIds.has(race.id) ? siteUrl(`/fell/${year}/${race.id}/team-results`) : null;
+                return (
+                  <span class:list={['inline-flex items-center gap-1.5', !ran && 'opacity-50']}>
+                    <span class="font-mono text-[10px] font-semibold bg-canvas px-1.5 py-0.5 rounded tracking-[0.04em]">{race.shortName ?? race.id}</span>
+                    {href
+                      ? <a href={href} class="text-amber hover:underline">{race.name}</a>
+                      : <span>{race.name}</span>
+                    }
+                    {!ran && <span class="font-mono"> · upcoming</span>}
+                  </span>
+                );
+              })}
+            </div>
+          </div>
+
+          <!-- ── MOBILE (below md): expandable cards (all collapsed by default) ── -->
+          <div class="md:hidden flex flex-col gap-2 pb-2">
+            {cat.clubs.map((clubResult) => {
+              const clubName = clubById[clubResult.club]?.name ?? clubResult.club;
+              const detailId = `detail-${i}-${clubResult.club}`;
+              return (
+                <div class="bg-surface border border-line rounded-[10px] overflow-hidden">
+                  <button
+                    class="mobile-toggle w-full flex items-center gap-3 px-3.5 py-3 text-left"
+                    data-target={detailId}
+                    aria-expanded="false"
+                  >
+                    <span class="font-mono text-sm font-medium text-muted w-6 shrink-0 text-center tabular-nums">
+                      {clubResult.position}
+                    </span>
+                    <div class="flex-1 min-w-0">
+                      <div class="font-head text-[16px] font-bold tracking-[-0.01em] leading-[1.15] truncate">{clubName}</div>
+                      {clubResult.tiebreaker && (
+                        <div class="font-mono text-[10.5px] text-muted mt-0.5 tracking-[0.04em]">{clubResult.tiebreaker}</div>
+                      )}
+                    </div>
+                    <div class="text-right shrink-0">
+                      <div class="font-mono text-[22px] font-medium leading-none">
+                        {clubResult.total}
+                      </div>
+                      <div class="font-head text-[9px] font-bold tracking-[0.12em] uppercase text-muted mt-0.5">Pts</div>
+                    </div>
+                    <span class="chevron font-mono text-sm text-muted ml-1 transition-transform shrink-0">▾</span>
+                  </button>
+
+                  <div id={detailId} class="border-t border-dashed border-line hidden">
+                    <div class="grid grid-cols-7 gap-1 p-3">
+                      {races.map((race) => {
+                        const sIdx = standingsRaceIdx[race.id];
+                        const pts = sIdx !== undefined ? (clubResult.points[sIdx] ?? null) : null;
+                        const ran = pts !== null;
+                        const href = linkedRaceIds.has(race.id) ? siteUrl(`/fell/${year}/${race.id}/team-results`) : null;
+                        return (
+                          <div class:list={['flex flex-col items-center gap-0.5 py-1.5 rounded-md', ran && 'bg-canvas']}>
+                            {href
+                              ? <a href={href} class="font-head text-[9px] font-bold tracking-[0.08em] text-amber">{race.shortName ?? race.id}</a>
+                              : <span class:list={['font-head text-[9px] font-bold tracking-[0.08em]', ran ? 'text-muted' : 'text-content/20']}>{race.shortName ?? race.id}</span>
+                            }
+                            <span class:list={['font-mono text-sm font-medium', ran ? 'text-content' : 'text-content/20']}>
+                              {ran ? pts : '—'}
+                            </span>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          <!-- Race key (mobile only) -->
+          <div class="md:hidden mt-4 pt-4 border-t border-line">
+            <p class="font-head text-[10px] font-bold tracking-[0.12em] uppercase text-muted mb-2">Race Key</p>
+            <div class="grid grid-cols-2 gap-x-3 gap-y-1">
+              {races.map((race, ri) => {
+                const ran = racesRun > ri;
+                const href = linkedRaceIds.has(race.id) ? siteUrl(`/fell/${year}/${race.id}/team-results`) : null;
+                return (
+                  <div class:list={['flex items-center gap-2 text-xs', !ran && 'opacity-60']}>
+                    <span class="font-mono text-[10px] font-semibold bg-canvas px-1.5 py-0.5 rounded tracking-[0.04em] min-w-[32px] text-center">
+                      {race.shortName ?? race.id}
+                    </span>
+                    {href
+                      ? <a href={href} class="text-amber hover:underline flex-1">{race.name}</a>
+                      : <span class="flex-1">{race.name}</span>
+                    }
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+        </div>
+      );
+    })}
+  </div>
+
 </Layout>
 
 <script>
-  const tabs = document.querySelectorAll<HTMLButtonElement>('.tab-btn');
-  tabs.forEach(btn => {
+  // ── Category chips (mobile + tablet) ──
+  const chips = document.querySelectorAll<HTMLButtonElement>('.chip-btn');
+  chips.forEach(btn => {
     btn.addEventListener('click', () => {
       const targetId = btn.dataset.target!;
-      tabs.forEach(t => {
-        const active = t === btn;
-        t.classList.toggle('border-amber', active);
-        t.classList.toggle('font-medium', active);
-        t.classList.toggle('border-transparent', !active);
-        t.classList.toggle('text-content/50', !active);
-        t.setAttribute('aria-selected', active ? 'true' : 'false');
+      chips.forEach(c => {
+        const active = c === btn;
+        c.classList.toggle('bg-amber',    active);
+        c.classList.toggle('border-amber', active);
+        c.classList.toggle('text-white',   active);
+        c.classList.toggle('bg-surface',   !active);
+        c.classList.toggle('border-line',  !active);
+        c.classList.toggle('text-muted',   !active);
+        c.setAttribute('aria-selected', active ? 'true' : 'false');
       });
       document.querySelectorAll<HTMLElement>('[id^="cat-panel-"]').forEach(panel => {
         panel.classList.toggle('hidden', panel.id !== targetId);
@@ -211,14 +409,15 @@ const categoryById = Object.fromEntries((config.teamCategories ?? []).map(c => [
     });
   });
 
-  document.querySelectorAll<HTMLButtonElement>('.standings-toggle').forEach(btn => {
+  // ── Mobile card expand / collapse ──
+  document.querySelectorAll<HTMLButtonElement>('.mobile-toggle').forEach(btn => {
     btn.addEventListener('click', () => {
       const targetId = btn.dataset.target!;
       const detail = document.getElementById(targetId)!;
       const isOpen = !detail.classList.contains('hidden');
       detail.classList.toggle('hidden', isOpen);
       btn.setAttribute('aria-expanded', isOpen ? 'false' : 'true');
-      btn.querySelector('.chevron')?.classList.toggle('rotate-180', !isOpen);
+      btn.querySelector<HTMLElement>('.chevron')?.classList.toggle('rotate-180', !isOpen);
     });
   });
 </script>

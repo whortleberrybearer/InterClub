@@ -1,0 +1,61 @@
+---
+// src/components/StandingsHeader.astro
+//
+// Full-viewport-width white header strip for standings pages.
+// Passed as Layout's "hero" slot so it sits outside the max-w-4xl <main>.
+//
+// Separator borders are placed on full-width wrapper divs so they extend to
+// the viewport edges, matching the nav bar's border-b treatment.
+
+interface Props {
+  backHref: string;
+  backLabel: string;
+  activeTab: 'individual' | 'team';
+  individualHref: string;
+  teamHref: string;
+}
+
+const { backHref, backLabel, activeTab, individualHref, teamHref } = Astro.props;
+---
+
+<div class="bg-surface">
+
+  <!-- Back link + page-specific heading content -->
+  <div class="max-w-4xl mx-auto px-4 pt-8 pb-5">
+    <div class="mb-5">
+      <a href={backHref} class="btn btn-ghost btn-sm gap-1 -ml-3">{backLabel}</a>
+    </div>
+    <slot />
+  </div>
+
+  <!-- Full-width separator between heading and tab nav -->
+  <div class="border-b border-line"></div>
+
+  <!-- Tab nav: border-b is on the full-width wrapper; -mb-px on each link
+       pulls it down 1px so the active tab's border-b-2 overlaps the line -->
+  <div class="border-b border-line">
+    <div class="max-w-4xl mx-auto px-4">
+      <div class="flex">
+        <a
+          href={individualHref}
+          class:list={[
+            'flex-1 md:flex-none font-head text-[13px] font-bold tracking-[0.06em] uppercase py-2.5 md:mr-7 border-b-2 -mb-px text-center md:text-left transition-colors',
+            activeTab === 'individual'
+              ? 'border-amber text-content'
+              : 'border-transparent text-muted hover:text-content',
+          ]}
+        >Individual</a>
+        <a
+          href={teamHref}
+          class:list={[
+            'flex-1 md:flex-none font-head text-[13px] font-bold tracking-[0.06em] uppercase py-2.5 md:mr-7 border-b-2 -mb-px text-center md:text-left transition-colors',
+            activeTab === 'team'
+              ? 'border-amber text-content'
+              : 'border-transparent text-muted hover:text-content',
+          ]}
+        >Team</a>
+      </div>
+    </div>
+  </div>
+
+</div>
