@@ -1,6 +1,7 @@
 ---
 // src/pages/road-gp/[year]/individual-standings.astro
 import Layout from '../../../components/Layout.astro';
+import StandingsHeader from '../../../components/StandingsHeader.astro';
 import { getRaces } from '../../../lib/data';
 import { getIndividualStandingsStaticPaths, resolveIndividualCategoryName } from '../../../lib/results';
 import type { Club, IndividualStandings } from '../../../lib/types';
@@ -30,22 +31,26 @@ const clubById = Object.fromEntries(clubs.map(c => [c.id, c]));
 ---
 
 <Layout title={`Road Grand Prix ${year} — Individual Standings`}>
-  <div class="mb-4">
-    <a href={siteUrl(`/road-gp/${year}`)} class="btn btn-ghost btn-sm gap-1 -ml-3">← Road Grand Prix {year}</a>
-  </div>
-
-  <div class="mb-6">
+  <StandingsHeader
+    slot="hero"
+    backHref={siteUrl(`/road-gp/${year}`)}
+    backLabel={`← Road GP ${year}`}
+    activeTab="individual"
+    individualHref={siteUrl(`/road-gp/${year}/individual-standings`)}
+    teamHref={siteUrl(`/road-gp/${year}/team-standings`)}
+  >
+    <p class="font-head text-[10px] font-bold tracking-[0.14em] uppercase text-muted mb-1">Season Standings</p>
     <div class="flex items-center gap-3 flex-wrap">
-      <h1 class="text-2xl font-bold">Individual Standings</h1>
+      <h1 class="font-head text-[28px] lg:text-[32px] font-extrabold tracking-tight leading-none">Individual Standings</h1>
       {standings.provisional && (
-        <span class="badge badge-warning badge-lg">Provisional</span>
+        <span class="badge badge-warning">Provisional</span>
       )}
     </div>
-    <p class="text-sm text-content/60 mt-1">{year} Inter Club Road Grand Prix</p>
+    <p class="text-sm text-muted mt-2">{year} Inter Club Road Grand Prix</p>
     {standings.maxCountingRaces && (
-      <p class="text-sm text-content/60 mt-0.5">Best {standings.maxCountingRaces} races count</p>
+      <p class="text-sm text-muted mt-0.5">Best {standings.maxCountingRaces} races count</p>
     )}
-  </div>
+  </StandingsHeader>
 
   <!-- Category tabs -->
   <div class="overflow-x-auto -mx-4 px-4 mb-1">
