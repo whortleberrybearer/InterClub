@@ -152,8 +152,7 @@ if ($Write) {
             foreach ($scorer in $clubEntry.scorers) {
                 $pos    = [int]$scorer.position
                 $runner = $eligible[$pos - 1]
-                $initial = if ($runner.first_name.Length -gt 0) { $runner.first_name.Substring(0, 1) } else { '?' }
-                $name    = "$initial. $($runner.last_name)"
+                $name = "$($runner.first_name) $($runner.last_name)".Trim()
 
                 # Only add if not already present (idempotent)
                 if (-not ($scorer.PSObject.Properties.Name -contains 'name')) {
