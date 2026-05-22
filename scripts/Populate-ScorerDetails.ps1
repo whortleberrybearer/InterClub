@@ -8,6 +8,40 @@ param(
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
 
+function Get-EligibleRunners {
+    param(
+        [Parameter(Mandatory)] $Runners,
+        [Parameter(Mandatory)] [string] $CategoryId
+    )
+
+    $id = $CategoryId.ToLower()
+
+    if ($id -match '^(open|overall|mixed)$') {
+        return @($Runners | Sort-Object { [int]$_.ic_position })
+    }
+
+    if ($id -match '^(ladies|women|female)$') {
+        return @($Runners | Where-Object { $_.sex -eq 'F' } | Sort-Object { [int]$_.ic_position })
+    }
+
+    if ($id -match '^(vets|veterans)$') {
+        $minAge = 40
+        return @($Runners | Where-Object {
+            $_.age_category -match '^V(\d+)$' -and [int]$Matches[1] -ge $minAge
+        } | Sort-Object { [int]$_.ic_position })
+    }
+
+    if ($id -match '^v(\d+)$') {
+        $minAge = [int]$Matches[1]
+        return @($Runners | Where-Object {
+            $_.age_category -match '^V(\d+)$' -and [int]$Matches[1] -ge $minAge
+        } | Sort-Object { [int]$_.ic_position })
+    }
+
+    Write-Error "Unrecognised category id: '$CategoryId'. Cannot determine eligibility rules."
+    exit 1
+}
+
 # Resolve paths from the race argument (year/series/raceId)
 $parts = $Race -split '/'
 if ($parts.Count -ne 3) {
