@@ -5,9 +5,10 @@ import { siteUrl } from '../lib/url';
 
 <Layout title="Contact">
 
-  <!-- Editorial header band -->
-  <div class="bg-surface border-b border-line -mx-4 px-4 py-8 mb-8">
-    <div class="max-w-[720px]">
+  <div class="-mt-8 grid md:grid-cols-[1fr_1.1fr] md:gap-16 md:items-start">
+
+    <!-- Left: editorial header + contact meta -->
+    <div class="border-b border-line md:border-none pt-5 pb-7 md:pt-8 md:pb-0 md:sticky md:top-8">
       <p class="font-head text-[11px] font-bold tracking-[0.16em] uppercase text-amber mb-3 flex items-center gap-2.5">
         <span class="inline-block w-5 h-px bg-amber"></span>
         Contact
@@ -18,15 +19,8 @@ import { siteUrl } from '../lib/url';
       <p class="text-[15px] leading-relaxed text-muted max-w-[380px]">
         Result query, fixture suggestion, or anything else — drop us a line and we'll get back to you.
       </p>
-    </div>
-  </div>
 
-  <!-- Two-column layout on desktop -->
-  <div class="grid gap-10 md:grid-cols-[1fr_1.1fr] md:gap-20 md:items-start">
-
-    <!-- Left: contact details (desktop only supplement) -->
-    <div class="hidden md:block">
-      <div class="border-t border-line pt-5 grid gap-4">
+      <div class="hidden md:grid gap-4 border-t border-line mt-6 pt-5">
         <div>
           <div class="font-head text-[10px] font-bold tracking-[0.14em] uppercase text-muted mb-1">Email</div>
           <a href="mailto:admin@interclub.run" class="font-mono text-sm text-content no-underline">admin@interclub.run</a>
@@ -38,8 +32,8 @@ import { siteUrl } from '../lib/url';
       </div>
     </div>
 
-    <!-- Form card -->
-    <div class="bg-surface border border-line rounded-[14px] p-6 md:p-7">
+    <!-- Right: form — no card on mobile, card on desktop -->
+    <div class="pt-6 pb-8 md:pt-8 md:bg-surface md:border md:border-line md:rounded-[14px] md:p-7">
       <form method="POST" action={siteUrl('/contact/thank-you/')}>
 
         <div class="mb-[18px]">
