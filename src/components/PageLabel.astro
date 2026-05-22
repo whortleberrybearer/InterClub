@@ -1,0 +1,11 @@
+---
+interface Props {
+  label: string;
+  class?: string;
+}
+const { label, class: className = 'mb-3' } = Astro.props;
+---
+<p class:list={["font-head text-[11px] font-bold tracking-[0.16em] uppercase text-amber flex items-center gap-2.5", className]}>
+  <span class="inline-block w-5 h-px bg-amber"></span>
+  {label}
+</p>

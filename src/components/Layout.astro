@@ -4,9 +4,10 @@ import SearchBox from './SearchBox.astro';
 
 interface Props {
   title: string;
+  noPad?: boolean;
 }
 
-const { title } = Astro.props;
+const { title, noPad = false } = Astro.props;
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const currentPath = Astro.url.pathname;
 
@@ -49,7 +50,7 @@ function isActive(path: string): boolean {
       </div>
     </header>
 
-    <main class="flex-1 max-w-4xl mx-auto w-full px-4 py-8">
+    <main class={`flex-1 max-w-4xl mx-auto w-full px-4${noPad ? '' : ' py-8'}`}>
       <slot />
     </main>
 
