@@ -1,6 +1,5 @@
 {
   "provisional": false,
-  "maxCountingRaces": 3,
   "races": [
     "pendle",
     "hutton-roof-crags",
@@ -9,1235 +8,2585 @@
   ],
   "categories": [
     {
-      "id": "male",
+      "category": "male",
       "runners": [
         {
           "position": 1,
           "name": "Alistair Palmer",
           "club": "preston",
+          "sex": "M",
+          "ageCategory": "SEN",
           "total": 299,
           "results": {
-            "pendle": 100,
-            "hutton-roof-crags": 100,
-            "leo-pollard": 99,
-            "waddington": 98
+            "pendle": {
+              "points": 100,
+              "counting": true
+            },
+            "hutton-roof-crags": {
+              "points": 100,
+              "counting": true
+            },
+            "leo-pollard": {
+              "points": 99,
+              "counting": true
+            },
+            "waddington": {
+              "points": 98,
+              "counting": true
+            }
           }
         },
         {
           "position": 2,
           "name": "Tom Belcher",
           "club": "chorley",
+          "sex": "M",
+          "ageCategory": "SEN",
           "total": 295,
           "results": {
-            "pendle": 99,
-            "hutton-roof-crags": 99,
-            "leo-pollard": 97,
-            "waddington": 97
+            "pendle": {
+              "points": 99,
+              "counting": true
+            },
+            "hutton-roof-crags": {
+              "points": 99,
+              "counting": true
+            },
+            "leo-pollard": {
+              "points": 97,
+              "counting": true
+            },
+            "waddington": {
+              "points": 97,
+              "counting": true
+            }
           }
         },
         {
           "position": 3,
           "name": "Thomas Crabtree",
           "club": "wesham",
+          "sex": "M",
+          "ageCategory": "SEN",
           "total": 294,
           "results": {
-            "pendle": 98,
-            "hutton-roof-crags": 98,
-            "leo-pollard": 98,
-            "waddington": 95
+            "pendle": {
+              "points": 98,
+              "counting": true
+            },
+            "hutton-roof-crags": {
+              "points": 98,
+              "counting": true
+            },
+            "leo-pollard": {
+              "points": 98,
+              "counting": true
+            },
+            "waddington": {
+              "points": 95,
+              "counting": true
+            }
           }
         },
         {
           "position": 4,
           "name": "Chris Banks",
           "club": "wesham",
+          "sex": "M",
+          "ageCategory": "M40",
           "total": 287,
           "results": {
-            "pendle": 97,
-            "leo-pollard": 96,
-            "waddington": 94
+            "pendle": {
+              "points": 97,
+              "counting": true
+            },
+            "leo-pollard": {
+              "points": 96,
+              "counting": true
+            },
+            "waddington": {
+              "points": 94,
+              "counting": true
+            }
           }
         },
         {
           "position": 5,
           "name": "Alek Walker",
           "club": "wesham",
+          "sex": "M",
+          "ageCategory": "M40",
           "total": 284,
           "results": {
-            "hutton-roof-crags": 97,
-            "leo-pollard": 94,
-            "waddington": 93
+            "hutton-roof-crags": {
+              "points": 97,
+              "counting": true
+            },
+            "leo-pollard": {
+              "points": 94,
+              "counting": true
+            },
+            "waddington": {
+              "points": 93,
+              "counting": true
+            }
           }
         },
         {
           "position": 6,
           "name": "Stuart Hall",
           "club": "blackpool",
+          "sex": "M",
+          "ageCategory": "M40",
           "total": 277,
           "results": {
-            "pendle": 95,
-            "hutton-roof-crags": 96,
-            "waddington": 86
+            "pendle": {
+              "points": 95,
+              "counting": true
+            },
+            "hutton-roof-crags": {
+              "points": 96,
+              "counting": true
+            },
+            "waddington": {
+              "points": 86,
+              "counting": true
+            }
           }
         },
         {
           "position": 7,
           "name": "John Griffiths",
           "club": "preston",
+          "sex": "M",
+          "ageCategory": "M60",
           "total": 276,
           "results": {
-            "pendle": 94,
-            "hutton-roof-crags": 94,
-            "leo-pollard": 88,
-            "waddington": 79
+            "pendle": {
+              "points": 94,
+              "counting": true
+            },
+            "hutton-roof-crags": {
+              "points": 94,
+              "counting": true
+            },
+            "leo-pollard": {
+              "points": 88,
+              "counting": true
+            },
+            "waddington": {
+              "points": 79,
+              "counting": true
+            }
           }
         },
         {
           "position": 8,
           "name": "Daniel Hounslea",
           "club": "wesham",
+          "sex": "M",
+          "ageCategory": "SEN",
           "total": 266,
           "results": {
-            "pendle": 88,
-            "leo-pollard": 87,
-            "waddington": 91
+            "pendle": {
+              "points": 88,
+              "counting": true
+            },
+            "leo-pollard": {
+              "points": 87,
+              "counting": true
+            },
+            "waddington": {
+              "points": 91,
+              "counting": true
+            }
           }
         },
         {
           "position": 9,
           "name": "Darren McDermott",
           "club": "preston",
+          "sex": "M",
+          "ageCategory": "M50",
           "total": 265,
           "results": {
-            "pendle": 86,
-            "leo-pollard": 92,
-            "waddington": 87
+            "pendle": {
+              "points": 86,
+              "counting": true
+            },
+            "leo-pollard": {
+              "points": 92,
+              "counting": true
+            },
+            "waddington": {
+              "points": 87,
+              "counting": true
+            }
           }
         },
         {
           "position": 10,
           "name": "Paul Bass",
           "club": "chorley",
+          "sex": "M",
+          "ageCategory": "M50",
           "total": 264,
           "results": {
-            "pendle": 91,
-            "hutton-roof-crags": 87,
-            "leo-pollard": 86,
-            "waddington": 78
+            "pendle": {
+              "points": 91,
+              "counting": true
+            },
+            "hutton-roof-crags": {
+              "points": 87,
+              "counting": true
+            },
+            "leo-pollard": {
+              "points": 86,
+              "counting": true
+            },
+            "waddington": {
+              "points": 78,
+              "counting": true
+            }
           }
         },
         {
           "position": 11,
           "name": "Philip Butler",
           "club": "red-rose",
+          "sex": "M",
+          "ageCategory": "M60",
           "total": 256,
           "results": {
-            "pendle": 81,
-            "hutton-roof-crags": 88,
-            "leo-pollard": 85,
-            "waddington": 83
+            "pendle": {
+              "points": 81,
+              "counting": true
+            },
+            "hutton-roof-crags": {
+              "points": 88,
+              "counting": true
+            },
+            "leo-pollard": {
+              "points": 85,
+              "counting": true
+            },
+            "waddington": {
+              "points": 83,
+              "counting": true
+            }
           }
         },
         {
           "position": 12,
           "name": "Simon Reason",
           "club": "blackpool",
+          "sex": "M",
+          "ageCategory": "SEN",
           "total": 256,
           "results": {
-            "pendle": 92,
-            "leo-pollard": 83,
-            "waddington": 81
+            "pendle": {
+              "points": 92,
+              "counting": true
+            },
+            "leo-pollard": {
+              "points": 83,
+              "counting": true
+            },
+            "waddington": {
+              "points": 81,
+              "counting": true
+            }
           }
         },
         {
           "position": 13,
           "name": "Simon Shaw",
           "club": "red-rose",
+          "sex": "M",
+          "ageCategory": "M60",
           "total": 255,
           "results": {
-            "pendle": 89,
-            "hutton-roof-crags": 86,
-            "leo-pollard": 80,
-            "waddington": 73
+            "pendle": {
+              "points": 89,
+              "counting": true
+            },
+            "hutton-roof-crags": {
+              "points": 86,
+              "counting": true
+            },
+            "leo-pollard": {
+              "points": 80,
+              "counting": true
+            },
+            "waddington": {
+              "points": 73,
+              "counting": true
+            }
           }
         },
         {
           "position": 14,
           "name": "Christopher Bridge",
           "club": "red-rose",
+          "sex": "M",
+          "ageCategory": "SEN",
           "total": 247,
           "results": {
-            "pendle": 87,
-            "hutton-roof-crags": 84,
-            "waddington": 76
+            "pendle": {
+              "points": 87,
+              "counting": true
+            },
+            "hutton-roof-crags": {
+              "points": 84,
+              "counting": true
+            },
+            "waddington": {
+              "points": 76,
+              "counting": true
+            }
           }
         },
         {
           "position": 15,
           "name": "Bill Beckett",
           "club": "chorley",
+          "sex": "M",
+          "ageCategory": "M50",
           "total": 242,
           "results": {
-            "pendle": 79,
-            "hutton-roof-crags": 85,
-            "leo-pollard": 78,
-            "waddington": 75
+            "pendle": {
+              "points": 79,
+              "counting": true
+            },
+            "hutton-roof-crags": {
+              "points": 85,
+              "counting": true
+            },
+            "leo-pollard": {
+              "points": 78,
+              "counting": true
+            },
+            "waddington": {
+              "points": 75,
+              "counting": true
+            }
           }
         },
         {
           "position": 16,
           "name": "Stuart Cann",
           "club": "red-rose",
+          "sex": "M",
+          "ageCategory": "M60",
           "total": 232,
           "results": {
-            "pendle": 75,
-            "hutton-roof-crags": 80,
-            "leo-pollard": 77,
-            "waddington": 72
+            "pendle": {
+              "points": 75,
+              "counting": true
+            },
+            "hutton-roof-crags": {
+              "points": 80,
+              "counting": true
+            },
+            "leo-pollard": {
+              "points": 77,
+              "counting": true
+            },
+            "waddington": {
+              "points": 72,
+              "counting": true
+            }
           }
         },
         {
           "position": 17,
           "name": "Steve Baker",
           "club": "chorley",
+          "sex": "M",
+          "ageCategory": "M60",
           "total": 229,
           "results": {
-            "pendle": 78,
-            "hutton-roof-crags": 81,
-            "waddington": 70
+            "pendle": {
+              "points": 78,
+              "counting": true
+            },
+            "hutton-roof-crags": {
+              "points": 81,
+              "counting": true
+            },
+            "waddington": {
+              "points": 70,
+              "counting": true
+            }
           }
         },
         {
           "position": 18,
           "name": "Stephen Woodruffe",
           "club": "red-rose",
+          "sex": "M",
+          "ageCategory": "M60",
           "total": 224,
           "results": {
-            "pendle": 80,
-            "leo-pollard": 81,
-            "waddington": 63
+            "pendle": {
+              "points": 80,
+              "counting": true
+            },
+            "leo-pollard": {
+              "points": 81,
+              "counting": true
+            },
+            "waddington": {
+              "points": 63,
+              "counting": true
+            }
           }
         },
         {
           "position": 19,
           "name": "Peter Singleton",
           "club": "blackpool",
+          "sex": "M",
+          "ageCategory": "M60",
           "total": 222,
           "results": {
-            "pendle": 76,
-            "hutton-roof-crags": 79,
-            "waddington": 67
+            "pendle": {
+              "points": 76,
+              "counting": true
+            },
+            "hutton-roof-crags": {
+              "points": 79,
+              "counting": true
+            },
+            "waddington": {
+              "points": 67,
+              "counting": true
+            }
           }
         },
         {
           "position": 20,
           "name": "Graham Schofield",
           "club": "chorley",
+          "sex": "M",
+          "ageCategory": "M70",
           "total": 221,
           "results": {
-            "pendle": 72,
-            "hutton-roof-crags": 76,
-            "leo-pollard": 73,
-            "waddington": 59
+            "pendle": {
+              "points": 72,
+              "counting": true
+            },
+            "hutton-roof-crags": {
+              "points": 76,
+              "counting": true
+            },
+            "leo-pollard": {
+              "points": 73,
+              "counting": true
+            },
+            "waddington": {
+              "points": 59,
+              "counting": true
+            }
           }
         },
         {
           "position": 21,
           "name": "Anthony Blight",
           "club": "blackpool",
+          "sex": "M",
+          "ageCategory": "M50",
           "total": 216,
           "results": {
-            "pendle": 74,
-            "hutton-roof-crags": 78,
-            "waddington": 64
+            "pendle": {
+              "points": 74,
+              "counting": true
+            },
+            "hutton-roof-crags": {
+              "points": 78,
+              "counting": true
+            },
+            "waddington": {
+              "points": 64,
+              "counting": true
+            }
           }
         },
         {
           "position": 22,
           "name": "Bill Smith",
           "club": "blackpool",
+          "sex": "M",
+          "ageCategory": "M70",
           "total": 213,
           "results": {
-            "pendle": 69,
-            "hutton-roof-crags": 74,
-            "leo-pollard": 70,
-            "waddington": 56
+            "pendle": {
+              "points": 69,
+              "counting": true
+            },
+            "hutton-roof-crags": {
+              "points": 74,
+              "counting": true
+            },
+            "leo-pollard": {
+              "points": 70,
+              "counting": true
+            },
+            "waddington": {
+              "points": 56,
+              "counting": true
+            }
           }
         },
         {
           "position": 23,
           "name": "Patrick Brown",
           "club": "preston",
+          "sex": "M",
+          "ageCategory": "SEN",
           "total": 200,
           "results": {
-            "leo-pollard": 100,
-            "waddington": 100
+            "leo-pollard": {
+              "points": 100,
+              "counting": true
+            },
+            "waddington": {
+              "points": 100,
+              "counting": true
+            }
           }
         },
         {
           "position": 24,
           "name": "John Dunn",
           "club": "blackpool",
+          "sex": "M",
+          "ageCategory": "M40",
           "total": 196,
           "results": {
-            "hutton-roof-crags": 73,
-            "leo-pollard": 68,
-            "waddington": 55
+            "hutton-roof-crags": {
+              "points": 73,
+              "counting": true
+            },
+            "leo-pollard": {
+              "points": 68,
+              "counting": true
+            },
+            "waddington": {
+              "points": 55,
+              "counting": true
+            }
           }
         },
         {
           "position": 25,
           "name": "David Cowburn",
           "club": "chorley",
+          "sex": "M",
+          "ageCategory": "M50",
           "total": 188,
           "results": {
-            "pendle": 96,
-            "hutton-roof-crags": 92
+            "pendle": {
+              "points": 96,
+              "counting": true
+            },
+            "hutton-roof-crags": {
+              "points": 92,
+              "counting": true
+            }
           }
         },
         {
           "position": 26,
           "name": "Michael Riley",
           "club": "chorley",
+          "sex": "M",
+          "ageCategory": "M50",
           "total": 183,
           "results": {
-            "hutton-roof-crags": 93,
-            "leo-pollard": 90
+            "hutton-roof-crags": {
+              "points": 93,
+              "counting": true
+            },
+            "leo-pollard": {
+              "points": 90,
+              "counting": true
+            }
           }
         },
         {
           "position": 27,
           "name": "Tom Brown",
           "club": "preston",
+          "sex": "M",
+          "ageCategory": "SEN",
           "total": 183,
           "results": {
-            "leo-pollard": 93,
-            "waddington": 90
+            "leo-pollard": {
+              "points": 93,
+              "counting": true
+            },
+            "waddington": {
+              "points": 90,
+              "counting": true
+            }
           }
         },
         {
           "position": 28,
           "name": "John Rainford",
           "club": "preston",
+          "sex": "M",
+          "ageCategory": "M60",
           "total": 178,
           "results": {
-            "pendle": 93,
-            "waddington": 85
+            "pendle": {
+              "points": 93,
+              "counting": true
+            },
+            "waddington": {
+              "points": 85,
+              "counting": true
+            }
           }
         },
         {
           "position": 29,
           "name": "Michael Oddie",
           "club": "red-rose",
+          "sex": "M",
+          "ageCategory": "M50",
           "total": 177,
           "results": {
-            "leo-pollard": 89,
-            "waddington": 88
+            "leo-pollard": {
+              "points": 89,
+              "counting": true
+            },
+            "waddington": {
+              "points": 88,
+              "counting": true
+            }
           }
         },
         {
           "position": 30,
           "name": "Dom Kirby",
           "club": "lytham",
+          "sex": "M",
+          "ageCategory": "M40",
           "total": 173,
           "results": {
-            "hutton-roof-crags": 89,
-            "waddington": 84
+            "hutton-roof-crags": {
+              "points": 89,
+              "counting": true
+            },
+            "waddington": {
+              "points": 84,
+              "counting": true
+            }
           }
         },
         {
           "position": 31,
           "name": "Steve Myerscough",
           "club": "wesham",
+          "sex": "M",
+          "ageCategory": "M50",
           "total": 166,
           "results": {
-            "pendle": 82,
-            "leo-pollard": 84
+            "pendle": {
+              "points": 82,
+              "counting": true
+            },
+            "leo-pollard": {
+              "points": 84,
+              "counting": true
+            }
           }
         },
         {
           "position": 32,
           "name": "Ian Nichols Hogg",
           "club": "wesham",
+          "sex": "M",
+          "ageCategory": "SEN",
           "total": 164,
           "results": {
-            "hutton-roof-crags": 82,
-            "leo-pollard": 82
+            "hutton-roof-crags": {
+              "points": 82,
+              "counting": true
+            },
+            "leo-pollard": {
+              "points": 82,
+              "counting": true
+            }
           }
         },
         {
           "position": 33,
           "name": "Martin Quinn",
           "club": "chorley",
+          "sex": "M",
+          "ageCategory": "M50",
           "total": 156,
           "results": {
-            "pendle": 77,
-            "leo-pollard": 79
+            "pendle": {
+              "points": 77,
+              "counting": true
+            },
+            "leo-pollard": {
+              "points": 79,
+              "counting": true
+            }
           }
         },
         {
           "position": 34,
           "name": "Simon Scarr",
           "club": "blackpool",
+          "sex": "M",
+          "ageCategory": "M60",
           "total": 143,
           "results": {
-            "pendle": 71,
-            "leo-pollard": 72
+            "pendle": {
+              "points": 71,
+              "counting": true
+            },
+            "leo-pollard": {
+              "points": 72,
+              "counting": true
+            }
           }
         },
         {
           "position": 35,
           "name": "John Collier",
           "club": "wesham",
+          "sex": "M",
+          "ageCategory": "M70",
           "total": 141,
           "results": {
-            "pendle": 73,
-            "waddington": 68
+            "pendle": {
+              "points": 73,
+              "counting": true
+            },
+            "waddington": {
+              "points": 68,
+              "counting": true
+            }
           }
         },
         {
           "position": 36,
           "name": "Chris Wales",
           "club": "preston",
+          "sex": "M",
+          "ageCategory": "M50",
           "total": 138,
           "results": {
-            "leo-pollard": 76,
-            "waddington": 62
+            "leo-pollard": {
+              "points": 76,
+              "counting": true
+            },
+            "waddington": {
+              "points": 62,
+              "counting": true
+            }
           }
         },
         {
           "position": 37,
           "name": "Rick Pinches",
           "club": "blackpool",
+          "sex": "M",
+          "ageCategory": "M50",
           "total": 126,
           "results": {
-            "leo-pollard": 69,
-            "waddington": 57
+            "leo-pollard": {
+              "points": 69,
+              "counting": true
+            },
+            "waddington": {
+              "points": 57,
+              "counting": true
+            }
           }
         },
         {
           "position": 38,
           "name": "Peter McDermott",
           "club": "preston",
+          "sex": "M",
+          "ageCategory": "M80",
           "total": 124,
           "results": {
-            "pendle": 70,
-            "waddington": 54
+            "pendle": {
+              "points": 70,
+              "counting": true
+            },
+            "waddington": {
+              "points": 54,
+              "counting": true
+            }
           }
         },
         {
           "position": 39,
           "name": "Ross McKelvie",
           "club": "lytham",
+          "sex": "M",
+          "ageCategory": "SEN",
           "total": 99,
           "results": {
-            "waddington": 99
+            "waddington": {
+              "points": 99,
+              "counting": true
+            }
           }
         },
         {
           "position": 40,
           "name": "Tom Bamber",
           "club": "wesham",
+          "sex": "M",
+          "ageCategory": "M40",
           "total": 96,
           "results": {
-            "waddington": 96
+            "waddington": {
+              "points": 96,
+              "counting": true
+            }
           }
         },
         {
           "position": 41,
           "name": "Darren Fishwick",
           "club": "chorley",
+          "sex": "M",
+          "ageCategory": "M50",
           "total": 95,
           "results": {
-            "hutton-roof-crags": 95
+            "hutton-roof-crags": {
+              "points": 95,
+              "counting": true
+            }
           }
         },
         {
           "position": 42,
           "name": "Dylan Grindley",
           "club": "chorley",
+          "sex": "M",
+          "ageCategory": "SEN",
           "total": 95,
           "results": {
-            "leo-pollard": 95
+            "leo-pollard": {
+              "points": 95,
+              "counting": true
+            }
           }
         },
         {
           "position": 43,
           "name": "Stuart Hemmings",
           "club": "chorley",
+          "sex": "M",
+          "ageCategory": "M50",
           "total": 92,
           "results": {
-            "waddington": 92
+            "waddington": {
+              "points": 92,
+              "counting": true
+            }
           }
         },
         {
           "position": 44,
           "name": "Mark Warner",
           "club": "blackpool",
+          "sex": "M",
+          "ageCategory": "SEN",
           "total": 91,
           "results": {
-            "leo-pollard": 91
+            "leo-pollard": {
+              "points": 91,
+              "counting": true
+            }
           }
         },
         {
           "position": 45,
           "name": "Stephen Dunn",
           "club": "wesham",
+          "sex": "M",
+          "ageCategory": "M40",
           "total": 91,
           "results": {
-            "hutton-roof-crags": 91
+            "hutton-roof-crags": {
+              "points": 91,
+              "counting": true
+            }
           }
         },
         {
           "position": 46,
           "name": "Chris Farrimond",
           "club": "chorley",
+          "sex": "M",
+          "ageCategory": "M40",
           "total": 90,
           "results": {
-            "pendle": 90
+            "pendle": {
+              "points": 90,
+              "counting": true
+            }
           }
         },
         {
           "position": 47,
           "name": "Tony Terras",
           "club": "wesham",
+          "sex": "M",
+          "ageCategory": "M50",
           "total": 90,
           "results": {
-            "hutton-roof-crags": 90
+            "hutton-roof-crags": {
+              "points": 90,
+              "counting": true
+            }
           }
         },
         {
           "position": 48,
           "name": "David Parkington",
           "club": "preston",
+          "sex": "M",
+          "ageCategory": "M60",
           "total": 89,
           "results": {
-            "waddington": 89
+            "waddington": {
+              "points": 89,
+              "counting": true
+            }
           }
         },
         {
           "position": 49,
           "name": "Mike Burnham",
           "club": "preston",
+          "sex": "M",
+          "ageCategory": "SEN",
           "total": 85,
           "results": {
-            "pendle": 85
+            "pendle": {
+              "points": 85,
+              "counting": true
+            }
           }
         },
         {
           "position": 50,
           "name": "Joseph Sharples",
           "club": "preston",
+          "sex": "M",
+          "ageCategory": "SEN",
           "total": 84,
           "results": {
-            "pendle": 84
+            "pendle": {
+              "points": 84,
+              "counting": true
+            }
           }
         },
         {
           "position": 51,
           "name": "Mark Ellithorn",
           "club": "chorley",
+          "sex": "M",
+          "ageCategory": "M60",
           "total": 83,
           "results": {
-            "pendle": 83
+            "pendle": {
+              "points": 83,
+              "counting": true
+            }
           }
         },
         {
           "position": 52,
           "name": "Michael Edge",
           "club": "wesham",
+          "sex": "M",
+          "ageCategory": "M60",
           "total": 83,
           "results": {
-            "hutton-roof-crags": 83
+            "hutton-roof-crags": {
+              "points": 83,
+              "counting": true
+            }
           }
         },
         {
           "position": 53,
           "name": "Tom Prescott",
           "club": "preston",
+          "sex": "M",
+          "ageCategory": "SEN",
           "total": 82,
           "results": {
-            "waddington": 82
+            "waddington": {
+              "points": 82,
+              "counting": true
+            }
           }
         },
         {
           "position": 54,
           "name": "Paul Wareing",
           "club": "chorley",
+          "sex": "M",
+          "ageCategory": "M60",
           "total": 80,
           "results": {
-            "waddington": 80
+            "waddington": {
+              "points": 80,
+              "counting": true
+            }
           }
         },
         {
           "position": 55,
           "name": "James Danson",
           "club": "wesham",
+          "sex": "M",
+          "ageCategory": "M60",
           "total": 77,
           "results": {
-            "hutton-roof-crags": 77
+            "hutton-roof-crags": {
+              "points": 77,
+              "counting": true
+            }
           }
         },
         {
           "position": 56,
           "name": "Steve Bamber",
           "club": "preston",
+          "sex": "M",
+          "ageCategory": "M60",
           "total": 77,
           "results": {
-            "waddington": 77
+            "waddington": {
+              "points": 77,
+              "counting": true
+            }
           }
         },
         {
           "position": 57,
           "name": "Eddie Hamilton",
           "club": "red-rose",
+          "sex": "M",
+          "ageCategory": "M50",
           "total": 75,
           "results": {
-            "leo-pollard": 75
+            "leo-pollard": {
+              "points": 75,
+              "counting": true
+            }
           }
         },
         {
           "position": 58,
           "name": "Greg Oulton",
           "club": "lytham",
+          "sex": "M",
+          "ageCategory": "M50",
           "total": 75,
           "results": {
-            "hutton-roof-crags": 75
+            "hutton-roof-crags": {
+              "points": 75,
+              "counting": true
+            }
           }
         },
         {
           "position": 59,
           "name": "Adrian Pickington",
           "club": "chorley",
+          "sex": "M",
+          "ageCategory": "M50",
           "total": 74,
           "results": {
-            "waddington": 74
+            "waddington": {
+              "points": 74,
+              "counting": true
+            }
           }
         },
         {
           "position": 60,
           "name": "Michael Hendry",
           "club": "chorley",
+          "sex": "M",
+          "ageCategory": "M40",
           "total": 74,
           "results": {
-            "leo-pollard": 74
+            "leo-pollard": {
+              "points": 74,
+              "counting": true
+            }
           }
         },
         {
           "position": 61,
           "name": "Craig Walker",
           "club": "preston",
+          "sex": "M",
+          "ageCategory": "SEN",
           "total": 71,
           "results": {
-            "waddington": 71
+            "waddington": {
+              "points": 71,
+              "counting": true
+            }
           }
         },
         {
           "position": 62,
           "name": "Emil Bowe",
           "club": "red-rose",
+          "sex": "M",
+          "ageCategory": "SEN",
           "total": 71,
           "results": {
-            "leo-pollard": 71
+            "leo-pollard": {
+              "points": 71,
+              "counting": true
+            }
           }
         },
         {
           "position": 63,
           "name": "Max Watson",
           "club": "wesham",
+          "sex": "M",
+          "ageCategory": "SEN",
           "total": 69,
           "results": {
-            "waddington": 69
+            "waddington": {
+              "points": 69,
+              "counting": true
+            }
           }
         },
         {
           "position": 64,
           "name": "Peter Bolton",
           "club": "red-rose",
+          "sex": "M",
+          "ageCategory": "M60",
           "total": 66,
           "results": {
-            "waddington": 66
+            "waddington": {
+              "points": 66,
+              "counting": true
+            }
           }
         },
         {
           "position": 65,
           "name": "Michael McLoughlin",
           "club": "preston",
+          "sex": "M",
+          "ageCategory": "M70",
           "total": 65,
           "results": {
-            "waddington": 65
+            "waddington": {
+              "points": 65,
+              "counting": true
+            }
           }
         },
         {
           "position": 66,
           "name": "Darrell Pickering",
           "club": "blackpool",
+          "sex": "M",
+          "ageCategory": "M60",
           "total": 61,
           "results": {
-            "waddington": 61
+            "waddington": {
+              "points": 61,
+              "counting": true
+            }
           }
         },
         {
           "position": 67,
           "name": "Chris Bluck",
           "club": "blackpool",
+          "sex": "M",
+          "ageCategory": "M40",
           "total": 60,
           "results": {
-            "waddington": 60
+            "waddington": {
+              "points": 60,
+              "counting": true
+            }
           }
         },
         {
           "position": 68,
           "name": "Gordon Thompson",
           "club": "preston",
+          "sex": "M",
+          "ageCategory": "M60",
           "total": 58,
           "results": {
-            "waddington": 58
+            "waddington": {
+              "points": 58,
+              "counting": true
+            }
           }
         }
       ]
     },
     {
-      "id": "m40",
+      "category": "v40-male",
       "runners": [
         {
           "position": 1,
           "name": "Chris Banks",
           "club": "wesham",
-          "total": 287,
+          "sex": "M",
+          "ageCategory": "V40",
+          "total": 299,
           "results": {
-            "pendle": 97,
-            "leo-pollard": 96,
-            "waddington": 94
+            "pendle": {
+              "points": 100,
+              "counting": true
+            },
+            "leo-pollard": {
+              "points": 100,
+              "counting": true
+            },
+            "waddington": {
+              "points": 99,
+              "counting": true
+            }
           }
         },
         {
           "position": 2,
           "name": "Alek Walker",
           "club": "wesham",
-          "total": 284,
+          "sex": "M",
+          "ageCategory": "V40",
+          "total": 297,
           "results": {
-            "hutton-roof-crags": 97,
-            "leo-pollard": 94,
-            "waddington": 93
+            "hutton-roof-crags": {
+              "points": 100,
+              "counting": true
+            },
+            "leo-pollard": {
+              "points": 99,
+              "counting": true
+            },
+            "waddington": {
+              "points": 98,
+              "counting": true
+            }
           }
         },
         {
           "position": 3,
           "name": "Stuart Hall",
           "club": "blackpool",
-          "total": 277,
+          "sex": "M",
+          "ageCategory": "V40",
+          "total": 295,
           "results": {
-            "pendle": 95,
-            "hutton-roof-crags": 96,
-            "waddington": 86
+            "pendle": {
+              "points": 99,
+              "counting": true
+            },
+            "hutton-roof-crags": {
+              "points": 99,
+              "counting": true
+            },
+            "waddington": {
+              "points": 97,
+              "counting": true
+            }
           }
         },
         {
           "position": 4,
           "name": "John Dunn",
           "club": "blackpool",
-          "total": 196,
+          "sex": "M",
+          "ageCategory": "V40",
+          "total": 287,
           "results": {
-            "hutton-roof-crags": 73,
-            "leo-pollard": 68,
-            "waddington": 55
+            "hutton-roof-crags": {
+              "points": 96,
+              "counting": true
+            },
+            "leo-pollard": {
+              "points": 97,
+              "counting": true
+            },
+            "waddington": {
+              "points": 94,
+              "counting": true
+            }
           }
         },
         {
           "position": 5,
           "name": "Dom Kirby",
           "club": "lytham",
-          "total": 173,
+          "sex": "M",
+          "ageCategory": "V40",
+          "total": 193,
           "results": {
-            "hutton-roof-crags": 89,
-            "waddington": 84
+            "pendle": {
+              "points": 97,
+              "counting": true
+            },
+            "waddington": {
+              "points": 96,
+              "counting": true
+            }
           }
         },
         {
           "position": 6,
-          "name": "Stephen Dunn",
+          "name": "Tom Bamber",
           "club": "wesham",
-          "total": 91,
+          "sex": "M",
+          "ageCategory": "V40",
+          "total": 200,
           "results": {
-            "hutton-roof-crags": 91
+            "pendle": {
+              "points": 100,
+              "counting": true
+            },
+            "hutton-roof-crags": {
+              "points": 100,
+              "counting": true
+            }
           }
         },
         {
           "position": 7,
           "name": "Chris Farrimond",
           "club": "chorley",
-          "total": 90,
+          "sex": "M",
+          "ageCategory": "V40",
+          "total": 98,
           "results": {
-            "pendle": 90
+            "pendle": {
+              "points": 98,
+              "counting": true
+            }
           }
         },
         {
           "position": 8,
-          "name": "Tom Bamber",
+          "name": "Stephen Dunn",
           "club": "wesham",
-          "total": 96,
+          "sex": "M",
+          "ageCategory": "V40",
+          "total": 98,
           "results": {
-            "waddington": 96
+            "hutton-roof-crags": {
+              "points": 98,
+              "counting": true
+            }
           }
         },
         {
           "position": 9,
           "name": "Michael Hendry",
           "club": "chorley",
-          "total": 74,
+          "sex": "M",
+          "ageCategory": "V40",
+          "total": 98,
           "results": {
-            "leo-pollard": 74
+            "leo-pollard": {
+              "points": 98,
+              "counting": true
+            }
           }
         },
         {
           "position": 10,
           "name": "Chris Bluck",
           "club": "blackpool",
-          "total": 60,
+          "sex": "M",
+          "ageCategory": "V40",
+          "total": 95,
           "results": {
-            "waddington": 60
+            "pendle": {
+              "points": 95,
+              "counting": true
+            }
           }
         }
       ]
     },
     {
-      "id": "m50",
+      "category": "v50-male",
       "runners": [
         {
           "position": 1,
           "name": "Darren McDermott",
           "club": "preston",
-          "total": 265,
+          "sex": "M",
+          "ageCategory": "V50",
+          "total": 296,
           "results": {
-            "pendle": 86,
-            "leo-pollard": 92,
-            "waddington": 87
+            "pendle": {
+              "points": 98,
+              "counting": true
+            },
+            "leo-pollard": {
+              "points": 100,
+              "counting": true
+            },
+            "waddington": {
+              "points": 98,
+              "counting": true
+            }
           }
         },
         {
           "position": 2,
           "name": "Paul Bass",
           "club": "chorley",
-          "total": 264,
+          "sex": "M",
+          "ageCategory": "V50",
+          "total": 293,
           "results": {
-            "pendle": 91,
-            "hutton-roof-crags": 87,
-            "leo-pollard": 86,
-            "waddington": 78
+            "pendle": {
+              "points": 99,
+              "counting": true
+            },
+            "hutton-roof-crags": {
+              "points": 96,
+              "counting": true
+            },
+            "leo-pollard": {
+              "points": 97,
+              "counting": true
+            },
+            "waddington": {
+              "points": 97,
+              "counting": true
+            }
           }
         },
         {
           "position": 3,
           "name": "Bill Beckett",
           "club": "chorley",
-          "total": 242,
+          "sex": "M",
+          "ageCategory": "V50",
+          "total": 287,
           "results": {
-            "pendle": 79,
-            "hutton-roof-crags": 85,
-            "leo-pollard": 78,
-            "waddington": 75
+            "pendle": {
+              "points": 96,
+              "counting": true
+            },
+            "hutton-roof-crags": {
+              "points": 95,
+              "counting": true
+            },
+            "leo-pollard": {
+              "points": 94,
+              "counting": true
+            },
+            "waddington": {
+              "points": 96,
+              "counting": true
+            }
           }
         },
         {
           "position": 4,
           "name": "Anthony Blight",
           "club": "blackpool",
-          "total": 216,
+          "sex": "M",
+          "ageCategory": "V50",
+          "total": 282,
           "results": {
-            "pendle": 74,
-            "hutton-roof-crags": 78,
-            "waddington": 64
+            "pendle": {
+              "points": 94,
+              "counting": true
+            },
+            "hutton-roof-crags": {
+              "points": 94,
+              "counting": true
+            },
+            "waddington": {
+              "points": 94,
+              "counting": true
+            }
           }
         },
         {
           "position": 5,
           "name": "David Cowburn",
           "club": "chorley",
-          "total": 188,
+          "sex": "M",
+          "ageCategory": "V50",
+          "total": 198,
           "results": {
-            "pendle": 96,
-            "hutton-roof-crags": 92
+            "pendle": {
+              "points": 100,
+              "counting": true
+            },
+            "leo-pollard": {
+              "points": 98,
+              "counting": true
+            }
           }
         },
         {
           "position": 6,
           "name": "Michael Riley",
           "club": "chorley",
-          "total": 183,
+          "sex": "M",
+          "ageCategory": "V50",
+          "total": 198,
           "results": {
-            "hutton-roof-crags": 93,
-            "leo-pollard": 90
+            "hutton-roof-crags": {
+              "points": 99,
+              "counting": true
+            },
+            "leo-pollard": {
+              "points": 99,
+              "counting": true
+            }
           }
         },
         {
           "position": 7,
           "name": "Michael Oddie",
           "club": "red-rose",
-          "total": 177,
+          "sex": "M",
+          "ageCategory": "V50",
+          "total": 197,
           "results": {
-            "leo-pollard": 89,
-            "waddington": 88
+            "hutton-roof-crags": {
+              "points": 98,
+              "counting": true
+            },
+            "leo-pollard": {
+              "points": 99,
+              "counting": true
+            }
           }
         },
         {
           "position": 8,
           "name": "Steve Myerscough",
           "club": "wesham",
-          "total": 166,
+          "sex": "M",
+          "ageCategory": "V50",
+          "total": 193,
           "results": {
-            "pendle": 82,
-            "leo-pollard": 84
+            "pendle": {
+              "points": 97,
+              "counting": true
+            },
+            "leo-pollard": {
+              "points": 96,
+              "counting": true
+            }
           }
         },
         {
           "position": 9,
           "name": "Martin Quinn",
           "club": "chorley",
-          "total": 156,
+          "sex": "M",
+          "ageCategory": "V50",
+          "total": 190,
           "results": {
-            "pendle": 77,
-            "leo-pollard": 79
+            "pendle": {
+              "points": 95,
+              "counting": true
+            }
           }
         },
         {
           "position": 10,
           "name": "Chris Wales",
           "club": "preston",
-          "total": 138,
+          "sex": "M",
+          "ageCategory": "V50",
+          "total": 186,
           "results": {
-            "leo-pollard": 76,
-            "waddington": 62
+            "leo-pollard": {
+              "points": 93,
+              "counting": true
+            },
+            "waddington": {
+              "points": 93,
+              "counting": true
+            }
           }
         },
         {
           "position": 11,
           "name": "Rick Pinches",
           "club": "blackpool",
-          "total": 126,
+          "sex": "M",
+          "ageCategory": "V50",
+          "total": 183,
           "results": {
-            "leo-pollard": 69,
-            "waddington": 57
+            "leo-pollard": {
+              "points": 91,
+              "counting": true
+            },
+            "waddington": {
+              "points": 92,
+              "counting": true
+            }
           }
         },
         {
           "position": 12,
           "name": "Darren Fishwick",
           "club": "chorley",
-          "total": 95,
+          "sex": "M",
+          "ageCategory": "V50",
+          "total": 100,
           "results": {
-            "hutton-roof-crags": 95
+            "pendle": {
+              "points": 100,
+              "counting": true
+            }
           }
         },
         {
           "position": 13,
-          "name": "Tony Terras",
-          "club": "wesham",
-          "total": 90,
+          "name": "Stuart Hemmings",
+          "club": "chorley",
+          "sex": "M",
+          "ageCategory": "V50",
+          "total": 100,
           "results": {
-            "hutton-roof-crags": 90
+            "waddington": {
+              "points": 100,
+              "counting": true
+            }
           }
         },
         {
           "position": 14,
-          "name": "Adrian Pickington",
-          "club": "chorley",
-          "total": 74,
+          "name": "Tony Terras",
+          "club": "wesham",
+          "sex": "M",
+          "ageCategory": "V50",
+          "total": 97,
           "results": {
-            "waddington": 74
+            "hutton-roof-crags": {
+              "points": 97,
+              "counting": true
+            }
           }
         },
         {
           "position": 15,
-          "name": "Greg Oulton",
-          "club": "lytham",
-          "total": 75,
+          "name": "Adrian Pickington",
+          "club": "chorley",
+          "sex": "M",
+          "ageCategory": "V50",
+          "total": 95,
           "results": {
-            "hutton-roof-crags": 75
+            "pendle": {
+              "points": 95,
+              "counting": true
+            }
           }
         },
         {
           "position": 16,
+          "name": "Greg Oulton",
+          "club": "lytham",
+          "sex": "M",
+          "ageCategory": "V50",
+          "total": 93,
+          "results": {
+            "leo-pollard": {
+              "points": 93,
+              "counting": true
+            }
+          }
+        },
+        {
+          "position": 17,
           "name": "Eddie Hamilton",
           "club": "red-rose",
-          "total": 75,
+          "sex": "M",
+          "ageCategory": "V50",
+          "total": 92,
           "results": {
-            "leo-pollard": 75
+            "waddington": {
+              "points": 92,
+              "counting": true
+            }
           }
         }
       ]
     },
     {
-      "id": "m60",
+      "category": "v60-male",
       "runners": [
         {
           "position": 1,
           "name": "John Griffiths",
           "club": "preston",
-          "total": 276,
+          "sex": "M",
+          "ageCategory": "V60",
+          "total": 300,
           "results": {
-            "pendle": 94,
-            "hutton-roof-crags": 94,
-            "leo-pollard": 88,
-            "waddington": 79
+            "pendle": {
+              "points": 100,
+              "counting": true
+            },
+            "hutton-roof-crags": {
+              "points": 100,
+              "counting": true
+            },
+            "leo-pollard": {
+              "points": 100,
+              "counting": true
+            },
+            "waddington": {
+              "points": 96,
+              "counting": true
+            }
           }
         },
         {
           "position": 2,
           "name": "Philip Butler",
           "club": "red-rose",
-          "total": 256,
+          "sex": "M",
+          "ageCategory": "V60",
+          "total": 296,
           "results": {
-            "pendle": 81,
-            "hutton-roof-crags": 88,
-            "leo-pollard": 85,
-            "waddington": 83
+            "pendle": {
+              "points": 96,
+              "counting": true
+            },
+            "hutton-roof-crags": {
+              "points": 99,
+              "counting": true
+            },
+            "leo-pollard": {
+              "points": 99,
+              "counting": true
+            },
+            "waddington": {
+              "points": 98,
+              "counting": true
+            }
           }
         },
         {
           "position": 3,
           "name": "Simon Shaw",
           "club": "red-rose",
-          "total": 255,
+          "sex": "M",
+          "ageCategory": "V60",
+          "total": 293,
           "results": {
-            "pendle": 89,
-            "hutton-roof-crags": 86,
-            "leo-pollard": 80,
-            "waddington": 73
+            "pendle": {
+              "points": 98,
+              "counting": true
+            },
+            "hutton-roof-crags": {
+              "points": 98,
+              "counting": true
+            },
+            "leo-pollard": {
+              "points": 97,
+              "counting": true
+            },
+            "waddington": {
+              "points": 94,
+              "counting": true
+            }
           }
         },
         {
           "position": 4,
           "name": "Stuart Cann",
           "club": "red-rose",
-          "total": 232,
+          "sex": "M",
+          "ageCategory": "V60",
+          "total": 284,
           "results": {
-            "pendle": 75,
-            "hutton-roof-crags": 80,
-            "leo-pollard": 77,
-            "waddington": 72
+            "pendle": {
+              "points": 92,
+              "counting": true
+            },
+            "hutton-roof-crags": {
+              "points": 95,
+              "counting": true
+            },
+            "leo-pollard": {
+              "points": 96,
+              "counting": true
+            },
+            "waddington": {
+              "points": 93,
+              "counting": true
+            }
           }
         },
         {
           "position": 5,
           "name": "Steve Baker",
           "club": "chorley",
-          "total": 229,
+          "sex": "M",
+          "ageCategory": "V60",
+          "total": 282,
           "results": {
-            "pendle": 78,
-            "hutton-roof-crags": 81,
-            "waddington": 70
+            "pendle": {
+              "points": 94,
+              "counting": true
+            },
+            "hutton-roof-crags": {
+              "points": 96,
+              "counting": true
+            },
+            "waddington": {
+              "points": 92,
+              "counting": true
+            }
           }
         },
         {
           "position": 6,
           "name": "Stephen Woodruffe",
           "club": "red-rose",
-          "total": 224,
+          "sex": "M",
+          "ageCategory": "V60",
+          "total": 280,
           "results": {
-            "pendle": 80,
-            "leo-pollard": 81,
-            "waddington": 63
-          }
-        },
-        {
-          "position": 7,
-          "name": "Peter Singleton",
-          "club": "blackpool",
-          "total": 222,
-          "results": {
-            "pendle": 76,
-            "hutton-roof-crags": 79,
-            "waddington": 67
+            "pendle": {
+              "points": 95,
+              "counting": true
+            },
+            "leo-pollard": {
+              "points": 98,
+              "counting": true
+            },
+            "waddington": {
+              "points": 87,
+              "counting": true
+            }
           }
         },
         {
           "position": 8,
-          "name": "Graham Schofield",
-          "club": "chorley",
-          "total": 221,
-          "results": {
-            "pendle": 72,
-            "hutton-roof-crags": 76,
-            "leo-pollard": 73,
-            "waddington": 59
-          }
-        },
-        {
-          "position": 9,
-          "name": "Bill Smith",
+          "name": "Peter Singleton",
           "club": "blackpool",
-          "total": 213,
+          "sex": "M",
+          "ageCategory": "V60",
+          "total": 277,
           "results": {
-            "pendle": 69,
-            "hutton-roof-crags": 74,
-            "leo-pollard": 70,
-            "waddington": 56
+            "pendle": {
+              "points": 93,
+              "counting": true
+            },
+            "hutton-roof-crags": {
+              "points": 94,
+              "counting": true
+            },
+            "waddington": {
+              "points": 90,
+              "counting": true
+            }
           }
         },
         {
           "position": 10,
           "name": "John Rainford",
           "club": "preston",
-          "total": 178,
+          "sex": "M",
+          "ageCategory": "V60",
+          "total": 198,
           "results": {
-            "pendle": 93,
-            "waddington": 85
+            "pendle": {
+              "points": 99,
+              "counting": true
+            },
+            "leo-pollard": {
+              "points": 99,
+              "counting": true
+            }
           }
         },
         {
           "position": 11,
           "name": "Simon Scarr",
           "club": "blackpool",
-          "total": 143,
+          "sex": "M",
+          "ageCategory": "V60",
+          "total": 183,
           "results": {
-            "pendle": 71,
-            "leo-pollard": 72
-          }
-        },
-        {
-          "position": 12,
-          "name": "James Danson",
-          "club": "wesham",
-          "total": 77,
-          "results": {
-            "hutton-roof-crags": 77
-          }
-        },
-        {
-          "position": 13,
-          "name": "Michael Edge",
-          "club": "wesham",
-          "total": 83,
-          "results": {
-            "hutton-roof-crags": 83
+            "pendle": {
+              "points": 89,
+              "counting": true
+            },
+            "waddington": {
+              "points": 94,
+              "counting": true
+            }
           }
         },
         {
           "position": 14,
-          "name": "Paul Wareing",
-          "club": "chorley",
-          "total": 80,
+          "name": "David Parkington",
+          "club": "preston",
+          "sex": "M",
+          "ageCategory": "V60",
+          "total": 100,
           "results": {
-            "waddington": 80
+            "waddington": {
+              "points": 100,
+              "counting": true
+            }
           }
         },
         {
           "position": 15,
-          "name": "Mark Ellithorn",
+          "name": "Paul Wareing",
           "club": "chorley",
-          "total": 83,
+          "sex": "M",
+          "ageCategory": "V60",
+          "total": 97,
           "results": {
-            "pendle": 83
+            "leo-pollard": {
+              "points": 97,
+              "counting": true
+            }
           }
         },
         {
           "position": 16,
-          "name": "Peter McDermott",
-          "club": "preston",
-          "total": 124,
+          "name": "Mark Ellithorn",
+          "club": "chorley",
+          "sex": "M",
+          "ageCategory": "V60",
+          "total": 97,
           "results": {
-            "pendle": 70,
-            "waddington": 54
+            "hutton-roof-crags": {
+              "points": 97,
+              "counting": true
+            }
           }
         },
         {
           "position": 17,
-          "name": "David Parkington",
-          "club": "preston",
-          "total": 89,
+          "name": "Michael Edge",
+          "club": "wesham",
+          "sex": "M",
+          "ageCategory": "V60",
+          "total": 97,
           "results": {
-            "waddington": 89
+            "leo-pollard": {
+              "points": 97,
+              "counting": true
+            }
           }
         },
         {
           "position": 18,
-          "name": "Peter Bolton",
-          "club": "red-rose",
-          "total": 66,
+          "name": "Steve Bamber",
+          "club": "preston",
+          "sex": "M",
+          "ageCategory": "V60",
+          "total": 95,
           "results": {
-            "waddington": 66
+            "pendle": {
+              "points": 95,
+              "counting": true
+            }
           }
         },
         {
           "position": 19,
-          "name": "Darrell Pickering",
-          "club": "blackpool",
-          "total": 61,
+          "name": "James Danson",
+          "club": "wesham",
+          "sex": "M",
+          "ageCategory": "V60",
+          "total": 93,
           "results": {
-            "waddington": 61
+            "leo-pollard": {
+              "points": 93,
+              "counting": true
+            }
           }
         },
         {
           "position": 20,
+          "name": "Peter Bolton",
+          "club": "red-rose",
+          "sex": "M",
+          "ageCategory": "V60",
+          "total": 89,
+          "results": {
+            "waddington": {
+              "points": 89,
+              "counting": true
+            }
+          }
+        },
+        {
+          "position": 21,
+          "name": "Michael McLoughlin",
+          "club": "preston",
+          "sex": "M",
+          "ageCategory": "V60",
+          "total": 86,
+          "results": {
+            "pendle": {
+              "points": 86,
+              "counting": true
+            }
+          }
+        },
+        {
+          "position": 22,
+          "name": "Darrell Pickering",
+          "club": "blackpool",
+          "sex": "M",
+          "ageCategory": "V60",
+          "total": 84,
+          "results": {
+            "leo-pollard": {
+              "points": 84,
+              "counting": true
+            }
+          }
+        },
+        {
+          "position": 23,
           "name": "Gordon Thompson",
           "club": "preston",
-          "total": 58,
+          "sex": "M",
+          "ageCategory": "V60",
+          "total": 82,
           "results": {
-            "waddington": 58
+            "leo-pollard": {
+              "points": 82,
+              "counting": true
+            }
           }
         }
       ]
     },
     {
-      "id": "m70",
+      "category": "v70-male",
+      "runners": [
+        {
+          "position": 7,
+          "name": "Graham Schofield",
+          "club": "chorley",
+          "sex": "M",
+          "ageCategory": "V70",
+          "total": 277,
+          "results": {
+            "pendle": {
+              "points": 90,
+              "counting": true
+            },
+            "hutton-roof-crags": {
+              "points": 92,
+              "counting": true
+            },
+            "leo-pollard": {
+              "points": 95,
+              "counting": true
+            },
+            "waddington": {
+              "points": 85,
+              "counting": true
+            }
+          }
+        },
+        {
+          "position": 9,
+          "name": "Bill Smith",
+          "club": "blackpool",
+          "sex": "M",
+          "ageCategory": "V70",
+          "total": 271,
+          "results": {
+            "pendle": {
+              "points": 87,
+              "counting": true
+            },
+            "hutton-roof-crags": {
+              "points": 91,
+              "counting": true
+            },
+            "leo-pollard": {
+              "points": 93,
+              "counting": true
+            },
+            "waddington": {
+              "points": 83,
+              "counting": true
+            }
+          }
+        },
+        {
+          "position": 12,
+          "name": "John Collier",
+          "club": "wesham",
+          "sex": "M",
+          "ageCategory": "V70",
+          "total": 182,
+          "results": {
+            "pendle": {
+              "points": 91,
+              "counting": true
+            },
+            "leo-pollard": {
+              "points": 91,
+              "counting": true
+            }
+          }
+        },
+        {
+          "position": 20,
+          "name": "Peter McDermott",
+          "club": "preston",
+          "sex": "M",
+          "ageCategory": "V70",
+          "total": 88,
+          "results": {
+            "pendle": {
+              "points": 88,
+              "counting": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "category": "v80-male",
+      "runners": [
+        {
+          "position": 13,
+          "name": "Peter McDermott",
+          "club": "red-rose",
+          "sex": "M",
+          "ageCategory": "V80",
+          "total": 170,
+          "results": {
+            "pendle": {
+              "points": 88,
+              "counting": true
+            },
+            "waddington": {
+              "points": 82,
+              "counting": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "category": "female",
       "runners": [
         {
           "position": 1,
-          "name": "Graham Schofield",
-          "club": "chorley",
-          "total": 221,
+          "name": "Basia Pawelczak",
+          "club": "blackpool",
+          "sex": "F",
+          "ageCategory": "SEN",
+          "total": 297,
           "results": {
-            "pendle": 72,
-            "hutton-roof-crags": 76,
-            "leo-pollard": 73,
-            "waddington": 59
+            "pendle": {
+              "points": 98,
+              "counting": true
+            },
+            "hutton-roof-crags": {
+              "points": 99,
+              "counting": true
+            },
+            "leo-pollard": {
+              "points": 99,
+              "counting": true
+            },
+            "waddington": {
+              "points": 99,
+              "counting": true
+            }
           }
         },
         {
           "position": 2,
-          "name": "Bill Smith",
-          "club": "blackpool",
-          "total": 213,
+          "name": "Olivia Wiggans",
+          "club": "chorley",
+          "sex": "F",
+          "ageCategory": "SEN",
+          "total": 295,
           "results": {
-            "pendle": 69,
-            "hutton-roof-crags": 74,
-            "leo-pollard": 70,
-            "waddington": 56
-          }
-        },
-        {
-          "position": 3,
-          "name": "John Collier",
-          "club": "wesham",
-          "total": 141,
-          "results": {
-            "pendle": 73,
-            "waddington": 68
+            "pendle": {
+              "points": 99,
+              "counting": true
+            },
+            "hutton-roof-crags": {
+              "points": 98,
+              "counting": true
+            },
+            "waddington": {
+              "points": 98,
+              "counting": true
+            }
           }
         },
         {
           "position": 4,
-          "name": "Michael McLoughlin",
-          "club": "preston",
-          "total": 65,
+          "name": "Sarah Hargreaves",
+          "club": "red-rose",
+          "sex": "F",
+          "ageCategory": "SEN",
+          "total": 288,
           "results": {
-            "waddington": 65
+            "pendle": {
+              "points": 95,
+              "counting": true
+            },
+            "hutton-roof-crags": {
+              "points": 95,
+              "counting": true
+            },
+            "leo-pollard": {
+              "points": 98,
+              "counting": true
+            },
+            "waddington": {
+              "points": 94,
+              "counting": true
+            }
+          }
+        },
+        {
+          "position": 11,
+          "name": "Amelia Websdale",
+          "club": "preston",
+          "sex": "F",
+          "ageCategory": "SEN",
+          "total": 100,
+          "results": {
+            "pendle": {
+              "points": 100,
+              "counting": true
+            }
+          }
+        },
+        {
+          "position": 12,
+          "name": "Anya Grindley",
+          "club": "chorley",
+          "sex": "F",
+          "ageCategory": "SEN",
+          "total": 100,
+          "results": {
+            "leo-pollard": {
+              "points": 100,
+              "counting": true
+            }
+          }
+        },
+        {
+          "position": 14,
+          "name": "Loren Dawson",
+          "club": "preston",
+          "sex": "F",
+          "ageCategory": "SEN",
+          "total": 100,
+          "results": {
+            "hutton-roof-crags": {
+              "points": 100,
+              "counting": true
+            }
+          }
+        },
+        {
+          "position": 15,
+          "name": "Kate Lakeland",
+          "club": "preston",
+          "sex": "F",
+          "ageCategory": "SEN",
+          "total": 97,
+          "results": {
+            "leo-pollard": {
+              "points": 97,
+              "counting": true
+            }
+          }
+        },
+        {
+          "position": 16,
+          "name": "Leanne Nield",
+          "club": "lytham",
+          "sex": "F",
+          "ageCategory": "SEN",
+          "total": 97,
+          "results": {
+            "hutton-roof-crags": {
+              "points": 97,
+              "counting": true
+            }
+          }
+        },
+        {
+          "position": 17,
+          "name": "Annabell Rigby",
+          "club": "red-rose",
+          "sex": "F",
+          "ageCategory": "SEN",
+          "total": 93,
+          "results": {
+            "leo-pollard": {
+              "points": 93,
+              "counting": true
+            }
           }
         }
       ]
     },
     {
-      "id": "m80",
+      "category": "v40-female",
       "runners": [
         {
           "position": 1,
-          "name": "Peter McDermott",
-          "club": "preston",
-          "total": 124,
+          "name": "Julie Hall",
+          "club": "blackpool",
+          "sex": "F",
+          "ageCategory": "V40",
+          "total": 299,
           "results": {
-            "pendle": 70,
-            "waddington": 54
+            "pendle": {
+              "points": 100,
+              "counting": true
+            },
+            "hutton-roof-crags": {
+              "points": 99,
+              "counting": true
+            },
+            "leo-pollard": {
+              "points": 100,
+              "counting": true
+            }
+          }
+        },
+        {
+          "position": 2,
+          "name": "Olga Wiggins",
+          "club": "preston",
+          "sex": "F",
+          "ageCategory": "V40",
+          "total": 297,
+          "results": {
+            "pendle": {
+              "points": 99,
+              "counting": true
+            },
+            "hutton-roof-crags": {
+              "points": 96,
+              "counting": true
+            },
+            "leo-pollard": {
+              "points": 100,
+              "counting": true
+            },
+            "waddington": {
+              "points": 98,
+              "counting": true
+            }
+          }
+        },
+        {
+          "position": 3,
+          "name": "Xavia Cooper",
+          "club": "lytham",
+          "sex": "F",
+          "ageCategory": "V40",
+          "total": 197,
+          "results": {
+            "pendle": {
+              "points": 98,
+              "counting": true
+            },
+            "waddington": {
+              "points": 99,
+              "counting": true
+            }
+          }
+        },
+        {
+          "position": 4,
+          "name": "Cass Chisholm",
+          "club": "lytham",
+          "sex": "F",
+          "ageCategory": "V40",
+          "total": 100,
+          "results": {
+            "hutton-roof-crags": {
+              "points": 100,
+              "counting": true
+            }
+          }
+        },
+        {
+          "position": 5,
+          "name": "Ginny Hester-See",
+          "club": "lytham",
+          "sex": "F",
+          "ageCategory": "V40",
+          "total": 97,
+          "results": {
+            "leo-pollard": {
+              "points": 97,
+              "counting": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "category": "v50-female",
+      "runners": [
+        {
+          "position": 1,
+          "name": "Laura Lawler",
+          "club": "blackpool",
+          "sex": "F",
+          "ageCategory": "V50",
+          "total": 300,
+          "results": {
+            "pendle": {
+              "points": 100,
+              "counting": true
+            },
+            "hutton-roof-crags": {
+              "points": 100,
+              "counting": true
+            },
+            "leo-pollard": {
+              "points": 100,
+              "counting": true
+            },
+            "waddington": {
+              "points": 100,
+              "counting": true
+            }
+          }
+        },
+        {
+          "position": 2,
+          "name": "Jen Salt",
+          "club": "wesham",
+          "sex": "F",
+          "ageCategory": "V50",
+          "total": 198,
+          "results": {
+            "pendle": {
+              "points": 94,
+              "counting": true
+            },
+            "leo-pollard": {
+              "points": 96,
+              "counting": true
+            }
+          }
+        },
+        {
+          "position": 3,
+          "name": "Sharon Cooper",
+          "club": "wesham",
+          "sex": "F",
+          "ageCategory": "V50",
+          "total": 98,
+          "results": {
+            "waddington": {
+              "points": 98,
+              "counting": true
+            }
+          }
+        },
+        {
+          "position": 4,
+          "name": "Leanne Bluck",
+          "club": "blackpool",
+          "sex": "F",
+          "ageCategory": "V50",
+          "total": 99,
+          "results": {
+            "leo-pollard": {
+              "points": 99,
+              "counting": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "category": "v60-female",
+      "runners": [
+        {
+          "position": 1,
+          "name": "Paula Plowman",
+          "club": "red-rose",
+          "sex": "F",
+          "ageCategory": "V60",
+          "total": 298,
+          "results": {
+            "pendle": {
+              "points": 99,
+              "counting": true
+            },
+            "leo-pollard": {
+              "points": 99,
+              "counting": true
+            },
+            "waddington": {
+              "points": 100,
+              "counting": true
+            }
+          }
+        },
+        {
+          "position": 2,
+          "name": "Julia Rolfe",
+          "club": "lytham",
+          "sex": "F",
+          "ageCategory": "V60",
+          "total": 200,
+          "results": {
+            "hutton-roof-crags": {
+              "points": 100,
+              "counting": true
+            },
+            "leo-pollard": {
+              "points": 100,
+              "counting": true
+            }
           }
         }
       ]
