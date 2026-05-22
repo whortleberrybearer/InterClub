@@ -1,5 +1,6 @@
 {
   "provisional": false,
+  "maxCountingRaces": 3,
   "races": [
     "pendle",
     "hutton-roof-crags",
@@ -9,6 +10,8 @@
   "categories": [
     {
       "category": "male",
+      "sex": "M",
+      "ageCategory": "SEN",
       "runners": [
         {
           "position": 1,
@@ -1250,10 +1253,14 @@
             }
           }
         }
-      ]
+      ],
+      "sex": "M",
+      "ageCategory": "SEN"
     },
     {
       "category": "v40-male",
+      "sex": "M",
+      "ageCategory": "V40",
       "runners": [
         {
           "position": 1,
@@ -1431,10 +1438,14 @@
             }
           }
         }
-      ]
+      ],
+      "sex": "M",
+      "ageCategory": "V40"
     },
     {
       "category": "v50-male",
+      "sex": "M",
+      "ageCategory": "V50",
       "runners": [
         {
           "position": 1,
@@ -1742,10 +1753,14 @@
             }
           }
         }
-      ]
+      ],
+      "sex": "M",
+      "ageCategory": "V50"
     },
     {
       "category": "v60-male",
+      "sex": "M",
+      "ageCategory": "V60",
       "runners": [
         {
           "position": 1,
@@ -2079,10 +2094,14 @@
             }
           }
         }
-      ]
+      ],
+      "sex": "M",
+      "ageCategory": "V60"
     },
     {
       "category": "female",
+      "sex": "F",
+      "ageCategory": "SEN",
       "runners": [
         {
           "position": 1,
@@ -2448,10 +2467,14 @@
             }
           }
         }
-      ]
+      ],
+      "sex": "F",
+      "ageCategory": "SEN"
     },
     {
       "category": "v40-female",
+      "sex": "F",
+      "ageCategory": "V40",
       "runners": [
         {
           "position": 1,
@@ -2547,10 +2570,14 @@
             }
           }
         }
-      ]
+      ],
+      "sex": "F",
+      "ageCategory": "V40"
     },
     {
       "category": "v50-female",
+      "sex": "F",
+      "ageCategory": "V50",
       "runners": [
         {
           "position": 1,
@@ -2624,10 +2651,14 @@
             }
           }
         }
-      ]
+      ],
+      "sex": "F",
+      "ageCategory": "V50"
     },
     {
       "category": "v60-female",
+      "sex": "F",
+      "ageCategory": "V60",
       "runners": [
         {
           "position": 1,
@@ -2669,7 +2700,10 @@
             }
           }
         }
-      ]
+      ],
+      "sex": "F",
+      "ageCategory": "V60"
     }
-  ]
+  ],
+  "maxCountingRaces": 3
 }
