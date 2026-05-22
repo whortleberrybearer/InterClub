@@ -1,143 +1,171 @@
-{
-  "teamAwards": [
-    {
-      "id": "open",
-      "club": "wesham"
-    },
-    {
-      "id": "ladies",
-      "club": "blackpool"
-    },
-    {
-      "id": "vets",
-      "club": "chorley"
-    },
-    {
-      "id": "v50",
-      "club": "chorley"
-    },
-    {
-      "id": "v60",
-      "club": "red-rose"
-    }
-  ],
-  "individualAwards": [
-    {
-      "id": "m",
-      "awards": [
-        {
-          "position": 1,
-          "name": "A. Palmer",
-          "club": "preston"
-        },
-        {
-          "position": 2,
-          "name": "T. Belcher",
-          "club": "chorley"
-        },
-        {
-          "position": 3,
-          "name": "T. Crabtree",
-          "club": "wesham"
-        }
-      ],
-      "sex": "M"
-    },
-    {
-      "id": "f",
-      "awards": [
-        {
-          "position": 1,
-          "name": "B. Pawelczak",
-          "club": "blackpool"
-        },
-        {
-          "position": 2,
-          "name": "O. Wiggans",
-          "club": "chorley"
-        }
-      ],
-      "sex": "F"
-    },
-    {
-      "id": "m-v40",
-      "awards": [
-        {
-          "position": 1,
-          "name": "C. Banks",
-          "club": "wesham"
-        },
-        {
-          "position": 2,
-          "name": "A. Walker",
-          "club": "wesham"
-        }
-      ],
-      "sex": "M",
-      "ageCategory": "V40"
-    },
-    {
-      "id": "f-v40",
-      "awards": [
-        {
-          "position": 1,
-          "name": "J. Hall",
-          "club": "blackpool"
-        },
-        {
-          "position": 2,
-          "name": "O. Wiggins",
-          "club": "preston"
-        }
-      ],
-      "sex": "F",
-      "ageCategory": "V40"
-    },
-    {
-      "id": "m-v50",
-      "awards": [
-        {
-          "position": 1,
-          "name": "D. McDermott",
-          "club": "preston"
-        },
-        {
-          "position": 2,
-          "name": "P. Bass",
-          "club": "chorley"
-        }
-      ],
-      "sex": "M",
-      "ageCategory": "V50"
-    },
-    {
-      "id": "f-v50",
-      "awards": [
-        {
-          "position": 1,
-          "name": "L. Lawler",
-          "club": "blackpool"
-        }
-      ],
-      "sex": "F",
-      "ageCategory": "V50"
-    },
-    {
-      "id": "m-v60",
-      "awards": [
-        {
-          "position": 1,
-          "name": "J. Griffiths",
-          "club": "preston"
-        },
-        {
-          "position": 2,
-          "name": "P. Butler",
-          "club": "red-rose"
-        }
-      ],
-      "sex": "M",
-      "ageCategory": "V60"
-    }
-  ]
+﻿{
+    "teamAwards":  [
+                       {
+                           "id":  "open",
+                           "club":  "wesham"
+                       },
+                       {
+                           "id":  "ladies",
+                           "club":  "blackpool"
+                       },
+                       {
+                           "id":  "vets",
+                           "club":  "chorley"
+                       },
+                       {
+                           "id":  "v50",
+                           "club":  "chorley"
+                       },
+                       {
+                           "id":  "v60",
+                           "club":  "red-rose"
+                       }
+                   ],
+    "individualAwards":  [
+                             {
+                                 "id":  "m",
+                                 "awards":  [
+                                                {
+                                                    "position":  1,
+                                                    "name":  "Alistair Palmer",
+                                                    "club":  "preston",
+                                                    "seriesRunnerId":  100,
+                                                    "ageCategory":  "SEN"
+                                                },
+                                                {
+                                                    "position":  2,
+                                                    "name":  "Tom Belcher",
+                                                    "club":  "chorley",
+                                                    "seriesRunnerId":  101,
+                                                    "ageCategory":  "SEN"
+                                                },
+                                                {
+                                                    "position":  3,
+                                                    "name":  "Thomas Crabtree",
+                                                    "club":  "wesham",
+                                                    "seriesRunnerId":  102,
+                                                    "ageCategory":  "SEN"
+                                                }
+                                            ],
+                                 "sex":  "M"
+                             },
+                             {
+                                 "id":  "f",
+                                 "awards":  [
+                                                {
+                                                    "position":  1,
+                                                    "name":  "Basia Pawelczak",
+                                                    "club":  "blackpool",
+                                                    "seriesRunnerId":  125,
+                                                    "ageCategory":  "SEN"
+                                                },
+                                                {
+                                                    "position":  2,
+                                                    "name":  "Olivia Wiggans",
+                                                    "club":  "chorley",
+                                                    "seriesRunnerId":  123,
+                                                    "ageCategory":  "SEN"
+                                                }
+                                            ],
+                                 "sex":  "F"
+                             },
+                             {
+                                 "id":  "m-v40",
+                                 "awards":  [
+                                                {
+                                                    "position":  1,
+                                                    "name":  "Chris Banks",
+                                                    "club":  "wesham",
+                                                    "seriesRunnerId":  103,
+                                                    "ageCategory":  "V40"
+                                                },
+                                                {
+                                                    "position":  2,
+                                                    "name":  "Alek Walker",
+                                                    "club":  "wesham",
+                                                    "seriesRunnerId":  143,
+                                                    "ageCategory":  "V40"
+                                                }
+                                            ],
+                                 "sex":  "M",
+                                 "ageCategory":  "V40"
+                             },
+                             {
+                                 "id":  "f-v40",
+                                 "awards":  [
+                                                {
+                                                    "position":  1,
+                                                    "name":  "Julie Hall",
+                                                    "club":  "blackpool",
+                                                    "seriesRunnerId":  128,
+                                                    "ageCategory":  "V40"
+                                                },
+                                                {
+                                                    "position":  2,
+                                                    "name":  "Olga Wiggins",
+                                                    "club":  "preston",
+                                                    "seriesRunnerId":  139,
+                                                    "ageCategory":  "V40"
+                                                }
+                                            ],
+                                 "sex":  "F",
+                                 "ageCategory":  "V40"
+                             },
+                             {
+                                 "id":  "m-v50",
+                                 "awards":  [
+                                                {
+                                                    "position":  1,
+                                                    "name":  "Darren McDermott",
+                                                    "club":  "preston",
+                                                    "seriesRunnerId":  115,
+                                                    "ageCategory":  "V50"
+                                                },
+                                                {
+                                                    "position":  2,
+                                                    "name":  "Paul Bass",
+                                                    "club":  "chorley",
+                                                    "seriesRunnerId":  109,
+                                                    "ageCategory":  "V50"
+                                                }
+                                            ],
+                                 "sex":  "M",
+                                 "ageCategory":  "V50"
+                             },
+                             {
+                                 "id":  "f-v50",
+                                 "awards":  [
+                                                {
+                                                    "position":  1,
+                                                    "name":  "Laura Lawler",
+                                                    "club":  "blackpool",
+                                                    "seriesRunnerId":  130,
+                                                    "ageCategory":  "V50"
+                                                }
+                                            ],
+                                 "sex":  "F",
+                                 "ageCategory":  "V50"
+                             },
+                             {
+                                 "id":  "m-v60",
+                                 "awards":  [
+                                                {
+                                                    "position":  1,
+                                                    "name":  "John Griffiths",
+                                                    "club":  "preston",
+                                                    "seriesRunnerId":  106,
+                                                    "ageCategory":  "V60"
+                                                },
+                                                {
+                                                    "position":  2,
+                                                    "name":  "Philip Butler",
+                                                    "club":  "red-rose",
+                                                    "seriesRunnerId":  120,
+                                                    "ageCategory":  "V60"
+                                                }
+                                            ],
+                                 "sex":  "M",
+                                 "ageCategory":  "V60"
+                             }
+                         ]
 }
