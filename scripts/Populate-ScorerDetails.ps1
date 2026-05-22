@@ -31,3 +31,14 @@ foreach ($p in @($csvPath, $teamsPath)) {
 
 Write-Host "Processing: $Race" -ForegroundColor Cyan
 Write-Host ""
+
+# Load CSV — Import-Csv uses the header row automatically
+$allRows   = Import-Csv $csvPath
+# IC runners are those with a non-empty ic_position (guests have blank ic_position)
+$icRunners = @($allRows | Where-Object { $_.ic_position -ne '' })
+
+Write-Host "CSV: $($icRunners.Count) inter-club runners"
+Write-Host ""
+
+# Load teams JSON
+$teamsJson = Get-Content $teamsPath -Raw | ConvertFrom-Json
