@@ -76,3 +76,64 @@ Write-Host ""
 
 # Load teams JSON
 $teamsJson = Get-Content $teamsPath -Raw | ConvertFrom-Json
+
+$totalMatches    = 0
+$totalMismatches = 0
+$totalNotFound   = 0
+
+foreach ($category in $teamsJson.categories) {
+    $catId          = $category.id
+    $eligible       = Get-EligibleRunners -Runners $icRunners -CategoryId $catId
+    $eligibleCount  = $eligible.Count
+
+    # Human-readable label for the category header
+    $catLabel = if ($catId -match '^(open|overall|mixed)$')     { 'all runners' }
+                elseif ($catId -match '^(ladies|women|female)$') { 'female runners' }
+                elseif ($catId -match '^(vets|veterans)$')       { 'V40+' }
+                elseif ($catId -match '^v(\d+)$')                { "V$($Matches[1])+" }
+                else                                              { $catId }
+
+    $header = "== $($catId.ToUpper()) ($catLabel) "
+    Write-Host ($header.PadRight(52, '=')) -ForegroundColor White
+    Write-Host ""
+
+    foreach ($clubEntry in $category.clubs) {
+        Write-Host "  $($clubEntry.club)  (scorers: $($clubEntry.scorers.Count))" -ForegroundColor White
+
+        foreach ($scorer in $clubEntry.scorers) {
+            $pos = [int]$scorer.position
+
+            if ($pos -lt 1 -or $pos -gt $eligibleCount) {
+                Write-Host ("    Pos {0,3}  ->  (not found - only {1} eligible runners)  !" -f $pos, $eligibleCount) -ForegroundColor Yellow
+                $totalNotFound++
+                continue
+            }
+
+            $runner   = $eligible[$pos - 1]   # positions are 1-based
+            $fullName = "$($runner.first_name) $($runner.last_name)".Trim()
+            $calcClub = $runner.club
+
+            if ($calcClub -eq $clubEntry.club) {
+                Write-Host ("    Pos {0,3}  ->  {1,-22} ({2})   OK" -f $pos, $fullName, $calcClub) -ForegroundColor Green
+                $totalMatches++
+            } else {
+                Write-Host ("    Pos {0,3}  ->  {1,-22} ({2})   MISMATCH  expected $($clubEntry.club)" -f $pos, $fullName, $calcClub) -ForegroundColor Red
+                $totalMismatches++
+            }
+        }
+        Write-Host ""
+    }
+}
+
+# Summary
+$summaryLine = "== SUMMARY "
+Write-Host ($summaryLine.PadRight(52, '=')) -ForegroundColor White
+Write-Host ""
+Write-Host "  OK   $totalMatches scorers matched" -ForegroundColor $(if ($totalMatches -gt 0) { 'Green' } else { 'White' })
+
+$mismatchColour = if ($totalMismatches -eq 0) { 'Green' } else { 'Red' }
+Write-Host "  !!   $totalMismatches mismatches" -ForegroundColor $mismatchColour
+
+$notFoundColour = if ($totalNotFound -eq 0) { 'Green' } else { 'Yellow' }
+Write-Host "  ??   $totalNotFound positions not found (position exceeds eligible runner count)" -ForegroundColor $notFoundColour
+Write-Host ""
