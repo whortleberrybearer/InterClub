@@ -10,8 +10,6 @@
     "categories":  [
                        {
                            "id":  "male",
-                           "sex":  "M",
-                           "ageCategory":  "SEN",
                            "runners":  [
                                            {
                                                "position":  1,
@@ -224,8 +222,6 @@
                        },
                        {
                            "id":  "v40-male",
-                           "sex":  "M",
-                           "ageCategory":  "V40",
                            "runners":  [
                                            {
                                                "position":  1,
@@ -331,8 +327,6 @@
                        },
                        {
                            "id":  "v50-male",
-                           "sex":  "M",
-                           "ageCategory":  "V50",
                            "runners":  [
                                            {
                                                "position":  1,
@@ -507,8 +501,6 @@
                        },
                        {
                            "id":  "v60-male",
-                           "sex":  "M",
-                           "ageCategory":  "V60",
                            "runners":  [
                                            {
                                                "position":  1,
@@ -704,76 +696,7 @@
                                        ]
                        },
                        {
-                           "id":  "v70-male",
-                           "sex":  "M",
-                           "ageCategory":  "V70",
-                           "runners":  [
-                                           {
-                                               "position":  7,
-                                               "name":  "Graham Schofield",
-                                               "club":  "chorley",
-                                               "total":  277,
-                                               "results":  {
-                                                               "pendle":  90,
-                                                               "hutton-roof-crags":  92,
-                                                               "leo-pollard":  95,
-                                                               "waddington":  85
-                                                           }
-                                           },
-                                           {
-                                               "position":  9,
-                                               "name":  "Bill Smith",
-                                               "club":  "blackpool",
-                                               "total":  271,
-                                               "results":  {
-                                                               "pendle":  87,
-                                                               "hutton-roof-crags":  91,
-                                                               "leo-pollard":  93,
-                                                               "waddington":  83
-                                                           }
-                                           },
-                                           {
-                                               "position":  12,
-                                               "name":  "John Collier",
-                                               "club":  "wesham",
-                                               "total":  182,
-                                               "results":  {
-                                                               "pendle":  91,
-                                                               "leo-pollard":  91
-                                                           }
-                                           },
-                                           {
-                                               "position":  20,
-                                               "name":  "Peter McDermott",
-                                               "club":  "preston",
-                                               "total":  88,
-                                               "results":  {
-                                                               "pendle":  88
-                                                           }
-                                           }
-                                       ]
-                       },
-                       {
-                           "id":  "v80-male",
-                           "sex":  "M",
-                           "ageCategory":  "V80",
-                           "runners":  [
-                                           {
-                                               "position":  13,
-                                               "name":  "Peter McDermott",
-                                               "club":  "red-rose",
-                                               "total":  170,
-                                               "results":  {
-                                                               "pendle":  88,
-                                                               "waddington":  82
-                                                           }
-                                           }
-                                       ]
-                       },
-                       {
                            "id":  "female",
-                           "sex":  "F",
-                           "ageCategory":  "SEN",
                            "runners":  [
                                            {
                                                "position":  1,
@@ -868,8 +791,6 @@
                        },
                        {
                            "id":  "v40-female",
-                           "sex":  "F",
-                           "ageCategory":  "V40",
                            "runners":  [
                                            {
                                                "position":  1,
@@ -926,8 +847,6 @@
                        },
                        {
                            "id":  "v50-female",
-                           "sex":  "F",
-                           "ageCategory":  "V50",
                            "runners":  [
                                            {
                                                "position":  1,
@@ -973,8 +892,6 @@
                        },
                        {
                            "id":  "v60-female",
-                           "sex":  "F",
-                           "ageCategory":  "V60",
                            "runners":  [
                                            {
                                                "position":  1,
