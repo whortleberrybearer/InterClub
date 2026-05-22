@@ -137,3 +137,40 @@ Write-Host "  !!   $totalMismatches mismatches" -ForegroundColor $mismatchColour
 $notFoundColour = if ($totalNotFound -eq 0) { 'Green' } else { 'Yellow' }
 Write-Host "  ??   $totalNotFound positions not found (position exceeds eligible runner count)" -ForegroundColor $notFoundColour
 Write-Host ""
+
+if ($Write) {
+    if ($totalMismatches -gt 0 -or $totalNotFound -gt 0) {
+        Write-Host "  Cannot write: fix all mismatches and missing positions first." -ForegroundColor Red
+        exit 1
+    }
+
+    # Re-iterate and populate 'name' on each scorer
+    foreach ($category in $teamsJson.categories) {
+        $eligible = Get-EligibleRunners -Runners $icRunners -CategoryId $category.id
+
+        foreach ($clubEntry in $category.clubs) {
+            foreach ($scorer in $clubEntry.scorers) {
+                $pos    = [int]$scorer.position
+                $runner = $eligible[$pos - 1]
+                $name   = "$($runner.first_name.Substring(0, 1)). $($runner.last_name)"
+
+                # Only add if not already present (idempotent)
+                if (-not ($scorer.PSObject.Properties.Name -contains 'name')) {
+                    $scorer | Add-Member -NotePropertyName 'name' -NotePropertyValue $name
+                }
+            }
+        }
+    }
+
+    $json = $teamsJson | ConvertTo-Json -Depth 10
+    # Use UTF-8 without BOM (PS 5.1 lacks utf8NoBOM; use StreamWriter instead)
+    $utf8NoBom = New-Object System.Text.UTF8Encoding $false
+    [System.IO.File]::WriteAllText((Resolve-Path $teamsPath).Path, $json, $utf8NoBom)
+    Write-Host "  Written: $teamsPath" -ForegroundColor Green
+} else {
+    if ($totalMismatches -eq 0 -and $totalNotFound -eq 0) {
+        Write-Host "  All scorers matched. Run with -Write to populate names." -ForegroundColor Cyan
+    } else {
+        Write-Host "  Fix all mismatches before running with -Write." -ForegroundColor Yellow
+    }
+}
