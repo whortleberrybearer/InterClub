@@ -98,7 +98,7 @@ foreach ($category in $teamsJson.categories) {
     Write-Host ""
 
     foreach ($clubEntry in $category.clubs) {
-        Write-Host "  $($clubEntry.club)  (scorers: $($clubEntry.scorers.Count))" -ForegroundColor White
+        Write-Host "  $($clubEntry.club)  (scorerCount: $($clubEntry.scorers.Count))" -ForegroundColor White
 
         foreach ($scorer in $clubEntry.scorers) {
             $pos = [int]$scorer.position
@@ -152,7 +152,8 @@ if ($Write) {
             foreach ($scorer in $clubEntry.scorers) {
                 $pos    = [int]$scorer.position
                 $runner = $eligible[$pos - 1]
-                $name   = "$($runner.first_name.Substring(0, 1)). $($runner.last_name)"
+                $initial = if ($runner.first_name.Length -gt 0) { $runner.first_name.Substring(0, 1) } else { '?' }
+                $name    = "$initial. $($runner.last_name)"
 
                 # Only add if not already present (idempotent)
                 if (-not ($scorer.PSObject.Properties.Name -contains 'name')) {
@@ -162,11 +163,14 @@ if ($Write) {
         }
     }
 
+    # Note: ConvertTo-Json -Depth 10 in PS 5.1 uses 4-space indentation.
+    # The source files use 2-space. Running -Write will reformat the file.
     $json = $teamsJson | ConvertTo-Json -Depth 10
     # Use UTF-8 without BOM (PS 5.1 lacks utf8NoBOM; use StreamWriter instead)
     $utf8NoBom = New-Object System.Text.UTF8Encoding $false
-    [System.IO.File]::WriteAllText((Resolve-Path $teamsPath).Path, $json, $utf8NoBom)
-    Write-Host "  Written: $teamsPath" -ForegroundColor Green
+    $resolvedPath = (Resolve-Path $teamsPath).Path
+    [System.IO.File]::WriteAllText($resolvedPath, $json, $utf8NoBom)
+    Write-Host "  Written: $resolvedPath" -ForegroundColor Green
 } else {
     if ($totalMismatches -eq 0 -and $totalNotFound -eq 0) {
         Write-Host "  All scorers matched. Run with -Write to populate names." -ForegroundColor Cyan
