@@ -19,8 +19,8 @@ A PowerShell script that populates the `name` field on scorer entries in fell te
 
 The `-Race` parameter is `year/series/raceId`. The script derives file paths relative to `src/data/`:
 
-- CSV: `src/data/{year}/{series}/results/{raceId}.csv`
-- Teams JSON: `src/data/{year}/{series}/results/{raceId}-teams.json`
+- CSV: `src/data/{year}/{series}/results/{raceId}.csv` (final; provisional not supported)
+- Teams JSON: `src/data/{year}/{series}/results/{raceId}-teams.json` (final; provisional not supported)
 
 ## Category Eligibility Rules
 
@@ -39,7 +39,7 @@ Eligibility is inferred from the team category `id` using pattern matching. All 
 | `v65` | ≥ 65 |
 | `v70` | ≥ 70 |
 
-The numeric threshold is extracted from the id (e.g. `v50` → 50). Age categories in the CSV follow the pattern `SEN`, `V40`, `V50`, `V60`, `V70`, `V80`, etc. The numeric part is extracted by stripping the leading `V`.
+For `v{N}` ids the threshold is the numeric suffix (e.g. `v50` → 50). For `vets`/`veterans` the threshold is hardcoded to 40. Age categories in the CSV follow the pattern `SEN`, `V40`, `V50`, `V60`, `V70`, `V80`, etc.; the numeric part is extracted by stripping the leading `V`.
 
 An unrecognised category id causes the script to exit with an error listing the unmatched id.
 
