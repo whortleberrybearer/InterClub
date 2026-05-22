@@ -47,7 +47,7 @@ if([string]::IsNullOrWhiteSpace($lines[$i])){continue}
 $values=$lines[$i]-split','
 $record=@{}
 for($j=0;$j-lt $headers.Count;$j++){$record[$headers[$j].Trim()]=if($j-lt $values.Count){$values[$j]}else{""}}
-$runners+=@{firstName=$record["first_name"];lastName=$record["last_name"];club=$record["club"];sex=$record["sex"];category=$record["category"]}
+$runners+=@{firstName=$record["first_name"];lastName=$record["last_name"];club=$record["club"];sex=$record["sex"];category=$record["age_category"]}
 }
 Write-Output "Loaded $($runners.Count) runners from CSV"
 function Find-MatchingRunner{
@@ -55,6 +55,12 @@ param([string]$AbbreviatedName,[string]$Club,[array]$Runners)
 $AbbreviatedName=$AbbreviatedName.Trim()
 # Check if name starts with initial (with or without dot)
 if($AbbreviatedName-notmatch '^[A-Z]'){return $null}
+
+# First, try matching as a full name (e.g. "Alistair Palmer")
+$candidates=@($runners|Where-Object{($_.firstName+' '+$_.lastName)-eq $AbbreviatedName-and$_.club-eq $Club})
+if($candidates.Count-gt 0){return $candidates[0]}
+
+# If not a full name match, try abbreviated pattern matching
 $firstInitial=$AbbreviatedName[0].ToString().ToUpper()
 $surname=$null
 # Pattern 1: Has dot after initial ("D." or "D. ")

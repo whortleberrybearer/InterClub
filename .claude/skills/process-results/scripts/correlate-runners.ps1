@@ -1,14 +1,18 @@
 <#
 .SYNOPSIS
-    Correlates results CSV rows to series runners.json entries via bib number,
-    creating new runner entries as needed, and writes an updated CSV with
-    series_runner_id populated.
+    Correlates results CSV rows to series runners.json entries, creating new
+    runner entries as needed, and writes an updated CSV with series_runner_id
+    populated.
 
 .DESCRIPTION
-    For each row in the results CSV that has a race_number (bib) and is not a Guest:
-      - Looks up the runner in the series runners.json by the 'number' field.
-      - If found, validates the name matches and records the series id.
-      - If not found, creates a new entry in the series runners.json (ids start at 100).
+    For each row in the results CSV that is not a Guest:
+      - If a bib (race_number) is present, looks up the runner by the 'number'
+        field in runners.json and validates the name matches.
+      - If no bib is present (or bib lookup yields no result), looks up by
+        firstName + lastName + club + ageCategory.
+      - A partial match (name + club match but ageCategory differs) is flagged
+        as an inconsistency warning; the runner is still matched.
+      - If no match is found at all, a new series runner entry is created.
     Writes the updated CSV (with series_runner_id appended) and the updated
     series runners.json.
 
@@ -85,7 +89,7 @@ Write-Host "  Series runners: $seriesRunnersFile"
 if ($DryRun) { Write-Host "  *** DRY RUN - no files written ***" -ForegroundColor Magenta }
 Write-Host ""
 
-# --- Load existing runner data ---------------------------------------------
+# --- Load existing runner data ------------------------------------------------
 
 $seriesRunners = [System.Collections.Generic.List[object]]::new()
 if (Test-Path $seriesRunnersFile) {
@@ -94,17 +98,24 @@ if (Test-Path $seriesRunnersFile) {
 
 Write-Host "Loaded $($seriesRunners.Count) series runner(s)." -ForegroundColor DarkGray
 
-# Index series runners by bib number for fast lookup
-$bibIndex  = @{}   # bib (int) -> series runner object
+# Build lookup indexes
+$bibIndex  = @{}   # bib (int)          -> series runner object
+$nameIndex = @{}   # "first|last|club"  -> list of series runner objects
 
 foreach ($r in $seriesRunners) {
     if ($null -ne $r.number -and $r.number -ne "") {
         $bib = [int]$r.number
         if (-not $bibIndex.ContainsKey($bib)) { $bibIndex[$bib] = $r }
     }
+    $nFirst  = Normalize-Name $r.firstName
+    $nLast   = Normalize-Name $r.lastName
+    $nClub   = $r.club.Trim().ToLower()
+    $nameKey = $nFirst + "|" + $nLast + "|" + $nClub
+    if (-not $nameIndex.ContainsKey($nameKey)) { $nameIndex[$nameKey] = [System.Collections.Generic.List[object]]::new() }
+    $nameIndex[$nameKey].Add($r)
 }
 
-# Determine next available series ID (starts at 100)
+# Determine next available series ID (starts at 100 if empty, else max+1)
 $nextSeriesId = 100
 foreach ($r in $seriesRunners) {
     $rid = [int]($r.id)
@@ -125,7 +136,7 @@ $headerCols = $header -split ','
 # Strip existing series_runner_id column if present
 $existingIdCol = $headerCols | Where-Object { $_ -ieq "series_runner_id" }
 if ($existingIdCol) {
-    Write-Host "  Existing series_runner_id column detected ? values will be replaced." -ForegroundColor Yellow
+    Write-Host "  Existing series_runner_id column detected -- values will be replaced." -ForegroundColor Yellow
 }
 
 # Find column indices
@@ -141,7 +152,7 @@ $colRaceNum  = Get-ColIndex $headerCols "race_number"
 $colFirst    = Get-ColIndex $headerCols "first_name"
 $colLast     = Get-ColIndex $headerCols "last_name"
 $colClub     = Get-ColIndex $headerCols "club"
-$colCat      = Get-ColIndex $headerCols "category"
+$colCat      = Get-ColIndex $headerCols "age_category"
 $colSex      = Get-ColIndex $headerCols "sex"
 $colSeriesId = Get-ColIndex $headerCols "series_runner_id"
 
@@ -156,11 +167,12 @@ Write-Host "  race_number col: $colRaceNum | first_name: $colFirst | last_name: 
 Write-Host ""
 Write-Host "Correlating runners..." -ForegroundColor Yellow
 
-$matched       = 0
-$nameMismatch  = 0
-$created       = 0
-$skipped       = 0   # rows without bib, or guests
-$updatedLines  = [System.Collections.Generic.List[string]]@()
+$matched          = 0
+$created          = 0
+$nameMismatch     = 0
+$catMismatch      = 0   # partial match: name+club match, category differs
+$skippedGuests    = 0
+$updatedLines     = [System.Collections.Generic.List[string]]@()
 
 foreach ($line in $dataLines) {
     if ($line.Trim() -eq "") {
@@ -178,61 +190,103 @@ foreach ($line in $dataLines) {
     $sex    = if ($colSex     -ge 0 -and $colSex     -lt $cols.Count) { $cols[$colSex].Trim()     } else { "" }
 
     $seriesId = $null
+    $isGuest  = $club -ieq "Guest"
 
-    $isGuest = $club -ieq "Guest"
+    if ($isGuest) {
+        $skippedGuests++
+    } else {
+        $resolved = $null
 
-    if ($bibRaw -match '^\d+$' -and -not $isGuest) {
-        $bib = [int]$bibRaw
-
-        # -- Lookup by bib number -----------------------------------------
-        if ($bibIndex.ContainsKey($bib)) {
-            $found = $bibIndex[$bib]
-            if (-not (Names-Match $first $last $found.firstName $found.lastName)) {
-                Write-Warning "Bib $bib name mismatch: CSV='$first $last'  runners.json='$($found.firstName) $($found.lastName)'"
-                $nameMismatch++
+        # --- Step 1: try bib lookup -------------------------------------------
+        if ($bibRaw -match '^\d+$') {
+            $bib = [int]$bibRaw
+            if ($bibIndex.ContainsKey($bib)) {
+                $found = $bibIndex[$bib]
+                if (-not (Names-Match $first $last $found.firstName $found.lastName)) {
+                    Write-Warning "Bib $bib name mismatch: CSV='$first $last'  runners.json='$($found.firstName) $($found.lastName)'"
+                    $nameMismatch++
+                }
+                $resolved = $found
             }
-            $seriesId = $found.id
-            $matched++
-        } else {
-            # -- Create new series runner ----------------------------------
-            $newSeries = [ordered]@{
-                id        = $nextSeriesId
-                firstName = $first
-                lastName  = $last
-                club      = $club
-                sex       = $sex
-                category  = $cat
-                number    = $bib
+        }
+
+        # --- Step 2: try name + club + ageCategory lookup ---------------------
+        if (-not $resolved) {
+            $normFirst = Normalize-Name $first
+            $normLast  = Normalize-Name $last
+            $normClub  = $club.ToLower()
+            $nameKey   = $normFirst + "|" + $normLast + "|" + $normClub
+            if ($nameIndex.ContainsKey($nameKey)) {
+                $candidates = @($nameIndex[$nameKey])
+
+                # Prefer exact ageCategory match
+                $exactCat = @($candidates | Where-Object { $_.ageCategory -ieq $cat })
+                if ($exactCat.Count -gt 0) {
+                    $resolved = $exactCat[0]
+                } else {
+                    # Partial match: name + club found but ageCategory differs
+                    $resolved = $candidates[0]
+                    $catMismatch++
+                    $resId  = $resolved.id
+                    $resCat = $resolved.ageCategory
+                    $warnMsg = ("Category mismatch for {0} {1} ({2}): CSV={3}  runners.json={4} [id={5}]" -f $first, $last, $club, $cat, $resCat, $resId)
+                    Write-Warning $warnMsg
+                }
             }
-            $seriesRunners.Add($newSeries)
-            $bibIndex[$bib] = $newSeries
-            $seriesId = $nextSeriesId
+        }
+
+        # --- Step 3: create new series runner ---------------------------------
+        if (-not $resolved) {
+            $newRunner = [ordered]@{
+                id          = $nextSeriesId
+                firstName   = $first
+                lastName    = $last
+                club        = $club
+                sex         = $sex
+                ageCategory = $cat
+            }
+            if ($bibRaw -match '^\d+$') {
+                $newRunner["number"] = [int]$bibRaw
+                $bibIndex[[int]$bibRaw] = $newRunner
+            }
+            $seriesRunners.Add($newRunner)
+            $normFirst = Normalize-Name $first
+            $normLast  = Normalize-Name $last
+            $normClub  = $club.ToLower()
+            $nameKey   = $normFirst + "|" + $normLast + "|" + $normClub
+            if (-not $nameIndex.ContainsKey($nameKey)) { $nameIndex[$nameKey] = [System.Collections.Generic.List[object]]::new() }
+            $nameIndex[$nameKey].Add($newRunner)
+
+            $resolved = $newRunner
             $nextSeriesId++
             $created++
-            $sMsg = "  + Series runner: id=$($newSeries.id)  bib=$bib  $first $last"
-            Write-Host $sMsg -ForegroundColor Green
+            $newId = $newRunner.id
+            if ($bibRaw -match '^\d+$') {
+                Write-Host ("  + New runner: id={0}  bib={1}  {2} {3}  ({4} {5})" -f $newId, $bibRaw, $first, $last, $club, $cat) -ForegroundColor Green
+            } else {
+                Write-Host ("  + New runner: id={0}  {1} {2}  ({3} {4})" -f $newId, $first, $last, $club, $cat) -ForegroundColor Green
+            }
+        } else {
+            $matched++
         }
-    } else {
-        # No bib or guest runner -- leave series_runner_id blank
-        $skipped++
+
+        $seriesId = $resolved.id
     }
 
     # Rebuild the CSV line with series_runner_id appended (or replaced)
-    # Strip any existing series_runner_id column first
     $outputCols = [System.Collections.Generic.List[string]]@($cols)
     if ($colSeriesId -ge 0) {
         $outputCols.RemoveAt($colSeriesId)
     }
-
     $idValue = if ($null -ne $seriesId) { [string]$seriesId } else { "" }
     $outputCols.Add($idValue)
     $updatedLines.Add($outputCols -join ",")
 }
 
 Write-Host ""
-$summaryColor = if ($nameMismatch -gt 0) { "Yellow" } else { "Green" }
-$summaryMsg   = "Correlation complete: $matched matched, $created created, $skipped skipped (no bib), $nameMismatch name mismatch warning(s)"
-Write-Host $summaryMsg -ForegroundColor $summaryColor
+$hasWarnings  = ($nameMismatch -gt 0) -or ($catMismatch -gt 0)
+$summaryColor = if ($hasWarnings) { "Yellow" } else { "Green" }
+Write-Host "Correlation complete: $matched matched, $created created, $skippedGuests guest(s) skipped, $nameMismatch name mismatch(es), $catMismatch category mismatch(es)" -ForegroundColor $summaryColor
 
 # --- Build output header -------------------------------------------------------
 
@@ -257,7 +311,7 @@ if ($DryRun) {
     $csvOutput | Set-Content -Path $CsvFile -Encoding UTF8 -NoNewline
     Write-Host "Updated: $CsvFile" -ForegroundColor Green
 
-    if ($created -gt 0) {
+    if ($created -gt 0 -or $seriesRunners.Count -gt 0) {
         $seriesJson = $seriesRunners | ConvertTo-Json -Depth 5
         $seriesJson | Set-Content -Path $seriesRunnersFile -Encoding UTF8
         Write-Host "Updated: $seriesRunnersFile  ($($seriesRunners.Count) entries)" -ForegroundColor Green
@@ -267,8 +321,8 @@ if ($DryRun) {
 }
 
 Write-Host ""
-if ($nameMismatch -gt 0) {
-    Write-Host "Completed with $nameMismatch name mismatch warning(s) ? review above." -ForegroundColor Yellow
+if ($nameMismatch -gt 0 -or $catMismatch -gt 0) {
+    Write-Host "Completed with warnings -- review mismatches above." -ForegroundColor Yellow
 } else {
     Write-Host "Completed successfully." -ForegroundColor Green
 }

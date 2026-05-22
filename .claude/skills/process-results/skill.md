@@ -77,7 +77,9 @@ Stop and report if the script errors.
   -ProjectRoot "<ProjectRoot>"
 ```
 
-Collect into the batch: any `WARNING: Bib N name mismatch` lines — note the bib, CSV name, and runners.json name.
+The script matches runners without bibs too, using name + club + ageCategory. Collect into the batch:
+- Any `WARNING: Bib N name mismatch` lines — note the bib, CSV name, and runners.json name.
+- Any `WARNING: Category mismatch for ...` lines — note the runner name, club, CSV category, and runners.json category.
 
 ---
 
