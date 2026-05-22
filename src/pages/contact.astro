@@ -1,28 +1,21 @@
 ---
 import Layout from '../components/Layout.astro';
+import PageHero from '../components/PageHero.astro';
 import { siteUrl } from '../lib/url';
 ---
 
-<Layout title="Contact">
+<Layout title="Contact" noPad>
 
-  <div class="-mt-8 grid md:grid-cols-[1fr_1.1fr] md:gap-16 md:items-start">
+  <div class="grid md:grid-cols-[1fr_1.1fr] md:gap-16 md:items-start">
 
-    <!-- Left: editorial header + contact meta -->
-    <div class="-mx-4 px-4 bg-surface border-b border-line md:mx-0 md:px-0 md:bg-transparent md:border-none pt-5 pb-7 md:pt-8 md:pb-0 md:sticky md:top-8">
-      <p class="font-head text-[11px] font-bold tracking-[0.16em] uppercase text-amber mb-3 flex items-center gap-2.5">
-        <span class="inline-block w-5 h-px bg-amber"></span>
-        Contact
-      </p>
-      <h1 class="font-head text-[clamp(2rem,5vw,3.5rem)] font-extrabold tracking-[-0.025em] leading-[1] text-content mb-4">
-        Get in touch.
-      </h1>
-      <p class="text-[15px] leading-relaxed text-muted max-w-[380px]">
-        Result query, fixture suggestion, or anything else — drop us a line and we'll get back to you.
-      </p>
+    <PageHero
+      label="Contact"
+      heading="Get in touch."
+      description="Result query, fixture suggestion, or anything else — drop us a line and we'll get back to you."
+      sticky
+    />
 
-    </div>
-
-    <!-- Right: form — no card on mobile, card on desktop -->
+    <!-- Form — no card on mobile, card on desktop -->
     <div class="pt-6 pb-8 md:mt-8 md:bg-surface md:border md:border-line md:rounded-[14px] md:p-7">
       <form method="POST" action={siteUrl('/contact/thank-you/')}>
 

@@ -1,0 +1,26 @@
+---
+import PageLabel from './PageLabel.astro';
+
+interface Props {
+  label?: string;
+  heading: string;
+  description?: string;
+  sticky?: boolean;
+}
+const { label, heading, description, sticky = false } = Astro.props;
+---
+<div class:list={[
+  "-mx-4 px-4 bg-surface border-b border-line md:mx-0 md:px-0 md:bg-transparent md:border-none pt-5 pb-7 md:pt-8 md:pb-0",
+  sticky && "md:sticky md:top-8"
+]}>
+  {label && <PageLabel label={label} />}
+  <h1 class="font-head text-[clamp(2rem,5vw,3.5rem)] font-extrabold tracking-[-0.025em] leading-[1] text-content mb-4">
+    {heading}
+  </h1>
+  {description && (
+    <p class="text-[15px] leading-relaxed text-muted max-w-[380px]">
+      {description}
+    </p>
+  )}
+  <slot />
+</div>
