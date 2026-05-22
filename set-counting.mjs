@@ -11,13 +11,8 @@ data.categories.forEach(cat => {
     const raceEntries = Object.entries(runner.results);
     const raceCount = raceEntries.length;
 
-    if (raceCount <= 2) {
-      // 1 or 2 races: all non-counting
-      raceEntries.forEach(([race, result]) => {
-        result.counting = false;
-      });
-    } else if (raceCount === 3) {
-      // Exactly 3 races: all counting
+    if (raceCount <= 3) {
+      // 1, 2 or 3 races: all counting
       raceEntries.forEach(([race, result]) => {
         result.counting = true;
       });
