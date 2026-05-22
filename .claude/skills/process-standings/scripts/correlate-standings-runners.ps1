@@ -76,10 +76,10 @@ $seriesRunners = [System.Collections.Generic.List[object]]::new()
 foreach ($r in (Get-Content $runnersFile -Raw | ConvertFrom-Json)) { $seriesRunners.Add($r) }
 Write-Host "Loaded $($seriesRunners.Count) series runner(s)." -ForegroundColor DarkGray
 
-# Exact index: "first|last|club|category" -> runner
+# Exact index: "first|last|club|ageCategory" -> runner
 $exactIndex = @{}
 foreach ($r in $seriesRunners) {
-    $key = "$(Normalize $r.firstName)|$(Normalize $r.lastName)|$(Normalize $r.club)|$(Normalize $r.category)"
+    $key = "$(Normalize $r.firstName)|$(Normalize $r.lastName)|$(Normalize $r.club)|$(Normalize $r.ageCategory)"
     if (-not $exactIndex.ContainsKey($key)) { $exactIndex[$key] = $r }
 }
 
@@ -127,7 +127,7 @@ foreach ($cat in $standings.categories) {
             $matched++
         } elseif ($nameIndex.ContainsKey($nameKey)) {
             $candidates = $nameIndex[$nameKey]
-            $opts = ($candidates | ForEach-Object { "id=$($_.id) club=$($_.club) sex=$($_.sex) cat=$($_.category)" }) -join "; "
+            $opts = ($candidates | ForEach-Object { "id=$($_.id) club=$($_.club) sex=$($_.sex) cat=$($_.ageCategory)" }) -join "; "
             Write-Warning "Possible match for '$($runner.name)' [$($cat.id)] club=$club cat=$ageCat -- candidates: $opts"
             $needsReview++
         } else {

@@ -147,7 +147,7 @@ foreach ($sr in $seriesRunners) {
         $matched++
 
     } elseif ($possibleMatches.Count -gt 0) {
-        # Same name but something differs — report and leave for manual review
+        # Same name but something differs -- report and leave for manual review
         Write-Host ""
         Write-Host "  ? Possible match(es) for series id=$($sr.id)  $($sr.firstName) $($sr.lastName)  (club=$($sr.club) sex=$($sr.sex) ageCategory=$($sr.ageCategory)):" -ForegroundColor Yellow
         foreach ($pm in $possibleMatches) {
@@ -159,7 +159,7 @@ foreach ($sr in $seriesRunners) {
         $needsReview++
 
     } else {
-        # No match at all — create new global runner
+        # No match at all -- create new global runner
         $newGlobal = [ordered]@{
             id              = $nextGlobalId
             firstName       = $sr.firstName

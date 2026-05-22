@@ -154,7 +154,7 @@ $failed    = [System.Collections.Generic.List[string]]::new()
 $ambiguous = [System.Collections.Generic.List[string]]::new()
 
 foreach ($catGroup in $awardsData.individualAwards) {
-    $catId    = $catGroup.category
+    $catId    = $catGroup.id
     $inferSex = Infer-Sex $catId
 
     foreach ($award in $catGroup.awards) {

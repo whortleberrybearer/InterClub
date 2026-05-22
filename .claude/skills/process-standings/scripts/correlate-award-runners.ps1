@@ -157,7 +157,7 @@ $prompted = 0
 $unresolved = [System.Collections.Generic.List[string]]::new()
 
 foreach ($catGroup in $awardsData.individualAwards) {
-    $catId    = $catGroup.category
+    $catId    = $catGroup.id
     $inferSex = Infer-Sex $catId
 
     foreach ($award in $catGroup.awards) {
@@ -171,7 +171,7 @@ foreach ($catGroup in $awardsData.individualAwards) {
 
         $displayName = $award.name
         $awardClub   = if ($award.PSObject.Properties['club']     -and $award.club)     { $award.club }     else { "" }
-        $awardCat    = if ($award.PSObject.Properties['category'] -and $award.category) { $award.category } else { "" }
+        $awardCat    = if ($award.PSObject.Properties['ageCategory'] -and $award.ageCategory) { $award.ageCategory } else { "" }
 
         $parsed = Parse-AbbreviatedName $displayName
         if (-not $parsed) {
@@ -203,7 +203,7 @@ foreach ($catGroup in $awardsData.individualAwards) {
 
         # Narrow by age category on award entry
         if ($awardCat -and $candidates.Count -gt 1) {
-            $byCat = @($candidates | Where-Object { (Normalize $_.category) -eq (Normalize $awardCat) })
+            $byCat = @($candidates | Where-Object { (Normalize $_.ageCategory) -eq (Normalize $awardCat) })
             if ($byCat.Count -gt 0) { $candidates = $byCat }
         }
 
@@ -223,12 +223,12 @@ foreach ($catGroup in $awardsData.individualAwards) {
                     inferredSex = $inferSex
                     candidates  = @($candidates | ForEach-Object {
                         [ordered]@{
-                            id        = [int]$_.id
-                            firstName = $_.firstName
-                            lastName  = $_.lastName
-                            club      = $_.club
-                            sex       = $_.sex
-                            category  = $_.category
+                            id          = [int]$_.id
+                            firstName   = $_.firstName
+                            lastName    = $_.lastName
+                            club        = $_.club
+                            sex         = $_.sex
+                            ageCategory = $_.ageCategory
                         }
                     })
                 })
@@ -247,13 +247,13 @@ foreach ($catGroup in $awardsData.individualAwards) {
                     if ($surnameHints.Count -gt 0) {
                         Write-Host "      Same surname in runners.json:" -ForegroundColor DarkGray
                         foreach ($h in $surnameHints) {
-                            Write-Host "        id=$($h.id)  $($h.firstName) $($h.lastName)  club=$($h.club)  sex=$($h.sex)  cat=$($h.category)" -ForegroundColor DarkGray
+                            Write-Host "        id=$($h.id)  $($h.firstName) $($h.lastName)  club=$($h.club)  sex=$($h.sex)  ageCategory=$($h.ageCategory)" -ForegroundColor DarkGray
                         }
                     }
                 } else {
                     Write-Host "  [?] [$catId] pos=$($award.position) '$displayName' -- $($candidates.Count) candidates:" -ForegroundColor Yellow
                     foreach ($c in $candidates) {
-                        Write-Host "      id=$($c.id)  $($c.firstName) $($c.lastName)  club=$($c.club)  sex=$($c.sex)  cat=$($c.category)" -ForegroundColor DarkGray
+                        Write-Host "      id=$($c.id)  $($c.firstName) $($c.lastName)  club=$($c.club)  sex=$($c.sex)  ageCategory=$($c.ageCategory)" -ForegroundColor DarkGray
                     }
                 }
 
@@ -287,7 +287,7 @@ foreach ($catGroup in $awardsData.individualAwards) {
                 $award | Add-Member -NotePropertyName club -NotePropertyValue $chosenRunner.club -Force
             }
             if (-not $awardCat -and (Is-BroadCategory $catId)) {
-                $award | Add-Member -NotePropertyName category -NotePropertyValue $chosenRunner.category -Force
+                $award | Add-Member -NotePropertyName ageCategory -NotePropertyValue $chosenRunner.ageCategory -Force
             }
         }
     }
