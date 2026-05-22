@@ -2,7 +2,8 @@
 param(
     [Parameter(Mandatory)]
     [string]$Race,
-    [switch]$Write
+    [switch]$Write,
+    [switch]$Force
 )
 
 Set-StrictMode -Version Latest
@@ -140,8 +141,11 @@ Write-Host ""
 
 if ($Write) {
     if ($totalMismatches -gt 0 -or $totalNotFound -gt 0) {
-        Write-Host "  Cannot write: fix all mismatches and missing positions first." -ForegroundColor Red
-        exit 1
+        if (-not $Force) {
+            Write-Host "  Cannot write: fix all mismatches and missing positions first. Use -Force to write anyway." -ForegroundColor Red
+            exit 1
+        }
+        Write-Host "  Writing with $totalMismatches mismatch(es) acknowledged (-Force)." -ForegroundColor Yellow
     }
 
     # Re-iterate and populate 'name' on each scorer
