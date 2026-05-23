@@ -99,5 +99,276 @@ const SECTIONS = [
 </Layout>
 
 <script>
-  // TODO: filled in Task 3
+  import Fuse from 'fuse.js'
+  import { createFuse, loadIndex } from '../lib/search-client'
+  import type { SearchRecord } from '../lib/search-client'
+
+  const SHOW_ALL_LIMIT = 6    // rows shown per section when filter = 'all'
+  const SHOW_FILTERED  = 20   // rows shown when a specific filter is active
+
+  const base = import.meta.env.BASE_URL.replace(/\/$/, '')
+
+  // DOM refs
+  const hero       = document.getElementById('search-hero')!
+  const queryHead  = document.getElementById('query-heading')!
+  const matchCount = document.getElementById('match-count')!
+  const jumpChips  = document.getElementById('jump-chips')!
+  const prompt     = document.getElementById('state-prompt')!
+  const empty      = document.getElementById('state-empty')!
+  const emptyQuery = document.getElementById('empty-query')!
+  const grid       = document.getElementById('results-grid')!
+  const inner      = document.getElementById('results-inner')!
+  const fullLink   = document.getElementById('full-index-link') as HTMLAnchorElement | null
+
+  // State
+  let activeFilter = 'all'
+  let lastQuery    = ''
+  let allResults: SearchRecord[] = []
+  let fusePromise: Promise<Fuse<SearchRecord>> | null = null
+
+  // Fuse lazy load
+  async function ensureFuse(): Promise<Fuse<SearchRecord>> {
+    if (!fusePromise) {
+      fusePromise = loadIndex()
+        .then(records => createFuse(records))
+        .catch(err => { fusePromise = null; throw err })
+    }
+    return fusePromise
+  }
+
+  // ── Icons ──────────────────────────────────────────────────────────
+  function iconSvg(type: SearchRecord['type']): string {
+    switch (type) {
+      case 'runner':
+        return `<svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+          <circle cx="7" cy="4" r="2.2" stroke="currentColor" stroke-width="1.4"/>
+          <path d="M2.5 12c0-2.2 2-3.6 4.5-3.6S11.5 9.8 11.5 12" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+        </svg>`
+      case 'race-detail':
+      case 'race-results':
+        return `<svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+          <path d="M2 11.5L4.5 8L7 10L11.5 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="11.5" cy="4" r="1.5" fill="currentColor"/>
+        </svg>`
+      case 'standings':
+        return `<svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+          <path d="M3.5 2.5h7v2.5a3.5 3.5 0 01-7 0V2.5z" stroke="currentColor" stroke-width="1.4"/>
+          <path d="M10.5 3.5h1.5v1a1.5 1.5 0 01-1.5 1.5M3.5 3.5H2v1a1.5 1.5 0 001.5 1.5" stroke="currentColor" stroke-width="1.4"/>
+          <path d="M5.5 11.5h3M7 8.5v3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+        </svg>`
+      default: // year / archive
+        return `<svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+          <circle cx="7" cy="7" r="5" stroke="currentColor" stroke-width="1.4"/>
+          <path d="M7 4.5V7l1.8 1.2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+        </svg>`
+    }
+  }
+
+  function badgeStyle(type: SearchRecord['type']): string {
+    switch (type) {
+      case 'runner':
+        return 'background:oklch(97% 0.04 60);color:oklch(72% 0.18 60)'
+      case 'race-detail':
+      case 'race-results':
+        return 'background:var(--color-teal-bg);color:var(--color-teal)'
+      case 'standings':
+        return 'background:oklch(95% 0.04 220);color:oklch(45% 0.12 220)'
+      default:
+        return 'background:var(--color-canvas);color:var(--color-muted)'
+    }
+  }
+
+  // ── Helpers ────────────────────────────────────────────────────────
+  function escHtml(s: string): string {
+    return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')
+  }
+
+  function highlight(text: string, q: string): string {
+    if (!q) return escHtml(text)
+    const idx = text.toLowerCase().indexOf(q.toLowerCase())
+    if (idx < 0) return escHtml(text)
+    return (
+      escHtml(text.slice(0, idx)) +
+      `<mark style="background:oklch(94% 0.12 60);color:var(--color-content);padding:0 2px;border-radius:2px">` +
+      escHtml(text.slice(idx, idx + q.length)) +
+      `</mark>` +
+      escHtml(text.slice(idx + q.length))
+    )
+  }
+
+  function recordSectionId(r: SearchRecord): string {
+    if (r.type === 'race-detail' || r.type === 'race-results') return 'race'
+    return r.type
+  }
+
+  // ── Row HTML ───────────────────────────────────────────────────────
+  function rowHtml(r: SearchRecord, q: string): string {
+    return `<a href="${escHtml(r.url)}" class="result-row">` +
+      `<span style="width:28px;height:28px;flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;border-radius:7px;${badgeStyle(r.type)}">` +
+      iconSvg(r.type) +
+      `</span>` +
+      `<span style="flex:1;min-width:0">` +
+        `<span style="display:block;font-size:14.5px;font-weight:500;line-height:1.2;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">` +
+          highlight(r.label, q) +
+        `</span>` +
+        (r.subtitle ? `<span style="display:block;font-size:11.5px;color:var(--color-muted);margin-top:1px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${escHtml(r.subtitle)}</span>` : '') +
+      `</span>` +
+      `<span style="color:var(--color-muted);flex-shrink:0;font-size:14px">›</span>` +
+      `</a>`
+  }
+
+  // ── Sections ───────────────────────────────────────────────────────
+  type SectionGroup = { id: string; items: SearchRecord[]; total: number }
+
+  function groupResults(results: SearchRecord[]): SectionGroup[] {
+    const map: Record<string, SearchRecord[]> = { runner: [], race: [], standings: [], year: [] }
+    for (const r of results) map[recordSectionId(r)].push(r)
+    return [
+      { id: 'runner',    items: map.runner,    total: map.runner.length },
+      { id: 'race',      items: map.race,      total: map.race.length },
+      { id: 'standings', items: map.standings, total: map.standings.length },
+      { id: 'year',      items: map.year,      total: map.year.length },
+    ]
+  }
+
+  function renderSections(groups: SectionGroup[], q: string, limit: number): void {
+    for (const g of groups) {
+      const section  = document.getElementById(`section-${g.id}`)!
+      const rowsEl   = section.querySelector('.section-rows')!
+      const countEl  = section.querySelector('.section-count')!
+      const showAll  = section.querySelector('.show-all-link') as HTMLAnchorElement
+
+      if (g.total === 0) { section.classList.add('hidden'); continue }
+      section.classList.remove('hidden')
+
+      countEl.textContent = String(g.total)
+      rowsEl.innerHTML = g.items.slice(0, limit).map(r => rowHtml(r, q)).join('')
+
+      if (g.total > limit) {
+        showAll.classList.remove('hidden')
+        showAll.textContent = `Show all ${g.total} →`
+        showAll.addEventListener('click', (e) => { e.preventDefault(); activateFilter(g.id) }, { once: true })
+      } else {
+        showAll.classList.add('hidden')
+      }
+    }
+  }
+
+  // ── Filter pills ───────────────────────────────────────────────────
+  function activateFilter(filterId: string): void {
+    activeFilter = filterId
+    document.querySelectorAll('[data-filter]').forEach(el => {
+      const btn = el as HTMLButtonElement
+      btn.classList.toggle('pill-active', btn.dataset.filter === filterId)
+    })
+    inner.className = activeFilter === 'all' ? 'grid gap-4 md:grid-cols-2' : 'grid gap-4'
+    if (lastQuery) displayResults(allResults, lastQuery)
+  }
+
+  // ── Pill counts ────────────────────────────────────────────────────
+  function updatePillCounts(groups: SectionGroup[]): void {
+    const total = groups.reduce((a, g) => a + g.total, 0)
+    const allEl = document.getElementById('pill-count-all')
+    if (allEl) allEl.textContent = String(total)
+    for (const g of groups) {
+      const c = document.getElementById(`pill-count-${g.id}`)
+      if (c) c.textContent = String(g.total)
+    }
+  }
+
+  // ── Jump chips (desktop) ───────────────────────────────────────────
+  const SECTION_LABELS: Record<string, string> = {
+    runner: 'Runners', race: 'Race Results', standings: 'Standings', year: 'Archives',
+  }
+
+  function renderJumpChips(groups: SectionGroup[]): void {
+    jumpChips.innerHTML = groups
+      .filter(g => g.total > 0)
+      .map(g =>
+        `<a href="#section-${g.id}" style="display:inline-flex;align-items:center;gap:6px;padding:5px 11px;border-radius:18px;background:var(--color-canvas);border:1px solid var(--color-line);font-size:12.5px;color:var(--color-content);text-decoration:none">` +
+        escHtml(SECTION_LABELS[g.id]) +
+        `<span style="font-family:var(--ff-mono);font-size:11px;color:var(--color-muted)">${g.total}</span>` +
+        `</a>`
+      ).join('')
+  }
+
+  // ── Display results ─────────────────────────────────────────────────
+  function displayResults(results: SearchRecord[], q: string): void {
+    const groups = groupResults(results)
+    const visibleGroups = activeFilter === 'all'
+      ? groups
+      : groups.filter(g => g.id === activeFilter)
+    const limit = activeFilter === 'all' ? SHOW_ALL_LIMIT : SHOW_FILTERED
+
+    prompt.classList.add('hidden')
+    empty.classList.add('hidden')
+
+    if (results.length === 0) {
+      grid.classList.add('hidden')
+      hero.classList.remove('hidden')
+      queryHead.textContent = `"${q}"`
+      matchCount.textContent = ''
+      empty.classList.remove('hidden')
+      emptyQuery.textContent = q
+      return
+    }
+
+    // Hide sections not in the active filter before rendering
+    for (const id of ['runner', 'race', 'standings', 'year']) {
+      const sec = document.getElementById(`section-${id}`)
+      if (activeFilter !== 'all' && id !== activeFilter) {
+        sec?.classList.add('hidden')
+      }
+    }
+
+    grid.classList.remove('hidden')
+    hero.classList.remove('hidden')
+    queryHead.textContent = `"${q}"`
+    matchCount.textContent = `${results.length} match${results.length === 1 ? '' : 'es'} across ${groups.filter(g => g.total > 0).length} sections`
+
+    updatePillCounts(groups)
+    renderJumpChips(groups)
+    inner.className = activeFilter === 'all' ? 'grid gap-4 md:grid-cols-2' : 'grid gap-4'
+    renderSections(visibleGroups, q, limit)
+
+    if (fullLink) fullLink.href = `${base}/search`
+  }
+
+  // ── Clear ───────────────────────────────────────────────────────────
+  function clear(): void {
+    hero.classList.add('hidden')
+    grid.classList.add('hidden')
+    empty.classList.add('hidden')
+    prompt.classList.remove('hidden')
+    document.querySelectorAll('.result-section').forEach(s => s.classList.add('hidden'))
+  }
+
+  // ── Search ──────────────────────────────────────────────────────────
+  async function search(query: string): Promise<void> {
+    if (query.trim().length < 3) { clear(); return }
+    lastQuery = query.trim()
+    const fuse = await ensureFuse()
+    allResults = fuse.search(query).map(r => r.item)
+    displayResults(allResults, query.trim())
+  }
+
+  // ── Filter pill clicks ──────────────────────────────────────────────
+  document.getElementById('filter-pills')!.addEventListener('click', (e) => {
+    const btn = (e.target as Element).closest('[data-filter]') as HTMLButtonElement | null
+    if (btn) activateFilter(btn.dataset.filter!)
+  })
+
+  // ── Suggestion pills ────────────────────────────────────────────────
+  document.querySelectorAll('[data-suggestion]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const q = (btn as HTMLButtonElement).dataset.suggestion!
+      history.replaceState(null, '', `${base}/search?q=${encodeURIComponent(q)}`)
+      search(q)
+    })
+  })
+
+  // ── Init ─────────────────────────────────────────────────────────────
+  const params = new URLSearchParams(window.location.search)
+  const initialQuery = params.get('q') ?? ''
+  if (initialQuery) search(initialQuery)
 </script>
