@@ -63,7 +63,7 @@
     </div>
 
     <!-- Results stream -->
-    <div id="sb-results-mobile" class="flex-1 overflow-y-auto" role="region" aria-label="Search results">
+    <div id="sb-results-mobile" class="flex-1 overflow-y-auto" role="region" aria-label="Search results" aria-live="polite">
       <!-- populated by JS -->
     </div>
 
@@ -105,6 +105,7 @@
     class="hidden absolute right-0 top-full mt-1.5 w-96 bg-surface border border-line rounded-xl overflow-hidden z-50"
     style="box-shadow: 0 16px 40px -8px rgba(0,0,0,0.18), 0 2px 6px rgba(0,0,0,0.06)"
     aria-label="Search suggestions"
+    aria-live="polite"
   >
     <!-- populated by JS -->
   </div>
@@ -381,9 +382,10 @@
     if (desktopInput.value.trim().length >= 3) handleDesktopQuery(desktopInput.value)
   })
 
-  desktopInput.addEventListener('blur', () => {
-    // Delay to allow click events on dropdown links to fire first
-    setTimeout(closeDropdown, 150)
+  document.getElementById('sb-desktop')!.addEventListener('focusout', (e: FocusEvent) => {
+    if (!document.getElementById('sb-desktop')!.contains(e.relatedTarget as Node)) {
+      closeDropdown()
+    }
   })
 
   desktopInput.addEventListener('input', () => handleDesktopQuery(desktopInput.value))
@@ -403,9 +405,5 @@
     renderDropdown(runSearch(fuse, query, 12), query)
   }
 
-  document.addEventListener('click', (e: MouseEvent) => {
-    if (!document.getElementById('sb-desktop')?.contains(e.target as Node)) {
-      closeDropdown()
-    }
-  })
+
 </script>
