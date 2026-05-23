@@ -44,11 +44,27 @@ const clubById  = Object.fromEntries(clubs.map(c => [c.id, c]));
 
 const hasMale   = standings.categories.some(c => c.sex === 'M');
 const hasFemale = standings.categories.some(c => c.sex === 'F');
-const showSexToggle  = hasMale && hasFemale;
-const defaultSex     = hasMale ? 'M' : 'F';
+const showSexToggle = hasMale && hasFemale;
+const defaultSex    = hasMale ? 'M' : 'F';
+
+// Display order: overall (no ageCategory) first, then JUN → SEN → vet bands
+const AGE_CAT_SORT: Record<string, number> = {
+  JUN: 1, SEN: 2,
+  V35: 3, V40: 4, V45: 5, V50: 6, V55: 7,
+  V60: 8, V65: 9, V70: 10, V75: 11, V80: 12, V85: 13, V90: 14, V95: 15, V100: 16,
+};
+const sortedCats = standings.categories
+  .map((cat, i) => ({ cat, i }))
+  .sort((a, b) => {
+    const aKey = a.cat.ageCategory != null ? (AGE_CAT_SORT[a.cat.ageCategory] ?? 99) : 0;
+    const bKey = b.cat.ageCategory != null ? (AGE_CAT_SORT[b.cat.ageCategory] ?? 99) : 0;
+    return aKey - bKey;
+  });
+
+// Default panel = first sorted category for the default sex
 const defaultCatIndex = showSexToggle
-  ? standings.categories.findIndex(c => c.sex === defaultSex)
-  : 0;
+  ? (sortedCats.find(({ cat }) => cat.sex === defaultSex)?.i ?? 0)
+  : (sortedCats[0]?.i ?? 0);
 
 const raceKeyEntries = standings.races.map(raceId => {
   const race = raceById[raceId];
@@ -104,18 +120,18 @@ const standingsClubs = standingsClubIds
             <button
               class:list={['sex-toggle-btn btn btn-sm rounded-lg flex-1', defaultSex === 'M' ? 'btn-active' : 'btn-ghost border border-line text-muted']}
               data-sex="M"
-            >Men</button>
+            >Male</button>
             <button
               class:list={['sex-toggle-btn btn btn-sm rounded-lg flex-1', defaultSex === 'F' ? 'btn-active' : 'btn-ghost border border-line text-muted']}
               data-sex="F"
-            >Women</button>
+            >Female</button>
           </div>
         </>
       )}
 
       <p class="font-head text-[10px] font-bold tracking-[0.12em] uppercase text-muted mb-1 pl-1">Category</p>
       <SidebarCategoryList
-        items={standings.categories.map((cat, i) => ({
+        items={sortedCats.map(({ cat, i }) => ({
           label:  resolveIndividualCategoryName(cat.id, cat.sex, cat.ageCategory, cat.name),
           target: `cat-panel-${i}`,
           sex:    cat.sex ?? '',
@@ -143,16 +159,16 @@ const standingsClubs = standingsClubIds
               <button
                 class:list={['sex-toggle-btn btn btn-sm rounded-full', defaultSex === 'M' ? 'btn-active' : 'btn-ghost border border-line text-muted']}
                 data-sex="M"
-              >Men</button>
+              >Male</button>
               <button
                 class:list={['sex-toggle-btn btn btn-sm rounded-full', defaultSex === 'F' ? 'btn-active' : 'btn-ghost border border-line text-muted']}
                 data-sex="F"
-              >Women</button>
+              >Female</button>
             </div>
             <div class="w-px h-5 bg-line shrink-0" />
           </>
         )}
-        {standings.categories.map((cat, i) => {
+        {sortedCats.map(({ cat, i }) => {
           const label = resolveIndividualCategoryName(cat.id, cat.sex, cat.ageCategory, cat.name);
           const isDefault = i === defaultCatIndex;
           const isHidden  = showSexToggle && !!cat.sex && cat.sex !== defaultSex;

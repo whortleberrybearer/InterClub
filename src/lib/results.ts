@@ -34,8 +34,8 @@ export function resolveIndividualCategoryName(
 ): string {
   if (name) return name;
   if (!sex) return id;
-  const sexLabel = sex === 'M' ? 'Men' : 'Women';
-  if (!ageCategory) return sexLabel;
+  if (!ageCategory) return 'Overall';
+  const sexLabel = sex === 'M' ? 'Male' : 'Female';
   const ageLabel =
     ageCategory === 'SEN' ? 'Senior' :
     ageCategory === 'JUN' ? 'Junior' :
