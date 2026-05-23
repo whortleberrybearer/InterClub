@@ -331,7 +331,7 @@ const SECTIONS = [
     inner.className = activeFilter === 'all' ? 'grid gap-4 md:grid-cols-2' : 'grid gap-4'
     renderSections(visibleGroups, q, limit)
 
-    if (fullLink) fullLink.href = `${base}/search`
+    if (fullLink) fullLink.href = `${base}/search?q=${encodeURIComponent(lastQuery)}`
   }
 
   // ── Clear ───────────────────────────────────────────────────────────
