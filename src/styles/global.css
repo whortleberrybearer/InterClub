@@ -10,6 +10,7 @@
   --color-amber:      oklch(72% 0.18 60);
   --color-amber-bg:   oklch(97% 0.04 60);
   --color-teal:       oklch(58% 0.14 195);
+  --color-teal-bg:    oklch(96% 0.04 195);
   --color-success:    oklch(58% 0.16 145);
   --color-gold:       oklch(82% 0.16 75);
   --color-gold-fg:    oklch(26% 0.09 70);
@@ -167,3 +168,40 @@ body { color: var(--color-content); }
 /* ── Label (contact form) ── */
 .label      { display: block; margin-bottom: 0.25rem; }
 .label-text { font-size: 0.875rem; font-weight: 500; }
+
+/* ── Search pills ── */
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 11px;
+  border-radius: 9999px;
+  border: 1px solid var(--color-line);
+  background: var(--color-surface);
+  color: var(--color-muted);
+  font-family: var(--ff-body);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: border-color 0.15s, background 0.15s, color 0.15s;
+}
+.pill-active {
+  border-color: var(--color-amber);
+  background: var(--color-amber);
+  color: #fff;
+}
+
+/* ── Search result rows ── */
+.result-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 16px;
+  border-top: 1px solid var(--color-line);
+  text-decoration: none;
+  color: var(--color-content);
+  transition: background 0.1s;
+}
+.result-row:hover { background: var(--color-canvas); }
+.result-row-dense { padding: 9px 16px; }
