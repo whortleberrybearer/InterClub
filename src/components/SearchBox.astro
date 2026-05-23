@@ -293,14 +293,16 @@
       `<div style="background:var(--color-surface)">${g.items.slice(0, 3).map(r => rowHtml(r, query)).join('')}</div>` +
       `</div>`
     ).join('') +
-    `<a href="${escHtml(searchUrl)}" class="result-row" style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px;margin:12px;background:var(--color-content);color:#fff;border-radius:10px;text-decoration:none;border:none" ` +
-    `onclick="event.stopPropagation()">` +
+    `<a href="${escHtml(searchUrl)}" class="result-row" style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px;margin:12px;background:var(--color-content);color:#fff;border-radius:10px;text-decoration:none;border:none">` +
       `<span style="display:flex;align-items:center;gap:8px;font-size:14px;font-weight:600">` +
         `<svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="7" cy="7" r="4.5" stroke="white" stroke-width="1.6"/><path d="M10.5 10.5L14 14" stroke="white" stroke-width="1.6" stroke-linecap="round"/></svg>` +
         `See all ${total} results for "${escHtml(query.trim())}"` +
       `</span>` +
       `<span>→</span>` +
     `</a>`
+
+    // Wire up stopPropagation on the "See all" CTA so overlay click-close doesn't fire
+    resultsEl.querySelector('a.result-row[href*="/search?q="]')?.addEventListener('click', e => e.stopPropagation())
 
     // Save query to recent when user navigates to full results
     resultsEl.querySelectorAll('a[href*="/search?q="]').forEach(a => {
@@ -364,13 +366,14 @@
         ).join('')
       )
     }).join('') +
-    `<a href="${escHtml(searchUrl)}" style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:var(--color-canvas);border-top:1px solid var(--color-line);text-decoration:none;color:var(--color-amber);font-size:13px;font-weight:500" onclick="event.stopPropagation()">` +
+    `<a href="${escHtml(searchUrl)}" style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:var(--color-canvas);border-top:1px solid var(--color-line);text-decoration:none;color:var(--color-amber);font-size:13px;font-weight:500">` +
       `<span>See all ${total} results for "${escHtml(query.trim())}"</span>` +
       `<kbd style="font-family:var(--ff-mono);font-size:10px;border:1px solid var(--color-line);border-radius:4px;padding:1px 5px;background:var(--color-surface);color:var(--color-muted)">↵</kbd>` +
     `</a>`
 
     dropdown.classList.remove('hidden')
     dropdown.querySelector('a[href*="/search?q="]')?.addEventListener('click', () => saveRecent(query.trim()), { once: true })
+    dropdown.querySelector('a[href*="/search?q="]')?.addEventListener('click', e => e.stopPropagation())
   }
 
   desktopInput.addEventListener('focus', () => {
@@ -380,7 +383,7 @@
 
   desktopInput.addEventListener('blur', () => {
     // Delay to allow click events on dropdown links to fire first
-    setTimeout(closeFocusStyle, 150)
+    setTimeout(closeDropdown, 150)
   })
 
   desktopInput.addEventListener('input', () => handleDesktopQuery(desktopInput.value))
