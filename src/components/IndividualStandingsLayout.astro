@@ -47,6 +47,15 @@ const hasFemale     = standings.categories.some(c => c.sex === 'F');
 const showSexToggle = hasMale && hasFemale;
 const defaultSex    = hasMale ? 'M' : 'F';
 
+// Chip label: sex-free, "Overall" when no age category
+function chipLabel(cat: typeof standings.categories[number]): string {
+  if (cat.name) return cat.name;
+  if (!cat.ageCategory) return 'Overall';
+  if (cat.ageCategory === 'SEN') return 'Senior';
+  if (cat.ageCategory === 'JUN') return 'Junior';
+  return cat.ageCategory; // V40, V45, V50 …
+}
+
 // Display order: overall (no ageCategory) first, then JUN → SEN → vet bands
 const AGE_CAT_SORT: Record<string, number> = {
   JUN: 1, SEN: 2,
@@ -105,7 +114,7 @@ const dth = 'font-head text-[10px] font-bold tracking-[0.1em] uppercase text-mut
     slot="chip-bar"
     defaultSex={showSexToggle ? defaultSex : undefined}
     items={sortedCats.map(({ cat, i }) => ({
-      label:  resolveIndividualCategoryName(cat.id, cat.sex, cat.ageCategory, cat.name),
+      label:  chipLabel(cat),
       target: `cat-panel-${i}`,
       sex:    cat.sex ?? '',
       active: i === defaultCatIndex,
@@ -361,7 +370,7 @@ const dth = 'font-head text-[10px] font-bold tracking-[0.1em] uppercase text-mut
                 <table class="w-full border-collapse text-sm">
                   <thead>
                     <tr>
-                      <th class={`${th} w-8 text-left pl-3`}>#</th>
+                      <th class={`${th} w-8 text-center`}>#</th>
                       <th class={`${th} text-left`}>Runner</th>
                       <th class={`${th} text-left`}>Cat</th>
                       {standings.races.map(raceId => {
@@ -393,7 +402,7 @@ const dth = 'font-head text-[10px] font-bold tracking-[0.1em] uppercase text-mut
                           data-name={runner.name}
                           data-club={runner.club}
                         >
-                          <td class="py-2.5 pl-3 pr-2 align-middle">
+                          <td class="py-2.5 px-2 text-center align-middle">
                             <span class="font-mono text-sm font-medium text-muted tabular-nums">{runner.position}</span>
                           </td>
                           <td class="py-2.5 px-2 align-middle">
@@ -451,7 +460,7 @@ const dth = 'font-head text-[10px] font-bold tracking-[0.1em] uppercase text-mut
               <table class="w-full border-collapse text-sm">
                 <thead>
                   <tr>
-                    <th class={`${dth} w-8 text-left`}>#</th>
+                    <th class={`${dth} w-8 text-center`}>#</th>
                     <th class={`${dth} text-left`}>Runner</th>
                     <th class={`${dth} text-left`}>Cat</th>
                     {standings.races.map(raceId => {
@@ -459,7 +468,7 @@ const dth = 'font-head text-[10px] font-bold tracking-[0.1em] uppercase text-mut
                       const rlabel = race?.shortName ?? raceId;
                       const href   = linkedRaceIds.has(raceId) ? siteUrl(`${resultsBase}/${raceId}/results`) : null;
                       return (
-                        <th class={`${dth} text-right whitespace-nowrap`}>
+                        <th class={`${dth} text-center whitespace-nowrap`}>
                           {href
                             ? <a href={href} class="text-amber hover:underline">{rlabel}</a>
                             : <span class="text-content/20">{rlabel}</span>
@@ -483,10 +492,10 @@ const dth = 'font-head text-[10px] font-bold tracking-[0.1em] uppercase text-mut
                         data-name={runner.name}
                         data-club={runner.club}
                       >
-                        <td class="py-2.5 pr-2 align-middle">
+                        <td class="py-2.5 px-2 text-center align-middle">
                           <span class="font-mono text-sm font-medium text-muted tabular-nums">{runner.position}</span>
                         </td>
-                        <td class="py-2.5 pr-4 align-middle">
+                        <td class="py-2.5 pl-2 pr-4 align-middle">
                           <div class="font-semibold leading-tight">
                             {runner.seriesRunnerId != null && runnerUrlMap[runner.seriesRunnerId]
                               ? <a href={runnerUrlMap[runner.seriesRunnerId]} class="link link-hover">{runner.name}</a>
@@ -501,7 +510,7 @@ const dth = 'font-head text-[10px] font-bold tracking-[0.1em] uppercase text-mut
                           const result = runner.results[raceId];
                           if (!result) return <td class="py-2.5 px-2" />;
                           return (
-                            <td class:list={['py-2.5 px-2 text-right tabular-nums align-middle', !result.counting && 'text-content/30']}>
+                            <td class:list={['py-2.5 px-2 text-center tabular-nums align-middle', !result.counting && 'text-content/30']}>
                               <span class:list={[!result.counting && 'line-through']}>{result.points}</span>
                             </td>
                           );

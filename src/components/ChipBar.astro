@@ -5,8 +5,9 @@
 // Rendered via Layout's "chip-bar" named slot, which sits outside <main>,
 // so it naturally spans the full viewport without any negative-margin tricks.
 //
-// Optionally shows a centred Male / Female toggle row above the chips
-// when `defaultSex` is supplied (individual standings only).
+// When `defaultSex` is supplied (individual standings only), Male/Female toggle
+// buttons appear left-aligned at the start of the single scrollable row,
+// separated from the category chips by a thin vertical divider.
 
 export interface ChipItem {
   label: string;
@@ -22,8 +23,8 @@ export interface ChipItem {
 interface Props {
   items: ChipItem[];
   /**
-   * When provided, renders a centred Male / Female toggle row above the chips.
-   * The value is the initially-active sex.
+   * When provided, renders Male / Female toggle buttons at the left of the
+   * chip row, separated by a divider. The value is the initially-active sex.
    */
   defaultSex?: 'M' | 'F';
 }
@@ -35,31 +36,32 @@ const { items, defaultSex } = Astro.props;
   bg-surface matches the StandingsHeader hero so the two blocks merge visually.
   lg:hidden: the sidebar handles navigation on desktop.
   border-b: separates chip strip from the canvas content below.
+  Single scrollable row: sex toggle (if present) + divider + category chips.
 -->
 <div class="lg:hidden bg-surface border-b border-line w-full">
-  {defaultSex != null && (
-    <div class="flex justify-center gap-2 max-w-4xl mx-auto px-4 pt-3 pb-2">
-      {(['M', 'F'] as const).map(s => (
-        <button
-          class:list={[
-            'sex-chip-btn font-head text-xs font-bold tracking-[0.06em] uppercase px-4 py-[7px] rounded-full border transition-colors',
-            defaultSex === s
-              ? 'bg-amber border-amber text-white'
-              : 'bg-surface border-line text-muted hover:text-content',
-          ]}
-          data-sex={s}
-        >
-          {s === 'M' ? 'Male' : 'Female'}
-        </button>
-      ))}
-    </div>
-  )}
-  <!--
-    overflow-x-auto on the outer div lets chips scroll horizontally.
-    px-4 on the inner min-w-max row keeps left/right padding visible while scrolling.
-  -->
   <div class="overflow-x-auto max-w-4xl mx-auto">
-    <div class:list={['flex gap-1.5 px-4 pb-3 min-w-max', defaultSex != null ? 'pt-1' : 'pt-3']} role="tablist">
+    <div class="flex items-center gap-1.5 px-4 py-3 min-w-max" role="tablist">
+
+      {defaultSex != null && (
+        <>
+          {(['M', 'F'] as const).map(s => (
+            <button
+              class:list={[
+                'sex-chip-btn font-head text-xs font-bold tracking-[0.06em] uppercase px-4 py-[7px] rounded-full border transition-colors whitespace-nowrap',
+                defaultSex === s
+                  ? 'bg-amber border-amber text-white'
+                  : 'bg-surface border-line text-muted hover:text-content',
+              ]}
+              data-sex={s}
+            >
+              {s === 'M' ? 'Male' : 'Female'}
+            </button>
+          ))}
+          <!-- Vertical divider between sex toggle and category chips -->
+          <div class="w-px self-stretch bg-line mx-1" aria-hidden="true" />
+        </>
+      )}
+
       {items.map(item => (
         <button
           class:list={[
@@ -77,6 +79,7 @@ const { items, defaultSex } = Astro.props;
           {item.label}
         </button>
       ))}
+
     </div>
   </div>
 </div>
