@@ -24,11 +24,13 @@ const SECTIONS = [
       </div>
       <!-- Filter pills -->
       <div class="flex gap-1.5 flex-wrap" id="filter-pills">
-        <button type="button" class="pill pill-active" data-filter="all">
+        <button type="button" data-filter="all"
+          class="inline-flex items-center gap-1.5 px-[0.6875rem] py-[0.3125rem] rounded-full border border-amber bg-amber text-white font-body text-[0.8125rem] font-medium cursor-pointer whitespace-nowrap transition-colors duration-150">
           All <span class="font-mono text-[10px] opacity-85" id="pill-count-all">0</span>
         </button>
         {SECTIONS.map(s => (
-          <button type="button" class="pill" data-filter={s.id}>
+          <button type="button" data-filter={s.id}
+            class="inline-flex items-center gap-1.5 px-[0.6875rem] py-[0.3125rem] rounded-full border border-line bg-surface text-muted font-body text-[0.8125rem] font-medium cursor-pointer whitespace-nowrap transition-colors duration-150">
             {s.pill} <span class="font-mono text-[10px]" id={`pill-count-${s.id}`}>0</span>
           </button>
         ))}
@@ -203,7 +205,7 @@ const SECTIONS = [
 
   // ── Row HTML ───────────────────────────────────────────────────────
   function rowHtml(r: SearchRecord, q: string): string {
-    return `<a href="${escHtml(r.url)}" class="result-row">` +
+    return `<a href="${escHtml(r.url)}" class="flex items-center gap-3 px-4 py-[0.6875rem] border-t border-line no-underline text-content transition-colors duration-100 hover:bg-canvas">` +
       `<span style="width:28px;height:28px;flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;border-radius:7px;${badgeStyle(r.type)}">` +
       iconSvg(r.type) +
       `</span>` +
@@ -255,11 +257,16 @@ const SECTIONS = [
   }
 
   // ── Filter pills ───────────────────────────────────────────────────
+  const PILL_ON  = ['border-amber', 'bg-amber', 'text-white']
+  const PILL_OFF = ['border-line', 'bg-surface', 'text-muted']
+
   function activateFilter(filterId: string): void {
     activeFilter = filterId
     document.querySelectorAll('[data-filter]').forEach(el => {
       const btn = el as HTMLButtonElement
-      btn.classList.toggle('pill-active', btn.dataset.filter === filterId)
+      const on = btn.dataset.filter === filterId
+      PILL_ON.forEach(c  => btn.classList.toggle(c, on))
+      PILL_OFF.forEach(c => btn.classList.toggle(c, !on))
     })
     inner.className = activeFilter === 'all' ? 'grid gap-4 md:grid-cols-2' : 'grid gap-4'
     if (lastQuery) displayResults(allResults, lastQuery)
