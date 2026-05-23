@@ -163,6 +163,21 @@ const raceKeyEntries = standings.races.map(raceId => {
         })}
       </div>
 
+      <!-- ── Search filter ────────────────────────────────────────────────── -->
+      <div class="relative mb-4">
+        <svg class="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted pointer-events-none" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+          <circle cx="8.5" cy="8.5" r="5.5" />
+          <path d="m13 13 4 4" stroke-linecap="round" />
+        </svg>
+        <input
+          id="runner-search"
+          type="search"
+          placeholder="Filter by name or club…"
+          class="input w-full pl-8"
+          autocomplete="off"
+        />
+      </div>
+
       <!-- ── Category panels ──────────────────────────────────────────────── -->
       {standings.categories.map((cat, i) => {
         const isDefault = i === defaultCatIndex;
@@ -218,6 +233,8 @@ const raceKeyEntries = standings.races.map(raceId => {
                     class="runner-card bg-surface border border-line rounded-xl mb-2 overflow-hidden relative"
                     data-sex={runner.sex ?? cat.sex}
                     data-age-cat={runner.ageCategory ?? cat.ageCategory}
+                    data-name={runner.name}
+                    data-club={clubName}
                   >
                     <!-- Podium left-edge accent bar -->
                     {podiumBg && <div class:list={['absolute left-0 inset-y-0 w-[3px]', podiumBg]} />}
@@ -322,6 +339,8 @@ const raceKeyEntries = standings.races.map(raceId => {
                           class="border-b border-line/50 last:border-0 hover:bg-canvas/30"
                           data-sex={runner.sex ?? cat.sex}
                           data-age-cat={runner.ageCategory ?? cat.ageCategory}
+                          data-name={runner.name}
+                          data-club={clubName}
                         >
                           <td class="py-2.5 pl-3 pr-2 align-middle">
                             <PodiumDot position={runner.position} />
@@ -401,6 +420,8 @@ const raceKeyEntries = standings.races.map(raceId => {
                         class="border-b border-line/50 last:border-0 hover:bg-canvas/30"
                         data-sex={runner.sex ?? cat.sex}
                         data-age-cat={runner.ageCategory ?? cat.ageCategory}
+                        data-name={runner.name}
+                        data-club={clubName}
                       >
                         <td class="py-2.5 pr-3 align-middle">
                           <PodiumDot position={runner.position} />
@@ -524,17 +545,30 @@ const raceKeyEntries = standings.races.map(raceId => {
     });
   });
 
-  // ── Age filter ──────────────────────────────────────────────────────────────
+  // ── Combined filter: age category + name/club text search ──────────────────
+  const searchInput = document.querySelector<HTMLInputElement>('#runner-search');
+
   function filterPanel(panel: HTMLElement) {
     const activeAges = [...panel.querySelectorAll<HTMLElement>('.filter-age.btn-active')]
       .map(b => b.dataset.value ?? '');
-    panel.querySelectorAll<HTMLElement>('tr[data-age-cat]').forEach(row => {
-      row.style.display = activeAges.length === 0 || activeAges.includes(row.dataset.ageCat ?? '') ? '' : 'none';
-    });
-    panel.querySelectorAll<HTMLElement>('.runner-card').forEach(card => {
-      card.style.display = activeAges.length === 0 || activeAges.includes(card.dataset.ageCat ?? '') ? '' : 'none';
-    });
+    const query = (searchInput?.value ?? '').toLowerCase().trim();
+
+    const matches = (el: HTMLElement) => {
+      const ageOk  = activeAges.length === 0 || activeAges.includes(el.dataset.ageCat ?? '');
+      const textOk = !query
+        || (el.dataset.name ?? '').toLowerCase().includes(query)
+        || (el.dataset.club ?? '').toLowerCase().includes(query);
+      return ageOk && textOk;
+    };
+
+    panel.querySelectorAll<HTMLElement>('tr[data-age-cat]').forEach(row  => { row.style.display  = matches(row)  ? '' : 'none'; });
+    panel.querySelectorAll<HTMLElement>('.runner-card').forEach(card => { card.style.display = matches(card) ? '' : 'none'; });
   }
+
+  // Re-filter every panel on search input so results are ready when switching categories
+  searchInput?.addEventListener('input', () => {
+    document.querySelectorAll<HTMLElement>('[data-panel]').forEach(filterPanel);
+  });
 
   document.querySelectorAll<HTMLButtonElement>('.filter-age').forEach(btn => {
     btn.addEventListener('click', () => {
