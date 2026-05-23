@@ -10,6 +10,7 @@
 import Layout from './Layout.astro';
 import StandingsHeader from './StandingsHeader.astro';
 import PodiumDot from './PodiumDot.astro';
+import RaceKey from './RaceKey.astro';
 import { getRaces } from '../lib/data';
 import { getIndividualStandingsStaticPaths, resolveIndividualCategoryName } from '../lib/results';
 import type { Club, IndividualStandings, Series } from '../lib/types';
@@ -47,6 +48,15 @@ const defaultSex     = hasMale ? 'M' : 'F';
 const defaultCatIndex = showSexToggle
   ? standings.categories.findIndex(c => c.sex === defaultSex)
   : 0;
+
+const raceKeyEntries = standings.races.map(raceId => {
+  const race = raceById[raceId];
+  return {
+    label: race?.shortName ?? raceId,
+    name:  race?.name ?? raceId,
+    href:  linkedRaceIds.has(raceId) ? siteUrl(`${resultsBase}/${raceId}/results`) : null,
+  };
+});
 ---
 
 <Layout title={`${seriesLabel} ${year} — Individual Standings`}>
@@ -124,24 +134,7 @@ const defaultCatIndex = showSexToggle
       <!-- Race key -->
       <div class="mt-5 pt-5 border-t border-line">
         <p class="font-head text-[10px] font-bold tracking-[0.12em] uppercase text-muted mb-2.5 pl-1">Race Key</p>
-        <div class="flex flex-col gap-1 pl-1">
-          {standings.races.map(raceId => {
-            const race = raceById[raceId];
-            const label = race?.shortName ?? raceId;
-            const href  = linkedRaceIds.has(raceId) ? siteUrl(`${resultsBase}/${raceId}/results`) : null;
-            return (
-              <div class="flex items-center gap-2 text-xs">
-                <span class="font-mono text-[10px] font-semibold bg-canvas border border-line px-1.5 py-0.5 rounded text-center shrink-0 min-w-[36px] text-muted">
-                  {label}
-                </span>
-                {href
-                  ? <a href={href} class="text-amber hover:underline truncate">{race?.name ?? raceId}</a>
-                  : <span class="text-muted truncate">{race?.name ?? raceId}</span>
-                }
-              </div>
-            );
-          })}
-        </div>
+        <RaceKey races={raceKeyEntries} layout="sidebar" />
       </div>
     </aside>
 
@@ -304,24 +297,7 @@ const defaultCatIndex = showSexToggle
               <!-- Race key (mobile) -->
               <div class="mt-4 pt-4 border-t border-line">
                 <p class="font-head text-[10px] font-bold tracking-[0.12em] uppercase text-muted mb-2">Race Key</p>
-                <div class="grid grid-cols-2 gap-y-1 gap-x-3">
-                  {standings.races.map(raceId => {
-                    const race  = raceById[raceId];
-                    const rlabel = race?.shortName ?? raceId;
-                    const href  = linkedRaceIds.has(raceId) ? siteUrl(`${resultsBase}/${raceId}/results`) : null;
-                    return (
-                      <div class="flex items-center gap-2 text-xs">
-                        <span class="font-mono text-[10px] font-semibold bg-canvas border border-line px-1 py-0.5 rounded text-center min-w-[28px] shrink-0 text-muted">
-                          {rlabel}
-                        </span>
-                        {href
-                          ? <a href={href} class="text-amber hover:underline truncate">{race?.name ?? raceId}</a>
-                          : <span class="text-muted truncate">{race?.name ?? raceId}</span>
-                        }
-                      </div>
-                    );
-                  })}
-                </div>
+                <RaceKey races={raceKeyEntries} layout="mobile" />
               </div>
             </div>
 
@@ -400,21 +376,8 @@ const defaultCatIndex = showSexToggle
               </div>
 
               <!-- Race legend below the tablet card -->
-              <div class="flex flex-wrap gap-x-4 gap-y-1 pt-3 text-xs text-muted">
-                {standings.races.map(raceId => {
-                  const race  = raceById[raceId];
-                  const rlabel = race?.shortName ?? raceId;
-                  const href  = linkedRaceIds.has(raceId) ? siteUrl(`${resultsBase}/${raceId}/results`) : null;
-                  return (
-                    <span class="inline-flex items-center gap-1.5">
-                      <span class="font-mono text-[10px] font-semibold bg-canvas border border-line px-1.5 py-0.5 rounded text-muted">{rlabel}</span>
-                      {href
-                        ? <a href={href} class="text-amber hover:underline">{race?.name ?? raceId}</a>
-                        : <span>{race?.name ?? raceId}</span>
-                      }
-                    </span>
-                  );
-                })}
+              <div class="pt-3">
+                <RaceKey races={raceKeyEntries} layout="tablet" />
               </div>
             </div>
 

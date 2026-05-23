@@ -1,0 +1,81 @@
+---
+// src/components/RaceKey.astro
+//
+// Reusable race-key / legend rendered in three different layouts:
+//
+//   sidebar  — vertical flex column (desktop sidebar in standings pages)
+//   mobile   — 2-column grid (below runner/club cards on small screens)
+//   tablet   — wrapping inline badges (legend below the card-wrapped table)
+//
+// Callers pre-process their data into RaceKeyEntry[] so this component stays
+// presentation-only and has no dependency on series or data types.
+
+export interface RaceKeyEntry {
+  /** Abbreviation shown in the monospace badge (shortName ?? id) */
+  label: string;
+  /** Full race name shown after the badge */
+  name: string;
+  /** When set, the name becomes an amber link */
+  href?: string | null;
+  /** Reduces the row/item opacity (e.g. upcoming races that haven't been run) */
+  dimmed?: boolean;
+  /** Optional text appended after the name (e.g. "· upcoming") */
+  suffix?: string;
+}
+
+interface Props {
+  races: RaceKeyEntry[];
+  layout?: 'sidebar' | 'mobile' | 'tablet';
+}
+
+const { races, layout = 'sidebar' } = Astro.props;
+---
+
+{layout === 'sidebar' && (
+  <div class="flex flex-col gap-1 pl-1">
+    {races.map(race => (
+      <div class:list={['flex items-center gap-2 text-xs', race.dimmed && 'opacity-50']}>
+        <span class="font-mono text-[10px] font-semibold bg-canvas border border-line px-1.5 py-0.5 rounded text-center shrink-0 min-w-[36px] text-muted">
+          {race.label}
+        </span>
+        {race.href
+          ? <a href={race.href} class="text-amber hover:underline truncate">{race.name}</a>
+          : <span class="text-muted truncate">{race.name}</span>
+        }
+      </div>
+    ))}
+  </div>
+)}
+
+{layout === 'mobile' && (
+  <div class="grid grid-cols-2 gap-y-1 gap-x-3">
+    {races.map(race => (
+      <div class:list={['flex items-center gap-1.5 text-xs', race.dimmed && 'opacity-50']}>
+        <span class="font-mono text-[10px] font-semibold bg-canvas border border-line px-1.5 py-0.5 rounded text-center shrink-0 min-w-[32px] text-muted">
+          {race.label}
+        </span>
+        {race.href
+          ? <a href={race.href} class="text-amber hover:underline flex-1 truncate">{race.name}</a>
+          : <span class="text-muted flex-1 truncate">{race.name}</span>
+        }
+      </div>
+    ))}
+  </div>
+)}
+
+{layout === 'tablet' && (
+  <div class="flex flex-wrap gap-x-4 gap-y-1.5 text-xs text-muted">
+    {races.map(race => (
+      <span class:list={['inline-flex items-center gap-1.5', race.dimmed && 'opacity-50']}>
+        <span class="font-mono text-[10px] font-semibold bg-canvas border border-line px-1.5 py-0.5 rounded text-muted">
+          {race.label}
+        </span>
+        {race.href
+          ? <a href={race.href} class="text-amber hover:underline">{race.name}</a>
+          : <span>{race.name}</span>
+        }
+        {race.suffix && <span>{race.suffix}</span>}
+      </span>
+    ))}
+  </div>
+)}
