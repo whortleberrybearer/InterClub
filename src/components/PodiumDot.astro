@@ -1,0 +1,16 @@
+---
+// src/components/PodiumDot.astro
+// Gold/silver/bronze circle for positions 1-3; muted number for all others.
+interface Props { position: number; }
+const { position } = Astro.props;
+---
+
+{position === 1 ? (
+  <span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-gold text-gold-fg text-xs font-bold tabular-nums shrink-0">1</span>
+) : position === 2 ? (
+  <span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-silver text-silver-fg text-xs font-bold tabular-nums shrink-0">2</span>
+) : position === 3 ? (
+  <span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-bronze text-bronze-fg text-xs font-bold tabular-nums shrink-0">3</span>
+) : (
+  <span class="inline-flex items-center justify-center w-6 h-6 text-sm text-content/40 tabular-nums shrink-0">{position}</span>
+)}
