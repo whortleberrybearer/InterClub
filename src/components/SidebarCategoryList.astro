@@ -1,0 +1,67 @@
+---
+// src/components/SidebarCategoryList.astro
+//
+// Sidebar category navigation used in both standings layouts.
+//
+// Two rendering modes — decided per-item by which key is present:
+//
+//   href    → <a> anchor link (team standings: scrolls to a section)
+//   target  → <button> that switches panels via JS (individual standings)
+//             JS in the host page selects these via .sidebar-cat-btn
+//
+// Items in panel mode support active/hidden state and an optional count badge.
+
+export interface CategoryNavItem {
+  /** Display label */
+  label: string;
+  /** Anchor link target — renders an <a>; takes priority over target */
+  href?: string;
+  /** Panel id for JS switching — renders a <button class="sidebar-cat-btn"> */
+  target?: string;
+  /** data-sex passed to panel-mode buttons for sex-toggle filtering */
+  sex?: string;
+  /** Count shown on the right of panel-mode buttons */
+  count?: number;
+  /** Button starts highlighted as the active category */
+  active?: boolean;
+  /** Button starts hidden (e.g. wrong sex in the sex toggle) */
+  hidden?: boolean;
+}
+
+interface Props {
+  items: CategoryNavItem[];
+}
+
+const { items } = Astro.props;
+---
+
+<div class="flex flex-col">
+  {items.map(item => item.href ? (
+    <a
+      href={item.href}
+      class="flex items-center px-3 py-2 rounded-lg no-underline text-content hover:bg-canvas border-l-2 border-transparent hover:border-amber transition-colors"
+    >
+      <span class="font-head text-[13px] font-bold tracking-[0.04em] uppercase flex-1">{item.label}</span>
+    </a>
+  ) : (
+    <button
+      class:list={[
+        'sidebar-cat-btn w-full flex items-center justify-between py-2 px-3 rounded-lg border-l-2 text-left transition-colors',
+        'font-head text-[13px] font-bold tracking-[0.04em] uppercase',
+        item.active
+          ? 'border-l-amber bg-amber-bg text-amber'
+          : 'border-l-transparent hover:bg-canvas text-content',
+        item.hidden && 'hidden',
+      ]}
+      data-target={item.target}
+      data-sex={item.sex ?? ''}
+    >
+      <span>{item.label}</span>
+      {item.count !== undefined && (
+        <span class:list={['sidebar-cat-count font-mono text-xs', item.active ? 'text-amber' : 'text-muted']}>
+          {item.count}
+        </span>
+      )}
+    </button>
+  ))}
+</div>

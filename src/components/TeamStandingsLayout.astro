@@ -7,6 +7,7 @@
 import Layout from './Layout.astro';
 import StandingsHeader from './StandingsHeader.astro';
 import RaceKey from './RaceKey.astro';
+import SidebarCategoryList from './SidebarCategoryList.astro';
 import { getRaces } from '../lib/data';
 import type { Club, Series, SeriesConfig, TeamStandings } from '../lib/types';
 import { siteUrl } from '../lib/url';
@@ -110,19 +111,12 @@ const raceKeyEntries = races.map((race, ri) => ({
     <!-- Sticky sidebar -->
     <aside class="sticky top-6 self-start">
       <p class="font-head text-[10px] font-bold tracking-[0.12em] uppercase text-muted mb-2 pl-1">Jump to category</p>
-      <nav class="flex flex-col">
-        {standings.categories.map((cat) => {
-          const label = categoryById[cat.id]?.name ?? cat.id;
-          return (
-            <a
-              href={`#cat-${cat.id}`}
-              class="flex items-center px-3 py-2 rounded-lg no-underline text-content hover:bg-canvas border-l-2 border-transparent hover:border-amber transition-colors"
-            >
-              <span class="font-head text-[13px] font-bold tracking-[0.04em] uppercase">{label}</span>
-            </a>
-          );
-        })}
-      </nav>
+      <SidebarCategoryList
+        items={standings.categories.map(cat => ({
+          label: categoryById[cat.id]?.name ?? cat.id,
+          href:  `#cat-${cat.id}`,
+        }))}
+      />
 
       <!-- Race key -->
       <div class="mt-7 pt-5 border-t border-line">

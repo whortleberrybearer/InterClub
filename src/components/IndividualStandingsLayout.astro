@@ -11,6 +11,7 @@ import Layout from './Layout.astro';
 import StandingsHeader from './StandingsHeader.astro';
 import PodiumDot from './PodiumDot.astro';
 import RaceKey from './RaceKey.astro';
+import SidebarCategoryList from './SidebarCategoryList.astro';
 import { getRaces } from '../lib/data';
 import { getIndividualStandingsStaticPaths, resolveIndividualCategoryName } from '../lib/results';
 import type { Club, IndividualStandings, Series } from '../lib/types';
@@ -104,32 +105,16 @@ const raceKeyEntries = standings.races.map(raceId => {
       )}
 
       <p class="font-head text-[10px] font-bold tracking-[0.12em] uppercase text-muted mb-1 pl-1">Category</p>
-      <div class="flex flex-col">
-        {standings.categories.map((cat, i) => {
-          const label = resolveIndividualCategoryName(cat.id, cat.sex, cat.ageCategory, cat.name);
-          const isDefault = i === defaultCatIndex;
-          const isHidden  = showSexToggle && !!cat.sex && cat.sex !== defaultSex;
-          return (
-            <button
-              class:list={[
-                'sidebar-cat-btn w-full flex items-center justify-between py-2 px-3 rounded-lg border-l-2 text-left transition-colors',
-                'font-head text-[13px] font-bold tracking-[0.04em] uppercase',
-                isDefault
-                  ? 'border-l-amber bg-amber-bg text-amber'
-                  : 'border-l-transparent hover:bg-canvas text-content',
-                isHidden && 'hidden',
-              ]}
-              data-target={`cat-panel-${i}`}
-              data-sex={cat.sex ?? ''}
-            >
-              <span>{label}</span>
-              <span class:list={['sidebar-cat-count font-mono text-xs', isDefault ? 'text-amber' : 'text-muted']}>
-                {cat.runners.length}
-              </span>
-            </button>
-          );
-        })}
-      </div>
+      <SidebarCategoryList
+        items={standings.categories.map((cat, i) => ({
+          label:  resolveIndividualCategoryName(cat.id, cat.sex, cat.ageCategory, cat.name),
+          target: `cat-panel-${i}`,
+          sex:    cat.sex ?? '',
+          count:  cat.runners.length,
+          active: i === defaultCatIndex,
+          hidden: showSexToggle && !!cat.sex && cat.sex !== defaultSex,
+        }))}
+      />
 
       <!-- Race key -->
       <div class="mt-5 pt-5 border-t border-line">
