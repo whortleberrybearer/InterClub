@@ -1,0 +1,692 @@
+---
+// src/components/IndividualStandingsLayout.astro
+//
+// Shared layout for the individual standings page, used by both series.
+// Three responsive views:
+//   Mobile  (<sm)   — individual rounded runner cards (accordion)
+//   Tablet  (sm–lg) — table inside a white card
+//   Desktop (lg+)   — sticky sidebar (sex toggle + category list + race key)
+//                     alongside a plain table; one JS-switched panel at a time
+//
+// The ChipBar is rendered in Layout's `chip-bar` slot so it sits outside
+// <main> and spans the full viewport width without negative-margin tricks.
+
+import Layout from './Layout.astro';
+import StandingsHeader from './StandingsHeader.astro';
+import ChipBar from './ChipBar.astro';
+import { getRaces } from '../lib/data';
+import { resolveIndividualCategoryName } from '../lib/results';
+import type { Club, IndividualStandings, Series } from '../lib/types';
+import { siteUrl } from '../lib/url';
+
+export interface Props {
+  series: Series;
+  year: number;
+  standings: IndividualStandings;
+  clubs: Club[];
+  linkedRaceIds: string[];
+  runnerUrlMap: Record<number, string>;
+}
+
+const { series, year, standings, clubs, runnerUrlMap } = Astro.props;
+const linkedRaceIds = new Set(Astro.props.linkedRaceIds);
+
+const seriesLabel = series === 'road-gp' ? 'Road Grand Prix' : 'Fell Championship';
+const seriesShort  = series === 'road-gp' ? 'Road GP' : 'Fell Championship';
+const backHref     = siteUrl(`/${series}/${year}`);
+const indivHref    = siteUrl(`/${series}/${year}/individual-standings`);
+const teamHref     = siteUrl(`/${series}/${year}/team-standings`);
+const resultsBase  = `/${series}/${year}`;
+
+const races    = getRaces(year, series);
+const raceById = Object.fromEntries(races.map(r => [r.id, r]));
+const clubById = Object.fromEntries(clubs.map(c => [c.id, c]));
+
+const hasMale       = standings.categories.some(c => c.sex === 'M');
+const hasFemale     = standings.categories.some(c => c.sex === 'F');
+const showSexToggle = hasMale && hasFemale;
+const defaultSex    = hasMale ? 'M' : 'F';
+
+// Display order: overall (no ageCategory) first, then JUN → SEN → vet bands
+const AGE_CAT_SORT: Record<string, number> = {
+  JUN: 1, SEN: 2,
+  V35: 3, V40: 4, V45: 5, V50: 6, V55: 7,
+  V60: 8, V65: 9, V70: 10, V75: 11, V80: 12, V85: 13, V90: 14, V95: 15, V100: 16,
+};
+const sortedCats = standings.categories
+  .map((cat, i) => ({ cat, i }))
+  .sort((a, b) => {
+    const aKey = a.cat.ageCategory != null ? (AGE_CAT_SORT[a.cat.ageCategory] ?? 99) : 0;
+    const bKey = b.cat.ageCategory != null ? (AGE_CAT_SORT[b.cat.ageCategory] ?? 99) : 0;
+    return aKey - bKey;
+  });
+
+const defaultCatIndex = showSexToggle
+  ? (sortedCats.find(({ cat }) => cat.sex === defaultSex)?.i ?? 0)
+  : (sortedCats[0]?.i ?? 0);
+
+// Clubs that actually appear (excludes guests, sorted by name)
+const standingsClubIds = [...new Set(
+  standings.categories.flatMap(cat => cat.runners.map(r => r.club))
+)].filter(id => id !== 'Guest');
+const standingsClubs = standingsClubIds
+  .map(id => clubById[id])
+  .filter((c): c is (typeof clubById)[string] => c != null)
+  .sort((a, b) => a.name.localeCompare(b.name));
+
+// Shared table header classes
+const th  = 'font-head text-[10px] font-bold tracking-[0.1em] uppercase text-muted py-2.5 px-2 bg-surface border-b-2 border-content';
+const dth = 'font-head text-[10px] font-bold tracking-[0.1em] uppercase text-muted py-2.5 px-2 bg-surface';
+---
+
+<Layout title={`${seriesLabel} ${year} — Individual Standings`}>
+
+  <StandingsHeader
+    slot="hero"
+    backHref={backHref}
+    backLabel={`← ${seriesShort} ${year}`}
+    activeTab="individual"
+    individualHref={indivHref}
+    teamHref={teamHref}
+  >
+    <p class="font-head text-[10px] font-bold tracking-[0.14em] uppercase text-muted mb-1">Season Standings</p>
+    <div class="flex items-center gap-3 flex-wrap">
+      <h1 class="font-head text-[28px] lg:text-[32px] font-extrabold tracking-tight leading-none">Individual Standings</h1>
+      {standings.provisional && <span class="badge badge-warning">Provisional</span>}
+    </div>
+    <p class="text-sm text-muted mt-2">{year} Inter Club {seriesLabel}</p>
+    {standings.maxCountingRaces && (
+      <p class="text-sm text-muted mt-0.5">Best {standings.maxCountingRaces} races count</p>
+    )}
+  </StandingsHeader>
+
+  <!-- Chip bar: full viewport width via Layout's chip-bar slot -->
+  <ChipBar
+    slot="chip-bar"
+    defaultSex={showSexToggle ? defaultSex : undefined}
+    items={sortedCats.map(({ cat, i }) => ({
+      label:  resolveIndividualCategoryName(cat.id, cat.sex, cat.ageCategory, cat.name),
+      target: `cat-panel-${i}`,
+      sex:    cat.sex ?? '',
+      active: i === defaultCatIndex,
+      hidden: showSexToggle && !!cat.sex && cat.sex !== defaultSex,
+    }))}
+  />
+
+  <!-- ── Outer wrapper: 2-col grid at lg (sidebar | content) ──────────────── -->
+  <div class="lg:grid lg:grid-cols-[220px_1fr] lg:gap-8 lg:items-start">
+
+    <!-- ── Desktop sidebar (lg+ only) ───────────────────────────────────────── -->
+    <aside class="hidden lg:block sticky top-6 self-start">
+
+      {showSexToggle && (
+        <>
+          <p class="font-head text-[10px] font-bold tracking-[0.12em] uppercase text-muted mb-2 pl-1">Filter</p>
+          <div class="flex gap-1 mb-5">
+            <button
+              class:list={['sex-toggle-btn btn btn-sm rounded-lg flex-1', defaultSex === 'M' ? 'btn-active' : 'btn-ghost border border-line text-muted']}
+              data-sex="M"
+            >Male</button>
+            <button
+              class:list={['sex-toggle-btn btn btn-sm rounded-lg flex-1', defaultSex === 'F' ? 'btn-active' : 'btn-ghost border border-line text-muted']}
+              data-sex="F"
+            >Female</button>
+          </div>
+        </>
+      )}
+
+      <p class="font-head text-[10px] font-bold tracking-[0.12em] uppercase text-muted mb-1 pl-1">Category</p>
+      <nav class="flex flex-col">
+        {sortedCats.map(({ cat, i }) => {
+          const label  = resolveIndividualCategoryName(cat.id, cat.sex, cat.ageCategory, cat.name);
+          const active = i === defaultCatIndex;
+          const hidden = showSexToggle && !!cat.sex && cat.sex !== defaultSex;
+          return (
+            <button
+              class:list={[
+                'sidebar-cat-btn w-full flex items-center justify-between py-2 px-3 rounded-lg border-l-2 text-left transition-colors font-head text-[13px] font-bold tracking-[0.04em] uppercase',
+                active  ? 'border-l-amber bg-amber-bg text-amber'
+                        : 'border-l-transparent hover:bg-canvas text-content',
+                hidden  && 'hidden',
+              ]}
+              data-target={`cat-panel-${i}`}
+              data-sex={cat.sex ?? ''}
+            >
+              <span>{label}</span>
+              <span class:list={['sidebar-cat-count font-mono text-xs', active ? 'text-amber' : 'text-muted']}>
+                {cat.runners.length}
+              </span>
+            </button>
+          );
+        })}
+      </nav>
+
+      <!-- Race key -->
+      <div class="mt-5 pt-5 border-t border-line">
+        <p class="font-head text-[10px] font-bold tracking-[0.12em] uppercase text-muted mb-2.5 pl-1">Race Key</p>
+        <div class="flex flex-col gap-1 pl-1">
+          {standings.races.map(raceId => {
+            const race  = raceById[raceId];
+            const label = race?.shortName ?? raceId;
+            const href  = linkedRaceIds.has(raceId) ? siteUrl(`${resultsBase}/${raceId}/results`) : null;
+            return (
+              <div class="flex items-center gap-2 text-xs">
+                <span class="font-mono text-[10px] font-semibold bg-canvas px-1.5 py-0.5 rounded min-w-[36px] text-center tracking-[0.04em]">
+                  {label}
+                </span>
+                {href
+                  ? <a href={href} class="text-amber hover:underline">{race?.name ?? raceId}</a>
+                  : <span>{race?.name ?? raceId}</span>
+                }
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </aside>
+
+    <!-- ── Main content column ───────────────────────────────────────────────── -->
+    <div>
+
+      <!-- Search + club filter (always visible above panels) -->
+      <div class="relative mb-2">
+        <svg class="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted pointer-events-none" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+          <circle cx="8.5" cy="8.5" r="5.5" />
+          <path d="m13 13 4 4" stroke-linecap="round" />
+        </svg>
+        <input
+          id="runner-search"
+          type="search"
+          placeholder="Filter by name…"
+          class="input w-full pl-9"
+          autocomplete="off"
+        />
+      </div>
+      {standingsClubs.length > 1 && (
+        <div class="flex gap-1.5 flex-wrap mb-4">
+          {standingsClubs.map(club => (
+            <button
+              class="filter-club chip-btn font-head text-xs font-bold tracking-[0.06em] uppercase px-3 py-[5px] rounded-full border border-line bg-surface text-muted hover:text-content transition-colors"
+              data-value={club.id}
+            >
+              {club.shortName ?? club.name}
+            </button>
+          ))}
+        </div>
+      )}
+
+      <!-- ── Category panels ────────────────────────────────────────────────── -->
+      {standings.categories.map((cat, i) => {
+        const isDefault = i === defaultCatIndex;
+        const label     = resolveIndividualCategoryName(cat.id, cat.sex, cat.ageCategory, cat.name);
+        const distinctAgeCats = [...new Set(
+          cat.runners.map(r => r.ageCategory ?? cat.ageCategory)
+        )].filter((a): a is string => a != null).sort();
+
+        return (
+          <div id={`cat-panel-${i}`} data-panel class:list={[!isDefault && 'hidden']} role="tabpanel">
+
+            <!-- Desktop category header (lg+ only) -->
+            <div class="hidden lg:flex items-end justify-between pb-3 mb-4 border-b-2 border-content">
+              <h2 class="font-head text-[28px] font-extrabold tracking-tight leading-none">{label}</h2>
+              {cat.runners.length > 0 && (
+                <div class="text-right shrink-0 ml-4">
+                  <p class="font-mono text-sm">
+                    Leader: <span class="text-amber font-bold">{cat.runners[0].name}</span>
+                  </p>
+                  <p class="text-[10px] tracking-[0.1em] uppercase text-muted mt-0.5">
+                    {cat.runners.length} runners · Total {cat.runners[0].total}
+                  </p>
+                </div>
+              )}
+            </div>
+
+            <!-- Mobile + tablet panel heading -->
+            <div class="lg:hidden mb-3 sm:mb-4">
+              <h2 class="font-head text-[22px] sm:text-[26px] font-extrabold tracking-tight">{label}</h2>
+            </div>
+
+            <!-- Age filter (all breakpoints, only when multiple age cats) -->
+            {distinctAgeCats.length > 1 && (
+              <div class="flex gap-1.5 flex-wrap mb-3">
+                {distinctAgeCats.map(age => (
+                  <button
+                    class="filter-age chip-btn font-head text-xs font-bold tracking-[0.06em] uppercase px-3 py-[5px] rounded-full border border-line bg-surface text-muted hover:text-content transition-colors"
+                    data-value={age}
+                  >{age}</button>
+                ))}
+              </div>
+            )}
+
+            <!-- ── MOBILE: accordion cards (<sm) ──────────────────────────────── -->
+            <div class="sm:hidden">
+              {cat.runners.map((runner, runnerIdx) => {
+                const clubName     = clubById[runner.club]?.name ?? runner.club;
+                const effectiveSex = runner.sex ?? cat.sex ?? '';
+                const effectiveAge = runner.ageCategory ?? cat.ageCategory ?? '';
+                const catLabel     = `${effectiveSex}${effectiveAge}`;
+                const detailId     = `detail-${i}-${runnerIdx}`;
+                const podiumAccent = runner.position === 1 ? 'bg-[var(--color-gold)]'
+                                   : runner.position === 2 ? 'bg-[var(--color-silver)]'
+                                   : runner.position === 3 ? 'bg-[var(--color-bronze)]'
+                                   : null;
+                return (
+                  <div
+                    class="runner-card bg-surface border border-line rounded-xl mb-2 overflow-hidden relative"
+                    data-sex={runner.sex ?? cat.sex}
+                    data-age-cat={runner.ageCategory ?? cat.ageCategory}
+                    data-name={runner.name}
+                    data-club={runner.club}
+                  >
+                    {podiumAccent && <div class:list={['absolute left-0 inset-y-0 w-[3px]', podiumAccent]} />}
+                    <button
+                      class="standings-toggle w-full flex items-center gap-3 py-3 pl-3 pr-3 text-left"
+                      data-target={detailId}
+                      aria-expanded="false"
+                    >
+                      <span class="font-mono text-sm font-medium text-muted w-6 shrink-0 text-center tabular-nums">{runner.position}</span>
+                      <div class="flex-1 min-w-0">
+                        <div class="font-semibold text-[15px] leading-tight truncate">
+                          {runner.seriesRunnerId != null && runnerUrlMap[runner.seriesRunnerId]
+                            ? <a href={runnerUrlMap[runner.seriesRunnerId]} class="link link-hover">{runner.name}</a>
+                            : runner.name}
+                        </div>
+                        <div class="text-xs text-muted mt-0.5 truncate">{clubName}</div>
+                      </div>
+                      <div class="text-right shrink-0">
+                        <div class="font-mono text-xl font-medium leading-none tabular-nums">{runner.total}</div>
+                        <div class="font-head text-[9px] font-bold tracking-[0.12em] uppercase text-muted mt-0.5">
+                          {Object.keys(runner.results).length} run
+                        </div>
+                      </div>
+                      <span class="chevron text-content/30 text-xs transition-transform">▾</span>
+                    </button>
+                    <div id={detailId} class="hidden px-3 pb-3 border-t border-dashed border-line">
+                      <p class="text-xs text-muted mb-2 pt-2">
+                        {catLabel && <span class="font-mono">{catLabel}</span>}
+                      </p>
+                      <div class="flex flex-wrap gap-1.5">
+                        {standings.races.filter(raceId => runner.results[raceId]).map(raceId => {
+                          const result = runner.results[raceId];
+                          const race   = raceById[raceId];
+                          const rlabel = race?.shortName ?? raceId;
+                          const href   = linkedRaceIds.has(raceId) ? siteUrl(`${resultsBase}/${raceId}/results`) : null;
+                          return (
+                            <div class:list={[
+                              'rounded px-2.5 py-1 text-center text-sm min-w-[44px]',
+                              result.counting ? 'bg-canvas' : 'bg-canvas/40',
+                            ]}>
+                              {href
+                                ? <a href={href} class:list={['block text-[10px] mb-0.5', result.counting ? 'text-amber' : 'text-content/30']}>{rlabel}</a>
+                                : <span class:list={['block text-[10px] mb-0.5', result.counting ? 'text-content/40' : 'text-content/20']}>{rlabel}</span>
+                              }
+                              <span class:list={[result.counting ? 'font-semibold' : 'text-content/30 line-through']}>
+                                {result.points}
+                              </span>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+              <!-- Race key (mobile) -->
+              <div class="mt-4 pt-4 border-t border-line">
+                <p class="font-head text-[10px] font-bold tracking-[0.12em] uppercase text-muted mb-2">Race Key</p>
+                <div class="grid grid-cols-2 gap-x-3 gap-y-1">
+                  {standings.races.map(raceId => {
+                    const race  = raceById[raceId];
+                    const label = race?.shortName ?? raceId;
+                    const href  = linkedRaceIds.has(raceId) ? siteUrl(`${resultsBase}/${raceId}/results`) : null;
+                    return (
+                      <div class="flex items-center gap-1.5 text-xs">
+                        <span class="font-mono text-[10px] font-semibold bg-canvas px-1.5 py-0.5 rounded tracking-[0.04em] min-w-[32px] text-center">
+                          {label}
+                        </span>
+                        {href
+                          ? <a href={href} class="text-amber hover:underline flex-1">{race?.name ?? raceId}</a>
+                          : <span class="flex-1">{race?.name ?? raceId}</span>
+                        }
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+
+            <!-- ── TABLET: table in card (sm–lg) ──────────────────────────────── -->
+            <div class="hidden sm:block lg:hidden overflow-x-auto">
+              <div class="bg-surface border border-line rounded-xl overflow-hidden">
+                <table class="w-full border-collapse text-sm">
+                  <thead>
+                    <tr>
+                      <th class={`${th} w-8 text-left pl-3`}>#</th>
+                      <th class={`${th} text-left`}>Runner</th>
+                      <th class={`${th} text-left`}>Cat</th>
+                      {standings.races.map(raceId => {
+                        const race   = raceById[raceId];
+                        const rlabel = race?.shortName ?? raceId;
+                        const href   = linkedRaceIds.has(raceId) ? siteUrl(`${resultsBase}/${raceId}/results`) : null;
+                        return (
+                          <th class={`${th} text-center whitespace-nowrap`}>
+                            {href
+                              ? <a href={href} class="text-amber hover:underline">{rlabel}</a>
+                              : <span class="text-content/20">{rlabel}</span>
+                            }
+                          </th>
+                        );
+                      })}
+                      <th class={`${th} text-right pr-3 border-l-2 border-content`}>Total</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {cat.runners.map(runner => {
+                      const clubName     = clubById[runner.club]?.name ?? runner.club;
+                      const effectiveSex = runner.sex ?? cat.sex ?? '';
+                      const effectiveAge = runner.ageCategory ?? cat.ageCategory ?? '';
+                      return (
+                        <tr
+                          class="border-b border-line/50 last:border-0 hover:bg-canvas/30"
+                          data-sex={runner.sex ?? cat.sex}
+                          data-age-cat={runner.ageCategory ?? cat.ageCategory}
+                          data-name={runner.name}
+                          data-club={runner.club}
+                        >
+                          <td class="py-2.5 pl-3 pr-2 align-middle">
+                            <span class="font-mono text-sm font-medium text-muted tabular-nums">{runner.position}</span>
+                          </td>
+                          <td class="py-2.5 px-2 align-middle">
+                            <div class="font-semibold leading-tight">
+                              {runner.seriesRunnerId != null && runnerUrlMap[runner.seriesRunnerId]
+                                ? <a href={runnerUrlMap[runner.seriesRunnerId]} class="link link-hover">{runner.name}</a>
+                                : runner.name}
+                            </div>
+                            <div class="text-xs text-muted mt-0.5">{clubName}</div>
+                          </td>
+                          <td class="py-2.5 px-2 text-content/60 text-xs tabular-nums align-middle">
+                            {effectiveSex}{effectiveAge}
+                          </td>
+                          {standings.races.map(raceId => {
+                            const result = runner.results[raceId];
+                            if (!result) return <td class="py-2.5 px-2" />;
+                            return (
+                              <td class:list={['py-2.5 px-2 text-center tabular-nums align-middle', !result.counting && 'text-content/30']}>
+                                <span class:list={[!result.counting && 'line-through']}>{result.points}</span>
+                              </td>
+                            );
+                          })}
+                          <td class="py-2.5 pl-3 pr-3 text-right border-l-2 border-content align-middle">
+                            <strong class:list={['font-mono tabular-nums text-base', runner.position <= 3 ? 'text-content' : 'text-muted']}>
+                              {runner.total}
+                            </strong>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+              <!-- Race legend (tablet) -->
+              <div class="flex flex-wrap gap-x-3.5 gap-y-1.5 pt-3 text-xs text-muted">
+                {standings.races.map(raceId => {
+                  const race  = raceById[raceId];
+                  const label = race?.shortName ?? raceId;
+                  const href  = linkedRaceIds.has(raceId) ? siteUrl(`${resultsBase}/${raceId}/results`) : null;
+                  return (
+                    <span class="inline-flex items-center gap-1.5">
+                      <span class="font-mono text-[10px] font-semibold bg-canvas px-1.5 py-0.5 rounded tracking-[0.04em]">{label}</span>
+                      {href
+                        ? <a href={href} class="text-amber hover:underline">{race?.name ?? raceId}</a>
+                        : <span>{race?.name ?? raceId}</span>
+                      }
+                    </span>
+                  );
+                })}
+              </div>
+            </div>
+
+            <!-- ── DESKTOP: plain table (lg+) ──────────────────────────────────── -->
+            <div class="hidden lg:block overflow-x-auto">
+              <table class="w-full border-collapse text-sm">
+                <thead>
+                  <tr>
+                    <th class={`${dth} w-8 text-left`}>#</th>
+                    <th class={`${dth} text-left`}>Runner</th>
+                    <th class={`${dth} text-left`}>Cat</th>
+                    {standings.races.map(raceId => {
+                      const race   = raceById[raceId];
+                      const rlabel = race?.shortName ?? raceId;
+                      const href   = linkedRaceIds.has(raceId) ? siteUrl(`${resultsBase}/${raceId}/results`) : null;
+                      return (
+                        <th class={`${dth} text-right whitespace-nowrap`}>
+                          {href
+                            ? <a href={href} class="text-amber hover:underline">{rlabel}</a>
+                            : <span class="text-content/20">{rlabel}</span>
+                          }
+                        </th>
+                      );
+                    })}
+                    <th class={`${dth} text-right border-l-2 border-content`}>Total</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {cat.runners.map(runner => {
+                    const clubName     = clubById[runner.club]?.name ?? runner.club;
+                    const effectiveSex = runner.sex ?? cat.sex ?? '';
+                    const effectiveAge = runner.ageCategory ?? cat.ageCategory ?? '';
+                    return (
+                      <tr
+                        class="border-b border-line/50 last:border-0 hover:bg-canvas/30"
+                        data-sex={runner.sex ?? cat.sex}
+                        data-age-cat={runner.ageCategory ?? cat.ageCategory}
+                        data-name={runner.name}
+                        data-club={runner.club}
+                      >
+                        <td class="py-2.5 pr-2 align-middle">
+                          <span class="font-mono text-sm font-medium text-muted tabular-nums">{runner.position}</span>
+                        </td>
+                        <td class="py-2.5 pr-4 align-middle">
+                          <div class="font-semibold leading-tight">
+                            {runner.seriesRunnerId != null && runnerUrlMap[runner.seriesRunnerId]
+                              ? <a href={runnerUrlMap[runner.seriesRunnerId]} class="link link-hover">{runner.name}</a>
+                              : runner.name}
+                          </div>
+                          <div class="text-xs text-muted mt-0.5">{clubName}</div>
+                        </td>
+                        <td class="py-2.5 pr-4 text-content/60 text-xs tabular-nums align-middle">
+                          {effectiveSex}{effectiveAge}
+                        </td>
+                        {standings.races.map(raceId => {
+                          const result = runner.results[raceId];
+                          if (!result) return <td class="py-2.5 px-2" />;
+                          return (
+                            <td class:list={['py-2.5 px-2 text-right tabular-nums align-middle', !result.counting && 'text-content/30']}>
+                              <span class:list={[!result.counting && 'line-through']}>{result.points}</span>
+                            </td>
+                          );
+                        })}
+                        <td class="py-2.5 pl-3 pr-2 text-right border-l-2 border-content align-middle">
+                          <strong class:list={['font-mono tabular-nums text-base', runner.position <= 3 ? 'text-content' : 'text-muted']}>
+                            {runner.total}
+                          </strong>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+
+          </div>
+        );
+      })}
+
+    </div>
+  </div>
+</Layout>
+
+<script>
+  // ── Category panel activation ────────────────────────────────────────────────
+  const catChips       = document.querySelectorAll<HTMLButtonElement>('.chip-btn[data-target]');
+  const sidebarCatBtns = document.querySelectorAll<HTMLButtonElement>('.sidebar-cat-btn');
+
+  function activateCategory(target: string) {
+    // Sync chip bar
+    catChips.forEach(c => {
+      if (!c.classList.contains('filter-club') && !c.classList.contains('filter-age')) {
+        const active = c.dataset.target === target;
+        c.classList.toggle('bg-amber',     active);
+        c.classList.toggle('border-amber', active);
+        c.classList.toggle('text-white',   active);
+        c.classList.toggle('bg-surface',   !active);
+        c.classList.toggle('border-line',  !active);
+        c.classList.toggle('text-muted',   !active);
+        c.setAttribute('aria-selected', active ? 'true' : 'false');
+      }
+    });
+    // Sync sidebar
+    sidebarCatBtns.forEach(b => {
+      const active = b.dataset.target === target;
+      b.classList.toggle('border-l-amber',       active);
+      b.classList.toggle('bg-amber-bg',          active);
+      b.classList.toggle('text-amber',           active);
+      b.classList.toggle('border-l-transparent', !active);
+      b.classList.toggle('hover:bg-canvas',      !active);
+      b.classList.toggle('text-content',         !active);
+      const countEl = b.querySelector<HTMLElement>('.sidebar-cat-count');
+      if (countEl) {
+        countEl.classList.toggle('text-amber', active);
+        countEl.classList.toggle('text-muted', !active);
+      }
+    });
+    // Show/hide panels
+    document.querySelectorAll<HTMLElement>('[id^="cat-panel-"]').forEach(panel => {
+      panel.classList.toggle('hidden', panel.id !== target);
+    });
+  }
+
+  // Nav chip buttons are .chip-btn but NOT .filter-club or .filter-age
+  document.querySelectorAll<HTMLButtonElement>('.chip-btn[data-target]').forEach(chip => {
+    if (!chip.classList.contains('filter-club') && !chip.classList.contains('filter-age')) {
+      chip.addEventListener('click', () => activateCategory(chip.dataset.target!));
+    }
+  });
+  sidebarCatBtns.forEach(btn => btn.addEventListener('click', () => activateCategory(btn.dataset.target!)));
+
+  // ── Sex toggle ───────────────────────────────────────────────────────────────
+  const sidebarSexBtns = document.querySelectorAll<HTMLButtonElement>('.sex-toggle-btn');
+  const chipSexBtns    = document.querySelectorAll<HTMLButtonElement>('.sex-chip-btn');
+
+  function activateSex(sex: string) {
+    sidebarSexBtns.forEach(b => {
+      const active = b.dataset.sex === sex;
+      b.classList.toggle('btn-active',  active);
+      b.classList.toggle('btn-ghost',   !active);
+      b.classList.toggle('border',      !active);
+      b.classList.toggle('border-line', !active);
+      b.classList.toggle('text-muted',  !active);
+    });
+    chipSexBtns.forEach(b => {
+      const active = b.dataset.sex === sex;
+      b.classList.toggle('bg-amber',     active);
+      b.classList.toggle('border-amber', active);
+      b.classList.toggle('text-white',   active);
+      b.classList.toggle('bg-surface',   !active);
+      b.classList.toggle('border-line',  !active);
+      b.classList.toggle('text-muted',   !active);
+    });
+    // Show only chips for the active sex (or sex-agnostic chips)
+    document.querySelectorAll<HTMLButtonElement>('.chip-btn[data-target]').forEach(chip => {
+      if (!chip.classList.contains('filter-club') && !chip.classList.contains('filter-age')) {
+        const cs = chip.dataset.sex;
+        chip.classList.toggle('hidden', !!(cs && cs !== sex));
+      }
+    });
+    sidebarCatBtns.forEach(btn => {
+      const bs = btn.dataset.sex;
+      btn.classList.toggle('hidden', !!(bs && bs !== sex));
+    });
+    // Auto-activate first visible category in this sex
+    const firstVisible = [...document.querySelectorAll<HTMLButtonElement>('.chip-btn[data-target]'), ...sidebarCatBtns]
+      .find(c => {
+        if (c.classList.contains('filter-club') || c.classList.contains('filter-age')) return false;
+        const cs = c.dataset.sex;
+        return !cs || cs === sex;
+      });
+    if (firstVisible) activateCategory(firstVisible.dataset.target!);
+  }
+
+  sidebarSexBtns.forEach(btn => btn.addEventListener('click', () => activateSex(btn.dataset.sex!)));
+  chipSexBtns.forEach(btn => btn.addEventListener('click', () => activateSex(btn.dataset.sex!)));
+
+  // ── Mobile accordion ──────────────────────────────────────────────────────────
+  document.querySelectorAll<HTMLButtonElement>('.standings-toggle').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const detail = document.getElementById(btn.dataset.target!)!;
+      const isOpen = !detail.classList.contains('hidden');
+      detail.classList.toggle('hidden', isOpen);
+      btn.setAttribute('aria-expanded', isOpen ? 'false' : 'true');
+      btn.querySelector('.chevron')?.classList.toggle('rotate-180', !isOpen);
+    });
+  });
+
+  // ── Filter: name search + club chips + age chips ─────────────────────────────
+  const searchInput    = document.querySelector<HTMLInputElement>('#runner-search');
+  const clubFilterBtns = document.querySelectorAll<HTMLButtonElement>('.filter-club');
+
+  function filterAllPanels() {
+    document.querySelectorAll<HTMLElement>('[data-panel]').forEach(filterPanel);
+  }
+
+  function filterPanel(panel: HTMLElement) {
+    const activeAges  = [...panel.querySelectorAll<HTMLElement>('.filter-age.active-filter')]
+      .map(b => b.dataset.value ?? '');
+    const activeClubs = [...clubFilterBtns]
+      .filter(b => b.classList.contains('active-filter'))
+      .map(b => b.dataset.value ?? '');
+    const nameQuery   = (searchInput?.value ?? '').toLowerCase().trim();
+
+    const matches = (el: HTMLElement) => {
+      const ageOk  = activeAges.length === 0  || activeAges.includes(el.dataset.ageCat ?? '');
+      const clubOk = activeClubs.length === 0 || activeClubs.includes(el.dataset.club ?? '');
+      const nameOk = !nameQuery               || (el.dataset.name ?? '').toLowerCase().includes(nameQuery);
+      return ageOk && clubOk && nameOk;
+    };
+    panel.querySelectorAll<HTMLElement>('tr[data-name]').forEach(row  => { row.style.display  = matches(row)  ? '' : 'none'; });
+    panel.querySelectorAll<HTMLElement>('.runner-card').forEach(card => { card.style.display = matches(card) ? '' : 'none'; });
+  }
+
+  searchInput?.addEventListener('input', filterAllPanels);
+
+  // Club filter chips toggle (use active-filter to avoid conflicting with chip-btn nav logic)
+  clubFilterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      btn.classList.toggle('active-filter');
+      const on = btn.classList.contains('active-filter');
+      btn.classList.toggle('bg-amber',     on);
+      btn.classList.toggle('border-amber', on);
+      btn.classList.toggle('text-white',   on);
+      btn.classList.toggle('bg-surface',   !on);
+      btn.classList.toggle('border-line',  !on);
+      btn.classList.toggle('text-muted',   !on);
+      filterAllPanels();
+    });
+  });
+
+  // Age filter chips
+  document.querySelectorAll<HTMLButtonElement>('.filter-age').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const panel = btn.closest<HTMLElement>('[data-panel]')!;
+      btn.classList.toggle('active-filter');
+      const on = btn.classList.contains('active-filter');
+      btn.classList.toggle('bg-amber',     on);
+      btn.classList.toggle('border-amber', on);
+      btn.classList.toggle('text-white',   on);
+      btn.classList.toggle('bg-surface',   !on);
+      btn.classList.toggle('border-line',  !on);
+      btn.classList.toggle('text-muted',   !on);
+      filterPanel(panel);
+    });
+  });
+</script>

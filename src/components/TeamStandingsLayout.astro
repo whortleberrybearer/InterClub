@@ -2,10 +2,13 @@
 // src/components/TeamStandingsLayout.astro
 //
 // Shared layout for the team standings page, used by both series.
-// The `series` prop drives all series-specific labels and URL paths;
-// everything else is identical across Road GP and Fell.
+// Three responsive views (matching IndividualStandingsLayout):
+//   Mobile  (<sm)   — expandable club cards
+//   Tablet  (sm–lg) — table inside a white card
+//   Desktop (lg+)   — sticky sidebar + plain stacked tables
 import Layout from './Layout.astro';
 import StandingsHeader from './StandingsHeader.astro';
+import ChipBar from './ChipBar.astro';
 import { getRaces } from '../lib/data';
 import type { Club, Series, SeriesConfig, TeamStandings } from '../lib/types';
 import { siteUrl } from '../lib/url';
@@ -22,24 +25,20 @@ export interface Props {
 const { series, year, standings, clubs, config } = Astro.props;
 const linkedRaceIds = new Set(Astro.props.linkedRaceIds);
 
-// Series-specific display label (used in page title and back link)
 const seriesLabel = series === 'road-gp' ? 'Road GP' : 'Fell Championship';
 
-// All scheduled races — used for columns so unrun races still appear
 const races = getRaces(year, series);
 const clubById = Object.fromEntries(clubs.map(c => [c.id, c]));
 const categoryById = Object.fromEntries((config.teamCategories ?? []).map(c => [c.id, c]));
 
-// Map standings race IDs → their index in the points array
 const standingsRaceIdx = Object.fromEntries(standings.races.map((id, i) => [id, i]));
 
-// Count races that have been run (have non-null points in standings)
 const racesRun = standings.races.filter((_, idx) =>
   standings.categories.some(cat => cat.clubs.some(club => club.points[idx] !== null))
 ).length;
 const racesRemaining = races.length - racesRun;
 
-// Shared table header class strings (avoids @apply in scoped Astro styles)
+// Shared table header class strings
 const tabTh = 'font-head text-[10px] font-bold tracking-[0.1em] uppercase text-muted py-2.5 px-2 bg-surface border-b-2 border-content';
 const dtTh  = 'font-head text-[10px] font-bold tracking-[0.1em] uppercase text-muted py-2.5 px-2 bg-surface';
 ---
@@ -69,29 +68,15 @@ const dtTh  = 'font-head text-[10px] font-bold tracking-[0.1em] uppercase text-m
     </p>
   </StandingsHeader>
 
-  <!-- ── Category chips (mobile + tablet, hidden on desktop) ── -->
-  <div class="lg:hidden overflow-x-auto -mx-4 px-4 mb-4">
-    <div class="flex gap-1.5 pb-1 min-w-max" role="tablist">
-      {standings.categories.map((cat, i) => {
-        const label = categoryById[cat.id]?.name ?? cat.id;
-        return (
-          <button
-            class:list={[
-              'chip-btn font-head text-xs font-bold tracking-[0.06em] uppercase px-3.5 py-[7px] rounded-full border transition-colors whitespace-nowrap',
-              i === 0
-                ? 'bg-amber border-amber text-white'
-                : 'bg-surface border-line text-muted hover:text-content',
-            ]}
-            data-target={`cat-panel-${i}`}
-            role="tab"
-            aria-selected={i === 0 ? 'true' : 'false'}
-          >
-            {label}
-          </button>
-        );
-      })}
-    </div>
-  </div>
+  <!-- Category chip bar — mobile + tablet, in the chip-bar slot (full viewport width) -->
+  <ChipBar
+    slot="chip-bar"
+    items={standings.categories.map((cat, i) => ({
+      label:  categoryById[cat.id]?.name ?? cat.id,
+      target: `cat-panel-${i}`,
+      active: i === 0,
+    }))}
+  />
 
   <!-- ══════════════════════════════════════════════
        DESKTOP (lg+): sticky sidebar + stacked tables
@@ -139,18 +124,15 @@ const dtTh  = 'font-head text-[10px] font-bold tracking-[0.1em] uppercase text-m
       </div>
     </aside>
 
-    <!-- Stacked category sections -->
+    <!-- Stacked category sections (all visible, sidebar scrolls between them) -->
     <div class="flex flex-col gap-9">
       {standings.categories.map((cat) => {
         const label = categoryById[cat.id]?.name ?? cat.id;
         return (
           <section id={`cat-${cat.id}`} class="scroll-mt-5">
-
-            <!-- Category header -->
             <div class="pb-3 mb-3.5 border-b-2 border-content">
               <h2 class="font-head text-[26px] font-extrabold tracking-tight leading-none">{label}</h2>
             </div>
-
             <table class="w-full border-collapse text-sm">
               <thead>
                 <tr>
@@ -206,7 +188,6 @@ const dtTh  = 'font-head text-[10px] font-bold tracking-[0.1em] uppercase text-m
                 })}
               </tbody>
             </table>
-
           </section>
         );
       })}
@@ -214,7 +195,10 @@ const dtTh  = 'font-head text-[10px] font-bold tracking-[0.1em] uppercase text-m
   </div>
 
   <!-- ══════════════════════════════════════════════
-       MOBILE + TABLET: per-category panels
+       MOBILE + TABLET (<lg): chip-switched panels
+       Breakpoints unified with IndividualStandingsLayout:
+         Mobile  < sm (640px) — expandable cards
+         Tablet  sm–lg        — table in a card
   ══════════════════════════════════════════════ -->
   <div class="lg:hidden">
     {standings.categories.map((cat, i) => {
@@ -222,13 +206,13 @@ const dtTh  = 'font-head text-[10px] font-bold tracking-[0.1em] uppercase text-m
       return (
         <div id={`cat-panel-${i}`} class:list={[i > 0 && 'hidden']} role="tabpanel">
 
-          <!-- Category title -->
-          <div class="mb-3 md:mb-4">
-            <h2 class="font-head text-[22px] md:text-[26px] font-extrabold tracking-tight">{label}</h2>
+          <!-- Panel heading -->
+          <div class="mb-3 sm:mb-4">
+            <h2 class="font-head text-[22px] sm:text-[26px] font-extrabold tracking-tight">{label}</h2>
           </div>
 
-          <!-- ── TABLET (md to lg): table in a card ── -->
-          <div class="hidden md:block overflow-x-auto">
+          <!-- ── TABLET (sm to lg): table in a card ── -->
+          <div class="hidden sm:block overflow-x-auto">
             <div class="bg-surface border border-line rounded-xl overflow-hidden">
               <table class="w-full border-collapse text-sm">
                 <thead>
@@ -285,7 +269,6 @@ const dtTh  = 'font-head text-[10px] font-bold tracking-[0.1em] uppercase text-m
                 </tbody>
               </table>
             </div>
-
             <!-- Race legend (tablet) -->
             <div class="flex flex-wrap gap-x-3.5 gap-y-1.5 pt-3.5 text-xs text-muted">
               {races.map((race, ri) => {
@@ -305,8 +288,8 @@ const dtTh  = 'font-head text-[10px] font-bold tracking-[0.1em] uppercase text-m
             </div>
           </div>
 
-          <!-- ── MOBILE (below md): expandable cards (all collapsed by default) ── -->
-          <div class="md:hidden flex flex-col gap-2 pb-2">
+          <!-- ── MOBILE (below sm): expandable cards ── -->
+          <div class="sm:hidden flex flex-col gap-2 pb-2">
             {cat.clubs.map((clubResult) => {
               const clubName = clubById[clubResult.club]?.name ?? clubResult.club;
               const detailId = `detail-${i}-${clubResult.club}`;
@@ -327,14 +310,11 @@ const dtTh  = 'font-head text-[10px] font-bold tracking-[0.1em] uppercase text-m
                       )}
                     </div>
                     <div class="text-right shrink-0">
-                      <div class="font-mono text-[22px] font-medium leading-none">
-                        {clubResult.total}
-                      </div>
+                      <div class="font-mono text-[22px] font-medium leading-none">{clubResult.total}</div>
                       <div class="font-head text-[9px] font-bold tracking-[0.12em] uppercase text-muted mt-0.5">Pts</div>
                     </div>
                     <span class="chevron font-mono text-sm text-muted ml-1 transition-transform shrink-0">▾</span>
                   </button>
-
                   <div id={detailId} class="border-t border-dashed border-line hidden">
                     <div class="grid grid-cols-7 gap-1 p-3">
                       {races.map((race) => {
@@ -362,7 +342,7 @@ const dtTh  = 'font-head text-[10px] font-bold tracking-[0.1em] uppercase text-m
           </div>
 
           <!-- Race key (mobile only) -->
-          <div class="md:hidden mt-4 pt-4 border-t border-line">
+          <div class="sm:hidden mt-4 pt-4 border-t border-line">
             <p class="font-head text-[10px] font-bold tracking-[0.12em] uppercase text-muted mb-2">Race Key</p>
             <div class="grid grid-cols-2 gap-x-3 gap-y-1">
               {races.map((race, ri) => {
