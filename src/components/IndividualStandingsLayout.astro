@@ -372,8 +372,7 @@ const raceKeyEntries = standings.races.map(raceId => {
                 <thead>
                   <tr>
                     <th class="text-left py-2.5 pr-3 font-head text-[10px] font-bold tracking-[0.1em] uppercase text-content/40 border-b-2 border-b-content bg-surface w-8">#</th>
-                    <th class="text-left py-2.5 pr-4 font-head text-[10px] font-bold tracking-[0.1em] uppercase text-content/40 border-b-2 border-b-content bg-surface">Name</th>
-                    <th class="text-left py-2.5 pr-4 font-head text-[10px] font-bold tracking-[0.1em] uppercase text-content/40 border-b-2 border-b-content bg-surface">Club</th>
+                    <th class="text-left py-2.5 pr-4 font-head text-[10px] font-bold tracking-[0.1em] uppercase text-content/40 border-b-2 border-b-content bg-surface">Runner</th>
                     <th class="text-left py-2.5 pr-4 font-head text-[10px] font-bold tracking-[0.1em] uppercase text-content/40 border-b-2 border-b-content bg-surface">Cat</th>
                     {standings.races.map(raceId => {
                       const race  = raceById[raceId];
@@ -406,12 +405,14 @@ const raceKeyEntries = standings.races.map(raceId => {
                         <td class="py-2.5 pr-3 align-middle">
                           <PodiumDot position={runner.position} />
                         </td>
-                        <td class="py-2.5 pr-4 font-semibold align-middle">
-                          {runner.seriesRunnerId != null && runnerUrlMap[runner.seriesRunnerId]
-                            ? <a href={runnerUrlMap[runner.seriesRunnerId]} class="link link-hover">{runner.name}</a>
-                            : runner.name}
+                        <td class="py-2.5 pr-4 align-middle">
+                          <div class="font-semibold leading-tight">
+                            {runner.seriesRunnerId != null && runnerUrlMap[runner.seriesRunnerId]
+                              ? <a href={runnerUrlMap[runner.seriesRunnerId]} class="link link-hover">{runner.name}</a>
+                              : runner.name}
+                          </div>
+                          <div class="text-xs text-muted mt-0.5">{clubName}</div>
                         </td>
-                        <td class="py-2.5 pr-4 text-muted align-middle">{clubName}</td>
                         <td class="py-2.5 pr-4 text-content/60 text-xs tabular-nums align-middle">{catLabel}</td>
                         {standings.races.map(raceId => {
                           const result = runner.results[raceId];
