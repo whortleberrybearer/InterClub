@@ -1,141 +1,102 @@
 ---
-// src/pages/search.astro
 import Layout from '../components/Layout.astro';
+
+const SUGGESTIONS = ['Rob Danson', 'Preston 10K', '2015 Road GP', 'Pendle Round'];
+
+const SECTIONS = [
+  { id: 'runner',    label: 'Runners',         pill: 'Runners'   },
+  { id: 'race',      label: 'Race Results',    pill: 'Results'   },
+  { id: 'standings', label: 'Standings',       pill: 'Standings' },
+  { id: 'year',      label: 'Season Archives', pill: 'Archives'  },
+] as const;
 ---
 
-<Layout title="Search">
-  <h1 class="text-2xl font-bold mb-4">Search</h1>
-
-  <input
-    id="search-page-input"
-    type="search"
-    placeholder="Search runners, races, history…"
-    autocomplete="off"
-    class="input w-full mb-3"
-  />
-
-  <p id="search-status" class="text-sm text-content/60 mb-6">Type at least 3 characters to search.</p>
-
-  <div id="results-runners" class="mb-8 hidden">
-    <h2 class="text-lg font-semibold mb-3">Runners</h2>
-    <ul id="list-runners" class="flex flex-col gap-1"></ul>
+<Layout title="Search" noPad>
+  <!-- Hero: shown when query ≥ 3 chars -->
+  <div id="search-hero" class="hidden bg-surface border-b border-line px-4 pt-6 pb-4 mb-0">
+    <div class="max-w-4xl mx-auto">
+      <div class="font-head text-[10px] font-bold tracking-[0.14em] uppercase text-muted mb-1">Search Results</div>
+      <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1 mb-4">
+        <h1 id="query-heading" class="font-head text-[28px] md:text-[38px] font-black tracking-tight leading-none"></h1>
+        <span id="match-count" class="font-mono text-sm text-muted"></span>
+        <!-- Desktop jump-to chips -->
+        <div id="jump-chips" class="hidden md:flex gap-2 ml-auto flex-wrap"></div>
+      </div>
+      <!-- Filter pills -->
+      <div class="flex gap-1.5 flex-wrap" id="filter-pills">
+        <button class="pill pill-active" data-filter="all">
+          All <span class="font-mono text-[10px] opacity-85" id="pill-count-all">0</span>
+        </button>
+        {SECTIONS.map(s => (
+          <button class="pill" data-filter={s.id}>
+            {s.pill} <span class="font-mono text-[10px]" id={`pill-count-${s.id}`}>0</span>
+          </button>
+        ))}
+      </div>
+    </div>
   </div>
 
-  <div id="results-races" class="mb-8 hidden">
-    <h2 class="text-lg font-semibold mb-3">Races</h2>
-    <ul id="list-races" class="flex flex-col gap-1"></ul>
-  </div>
+  <div class="max-w-4xl mx-auto w-full px-4 py-8">
+    <!-- Prompt state (< 3 chars) -->
+    <p id="state-prompt" class="text-sm text-muted">Type at least 3 characters to search.</p>
 
-  <div id="results-standings" class="mb-8 hidden">
-    <h2 class="text-lg font-semibold mb-3">Standings</h2>
-    <ul id="list-standings" class="flex flex-col gap-1"></ul>
-  </div>
+    <!-- Empty state -->
+    <div id="state-empty" class="hidden py-16 text-center">
+      <div class="w-14 h-14 mx-auto mb-4 bg-canvas rounded-[14px] inline-flex items-center justify-center text-muted">
+        <svg width="22" height="22" viewBox="0 0 16 16" fill="none">
+          <circle cx="7" cy="7" r="4.5" stroke="currentColor" stroke-width="1.4"/>
+          <path d="M10.5 10.5L14 14" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="font-head text-[22px] font-black tracking-tight mb-1.5">No matches</div>
+      <p class="text-sm text-muted leading-relaxed mb-5 max-w-xs mx-auto">
+        We couldn't find anything for
+        "<span id="empty-query" class="font-medium text-content"></span>".
+        Try a different spelling or fewer characters.
+      </p>
+      <div class="font-head text-[11px] font-bold tracking-[0.12em] uppercase text-muted mb-2.5">Try searching for</div>
+      <div class="flex gap-1.5 flex-wrap justify-center">
+        {SUGGESTIONS.map(s => (
+          <button
+            class="px-3 py-1.5 rounded-full border border-line bg-surface text-sm text-muted hover:border-amber hover:text-content transition-colors cursor-pointer"
+            data-suggestion={s}
+          >{s}</button>
+        ))}
+      </div>
+    </div>
 
-  <div id="results-pages" class="mb-8 hidden">
-    <h2 class="text-lg font-semibold mb-3">Series</h2>
-    <ul id="list-pages" class="flex flex-col gap-1"></ul>
+    <!-- Results grid -->
+    <div id="results-grid" class="hidden">
+      <div id="results-inner" class="grid gap-4">
+        {SECTIONS.map(s => (
+          <section id={`section-${s.id}`} class="result-section hidden" data-type={s.id}>
+            <div class="bg-surface border border-line rounded-xl overflow-hidden">
+              <header class="flex items-baseline justify-between px-4 py-3.5">
+                <div class="flex items-baseline gap-2">
+                  <h2 class="font-head text-sm font-bold tracking-[0.08em] uppercase">{s.label}</h2>
+                  <span class="font-mono text-xs text-muted section-count"></span>
+                </div>
+                <a class="show-all-link hidden text-xs font-medium text-amber hover:underline" href="#">Show all →</a>
+              </header>
+              <div class="section-rows"></div>
+            </div>
+          </section>
+        ))}
+      </div>
+
+      <!-- Desktop tip bar -->
+      <div class="hidden md:flex mt-5 px-4 py-3.5 bg-surface border border-dashed border-line rounded-xl items-center justify-between text-sm text-muted">
+        <span>
+          <span class="font-mono">Tip:</span> use
+          <kbd class="font-mono text-[11px] px-1.5 py-0.5 bg-canvas border border-line rounded text-content mx-1">⌘K</kbd>
+          from anywhere to search · <span class="font-mono">minimum</span> 3 characters
+        </span>
+        <a href="#" id="full-index-link" class="text-amber font-medium hover:underline">Open full index →</a>
+      </div>
+    </div>
   </div>
 </Layout>
 
 <script>
-  import Fuse from 'fuse.js'
-  import { createFuse, loadIndex } from '../lib/search-client'
-  import type { SearchRecord } from '../lib/search-client'
-
-  const LIMIT = 50
-
-  const input = document.getElementById('search-page-input') as HTMLInputElement
-  const status = document.getElementById('search-status') as HTMLParagraphElement
-  const base = import.meta.env.BASE_URL.replace(/\/$/, '')
-
-  let fusePromise: Promise<Fuse<SearchRecord>> | null = null
-
-  function escapeHtml(s: string): string {
-    return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')
-  }
-
-  async function ensureFuse(): Promise<Fuse<SearchRecord>> {
-    if (!fusePromise) {
-      fusePromise = loadIndex().then(records => createFuse(records)).catch(err => {
-        fusePromise = null
-        throw err
-      })
-    }
-    return fusePromise
-  }
-
-  function renderSection(
-    sectionId: string,
-    listId: string,
-    items: SearchRecord[],
-  ): void {
-    const section = document.getElementById(sectionId)!
-    const list = document.getElementById(listId)!
-    if (items.length === 0) {
-      section.classList.add('hidden')
-      return
-    }
-    list.innerHTML = items.map(r =>
-      `<li><a href="${escapeHtml(r.url)}" class="flex items-center gap-2 py-1.5 hover:text-amber text-sm">` +
-      `<span class="flex flex-col">` +
-      `<span>${escapeHtml(r.label)}</span>` +
-      (r.subtitle ? `<span class="text-xs text-content/50">${escapeHtml(r.subtitle)}</span>` : '') +
-      `</span></a></li>`
-    ).join('')
-    section.classList.remove('hidden')
-  }
-
-  function displayResults(results: SearchRecord[], query: string, total: number): void {
-    const runners = results.filter(r => r.type === 'runner')
-    const races = results.filter(r => r.type === 'race-detail' || r.type === 'race-results')
-    const standings = results.filter(r => r.type === 'standings')
-    const pages = results.filter(r => r.type === 'year')
-
-    renderSection('results-runners', 'list-runners', runners)
-    renderSection('results-races', 'list-races', races)
-    renderSection('results-standings', 'list-standings', standings)
-    renderSection('results-pages', 'list-pages', pages)
-
-    if (results.length === 0) {
-      status.textContent = `No results for "${query}".`
-    } else if (total > LIMIT) {
-      status.textContent = `Showing ${LIMIT} of ${total} results — try a more specific search.`
-    } else {
-      status.textContent = `${results.length} result${results.length === 1 ? '' : 's'} for "${query}".`
-    }
-  }
-
-  function clearResults(): void {
-    for (const id of ['results-runners', 'results-races', 'results-standings', 'results-pages']) {
-      document.getElementById(id)!.classList.add('hidden')
-    }
-  }
-
-  async function search(query: string): Promise<void> {
-    if (query.trim().length < 3) {
-      clearResults()
-      status.textContent = 'Type at least 3 characters to search.'
-      return
-    }
-    if (!fusePromise) {
-      status.textContent = 'Loading…'
-    }
-    const fuse = await ensureFuse()
-    const allResults = fuse.search(query)
-    const limited = allResults.slice(0, LIMIT).map(r => r.item)
-    displayResults(limited, query, allResults.length)
-  }
-
-  // On load: read ?q= from URL and run search
-  const params = new URLSearchParams(window.location.search)
-  const initialQuery = params.get('q') ?? ''
-  input.value = initialQuery
-  if (initialQuery) search(initialQuery)
-
-  // Live updates
-  input.addEventListener('input', () => {
-    const q = input.value.trim()
-    history.replaceState(null, '', q ? `${base}/search?q=${encodeURIComponent(q)}` : `${base}/search`)
-    search(q)
-  })
+  // TODO: filled in Task 3
 </script>
