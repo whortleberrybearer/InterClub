@@ -215,13 +215,21 @@ export function getRunnerProfileStaticPaths() {
     const slug = runnerSlug(runner);
     const entries = globalToSeries.get(runner.id) ?? [];
 
-    // Group into year blocks
+    // Group into year blocks; merge races/awards when a runner has multiple series entries
+    // (e.g. competed for two clubs in the same year/series)
     const byYear = new Map<number, RunnerYearBlock>();
     for (const { year, series, seriesLocalId } of entries) {
       const block = byYear.get(year) ?? { year };
+      const existing = series === 'road-gp' ? block.roadGp : block.fell;
       const yearSeries: RunnerYearSeries = {
-        races: getRacesForRunner(year, series, seriesLocalId),
-        awards: getAwardsForRunner(year, series, seriesLocalId),
+        races: [
+          ...(existing?.races ?? []),
+          ...getRacesForRunner(year, series, seriesLocalId),
+        ].sort((a, b) => a.date.localeCompare(b.date)),
+        awards: [
+          ...(existing?.awards ?? []),
+          ...getAwardsForRunner(year, series, seriesLocalId),
+        ],
       };
       if (series === 'road-gp') block.roadGp = yearSeries;
       else block.fell = yearSeries;
