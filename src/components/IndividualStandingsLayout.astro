@@ -197,32 +197,30 @@ const dth = 'font-head text-[10px] font-bold tracking-[0.1em] uppercase text-mut
     <!-- ── Main content column ───────────────────────────────────────────────── -->
     <div>
 
-      <!-- Search + club filter (always visible above panels) -->
-      <div class="relative mb-2">
-        <svg class="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted pointer-events-none" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
-          <circle cx="8.5" cy="8.5" r="5.5" />
-          <path d="m13 13 4 4" stroke-linecap="round" />
-        </svg>
-        <input
-          id="runner-search"
-          type="search"
-          placeholder="Filter by name…"
-          class="input w-full pl-9"
-          autocomplete="off"
-        />
-      </div>
-      {standingsClubs.length > 1 && (
-        <div class="flex gap-1.5 flex-wrap mb-4">
-          {standingsClubs.map(club => (
-            <button
-              class="filter-club chip-btn font-head text-xs font-bold tracking-[0.06em] uppercase px-3 py-[5px] rounded-full border border-line bg-surface text-muted hover:text-content transition-colors"
-              data-value={club.id}
-            >
-              {club.shortName ?? club.name}
-            </button>
-          ))}
+      <!-- Search + club filter side by side -->
+      <div class="flex gap-2 mb-4">
+        <div class="relative flex-1 min-w-0">
+          <svg class="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted pointer-events-none" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+            <circle cx="8.5" cy="8.5" r="5.5" />
+            <path d="m13 13 4 4" stroke-linecap="round" />
+          </svg>
+          <input
+            id="runner-search"
+            type="search"
+            placeholder="Filter by name…"
+            class="input w-full pl-9"
+            autocomplete="off"
+          />
         </div>
-      )}
+        {standingsClubs.length > 1 && (
+          <select id="club-filter" class="input w-36 shrink-0">
+            <option value="">All clubs</option>
+            {standingsClubs.map(club => (
+              <option value={club.id}>{club.name}</option>
+            ))}
+          </select>
+        )}
+      </div>
 
       <!-- ── Category panels ────────────────────────────────────────────────── -->
       {standings.categories.map((cat, i) => {
@@ -315,7 +313,7 @@ const dth = 'font-head text-[10px] font-bold tracking-[0.1em] uppercase text-mut
                         {catLabel && <span class="font-mono">{catLabel}</span>}
                       </p>
                       <div class="flex flex-wrap gap-1.5">
-                        {standings.races.filter(raceId => runner.results[raceId]).map(raceId => {
+                        {standings.races.map(raceId => {
                           const result = runner.results[raceId];
                           const race   = raceById[raceId];
                           const rlabel = race?.shortName ?? raceId;
@@ -323,15 +321,16 @@ const dth = 'font-head text-[10px] font-bold tracking-[0.1em] uppercase text-mut
                           return (
                             <div class:list={[
                               'rounded px-2.5 py-1 text-center text-sm min-w-[44px]',
-                              result.counting ? 'bg-canvas' : 'bg-canvas/40',
+                              result ? (result.counting ? 'bg-canvas' : 'bg-canvas/40') : 'bg-canvas/20',
                             ]}>
                               {href
-                                ? <a href={href} class:list={['block text-[10px] mb-0.5', result.counting ? 'text-amber' : 'text-content/30']}>{rlabel}</a>
-                                : <span class:list={['block text-[10px] mb-0.5', result.counting ? 'text-content/40' : 'text-content/20']}>{rlabel}</span>
+                                ? <a href={href} class:list={['block text-[10px] mb-0.5', result ? (result.counting ? 'text-amber' : 'text-content/30') : 'text-content/20']}>{rlabel}</a>
+                                : <span class:list={['block text-[10px] mb-0.5', result ? (result.counting ? 'text-content/40' : 'text-content/20') : 'text-content/20']}>{rlabel}</span>
                               }
-                              <span class:list={[result.counting ? 'font-semibold' : 'text-content/30 line-through']}>
-                                {result.points}
-                              </span>
+                              {result
+                                ? <span class:list={[result.counting ? 'font-semibold' : 'text-content/30 line-through']}>{result.points}</span>
+                                : <span class="text-content/20">—</span>
+                              }
                             </div>
                           );
                         })}
@@ -642,7 +641,7 @@ const dth = 'font-head text-[10px] font-bold tracking-[0.1em] uppercase text-mut
 
   // ── Filter: name search + club chips + age chips ─────────────────────────────
   const searchInput    = document.querySelector<HTMLInputElement>('#runner-search');
-  const clubFilterBtns = document.querySelectorAll<HTMLButtonElement>('.filter-club');
+  const clubFilterSelect = document.querySelector<HTMLSelectElement>('#club-filter');
 
   function filterAllPanels() {
     document.querySelectorAll<HTMLElement>('[data-panel]').forEach(filterPanel);
@@ -651,14 +650,12 @@ const dth = 'font-head text-[10px] font-bold tracking-[0.1em] uppercase text-mut
   function filterPanel(panel: HTMLElement) {
     const activeAges  = [...panel.querySelectorAll<HTMLElement>('.filter-age.active-filter')]
       .map(b => b.dataset.value ?? '');
-    const activeClubs = [...clubFilterBtns]
-      .filter(b => b.classList.contains('active-filter'))
-      .map(b => b.dataset.value ?? '');
+    const activeClub = clubFilterSelect?.value ?? '';
     const nameQuery   = (searchInput?.value ?? '').toLowerCase().trim();
 
     const matches = (el: HTMLElement) => {
       const ageOk  = activeAges.length === 0  || activeAges.includes(el.dataset.ageCat ?? '');
-      const clubOk = activeClubs.length === 0 || activeClubs.includes(el.dataset.club ?? '');
+      const clubOk = !activeClub || el.dataset.club === activeClub;
       const nameOk = !nameQuery               || (el.dataset.name ?? '').toLowerCase().includes(nameQuery);
       return ageOk && clubOk && nameOk;
     };
@@ -667,21 +664,7 @@ const dth = 'font-head text-[10px] font-bold tracking-[0.1em] uppercase text-mut
   }
 
   searchInput?.addEventListener('input', filterAllPanels);
-
-  // Club filter chips toggle (use active-filter to avoid conflicting with chip-btn nav logic)
-  clubFilterBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      btn.classList.toggle('active-filter');
-      const on = btn.classList.contains('active-filter');
-      btn.classList.toggle('bg-amber',     on);
-      btn.classList.toggle('border-amber', on);
-      btn.classList.toggle('text-white',   on);
-      btn.classList.toggle('bg-surface',   !on);
-      btn.classList.toggle('border-line',  !on);
-      btn.classList.toggle('text-muted',   !on);
-      filterAllPanels();
-    });
-  });
+  clubFilterSelect?.addEventListener('change', filterAllPanels);
 
   // Age filter chips
   document.querySelectorAll<HTMLButtonElement>('.filter-age').forEach(btn => {
