@@ -148,7 +148,7 @@
   }
 
   function rowHtml(r: SearchRecord, q: string): string {
-    return `<a href="${escHtml(r.url)}" class="result-row result-row-dense">` +
+    return `<a href="${escHtml(r.url)}" class="flex items-center gap-3 px-4 py-[0.5625rem] border-t border-line no-underline text-content transition-colors duration-100 hover:bg-canvas">` +
       `<span style="width:28px;height:28px;flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;border-radius:7px;${badgeStyle(r.type)}">` +
         iconSvg(r.type) +
       `</span>` +
@@ -294,7 +294,7 @@
       `<div style="background:var(--color-surface)">${g.items.slice(0, 3).map(r => rowHtml(r, query)).join('')}</div>` +
       `</div>`
     ).join('') +
-    `<a href="${escHtml(searchUrl)}" class="result-row" style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px;margin:12px;background:var(--color-content);color:#fff;border-radius:10px;text-decoration:none;border:none">` +
+    `<a href="${escHtml(searchUrl)}" data-search-cta style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px;margin:12px;background:var(--color-content);color:#fff;border-radius:10px;text-decoration:none;border:none">` +
       `<span style="display:flex;align-items:center;gap:8px;font-size:14px;font-weight:600">` +
         `<svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="7" cy="7" r="4.5" stroke="white" stroke-width="1.6"/><path d="M10.5 10.5L14 14" stroke="white" stroke-width="1.6" stroke-linecap="round"/></svg>` +
         `See all ${total} results for "${escHtml(query.trim())}"` +
@@ -303,7 +303,7 @@
     `</a>`
 
     // Wire up stopPropagation on the "See all" CTA so overlay click-close doesn't fire
-    resultsEl.querySelector('a.result-row[href*="/search?q="]')?.addEventListener('click', e => e.stopPropagation())
+    resultsEl.querySelector('[data-search-cta]')?.addEventListener('click', e => e.stopPropagation())
 
     // Save query to recent when user navigates to full results
     resultsEl.querySelectorAll('a[href*="/search?q="]').forEach(a => {
