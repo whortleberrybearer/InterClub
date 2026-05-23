@@ -14,6 +14,7 @@
 import Layout from './Layout.astro';
 import StandingsHeader from './StandingsHeader.astro';
 import ChipBar from './ChipBar.astro';
+import MobileAccordionCard from './MobileAccordionCard.astro';
 import { getRaces } from '../lib/data';
 import { resolveIndividualCategoryName } from '../lib/results';
 import type { Club, IndividualStandings, Series } from '../lib/types';
@@ -199,21 +200,17 @@ const dth = 'font-head text-[10px] font-bold tracking-[0.1em] uppercase text-mut
 
       <!-- Search + club filter side by side -->
       <div class="flex gap-2 mb-4">
-        <div class="relative flex-1 min-w-0">
-          <svg class="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted pointer-events-none" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
-            <circle cx="8.5" cy="8.5" r="5.5" />
-            <path d="m13 13 4 4" stroke-linecap="round" />
-          </svg>
+        <div class="flex-1 min-w-0">
           <input
             id="runner-search"
             type="search"
             placeholder="Filter by name…"
-            class="input w-full pl-9"
+            class="input w-full"
             autocomplete="off"
           />
         </div>
         {standingsClubs.length > 1 && (
-          <select id="club-filter" class="input w-36 shrink-0">
+          <select id="club-filter" class="input w-48 shrink-0">
             <option value="">All clubs</option>
             {standingsClubs.map(club => (
               <option value={club.id}>{club.name}</option>
@@ -224,8 +221,11 @@ const dth = 'font-head text-[10px] font-bold tracking-[0.1em] uppercase text-mut
 
       <!-- ── Category panels ────────────────────────────────────────────────── -->
       {standings.categories.map((cat, i) => {
-        const isDefault = i === defaultCatIndex;
-        const label     = resolveIndividualCategoryName(cat.id, cat.sex, cat.ageCategory, cat.name);
+        const isDefault      = i === defaultCatIndex;
+        const label          = resolveIndividualCategoryName(cat.id, cat.sex, cat.ageCategory, cat.name);
+        const qualifiedCount = standings.maxCountingRaces
+          ? cat.runners.filter(r => Object.keys(r.results).length >= standings.maxCountingRaces!).length
+          : null;
         const distinctAgeCats = [...new Set(
           cat.runners.map(r => r.ageCategory ?? cat.ageCategory)
         )].filter((a): a is string => a != null).sort();
@@ -238,19 +238,27 @@ const dth = 'font-head text-[10px] font-bold tracking-[0.1em] uppercase text-mut
               <h2 class="font-head text-[28px] font-extrabold tracking-tight leading-none">{label}</h2>
               {cat.runners.length > 0 && (
                 <div class="text-right shrink-0 ml-4">
-                  <p class="font-mono text-sm">
-                    Leader: <span class="text-amber font-bold">{cat.runners[0].name}</span>
-                  </p>
-                  <p class="text-[10px] tracking-[0.1em] uppercase text-muted mt-0.5">
-                    {cat.runners.length} runners · Total {cat.runners[0].total}
+                  <p class="text-[10px] tracking-[0.1em] uppercase text-muted">
+                    {cat.runners.length} runners
+                    {qualifiedCount !== null && (
+                      <> · <span class="text-content">{qualifiedCount} qualified</span></>
+                    )}
                   </p>
                 </div>
               )}
             </div>
 
             <!-- Mobile + tablet panel heading -->
-            <div class="lg:hidden mb-3 sm:mb-4">
-              <h2 class="font-head text-[22px] sm:text-[26px] font-extrabold tracking-tight">{label}</h2>
+            <div class="lg:hidden flex items-end justify-between mb-3 sm:mb-4">
+              <h2 class="font-head text-[22px] sm:text-[26px] font-extrabold tracking-tight leading-none">{label}</h2>
+              {cat.runners.length > 0 && (
+                <p class="text-[10px] tracking-[0.1em] uppercase text-muted text-right shrink-0 ml-4">
+                  {cat.runners.length} runners
+                  {qualifiedCount !== null && (
+                    <> · <span class="text-content">{qualifiedCount} qualified</span></>
+                  )}
+                </p>
+              )}
             </div>
 
             <!-- Age filter (all breakpoints, only when multiple age cats) -->
@@ -278,41 +286,37 @@ const dth = 'font-head text-[10px] font-bold tracking-[0.1em] uppercase text-mut
                                    : runner.position === 3 ? 'bg-[var(--color-bronze)]'
                                    : null;
                 return (
-                  <div
-                    class="runner-card bg-surface border border-line rounded-xl mb-2 overflow-hidden relative"
+                  <MobileAccordionCard
+                    detailId={detailId}
+                    position={runner.position}
+                    podiumAccent={podiumAccent}
+                    class="runner-card"
                     data-sex={runner.sex ?? cat.sex}
                     data-age-cat={runner.ageCategory ?? cat.ageCategory}
                     data-name={runner.name}
                     data-club={runner.club}
                   >
-                    {podiumAccent && <div class:list={['absolute left-0 inset-y-0 w-[3px]', podiumAccent]} />}
-                    <button
-                      class="standings-toggle w-full flex items-center gap-3 py-3 pl-3 pr-3 text-left"
-                      data-target={detailId}
-                      aria-expanded="false"
-                    >
-                      <span class="font-mono text-sm font-medium text-muted w-6 shrink-0 text-center tabular-nums">{runner.position}</span>
-                      <div class="flex-1 min-w-0">
-                        <div class="font-semibold text-[15px] leading-tight truncate">
-                          {runner.seriesRunnerId != null && runnerUrlMap[runner.seriesRunnerId]
-                            ? <a href={runnerUrlMap[runner.seriesRunnerId]} class="link link-hover">{runner.name}</a>
-                            : runner.name}
-                        </div>
-                        <div class="text-xs text-muted mt-0.5 truncate">{clubName}</div>
+                    <div class="font-semibold text-[15px] leading-tight truncate">
+                      {runner.seriesRunnerId != null && runnerUrlMap[runner.seriesRunnerId]
+                        ? <a href={runnerUrlMap[runner.seriesRunnerId]} class="link link-hover">{runner.name}</a>
+                        : runner.name}
+                    </div>
+                    <div class="text-xs text-muted mt-0.5 truncate">
+                      {clubName}{catLabel && <> · <span class="font-mono">{catLabel}</span></>}
+                    </div>
+
+                    <div slot="score" class="text-right shrink-0">
+                      <div class="font-mono text-xl font-medium leading-none tabular-nums">{runner.total}</div>
+                      <div class="font-head text-[9px] font-bold tracking-[0.12em] uppercase text-muted mt-0.5">
+                        {Object.keys(runner.results).length} run
                       </div>
-                      <div class="text-right shrink-0">
-                        <div class="font-mono text-xl font-medium leading-none tabular-nums">{runner.total}</div>
-                        <div class="font-head text-[9px] font-bold tracking-[0.12em] uppercase text-muted mt-0.5">
-                          {Object.keys(runner.results).length} run
-                        </div>
-                      </div>
-                      <span class="chevron text-content/30 text-xs transition-transform">▾</span>
-                    </button>
-                    <div id={detailId} class="hidden px-3 pb-3 border-t border-dashed border-line">
-                      <p class="text-xs text-muted mb-2 pt-2">
-                        {catLabel && <span class="font-mono">{catLabel}</span>}
-                      </p>
-                      <div class="flex flex-wrap gap-1.5">
+                    </div>
+
+                    <div slot="detail" class="p-3">
+                      <div
+                        class="grid gap-1"
+                        style={`grid-template-columns: repeat(${standings.races.length}, minmax(0, 1fr))`}
+                      >
                         {standings.races.map(raceId => {
                           const result = runner.results[raceId];
                           const race   = raceById[raceId];
@@ -320,23 +324,23 @@ const dth = 'font-head text-[10px] font-bold tracking-[0.1em] uppercase text-mut
                           const href   = linkedRaceIds.has(raceId) ? siteUrl(`${resultsBase}/${raceId}/results`) : null;
                           return (
                             <div class:list={[
-                              'rounded px-2.5 py-1 text-center text-sm min-w-[44px]',
+                              'flex flex-col items-center gap-0.5 py-1.5 rounded-md text-center',
                               result ? (result.counting ? 'bg-canvas' : 'bg-canvas/40') : 'bg-canvas/20',
                             ]}>
                               {href
-                                ? <a href={href} class:list={['block text-[10px] mb-0.5', result ? (result.counting ? 'text-amber' : 'text-content/30') : 'text-content/20']}>{rlabel}</a>
-                                : <span class:list={['block text-[10px] mb-0.5', result ? (result.counting ? 'text-content/40' : 'text-content/20') : 'text-content/20']}>{rlabel}</span>
+                                ? <a href={href} class:list={['font-head text-[9px] font-bold tracking-[0.08em]', result ? (result.counting ? 'text-amber' : 'text-content/30') : 'text-content/20']}>{rlabel}</a>
+                                : <span class:list={['font-head text-[9px] font-bold tracking-[0.08em]', result ? (result.counting ? 'text-muted' : 'text-content/20') : 'text-content/20']}>{rlabel}</span>
                               }
                               {result
-                                ? <span class:list={[result.counting ? 'font-semibold' : 'text-content/30 line-through']}>{result.points}</span>
-                                : <span class="text-content/20">—</span>
+                                ? <span class:list={['font-mono text-sm font-medium', result.counting ? 'text-content' : 'text-content/30 line-through']}>{result.points}</span>
+                                : <span class="font-mono text-sm font-medium text-content/20">—</span>
                               }
                             </div>
                           );
                         })}
                       </div>
                     </div>
-                  </div>
+                  </MobileAccordionCard>
                 );
               })}
               <!-- Race key (mobile) -->
@@ -627,17 +631,6 @@ const dth = 'font-head text-[10px] font-bold tracking-[0.1em] uppercase text-mut
 
   sidebarSexBtns.forEach(btn => btn.addEventListener('click', () => activateSex(btn.dataset.sex!)));
   chipSexBtns.forEach(btn => btn.addEventListener('click', () => activateSex(btn.dataset.sex!)));
-
-  // ── Mobile accordion ──────────────────────────────────────────────────────────
-  document.querySelectorAll<HTMLButtonElement>('.standings-toggle').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const detail = document.getElementById(btn.dataset.target!)!;
-      const isOpen = !detail.classList.contains('hidden');
-      detail.classList.toggle('hidden', isOpen);
-      btn.setAttribute('aria-expanded', isOpen ? 'false' : 'true');
-      btn.querySelector('.chevron')?.classList.toggle('rotate-180', !isOpen);
-    });
-  });
 
   // ── Filter: name search + club chips + age chips ─────────────────────────────
   const searchInput    = document.querySelector<HTMLInputElement>('#runner-search');

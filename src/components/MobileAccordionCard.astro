@@ -1,0 +1,67 @@
+---
+// src/components/MobileAccordionCard.astro
+//
+// Reusable mobile accordion card used by IndividualStandingsLayout and
+// TeamStandingsLayout. Handles the outer card shell, podium accent bar,
+// toggle button chrome (position + chevron), and expand/collapse behaviour.
+//
+// Slots:
+//   default  — main content area (name+club, club name, etc.) in the flex-1 div
+//   score    — right-side score block (total + sub-label / tiebreaker)
+//   detail   — expanded content shown when the card is open
+//
+// Extra HTML attributes (data-sex, data-name, data-club, class, …) are spread
+// onto the outer div so filter scripts can target cards directly.
+
+import type { HTMLAttributes } from 'astro/types';
+
+interface Props extends HTMLAttributes<'div'> {
+  detailId: string;
+  position: number | string;
+  /** Tailwind bg-* class for the 3px left accent bar, or null/undefined for none. */
+  podiumAccent?: string | null;
+}
+
+const { detailId, position, podiumAccent, class: className, ...rest } = Astro.props;
+---
+
+<div
+  class:list={['bg-surface border border-line rounded-xl mb-2 overflow-hidden relative', className]}
+  {...rest}
+>
+  {podiumAccent && <div class:list={['absolute left-0 inset-y-0 w-[3px]', podiumAccent]} />}
+
+  <button
+    class="accordion-toggle w-full flex items-center gap-3 py-3 pl-3 pr-3 text-left"
+    data-target={detailId}
+    aria-expanded="false"
+  >
+    <span class="font-mono text-sm font-medium text-muted w-6 shrink-0 text-center tabular-nums">
+      {position}
+    </span>
+
+    <div class="flex-1 min-w-0">
+      <slot />
+    </div>
+
+    <slot name="score" />
+
+    <span class="chevron text-content/30 text-xs transition-transform">▾</span>
+  </button>
+
+  <div id={detailId} class="hidden border-t border-dashed border-line">
+    <slot name="detail" />
+  </div>
+</div>
+
+<script>
+  document.querySelectorAll<HTMLButtonElement>('.accordion-toggle').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const detail = document.getElementById(btn.dataset.target!)!;
+      const isOpen = !detail.classList.contains('hidden');
+      detail.classList.toggle('hidden', isOpen);
+      btn.setAttribute('aria-expanded', isOpen ? 'false' : 'true');
+      btn.querySelector('.chevron')?.classList.toggle('rotate-180', !isOpen);
+    });
+  });
+</script>
