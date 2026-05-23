@@ -1,0 +1,82 @@
+---
+// src/components/ChipBar.astro
+//
+// Full-viewport-width white chip strip for mobile + tablet category navigation.
+// Rendered via Layout's "chip-bar" named slot, which sits outside <main>,
+// so it naturally spans the full viewport without any negative-margin tricks.
+//
+// Optionally shows a centred Male / Female toggle row above the chips
+// when `defaultSex` is supplied (individual standings only).
+
+export interface ChipItem {
+  label: string;
+  /** JS panel id, e.g. "cat-panel-0" */
+  target: string;
+  /** 'M', 'F', or '' — carried as data-sex for sex-toggle filtering */
+  sex?: string;
+  active?: boolean;
+  /** Start hidden (wrong-sex chips that JS will show/hide) */
+  hidden?: boolean;
+}
+
+interface Props {
+  items: ChipItem[];
+  /**
+   * When provided, renders a centred Male / Female toggle row above the chips.
+   * The value is the initially-active sex.
+   */
+  defaultSex?: 'M' | 'F';
+}
+
+const { items, defaultSex } = Astro.props;
+---
+
+<!--
+  bg-surface matches the StandingsHeader hero so the two blocks merge visually.
+  lg:hidden: the sidebar handles navigation on desktop.
+  border-b: separates chip strip from the canvas content below.
+-->
+<div class="lg:hidden bg-surface border-b border-line w-full">
+  {defaultSex != null && (
+    <div class="flex justify-center gap-2 max-w-4xl mx-auto px-4 pt-3 pb-2">
+      {(['M', 'F'] as const).map(s => (
+        <button
+          class:list={[
+            'sex-chip-btn font-head text-xs font-bold tracking-[0.06em] uppercase px-4 py-[7px] rounded-full border transition-colors',
+            defaultSex === s
+              ? 'bg-amber border-amber text-white'
+              : 'bg-surface border-line text-muted hover:text-content',
+          ]}
+          data-sex={s}
+        >
+          {s === 'M' ? 'Male' : 'Female'}
+        </button>
+      ))}
+    </div>
+  )}
+  <!--
+    overflow-x-auto on the outer div lets chips scroll horizontally.
+    px-4 on the inner min-w-max row keeps left/right padding visible while scrolling.
+  -->
+  <div class="overflow-x-auto max-w-4xl mx-auto">
+    <div class:list={['flex gap-1.5 px-4 pb-3 min-w-max', defaultSex != null ? 'pt-1' : 'pt-3']} role="tablist">
+      {items.map(item => (
+        <button
+          class:list={[
+            'chip-btn font-head text-xs font-bold tracking-[0.06em] uppercase px-3.5 py-[7px] rounded-full border transition-colors whitespace-nowrap',
+            item.active
+              ? 'bg-amber border-amber text-white'
+              : 'bg-surface border-line text-muted hover:text-content',
+            item.hidden && 'hidden',
+          ]}
+          data-target={item.target}
+          data-sex={item.sex ?? ''}
+          role="tab"
+          aria-selected={item.active ? 'true' : 'false'}
+        >
+          {item.label}
+        </button>
+      ))}
+    </div>
+  </div>
+</div>
