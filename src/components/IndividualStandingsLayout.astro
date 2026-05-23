@@ -58,6 +58,15 @@ const raceKeyEntries = standings.races.map(raceId => {
     href:  linkedRaceIds.has(raceId) ? siteUrl(`${resultsBase}/${raceId}/results`) : null,
   };
 });
+
+// Clubs that actually appear in this standings (excludes guests, sorted by name)
+const standingsClubIds = [...new Set(
+  standings.categories.flatMap(cat => cat.runners.map(r => r.club))
+)].filter(id => id !== 'Guest');
+const standingsClubs = standingsClubIds
+  .map(id => clubById[id])
+  .filter((c): c is (typeof clubById)[string] => c != null)
+  .sort((a, b) => a.name.localeCompare(b.name));
 ---
 
 <Layout title={`${seriesLabel} ${year} — Individual Standings`}>
@@ -163,8 +172,8 @@ const raceKeyEntries = standings.races.map(raceId => {
         })}
       </div>
 
-      <!-- ── Search filter ────────────────────────────────────────────────── -->
-      <div class="relative mb-4">
+      <!-- ── Search + club filter ─────────────────────────────────────────── -->
+      <div class="relative mb-2">
         <svg class="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted pointer-events-none" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
           <circle cx="8.5" cy="8.5" r="5.5" />
           <path d="m13 13 4 4" stroke-linecap="round" />
@@ -172,11 +181,23 @@ const raceKeyEntries = standings.races.map(raceId => {
         <input
           id="runner-search"
           type="search"
-          placeholder="Filter by name or club…"
+          placeholder="Filter by name…"
           class="input w-full pl-9"
           autocomplete="off"
         />
       </div>
+      {standingsClubs.length > 1 && (
+        <div class="flex gap-1.5 flex-wrap mb-4">
+          {standingsClubs.map(club => (
+            <button
+              class="filter-club btn btn-xs rounded-full btn-ghost border border-line text-muted"
+              data-value={club.id}
+            >
+              {club.shortName ?? club.name}
+            </button>
+          ))}
+        </div>
+      )}
 
       <!-- ── Category panels ──────────────────────────────────────────────── -->
       {standings.categories.map((cat, i) => {
@@ -234,7 +255,7 @@ const raceKeyEntries = standings.races.map(raceId => {
                     data-sex={runner.sex ?? cat.sex}
                     data-age-cat={runner.ageCategory ?? cat.ageCategory}
                     data-name={runner.name}
-                    data-club={clubName}
+                    data-club={runner.club}
                   >
                     <!-- Podium left-edge accent bar -->
                     {podiumBg && <div class:list={['absolute left-0 inset-y-0 w-[3px]', podiumBg]} />}
@@ -545,31 +566,46 @@ const raceKeyEntries = standings.races.map(raceId => {
     });
   });
 
-  // ── Combined filter: age category + name/club text search ──────────────────
-  const searchInput = document.querySelector<HTMLInputElement>('#runner-search');
+  // ── Combined filter: age category + name text + club chips ─────────────────
+  const searchInput  = document.querySelector<HTMLInputElement>('#runner-search');
+  const clubFilterBtns = document.querySelectorAll<HTMLButtonElement>('.filter-club');
+
+  function filterAllPanels() {
+    document.querySelectorAll<HTMLElement>('[data-panel]').forEach(filterPanel);
+  }
 
   function filterPanel(panel: HTMLElement) {
-    const activeAges = [...panel.querySelectorAll<HTMLElement>('.filter-age.btn-active')]
+    const activeAges  = [...panel.querySelectorAll<HTMLElement>('.filter-age.btn-active')]
       .map(b => b.dataset.value ?? '');
-    const query = (searchInput?.value ?? '').toLowerCase().trim();
+    const activeClubs = [...clubFilterBtns]
+      .filter(b => b.classList.contains('btn-active'))
+      .map(b => b.dataset.value ?? '');
+    const nameQuery   = (searchInput?.value ?? '').toLowerCase().trim();
 
     const matches = (el: HTMLElement) => {
-      const ageOk  = activeAges.length === 0 || activeAges.includes(el.dataset.ageCat ?? '');
-      const textOk = !query
-        || (el.dataset.name ?? '').toLowerCase().includes(query)
-        || (el.dataset.club ?? '').toLowerCase().includes(query);
-      return ageOk && textOk;
+      const ageOk  = activeAges.length === 0  || activeAges.includes(el.dataset.ageCat ?? '');
+      const clubOk = activeClubs.length === 0 || activeClubs.includes(el.dataset.club ?? '');
+      const nameOk = !nameQuery               || (el.dataset.name ?? '').toLowerCase().includes(nameQuery);
+      return ageOk && clubOk && nameOk;
     };
 
     panel.querySelectorAll<HTMLElement>('tr[data-age-cat]').forEach(row  => { row.style.display  = matches(row)  ? '' : 'none'; });
     panel.querySelectorAll<HTMLElement>('.runner-card').forEach(card => { card.style.display = matches(card) ? '' : 'none'; });
   }
 
-  // Re-filter every panel on search input so results are ready when switching categories
-  searchInput?.addEventListener('input', () => {
-    document.querySelectorAll<HTMLElement>('[data-panel]').forEach(filterPanel);
+  // Name search
+  searchInput?.addEventListener('input', filterAllPanels);
+
+  // Club chips
+  clubFilterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      btn.classList.toggle('btn-active');
+      btn.classList.toggle('btn-ghost');
+      filterAllPanels();
+    });
   });
 
+  // Age chips
   document.querySelectorAll<HTMLButtonElement>('.filter-age').forEach(btn => {
     btn.addEventListener('click', () => {
       const panel = btn.closest<HTMLElement>('[data-panel]')!;
