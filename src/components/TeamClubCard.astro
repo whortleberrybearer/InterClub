@@ -1,0 +1,87 @@
+---
+// src/components/TeamClubCard.astro
+//
+// Markup shell for a collapsible team club card used by TeamResultsLayout.
+// No <script> block — TeamResultsLayout owns all accordion and sync logic.
+//
+// Two variants:
+//   desktop — auto-fill scorer grid, slightly larger club name font
+//   mobile  — 2/3-col scorer grid, slightly smaller club name font
+import type { TeamScorer } from '../lib/types';
+
+interface Props {
+  detailId: string;
+  position: number;
+  clubName: string;
+  total: number;
+  scorers: TeamScorer[];
+  /** Required scorer count from catConfig; drives the incomplete-team warning. */
+  scorerCount?: number;
+  runnerUrlMap: Record<number, string>;
+  variant: 'desktop' | 'mobile';
+}
+
+const { detailId, position, clubName, total, scorers, scorerCount, runnerUrlMap, variant } = Astro.props;
+const isDesktop = variant === 'desktop';
+---
+
+<div class="bg-surface border border-line rounded-xl mb-2 overflow-hidden">
+  <button
+    class="accordion-toggle w-full flex items-center gap-3 py-3 pl-3 pr-3 text-left hover:bg-canvas/50 transition-colors"
+    data-target={detailId}
+    aria-expanded="false"
+  >
+    <span class="font-mono text-sm font-medium text-muted w-6 shrink-0 text-center tabular-nums">
+      {position}
+    </span>
+    <div class="flex-1 min-w-0">
+      <div class:list={[
+        'font-head font-bold tracking-[-0.01em] leading-[1.15] truncate',
+        isDesktop ? 'text-[17px]' : 'text-[16px]',
+      ]}>{clubName}</div>
+    </div>
+    <div class="text-right shrink-0 flex flex-col items-end justify-center min-h-10">
+      <div class="font-mono text-[22px] font-medium leading-none tabular-nums">{total}</div>
+      {scorerCount != null && scorers.length < scorerCount && (
+        <div class="font-mono text-[10px] text-muted mt-0.5 tabular-nums">
+          {scorers.length} scorer{scorers.length !== 1 ? 's' : ''}
+        </div>
+      )}
+    </div>
+    <span class="chevron text-content/30 text-xs transition-transform shrink-0">▾</span>
+  </button>
+  <div id={detailId} class="hidden border-t border-dashed border-line">
+    {isDesktop ? (
+      <div class="grid gap-x-3 gap-y-0.5 p-3"
+           style="grid-template-columns: repeat(auto-fill, minmax(140px, 1fr))">
+        {scorers.map(scorer => {
+          const url = scorer.seriesRunnerId != null ? runnerUrlMap[scorer.seriesRunnerId] : undefined;
+          return (
+            <div class="flex items-baseline gap-1.5 py-[3px] min-w-0">
+              <span class="font-mono text-[11px] text-muted w-[22px] text-right shrink-0 tabular-nums">{scorer.position}</span>
+              {url
+                ? <a href={url} class="text-[12.5px] flex-1 min-w-0 truncate link link-hover">{scorer.name || '–'}</a>
+                : <span class="text-[12.5px] flex-1 min-w-0 truncate">{scorer.name || '–'}</span>
+              }
+            </div>
+          );
+        })}
+      </div>
+    ) : (
+      <div class="grid grid-cols-2 sm:grid-cols-3 gap-x-3 gap-y-0.5 p-3">
+        {scorers.map(scorer => {
+          const url = scorer.seriesRunnerId != null ? runnerUrlMap[scorer.seriesRunnerId] : undefined;
+          return (
+            <div class="flex items-baseline gap-1.5 py-[3px] min-w-0">
+              <span class="font-mono text-[10px] text-muted w-5 text-right shrink-0 tabular-nums">{scorer.position}</span>
+              {url
+                ? <a href={url} class="text-xs flex-1 min-w-0 truncate link link-hover">{scorer.name || '–'}</a>
+                : <span class="text-xs flex-1 min-w-0 truncate">{scorer.name || '–'}</span>
+              }
+            </div>
+          );
+        })}
+      </div>
+    )}
+  </div>
+</div>
