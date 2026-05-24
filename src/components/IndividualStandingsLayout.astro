@@ -36,8 +36,8 @@ export interface Props {
 const { series, year, standings, clubs, runnerUrlMap } = Astro.props;
 const linkedRaceIds = new Set(Astro.props.linkedRaceIds);
 
-const seriesLong = getSeriesLongLabel(series);
-const seriesShort  = getSeriesLabel(series);
+const seriesLabel = getSeriesLabel(series);
+const seriesLong  = getSeriesLongLabel(series);
 const backHref     = siteUrl(`/${series}/${year}`);
 const indivHref    = siteUrl(`/${series}/${year}/individual-standings`);
 const teamHref     = siteUrl(`/${series}/${year}/team-standings`);
@@ -113,7 +113,7 @@ const raceColWidth = standings.races.length >= 7 ? '3rem'
   <StandingsHeader
     slot="hero"
     backHref={backHref}
-    backLabel={`← ${seriesShort} ${year}`}
+    backLabel={`← ${seriesLabel} ${year}`}
     activeTab="individual"
     individualHref={indivHref}
     teamHref={teamHref}
