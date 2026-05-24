@@ -16,6 +16,7 @@ import type { RaceCell } from './RaceResultGrid.astro';
 import { getRaces } from '../lib/data';
 import type { Club, Series, SeriesConfig, TeamStandings } from '../lib/types';
 import { siteUrl } from '../lib/url';
+import { getSeriesLabel, getSeriesLongLabel } from '../lib/format';
 
 export interface Props {
   series: Series;
@@ -29,8 +30,8 @@ export interface Props {
 const { series, year, standings, clubs, config } = Astro.props;
 const linkedRaceIds = new Set(Astro.props.linkedRaceIds);
 
-const seriesLabel = series === 'road-gp' ? 'Road GP' : 'Fell Championship';
-const seriesLong  = series === 'road-gp' ? 'Road Grand Prix' : 'Fell Championship';
+const seriesLabel = getSeriesLabel(series);
+const seriesLong  = getSeriesLongLabel(series);
 
 const races = getRaces(year, series);
 const clubById = Object.fromEntries(clubs.map(c => [c.id, c]));

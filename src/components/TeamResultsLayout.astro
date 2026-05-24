@@ -10,6 +10,7 @@ import Layout from './Layout.astro';
 import ChipBar from './ChipBar.astro';
 import { getRace } from '../lib/data';
 import { siteUrl } from '../lib/url';
+import { getSeriesLabel, getSeriesLongLabel } from '../lib/format';
 import type { Club, Series, SeriesConfig, TeamResults } from '../lib/types';
 
 export interface Props {
@@ -27,8 +28,8 @@ const { series, year, raceId, teamResults, provisional, clubs, config, runnerUrl
 
 const race = getRace(year, series, raceId);
 const title = race?.name ?? raceId;
-const seriesLabel = series === 'road-gp' ? 'Road GP' : 'Fell Championship';
-const seriesLong  = series === 'road-gp' ? 'Road Grand Prix' : 'Fell Championship';
+const seriesLabel = getSeriesLabel(series);
+const seriesLong  = getSeriesLongLabel(series);
 
 const clubById     = Object.fromEntries(clubs.map(c => [c.id, c]));
 const categoryById = Object.fromEntries((config.teamCategories ?? []).map(c => [c.id, c]));
