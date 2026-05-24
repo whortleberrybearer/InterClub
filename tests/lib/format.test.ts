@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { formatRaceDate } from '../../src/lib/format';
+import { formatRaceDate, getSeriesLabel, getSeriesLongLabel } from '../../src/lib/format';
 
 describe('formatRaceDate', () => {
   it('formats date with time', () => {
@@ -20,5 +20,23 @@ describe('formatRaceDate', () => {
 
   it('handles single-digit days without zero padding', () => {
     expect(formatRaceDate('2026-08-02', '09:00')).toBe('Sun 2 Aug · 09:00');
+  });
+});
+
+describe('getSeriesLabel', () => {
+  it('returns short label for road-gp', () => {
+    expect(getSeriesLabel('road-gp')).toBe('Road GP');
+  });
+  it('returns short label for fell', () => {
+    expect(getSeriesLabel('fell')).toBe('Fell Championship');
+  });
+});
+
+describe('getSeriesLongLabel', () => {
+  it('returns long label for road-gp', () => {
+    expect(getSeriesLongLabel('road-gp')).toBe('Road Grand Prix');
+  });
+  it('returns long label for fell', () => {
+    expect(getSeriesLongLabel('fell')).toBe('Fell Championship');
   });
 });

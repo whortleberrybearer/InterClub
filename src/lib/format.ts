@@ -1,3 +1,5 @@
+import type { Series } from './types';
+
 const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
@@ -9,4 +11,12 @@ export function formatRaceDate(date: string, time?: string): string {
   const monthName = MONTHS[month - 1];
   const dateStr = `${dayName} ${day} ${monthName}`;
   return time ? `${dateStr} · ${time}` : dateStr;
+}
+
+export function getSeriesLabel(series: Series): string {
+  return series === 'road-gp' ? 'Road GP' : 'Fell Championship';
+}
+
+export function getSeriesLongLabel(series: Series): string {
+  return series === 'road-gp' ? 'Road Grand Prix' : 'Fell Championship';
 }
