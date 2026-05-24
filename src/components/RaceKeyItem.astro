@@ -1,0 +1,38 @@
+---
+// src/components/RaceKeyItem.astro
+//
+// A single race key entry: short-name badge + full race name (optionally linked).
+// Used in desktop sidebar, mobile race-key list, and tablet race legend in both
+// IndividualStandingsLayout and TeamStandingsLayout.
+//
+// The parent controls the outer layout container (flex column / inline-flex wrap /
+// 2-column grid). This component renders the individual row/item.
+
+interface Props {
+  /** Short race label shown in the badge, e.g. "BPL". */
+  label: string;
+  /** Full race name shown after the badge. */
+  name: string;
+  /** Link to results page; omit or null for races without results yet. */
+  href?: string | null;
+  /** False dims the item to indicate the race hasn't been run yet. Default true. */
+  ran?: boolean;
+  /** When true, appends "· upcoming" after the name when ran is false. */
+  showUpcoming?: boolean;
+  /** Extra classes forwarded to the outer wrapper div. */
+  class?: string;
+}
+
+const { label, name, href, ran = true, showUpcoming = false, class: className } = Astro.props;
+---
+
+<div class:list={['flex items-center gap-1.5 text-xs', !ran && 'opacity-50', className]}>
+  <span class="font-mono text-[10px] font-semibold bg-canvas px-1.5 py-0.5 rounded min-w-[34px] text-center tracking-[0.04em] shrink-0">
+    {label}
+  </span>
+  {href
+    ? <a href={href} class="text-amber hover:underline">{name}</a>
+    : <span>{name}</span>
+  }
+  {showUpcoming && !ran && <span class="font-mono text-muted"> · upcoming</span>}
+</div>

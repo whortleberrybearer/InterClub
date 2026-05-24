@@ -15,6 +15,9 @@ import Layout from './Layout.astro';
 import StandingsHeader from './StandingsHeader.astro';
 import ChipBar from './ChipBar.astro';
 import MobileAccordionCard from './MobileAccordionCard.astro';
+import RaceKeyItem from './RaceKeyItem.astro';
+import RaceResultGrid from './RaceResultGrid.astro';
+import type { RaceCell } from './RaceResultGrid.astro';
 import { getRaces } from '../lib/data';
 import { resolveIndividualCategoryName } from '../lib/results';
 import type { Club, IndividualStandings, Series } from '../lib/types';
@@ -214,20 +217,9 @@ const raceColWidth = standings.races.length >= 7 ? '3rem'
         <p class="font-head text-[10px] font-bold tracking-[0.12em] uppercase text-muted mb-2.5 pl-1">Race Key</p>
         <div class="flex flex-col gap-1 pl-1">
           {standings.races.map(raceId => {
-            const race  = raceById[raceId];
-            const label = race?.shortName ?? raceId;
-            const href  = linkedRaceIds.has(raceId) ? siteUrl(`${resultsBase}/${raceId}/results`) : null;
-            return (
-              <div class="flex items-center gap-2 text-xs">
-                <span class="font-mono text-[10px] font-semibold bg-canvas px-1.5 py-0.5 rounded min-w-[36px] text-center tracking-[0.04em]">
-                  {label}
-                </span>
-                {href
-                  ? <a href={href} class="text-amber hover:underline">{race?.name ?? raceId}</a>
-                  : <span>{race?.name ?? raceId}</span>
-                }
-              </div>
-            );
+            const race = raceById[raceId];
+            const href = linkedRaceIds.has(raceId) ? siteUrl(`${resultsBase}/${raceId}/results`) : null;
+            return <RaceKeyItem label={race?.shortName ?? raceId} name={race?.name ?? raceId} href={href} />;
           })}
         </div>
       </div>
@@ -350,34 +342,20 @@ const raceColWidth = standings.races.length >= 7 ? '3rem'
                       </div>
                     </div>
 
-                    <div slot="detail" class="p-3">
-                      <div
-                        class="grid gap-1"
-                        style={`grid-template-columns: repeat(${standings.races.length}, minmax(0, 1fr))`}
-                      >
-                        {standings.races.map(raceId => {
-                          const result = runner.results[raceId];
-                          const race   = raceById[raceId];
-                          const rlabel = race?.shortName ?? raceId;
-                          const href   = linkedRaceIds.has(raceId) ? siteUrl(`${resultsBase}/${raceId}/results`) : null;
-                          return (
-                            <div class:list={[
-                              'flex flex-col items-center gap-0.5 py-1.5 rounded-md text-center',
-                              result ? (result.counting ? 'bg-canvas' : 'bg-canvas/40') : 'bg-canvas/20',
-                            ]}>
-                              {href
-                                ? <a href={href} class:list={['font-head text-[9px] font-bold tracking-[0.08em]', result ? (result.counting ? 'text-amber' : 'text-content/30') : 'text-content/20']}>{rlabel}</a>
-                                : <span class:list={['font-head text-[9px] font-bold tracking-[0.08em]', result ? (result.counting ? 'text-muted' : 'text-content/20') : 'text-content/20']}>{rlabel}</span>
-                              }
-                              {result
-                                ? <span class:list={['font-mono text-sm font-medium', result.counting ? 'text-content' : 'text-content/30 line-through']}>{result.points}</span>
-                                : <span class="font-mono text-sm font-medium text-content/20">—</span>
-                              }
-                            </div>
-                          );
-                        })}
-                      </div>
-                    </div>
+                    <RaceResultGrid
+                      slot="detail"
+                      dimNoResult
+                      cells={standings.races.map(raceId => {
+                        const result = runner.results[raceId];
+                        const race   = raceById[raceId];
+                        return {
+                          label:    race?.shortName ?? raceId,
+                          href:     linkedRaceIds.has(raceId) ? siteUrl(`${resultsBase}/${raceId}/results`) : null,
+                          score:    result?.points ?? null,
+                          counting: result ? result.counting : undefined,
+                        } satisfies RaceCell;
+                      })}
+                    />
                   </MobileAccordionCard>
                 );
               })}
@@ -386,20 +364,9 @@ const raceColWidth = standings.races.length >= 7 ? '3rem'
                 <p class="font-head text-[10px] font-bold tracking-[0.12em] uppercase text-muted mb-2">Race Key</p>
                 <div class="grid grid-cols-2 gap-x-3 gap-y-1">
                   {standings.races.map(raceId => {
-                    const race  = raceById[raceId];
-                    const label = race?.shortName ?? raceId;
-                    const href  = linkedRaceIds.has(raceId) ? siteUrl(`${resultsBase}/${raceId}/results`) : null;
-                    return (
-                      <div class="flex items-center gap-1.5 text-xs">
-                        <span class="font-mono text-[10px] font-semibold bg-canvas px-1.5 py-0.5 rounded tracking-[0.04em] min-w-[32px] text-center">
-                          {label}
-                        </span>
-                        {href
-                          ? <a href={href} class="text-amber hover:underline flex-1">{race?.name ?? raceId}</a>
-                          : <span class="flex-1">{race?.name ?? raceId}</span>
-                        }
-                      </div>
-                    );
+                    const race = raceById[raceId];
+                    const href = linkedRaceIds.has(raceId) ? siteUrl(`${resultsBase}/${raceId}/results`) : null;
+                    return <RaceKeyItem label={race?.shortName ?? raceId} name={race?.name ?? raceId} href={href} />;
                   })}
                 </div>
               </div>
@@ -485,20 +452,11 @@ const raceColWidth = standings.races.length >= 7 ? '3rem'
                 </table>
               </div>
               <!-- Race legend (tablet) -->
-              <div class="flex flex-wrap gap-x-3.5 gap-y-1.5 pt-3 text-xs text-muted">
+              <div class="flex flex-wrap gap-x-3.5 gap-y-1.5 pt-3">
                 {standings.races.map(raceId => {
-                  const race  = raceById[raceId];
-                  const label = race?.shortName ?? raceId;
-                  const href  = linkedRaceIds.has(raceId) ? siteUrl(`${resultsBase}/${raceId}/results`) : null;
-                  return (
-                    <span class="inline-flex items-center gap-1.5">
-                      <span class="font-mono text-[10px] font-semibold bg-canvas px-1.5 py-0.5 rounded tracking-[0.04em]">{label}</span>
-                      {href
-                        ? <a href={href} class="text-amber hover:underline">{race?.name ?? raceId}</a>
-                        : <span>{race?.name ?? raceId}</span>
-                      }
-                    </span>
-                  );
+                  const race = raceById[raceId];
+                  const href = linkedRaceIds.has(raceId) ? siteUrl(`${resultsBase}/${raceId}/results`) : null;
+                  return <RaceKeyItem label={race?.shortName ?? raceId} name={race?.name ?? raceId} href={href} />;
                 })}
               </div>
             </div>

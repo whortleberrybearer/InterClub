@@ -1,0 +1,81 @@
+---
+// src/components/RaceResultGrid.astro
+//
+// Mobile accordion detail grid showing one cell per race.
+// Used by IndividualStandingsLayout (runner results) and TeamStandingsLayout (club points).
+//
+// Each cell shows the race's short label (optionally linked) and the score.
+// Styling varies by the `counting` state:
+//   true      → counted result  : normal colours, amber label
+//   false     → non-counting    : dimmed + strikethrough score (individual standings)
+//   undefined → no result / DNS : fully dim, shows "—" or the raw zero value
+//
+// Pass `dimNoResult={true}` for individual standings so empty cells get a faint
+// bg-canvas/20 background; leave it false (default) for team standings.
+
+export interface RaceCell {
+  /** Short race label shown in the pill, e.g. "BPL". */
+  label: string;
+  /** Link to results page; null for races without a results page yet. */
+  href?: string | null;
+  /** Numeric score, or null when the runner/club did not compete. */
+  score: number | null;
+  /**
+   * true      = result counts toward total (normal styling)
+   * false     = result exists but doesn't count (dim + strikethrough)
+   * undefined = no result at all (fully dim, score shows as "—" when null)
+   */
+  counting?: boolean;
+}
+
+interface Props {
+  cells: RaceCell[];
+  /**
+   * Add a faint bg-canvas/20 background to cells with no result.
+   * Set true for individual standings; false (default) for team standings.
+   */
+  dimNoResult?: boolean;
+}
+
+const { cells, dimNoResult = false } = Astro.props;
+---
+
+<div
+  class="grid gap-1 p-3"
+  style={`grid-template-columns: repeat(${cells.length}, minmax(0, 1fr))`}
+>
+  {cells.map(cell => {
+    const state = cell.counting === true  ? 'counting'
+                : cell.counting === false ? 'not-counting'
+                : 'none';
+    return (
+      <div class:list={[
+        'flex flex-col items-center gap-0.5 py-1.5 rounded-md text-center',
+        state === 'counting'     && 'bg-canvas',
+        state === 'not-counting' && 'bg-canvas/40',
+        state === 'none' && dimNoResult && 'bg-canvas/20',
+      ]}>
+        {cell.href
+          ? <a href={cell.href} class:list={[
+              'font-head text-[9px] font-bold tracking-[0.08em]',
+              state === 'counting'     ? 'text-amber'
+            : state === 'not-counting' ? 'text-content/30'
+            :                           'text-content/20',
+            ]}>{cell.label}</a>
+          : <span class:list={[
+              'font-head text-[9px] font-bold tracking-[0.08em]',
+              state === 'counting' ? 'text-muted' : 'text-content/20',
+            ]}>{cell.label}</span>
+        }
+        <span class:list={[
+          'font-mono text-sm font-medium',
+          state === 'counting'     ? 'text-content'
+        : state === 'not-counting' ? 'text-content/30 line-through'
+        :                           'text-content/20',
+        ]}>
+          {cell.score !== null ? cell.score : '—'}
+        </span>
+      </div>
+    );
+  })}
+</div>
