@@ -57,6 +57,13 @@ function chipLabel(cat: typeof standings.categories[number]): string {
   return cat.ageCategory; // V40, V45, V50 …
 }
 
+// Full label used in sidebar and panel headings — appends Male/Female when sex is set
+function fullCategoryLabel(cat: typeof standings.categories[number]): string {
+  const base = chipLabel(cat);
+  if (!cat.sex) return base;
+  return `${base} ${cat.sex === 'M' ? 'Male' : 'Female'}`;
+}
+
 // Display order: overall (no ageCategory) first, then JUN → SEN → vet bands
 const AGE_CAT_SORT: Record<string, number> = {
   JUN: 1, SEN: 2,
@@ -124,19 +131,19 @@ const dth = 'font-head text-[10px] font-bold tracking-[0.1em] uppercase text-mut
   />
 
   <!-- Filter bar: sits flush below the chip bar on mobile + tablet -->
-  <div slot="chip-bar" class="lg:hidden bg-surface border-b border-line w-full">
+  <div slot="chip-bar" class="lg:hidden bg-surface sm:bg-transparent border-b border-line sm:border-b-0 w-full">
     <div class="flex gap-2 max-w-4xl mx-auto px-4 py-2.5">
       <div class="flex-1 min-w-0">
         <input
           id="runner-search"
           type="search"
           placeholder="Filter by name…"
-          class="input w-full !bg-canvas"
+          class="input w-full !bg-canvas sm:!bg-surface"
           autocomplete="off"
         />
       </div>
       {standingsClubs.length > 1 && (
-        <select id="club-filter" class="input w-48 shrink-0 !bg-canvas">
+        <select id="club-filter" class="input w-48 shrink-0 !bg-canvas sm:!bg-surface">
           <option value="">All clubs</option>
           {standingsClubs.map(club => (
             <option value={club.id}>{club.name}</option>
@@ -171,7 +178,7 @@ const dth = 'font-head text-[10px] font-bold tracking-[0.1em] uppercase text-mut
       <p class="font-head text-[10px] font-bold tracking-[0.12em] uppercase text-muted mb-1 pl-1">Category</p>
       <nav class="flex flex-col">
         {sortedCats.map(({ cat, i }) => {
-          const label  = chipLabel(cat);
+          const label  = fullCategoryLabel(cat);
           const active = i === defaultCatIndex;
           const hidden = showSexToggle && !!cat.sex && cat.sex !== defaultSex;
           return (
@@ -245,7 +252,7 @@ const dth = 'font-head text-[10px] font-bold tracking-[0.1em] uppercase text-mut
       <!-- ── Category panels ────────────────────────────────────────────────── -->
       {standings.categories.map((cat, i) => {
         const isDefault      = i === defaultCatIndex;
-        const label          = resolveIndividualCategoryName(cat.id, cat.sex, cat.ageCategory, cat.name);
+        const label          = fullCategoryLabel(cat);
         const qualifiedCount = standings.maxCountingRaces
           ? cat.runners.filter(r => Object.keys(r.results).length >= standings.maxCountingRaces!).length
           : null;
