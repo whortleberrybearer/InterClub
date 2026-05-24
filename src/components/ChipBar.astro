@@ -6,8 +6,8 @@
 // so it naturally spans the full viewport without any negative-margin tricks.
 //
 // When `defaultSex` is supplied (individual standings only), Male/Female toggle
-// buttons appear left-aligned at the start of the single scrollable row,
-// separated from the category chips by a thin vertical divider.
+// buttons appear fixed to the left of the chip area on tablet — only the
+// category chips scroll. On mobile they are stacked above in a separate row.
 
 export interface ChipItem {
   label: string;
@@ -36,13 +36,11 @@ const { items, defaultSex } = Astro.props;
   bg-surface matches the StandingsHeader hero so the two blocks merge visually.
   lg:hidden: the sidebar handles navigation on desktop.
   border-b: separates chip strip from the canvas content below.
-  Single scrollable row: sex toggle (if present) + divider + category chips.
 -->
 <div class="lg:hidden bg-surface sm:bg-transparent border-b border-line sm:border-b-0 w-full">
 
   <!--
-    Mobile-only sex toggle row (<sm): stacked above the category chips.
-    Hidden on tablet where the buttons appear inline in the scroll row instead.
+    Mobile-only sex toggle row (<sm): centred, stacked above the category chips.
   -->
   {defaultSex != null && (
     <div class="flex justify-center gap-1.5 px-4 pt-3 pb-2 border-b border-line sm:hidden">
@@ -63,58 +61,65 @@ const { items, defaultSex } = Astro.props;
   )}
 
   <!--
-    Scrollable chip row.
-    On tablet (sm+): sex toggle buttons appear inline at the left, separated by a divider.
-    On mobile: only category chips (sex toggle is in the row above).
+    Chip row wrapper.
+    On tablet (sm+) with sex toggle: flex row — fixed sex section | scrollable chips.
+    On mobile / no sex toggle: scroll area spans full width.
   -->
-  <div class="relative max-w-4xl mx-auto">
-    <div class="chip-fade-left  pointer-events-none absolute left-0  inset-y-0 w-10 bg-gradient-to-r from-surface to-transparent sm:from-canvas z-10 hidden" aria-hidden="true" />
-    <div class="chip-fade-right pointer-events-none absolute right-0 inset-y-0 w-10 bg-gradient-to-l from-surface to-transparent sm:from-canvas z-10" aria-hidden="true" />
-  <div class="chip-scroll overflow-x-auto scrollbar-hide">
-    <div
-      class:list={['flex items-center gap-1.5 px-4 min-w-max', defaultSex != null ? 'pb-3 pt-3 sm:py-3' : 'py-3']}
-      role="tablist"
-    >
+  <div class="max-w-4xl mx-auto sm:flex sm:items-stretch">
 
-      {defaultSex != null && (
-        <>
-          {(['M', 'F'] as const).map(s => (
+    <!--
+      Tablet sex toggle: fixed left section, does NOT scroll with the chips.
+      Hidden on mobile (handled by the stacked row above).
+    -->
+    {defaultSex != null && (
+      <div class="hidden sm:flex items-center gap-1.5 pl-4 py-3 shrink-0">
+        {(['M', 'F'] as const).map(s => (
+          <button
+            class:list={[
+              'sex-chip-btn font-head text-xs font-bold tracking-[0.06em] uppercase px-4 py-[7px] rounded-full border transition-colors whitespace-nowrap',
+              defaultSex === s
+                ? 'bg-amber border-amber text-white'
+                : 'bg-surface border-line text-muted hover:text-content',
+            ]}
+            data-sex={s}
+          >
+            {s === 'M' ? 'Male' : 'Female'}
+          </button>
+        ))}
+        <div class="w-px self-stretch bg-line mx-1" aria-hidden="true" />
+      </div>
+    )}
+
+    <!-- Scrollable category chips area -->
+    <div class="relative flex-1 min-w-0">
+      <div class="chip-fade-left  pointer-events-none absolute left-0  inset-y-0 w-10 bg-gradient-to-r from-surface to-transparent sm:from-canvas z-10 hidden" aria-hidden="true" />
+      <div class="chip-fade-right pointer-events-none absolute right-0 inset-y-0 w-10 bg-gradient-to-l from-surface to-transparent sm:from-canvas z-10" aria-hidden="true" />
+      <div class="chip-scroll overflow-x-auto scrollbar-hide">
+        <div
+          class:list={['flex items-center gap-1.5 min-w-max py-3', defaultSex != null ? 'px-4 sm:pl-2 sm:pr-4' : 'px-4']}
+          role="tablist"
+        >
+          {items.map(item => (
             <button
               class:list={[
-                'sex-chip-btn hidden sm:inline-flex font-head text-xs font-bold tracking-[0.06em] uppercase px-4 py-[7px] rounded-full border transition-colors whitespace-nowrap',
-                defaultSex === s
+                'chip-btn font-head text-xs font-bold tracking-[0.06em] uppercase px-3.5 py-[7px] rounded-full border transition-colors whitespace-nowrap',
+                item.active
                   ? 'bg-amber border-amber text-white'
                   : 'bg-surface border-line text-muted hover:text-content',
+                item.hidden && 'hidden',
               ]}
-              data-sex={s}
+              data-target={item.target}
+              data-sex={item.sex ?? ''}
+              role="tab"
+              aria-selected={item.active ? 'true' : 'false'}
             >
-              {s === 'M' ? 'Male' : 'Female'}
+              {item.label}
             </button>
           ))}
-          <div class="hidden sm:block w-px self-stretch bg-line mx-1" aria-hidden="true" />
-        </>
-      )}
-
-      {items.map(item => (
-        <button
-          class:list={[
-            'chip-btn font-head text-xs font-bold tracking-[0.06em] uppercase px-3.5 py-[7px] rounded-full border transition-colors whitespace-nowrap',
-            item.active
-              ? 'bg-amber border-amber text-white'
-              : 'bg-surface border-line text-muted hover:text-content',
-            item.hidden && 'hidden',
-          ]}
-          data-target={item.target}
-          data-sex={item.sex ?? ''}
-          role="tab"
-          aria-selected={item.active ? 'true' : 'false'}
-        >
-          {item.label}
-        </button>
-      ))}
-
+        </div>
+      </div>
     </div>
-  </div>
+
   </div>
 </div>
 
