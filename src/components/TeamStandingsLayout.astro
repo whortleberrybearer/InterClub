@@ -36,6 +36,8 @@ const races = getRaces(year, series);
 const clubById = Object.fromEntries(clubs.map(c => [c.id, c]));
 const categoryById = Object.fromEntries((config.teamCategories ?? []).map(c => [c.id, c]));
 
+const abbr = (t: string) => t.replace(/ points\b/g, ' pts').replace(/ teams\b/g, ' tms');
+
 const standingsRaceIdx = Object.fromEntries(standings.races.map((id, i) => [id, i]));
 
 const racesRun = standings.races.filter((_, idx) =>
@@ -98,17 +100,21 @@ const raceColWidth = races.length >= 7 ? '3rem'
 
     <!-- Sticky sidebar -->
     <aside class="sticky top-6 self-start">
-      <p class="font-head text-[10px] font-bold tracking-[0.12em] uppercase text-muted mb-2 pl-1">Jump to category</p>
+      <p class="font-head text-[10px] font-bold tracking-[0.12em] uppercase text-muted mb-2 pl-1">Category</p>
       <nav class="flex flex-col">
-        {standings.categories.map((cat) => {
+        {standings.categories.map((cat, i) => {
           const label = categoryById[cat.id]?.name ?? cat.id;
           return (
-            <a
-              href={`#cat-${cat.id}`}
-              class="flex items-center px-3 py-2 rounded-lg no-underline text-content hover:bg-canvas border-l-2 border-transparent hover:border-amber transition-colors"
+            <button
+              class:list={[
+                'dt-sidebar-btn w-full flex items-center px-3 py-2 rounded-lg border-l-2 text-left transition-colors font-head text-[13px] font-bold tracking-[0.04em] uppercase',
+                i === 0 ? 'border-l-amber bg-amber-bg text-amber'
+                        : 'border-l-transparent hover:bg-canvas text-content',
+              ]}
+              data-target={`dt-panel-${i}`}
             >
-              <span class="font-head text-[13px] font-bold tracking-[0.04em] uppercase">{label}</span>
-            </a>
+              <span>{label}</span>
+            </button>
           );
         })}
       </nav>
@@ -126,12 +132,12 @@ const raceColWidth = races.length >= 7 ? '3rem'
       </div>
     </aside>
 
-    <!-- Stacked category sections (all visible, sidebar scrolls between them) -->
-    <div class="flex flex-col gap-9">
-      {standings.categories.map((cat) => {
+    <!-- Category panels: one visible at a time, switched by sidebar buttons -->
+    <div>
+      {standings.categories.map((cat, i) => {
         const label = categoryById[cat.id]?.name ?? cat.id;
         return (
-          <section id={`cat-${cat.id}`} class="scroll-mt-5">
+          <section id={`dt-panel-${i}`} class:list={[i > 0 && 'hidden']}>
             <div class="pb-3 mb-3.5 border-b-2 border-content">
               <h2 class="font-head text-[26px] font-extrabold tracking-tight leading-none">{label}</h2>
             </div>
@@ -171,9 +177,6 @@ const raceColWidth = races.length >= 7 ? '3rem'
                       </td>
                       <td class="py-2.5 px-2 align-middle max-w-0 overflow-hidden">
                         <div class="font-semibold text-[14px] truncate">{clubName}</div>
-                        {clubResult.tiebreaker && (
-                          <div class="font-mono text-[10px] text-muted mt-0.5 tracking-[0.04em] truncate">{clubResult.tiebreaker}</div>
-                        )}
                       </td>
                       {races.map((race, ri) => {
                         const sIdx = standingsRaceIdx[race.id];
@@ -188,8 +191,11 @@ const raceColWidth = races.length >= 7 ? '3rem'
                           </td>
                         );
                       })}
-                      <td class="py-2.5 pl-3 pr-0.5 text-right font-mono text-[17px] font-bold align-middle border-l-2 border-content tabular-nums">
-                        {clubResult.total}
+                      <td class="py-2.5 pl-3 pr-0.5 text-right border-l-2 border-content align-top">
+                        <div class="font-mono text-[17px] font-bold tabular-nums">{clubResult.total}</div>
+                        {clubResult.tiebreaker && (
+                          <div class="font-mono text-[10px] text-muted mt-0.5 tracking-[0.04em] whitespace-nowrap">{abbr(clubResult.tiebreaker)}</div>
+                        )}
                       </td>
                     </tr>
                   );
@@ -258,9 +264,6 @@ const raceColWidth = races.length >= 7 ? '3rem'
                         </td>
                         <td class="py-3 pl-2 pr-2 align-middle max-w-0 overflow-hidden">
                           <div class="font-semibold text-[14px] truncate">{clubName}</div>
-                          {clubResult.tiebreaker && (
-                            <div class="font-mono text-[10px] text-muted mt-0.5 tracking-[0.04em]">{clubResult.tiebreaker}</div>
-                          )}
                         </td>
                         {races.map((race, ri) => {
                           const sIdx = standingsRaceIdx[race.id];
@@ -274,8 +277,11 @@ const raceColWidth = races.length >= 7 ? '3rem'
                             </td>
                           );
                         })}
-                        <td class="py-3 pl-3 pr-3.5 text-right font-mono text-[16px] font-bold align-middle border-l-2 border-content tabular-nums">
-                          {clubResult.total}
+                        <td class="py-3 pl-3 pr-3.5 text-right border-l-2 border-content align-top">
+                          <div class="font-mono text-[16px] font-bold tabular-nums">{clubResult.total}</div>
+                          {clubResult.tiebreaker && (
+                            <div class="font-mono text-[10px] text-muted mt-0.5 tracking-[0.04em] whitespace-nowrap">{abbr(clubResult.tiebreaker)}</div>
+                          )}
                         </td>
                       </tr>
                     );
@@ -305,7 +311,7 @@ const raceColWidth = races.length >= 7 ? '3rem'
                   <div slot="score" class="text-right shrink-0 flex flex-col items-end justify-center min-h-10">
                     <div class="font-mono text-[22px] font-medium leading-none tabular-nums">{clubResult.total}</div>
                     {clubResult.tiebreaker && (
-                      <div class="font-mono text-[9px] text-muted mt-0.5 tracking-[0.04em]">{clubResult.tiebreaker}</div>
+                      <div class="font-mono text-[9px] text-muted mt-0.5 tracking-[0.04em]">{abbr(clubResult.tiebreaker)}</div>
                     )}
                   </div>
 
@@ -347,24 +353,46 @@ const raceColWidth = races.length >= 7 ? '3rem'
 </Layout>
 
 <script>
-  // ── Category chips (mobile + tablet) ──
-  const chips = document.querySelectorAll<HTMLButtonElement>('.chip-btn');
+  const chips        = document.querySelectorAll<HTMLButtonElement>('.chip-btn');
+  const dtSidebarBtns = document.querySelectorAll<HTMLButtonElement>('.dt-sidebar-btn');
+
+  // Activates both views by index so resizing keeps them in sync
+  function activateIndex(idx: string) {
+    chips.forEach(c => {
+      const active = c.dataset.target === `cat-panel-${idx}`;
+      c.classList.toggle('bg-amber',     active);
+      c.classList.toggle('border-amber', active);
+      c.classList.toggle('text-white',   active);
+      c.classList.toggle('bg-surface',   !active);
+      c.classList.toggle('border-line',  !active);
+      c.classList.toggle('text-muted',   !active);
+      c.setAttribute('aria-selected', active ? 'true' : 'false');
+    });
+    document.querySelectorAll<HTMLElement>('[id^="cat-panel-"]').forEach(panel => {
+      panel.classList.toggle('hidden', panel.id !== `cat-panel-${idx}`);
+    });
+    dtSidebarBtns.forEach(b => {
+      const active = b.dataset.target === `dt-panel-${idx}`;
+      b.classList.toggle('border-l-amber',       active);
+      b.classList.toggle('bg-amber-bg',          active);
+      b.classList.toggle('text-amber',           active);
+      b.classList.toggle('border-l-transparent', !active);
+      b.classList.toggle('hover:bg-canvas',      !active);
+      b.classList.toggle('text-content',         !active);
+    });
+    document.querySelectorAll<HTMLElement>('[id^="dt-panel-"]').forEach(panel => {
+      panel.classList.toggle('hidden', panel.id !== `dt-panel-${idx}`);
+    });
+  }
+
   chips.forEach(btn => {
     btn.addEventListener('click', () => {
-      const targetId = btn.dataset.target!;
-      chips.forEach(c => {
-        const active = c === btn;
-        c.classList.toggle('bg-amber',    active);
-        c.classList.toggle('border-amber', active);
-        c.classList.toggle('text-white',   active);
-        c.classList.toggle('bg-surface',   !active);
-        c.classList.toggle('border-line',  !active);
-        c.classList.toggle('text-muted',   !active);
-        c.setAttribute('aria-selected', active ? 'true' : 'false');
-      });
-      document.querySelectorAll<HTMLElement>('[id^="cat-panel-"]').forEach(panel => {
-        panel.classList.toggle('hidden', panel.id !== targetId);
-      });
+      activateIndex(btn.dataset.target!.replace('cat-panel-', ''));
+    });
+  });
+  dtSidebarBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      activateIndex(btn.dataset.target!.replace('dt-panel-', ''));
     });
   });
 
