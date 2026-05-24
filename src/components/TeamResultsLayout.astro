@@ -116,34 +116,12 @@ const categoryById = Object.fromEntries((config.teamCategories ?? []).map(c => [
         return (
           <div id={`dt-cat-panel-${i}`} class:list={[i > 0 && 'hidden']}>
 
-            <!-- Category heading + stat strip -->
-            <div class="flex items-end justify-between pb-4 mb-5 border-b border-line">
-              <div>
-                <h2 class="font-head text-[30px] font-extrabold tracking-tight leading-none">{label}</h2>
-                {catConfig && (
-                  <p class="text-sm text-muted mt-1">
-                    {catConfig.scorerCount} scorer{catConfig.scorerCount !== 1 ? 's' : ''} · lower total wins
-                  </p>
-                )}
-              </div>
-              <div class="flex gap-5 shrink-0">
-                <div class="text-right">
-                  <div class="font-mono text-base text-content">{cat.clubs.length}</div>
-                  <div class="text-[10px] uppercase tracking-[0.1em] text-muted mt-0.5">Clubs</div>
-                </div>
-                {catConfig && (
-                  <div class="text-right">
-                    <div class="font-mono text-base text-content">{catConfig.scorerCount}</div>
-                    <div class="text-[10px] uppercase tracking-[0.1em] text-muted mt-0.5">Scorers</div>
-                  </div>
-                )}
-                {cat.clubs[0] && (
-                  <div class="text-right">
-                    <div class="font-mono text-base text-amber">{cat.clubs[0].total}</div>
-                    <div class="text-[10px] uppercase tracking-[0.1em] text-muted mt-0.5">Winning total</div>
-                  </div>
-                )}
-              </div>
+            <!-- Category heading -->
+            <div class="pb-3 mb-3.5 border-b-2 border-content flex items-baseline justify-between">
+              <h2 class="font-head text-[26px] font-extrabold tracking-tight leading-none">{label}</h2>
+              {catConfig && (
+                <span class="text-sm text-muted shrink-0 ml-4">{catConfig.scorerCount} scorer{catConfig.scorerCount !== 1 ? 's' : ''}</span>
+              )}
             </div>
 
             <!-- Collapsible team cards (desktop, single column) -->
@@ -212,13 +190,10 @@ const categoryById = Object.fromEntries((config.teamCategories ?? []).map(c => [
         <div id={`cat-panel-${i}`} class:list={[i > 0 && 'hidden']} role="tabpanel">
 
           <!-- Panel heading -->
-          <div class="mb-4">
-            <h2 class="font-head text-[22px] sm:text-[26px] font-extrabold tracking-tight">{label}</h2>
+          <div class="pb-3 mb-3.5 border-b-2 border-content flex items-baseline justify-between">
+            <h2 class="font-head text-[22px] sm:text-[26px] font-extrabold tracking-tight leading-none">{label}</h2>
             {catConfig && (
-              <p class="text-sm text-muted mt-0.5">
-                {catConfig.scorerCount} scorer{catConfig.scorerCount !== 1 ? 's' : ''} · lower total wins
-                <span class="hidden sm:inline"> · {cat.clubs.length} clubs</span>
-              </p>
+              <span class="text-sm text-muted shrink-0 ml-4">{catConfig.scorerCount} scorer{catConfig.scorerCount !== 1 ? 's' : ''}</span>
             )}
           </div>
 
