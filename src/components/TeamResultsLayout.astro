@@ -277,44 +277,51 @@ const categoryById = Object.fromEntries((config.teamCategories ?? []).map(c => [
     });
   });
 
-  // ── Category chips (mobile + tablet) ──
-  const chips = document.querySelectorAll<HTMLButtonElement>('.chip-btn');
+  // ── Category switching — synced between chip bar and desktop sidebar ──
+  const chips      = document.querySelectorAll<HTMLButtonElement>('.chip-btn');
+  const sidebarBtns = document.querySelectorAll<HTMLButtonElement>('.cat-sidebar-btn');
+
+  function activateCategoryIndex(idx: string) {
+    // Sync chip bar
+    chips.forEach(c => {
+      const active = c.dataset.target === `cat-panel-${idx}`;
+      c.classList.toggle('bg-amber',     active);
+      c.classList.toggle('border-amber', active);
+      c.classList.toggle('text-white',   active);
+      c.classList.toggle('bg-surface',   !active);
+      c.classList.toggle('border-line',  !active);
+      c.classList.toggle('text-muted',   !active);
+      c.setAttribute('aria-selected', active ? 'true' : 'false');
+    });
+    // Sync mobile/tablet panels
+    document.querySelectorAll<HTMLElement>('[id^="cat-panel-"]').forEach(panel => {
+      panel.classList.toggle('hidden', panel.id !== `cat-panel-${idx}`);
+    });
+    // Sync desktop sidebar
+    sidebarBtns.forEach(b => {
+      const active = b.dataset.target === `dt-cat-panel-${idx}`;
+      b.classList.toggle('border-l-amber',       active);
+      b.classList.toggle('bg-amber-bg',          active);
+      b.classList.toggle('text-amber',           active);
+      b.classList.toggle('border-l-transparent', !active);
+      b.classList.toggle('hover:bg-canvas',      !active);
+      b.classList.toggle('text-content',         !active);
+    });
+    // Sync desktop panels
+    document.querySelectorAll<HTMLElement>('[id^="dt-cat-panel-"]').forEach(panel => {
+      panel.classList.toggle('hidden', panel.id !== `dt-cat-panel-${idx}`);
+    });
+  }
+
   chips.forEach(btn => {
     btn.addEventListener('click', () => {
-      const targetId = btn.dataset.target!;
-      chips.forEach(c => {
-        const active = c === btn;
-        c.classList.toggle('bg-amber',     active);
-        c.classList.toggle('border-amber', active);
-        c.classList.toggle('text-white',   active);
-        c.classList.toggle('bg-surface',   !active);
-        c.classList.toggle('border-line',  !active);
-        c.classList.toggle('text-muted',   !active);
-        c.setAttribute('aria-selected', active ? 'true' : 'false');
-      });
-      document.querySelectorAll<HTMLElement>('[id^="cat-panel-"]').forEach(panel => {
-        panel.classList.toggle('hidden', panel.id !== targetId);
-      });
+      activateCategoryIndex(btn.dataset.target!.replace('cat-panel-', ''));
     });
   });
 
-  // ── Desktop sidebar category switching ──
-  const sidebarBtns = document.querySelectorAll<HTMLButtonElement>('.cat-sidebar-btn');
   sidebarBtns.forEach(btn => {
     btn.addEventListener('click', () => {
-      const targetId = btn.dataset.target!;
-      sidebarBtns.forEach(b => {
-        const active = b === btn;
-        b.classList.toggle('border-l-amber',       active);
-        b.classList.toggle('bg-amber-bg',          active);
-        b.classList.toggle('text-amber',           active);
-        b.classList.toggle('border-l-transparent', !active);
-        b.classList.toggle('hover:bg-canvas',      !active);
-        b.classList.toggle('text-content',         !active);
-      });
-      document.querySelectorAll<HTMLElement>('[id^="dt-cat-panel-"]').forEach(panel => {
-        panel.classList.toggle('hidden', panel.id !== targetId);
-      });
+      activateCategoryIndex(btn.dataset.target!.replace('dt-cat-panel-', ''));
     });
   });
 </script>
