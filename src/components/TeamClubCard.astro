@@ -15,7 +15,7 @@ interface Props {
   clubName: string;
   total: number;
   scorers: TeamScorer[];
-  /** Required scorer count from catConfig; drives the incomplete-team warning. */
+  /** Scorer count from catConfig; when provided, drives the incomplete-team warning. */
   scorerCount?: number;
   runnerUrlMap: Record<number, string>;
   variant: 'desktop' | 'mobile';
