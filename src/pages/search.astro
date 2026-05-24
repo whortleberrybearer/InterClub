@@ -10,9 +10,9 @@ const SECTIONS = [
 ---
 
 <Layout title="Search" noPad>
-  <!-- Hero: shown when query ≥ 3 chars -->
-  <div id="search-hero" class="hidden bg-surface border-b border-line px-4 pt-6 pb-5 mb-0">
-    <div class="max-w-4xl mx-auto">
+  <!-- Hero: shown when query ≥ 3 chars, renders full-width via named slot -->
+  <div slot="hero" id="search-hero" class="hidden bg-surface border-b border-line">
+    <div class="max-w-4xl mx-auto px-4 pt-6 pb-5">
       <div class="font-head text-[10px] font-bold tracking-[0.14em] uppercase text-muted mb-1">Search Results</div>
       <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1">
         <h1 id="query-heading" class="font-head text-[28px] md:text-[38px] font-black tracking-tight leading-none"></h1>
@@ -21,7 +21,7 @@ const SECTIONS = [
     </div>
   </div>
 
-  <div class="max-w-4xl mx-auto w-full px-4 py-8">
+  <div class="py-8">
     <!-- Prompt state (< 3 chars) -->
     <p id="state-prompt" class="text-sm text-muted">Type at least 3 characters to search.</p>
 
