@@ -252,14 +252,28 @@ const categoryById = Object.fromEntries((config.teamCategories ?? []).map(c => [
 </Layout>
 
 <script>
-  // ── Collapsible club cards (shared pattern with MobileAccordionCard) ──
+  // ── Collapsible club cards — synced between desktop and mobile/tablet views ──
+  function applyAccordionState(targetId: string, open: boolean) {
+    const detail = document.getElementById(targetId);
+    const toggleBtn = document.querySelector<HTMLButtonElement>(`[data-target="${targetId}"]`);
+    if (!detail) return;
+    detail.classList.toggle('hidden', !open);
+    toggleBtn?.setAttribute('aria-expanded', open ? 'true' : 'false');
+    toggleBtn?.querySelector('.chevron')?.classList.toggle('rotate-180', open);
+  }
+
   document.querySelectorAll<HTMLButtonElement>('.accordion-toggle').forEach(btn => {
     btn.addEventListener('click', () => {
-      const detail = document.getElementById(btn.dataset.target!)!;
-      const isOpen = !detail.classList.contains('hidden');
-      detail.classList.toggle('hidden', isOpen);
-      btn.setAttribute('aria-expanded', isOpen ? 'false' : 'true');
-      btn.querySelector('.chevron')?.classList.toggle('rotate-180', !isOpen);
+      const targetId = btn.dataset.target!;
+      const detail = document.getElementById(targetId)!;
+      const open = detail.classList.contains('hidden'); // about to open
+      // Toggle primary
+      applyAccordionState(targetId, open);
+      // Sync counterpart (dt-detail- <-> mb-detail-)
+      const counterpartId = targetId.startsWith('dt-detail-')
+        ? targetId.replace('dt-detail-', 'mb-detail-')
+        : targetId.replace('mb-detail-', 'dt-detail-');
+      applyAccordionState(counterpartId, open);
     });
   });
 
