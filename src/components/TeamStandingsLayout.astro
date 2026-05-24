@@ -10,6 +10,9 @@ import Layout from './Layout.astro';
 import StandingsHeader from './StandingsHeader.astro';
 import ChipBar from './ChipBar.astro';
 import MobileAccordionCard from './MobileAccordionCard.astro';
+import RaceKeyItem from './RaceKeyItem.astro';
+import RaceResultGrid from './RaceResultGrid.astro';
+import type { RaceCell } from './RaceResultGrid.astro';
 import { getRaces } from '../lib/data';
 import type { Club, Series, SeriesConfig, TeamStandings } from '../lib/types';
 import { siteUrl } from '../lib/url';
@@ -115,20 +118,9 @@ const raceColWidth = races.length >= 7 ? '3rem'
         <p class="font-head text-[10px] font-bold tracking-[0.12em] uppercase text-muted mb-2.5 pl-1">Race Key</p>
         <div class="flex flex-col gap-1 pl-1">
           {races.map((race, ri) => {
-            const label = race.shortName ?? race.id;
-            const ran = racesRun > ri;
+            const ran  = racesRun > ri;
             const href = linkedRaceIds.has(race.id) ? siteUrl(`/${series}/${year}/${race.id}/team-results`) : null;
-            return (
-              <div class:list={['flex items-center gap-2 text-xs', !ran && 'opacity-50']}>
-                <span class="font-mono text-[10px] font-semibold bg-canvas px-1.5 py-0.5 rounded min-w-[36px] text-center tracking-[0.04em]">
-                  {label}
-                </span>
-                {href
-                  ? <a href={href} class="text-amber hover:underline">{race.name}</a>
-                  : <span>{race.name}</span>
-                }
-              </div>
-            );
+            return <RaceKeyItem label={race.shortName ?? race.id} name={race.name} href={href} ran={ran} />;
           })}
         </div>
       </div>
@@ -292,20 +284,11 @@ const raceColWidth = races.length >= 7 ? '3rem'
               </table>
             </div>
             <!-- Race legend (tablet) -->
-            <div class="flex flex-wrap gap-x-3.5 gap-y-1.5 pt-3.5 text-xs text-muted">
+            <div class="flex flex-wrap gap-x-3.5 gap-y-1.5 pt-3.5">
               {races.map((race, ri) => {
-                const ran = racesRun > ri;
+                const ran  = racesRun > ri;
                 const href = linkedRaceIds.has(race.id) ? siteUrl(`/${series}/${year}/${race.id}/team-results`) : null;
-                return (
-                  <span class:list={['inline-flex items-center gap-1.5', !ran && 'opacity-50']}>
-                    <span class="font-mono text-[10px] font-semibold bg-canvas px-1.5 py-0.5 rounded tracking-[0.04em]">{race.shortName ?? race.id}</span>
-                    {href
-                      ? <a href={href} class="text-amber hover:underline">{race.name}</a>
-                      : <span>{race.name}</span>
-                    }
-                    {!ran && <span class="font-mono"> · upcoming</span>}
-                  </span>
-                );
+                return <RaceKeyItem label={race.shortName ?? race.id} name={race.name} href={href} ran={ran} showUpcoming />;
               })}
             </div>
           </div>
@@ -326,25 +309,19 @@ const raceColWidth = races.length >= 7 ? '3rem'
                     )}
                   </div>
 
-                  <div slot="detail" class="grid gap-1 p-3" style={`grid-template-columns: repeat(${races.length}, minmax(0, 1fr))`}>
-                    {races.map((race) => {
+                  <RaceResultGrid
+                    slot="detail"
+                    cells={races.map(race => {
                       const sIdx = standingsRaceIdx[race.id];
-                      const pts = sIdx !== undefined ? (clubResult.points[sIdx] ?? null) : null;
-                      const scored = pts !== null && pts > 0;
-                      const href = linkedRaceIds.has(race.id) ? siteUrl(`/${series}/${year}/${race.id}/team-results`) : null;
-                      return (
-                        <div class:list={['flex flex-col items-center gap-0.5 py-1.5 rounded-md', scored && 'bg-canvas']}>
-                          {href
-                            ? <a href={href} class:list={['font-head text-[9px] font-bold tracking-[0.08em]', scored ? 'text-amber' : 'text-content/20']}>{race.shortName ?? race.id}</a>
-                            : <span class:list={['font-head text-[9px] font-bold tracking-[0.08em]', scored ? 'text-muted' : 'text-content/20']}>{race.shortName ?? race.id}</span>
-                          }
-                          <span class:list={['font-mono text-sm font-medium', scored ? 'text-content' : 'text-content/20']}>
-                            {pts !== null ? pts : '—'}
-                          </span>
-                        </div>
-                      );
+                      const pts  = sIdx !== undefined ? (clubResult.points[sIdx] ?? null) : null;
+                      return {
+                        label:    race.shortName ?? race.id,
+                        href:     linkedRaceIds.has(race.id) ? siteUrl(`/${series}/${year}/${race.id}/team-results`) : null,
+                        score:    pts,
+                        counting: pts !== null && pts > 0 ? true : undefined,
+                      } satisfies RaceCell;
                     })}
-                  </div>
+                  />
                 </MobileAccordionCard>
               );
             })}
@@ -355,19 +332,9 @@ const raceColWidth = races.length >= 7 ? '3rem'
             <p class="font-head text-[10px] font-bold tracking-[0.12em] uppercase text-muted mb-2">Race Key</p>
             <div class="grid grid-cols-2 gap-x-3 gap-y-1">
               {races.map((race, ri) => {
-                const ran = racesRun > ri;
+                const ran  = racesRun > ri;
                 const href = linkedRaceIds.has(race.id) ? siteUrl(`/${series}/${year}/${race.id}/team-results`) : null;
-                return (
-                  <div class:list={['flex items-center gap-2 text-xs', !ran && 'opacity-60']}>
-                    <span class="font-mono text-[10px] font-semibold bg-canvas px-1.5 py-0.5 rounded tracking-[0.04em] min-w-[32px] text-center">
-                      {race.shortName ?? race.id}
-                    </span>
-                    {href
-                      ? <a href={href} class="text-amber hover:underline flex-1">{race.name}</a>
-                      : <span class="flex-1">{race.name}</span>
-                    }
-                  </div>
-                );
+                return <RaceKeyItem label={race.shortName ?? race.id} name={race.name} href={href} ran={ran} />;
               })}
             </div>
           </div>
