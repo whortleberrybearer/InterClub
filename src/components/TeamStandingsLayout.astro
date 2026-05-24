@@ -43,6 +43,13 @@ const racesRemaining = races.length - racesRun;
 // Shared table header class strings
 const tabTh = 'font-head text-[10px] font-bold tracking-[0.1em] uppercase text-muted py-2.5 px-2 bg-surface border-b-2 border-content';
 const dtTh  = 'font-head text-[10px] font-bold tracking-[0.1em] uppercase text-muted py-2.5 px-2 bg-surface';
+
+// Race column width: widen columns when there are fewer races so they spread
+// evenly rather than leaving the Club column disproportionately wide.
+const raceColWidth = races.length >= 7 ? '3rem'
+                   : races.length >= 5 ? '4rem'
+                   : races.length >= 3 ? '5rem'
+                   : '6rem';
 ---
 
 <Layout title={`${seriesLabel} ${year} — Team Standings`}>
@@ -136,16 +143,22 @@ const dtTh  = 'font-head text-[10px] font-bold tracking-[0.1em] uppercase text-m
             <div class="pb-3 mb-3.5 border-b-2 border-content">
               <h2 class="font-head text-[26px] font-extrabold tracking-tight leading-none">{label}</h2>
             </div>
-            <table class="w-full border-collapse text-sm">
+            <table class="w-full border-collapse text-sm table-fixed">
+              <colgroup>
+                <col class="w-10" />
+                <col />
+                {races.map(() => <col style={`width: ${raceColWidth}`} />)}
+                <col class="w-16" />
+              </colgroup>
               <thead>
                 <tr>
-                  <th class={`${dtTh} w-9 text-center`}>#</th>
+                  <th class={`${dtTh} text-center`}>#</th>
                   <th class={`${dtTh} text-left`}>Club</th>
                   {races.map((race, ri) => {
                     const ran = racesRun > ri;
                     const href = linkedRaceIds.has(race.id) ? siteUrl(`/${series}/${year}/${race.id}/team-results`) : null;
                     return (
-                      <th class:list={[`${dtTh} w-14 text-center`, !ran && 'opacity-50']}>
+                      <th class:list={[`${dtTh} text-center`, !ran && 'opacity-50']}>
                         {href
                           ? <a href={href} class="text-amber hover:underline">{race.shortName ?? race.id}</a>
                           : (race.shortName ?? race.id)
@@ -164,10 +177,10 @@ const dtTh  = 'font-head text-[10px] font-bold tracking-[0.1em] uppercase text-m
                       <td class="py-2.5 px-2 text-center align-middle font-mono text-xs font-medium text-muted tabular-nums">
                         {clubResult.position}
                       </td>
-                      <td class="py-2.5 px-2 align-middle">
-                        <div class="font-semibold text-[14px]">{clubName}</div>
+                      <td class="py-2.5 px-2 align-middle max-w-0 overflow-hidden">
+                        <div class="font-semibold text-[14px] truncate">{clubName}</div>
                         {clubResult.tiebreaker && (
-                          <div class="font-mono text-[10px] text-muted mt-0.5 tracking-[0.04em]">{clubResult.tiebreaker}</div>
+                          <div class="font-mono text-[10px] text-muted mt-0.5 tracking-[0.04em] truncate">{clubResult.tiebreaker}</div>
                         )}
                       </td>
                       {races.map((race, ri) => {
@@ -217,16 +230,22 @@ const dtTh  = 'font-head text-[10px] font-bold tracking-[0.1em] uppercase text-m
           <!-- ── TABLET (sm to lg): table in a card ── -->
           <div class="hidden sm:block overflow-x-auto">
             <div class="bg-surface border border-line rounded-xl overflow-hidden">
-              <table class="w-full border-collapse text-sm">
+              <table class="w-full border-collapse text-sm table-fixed">
+                <colgroup>
+                  <col class="w-10" />
+                  <col />
+                  {races.map(() => <col style={`width: ${raceColWidth}`} />)}
+                  <col class="w-16" />
+                </colgroup>
                 <thead>
                   <tr>
-                    <th class={`${tabTh} w-10 text-center`}>#</th>
+                    <th class={`${tabTh} text-center`}>#</th>
                     <th class={`${tabTh} text-left pl-2`}>Club</th>
                     {races.map((race, ri) => {
                       const ran = racesRun > ri;
                       const href = linkedRaceIds.has(race.id) ? siteUrl(`/${series}/${year}/${race.id}/team-results`) : null;
                       return (
-                        <th class:list={[`${tabTh} w-11 text-center`, !ran && 'opacity-55']}>
+                        <th class:list={[`${tabTh} text-center`, !ran && 'opacity-55']}>
                           {href
                             ? <a href={href} class="text-amber hover:underline">{race.shortName ?? race.id}</a>
                             : (race.shortName ?? race.id)
@@ -245,8 +264,8 @@ const dtTh  = 'font-head text-[10px] font-bold tracking-[0.1em] uppercase text-m
                         <td class="py-3 pl-3.5 pr-2 text-center align-middle font-mono text-xs font-medium text-muted tabular-nums">
                           {clubResult.position}
                         </td>
-                        <td class="py-3 pl-2 pr-2 align-middle">
-                          <div class="font-semibold text-[14px]">{clubName}</div>
+                        <td class="py-3 pl-2 pr-2 align-middle max-w-0 overflow-hidden">
+                          <div class="font-semibold text-[14px] truncate">{clubName}</div>
                           {clubResult.tiebreaker && (
                             <div class="font-mono text-[10px] text-muted mt-0.5 tracking-[0.04em]">{clubResult.tiebreaker}</div>
                           )}
@@ -307,7 +326,7 @@ const dtTh  = 'font-head text-[10px] font-bold tracking-[0.1em] uppercase text-m
                     )}
                   </div>
 
-                  <div slot="detail" class="grid grid-cols-7 gap-1 p-3">
+                  <div slot="detail" class="grid gap-1 p-3" style={`grid-template-columns: repeat(${races.length}, minmax(0, 1fr))`}>
                     {races.map((race) => {
                       const sIdx = standingsRaceIdx[race.id];
                       const pts = sIdx !== undefined ? (clubResult.points[sIdx] ?? null) : null;

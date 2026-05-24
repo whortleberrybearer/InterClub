@@ -94,6 +94,14 @@ const standingsClubs = standingsClubIds
 // Shared table header classes
 const th  = 'font-head text-[10px] font-bold tracking-[0.1em] uppercase text-muted py-2.5 px-2 bg-surface border-b-2 border-content';
 const dth = 'font-head text-[10px] font-bold tracking-[0.1em] uppercase text-muted py-2.5 px-2 bg-surface';
+
+// Race column width: widen columns when there are fewer races so they spread
+// evenly rather than leaving the Runner column disproportionately wide.
+// Target ~18–21rem total race column space regardless of race count.
+const raceColWidth = standings.races.length >= 7 ? '3rem'
+                   : standings.races.length >= 5 ? '4rem'
+                   : standings.races.length >= 3 ? '5rem'
+                   : '6rem';
 ---
 
 <Layout title={`${seriesLabel} ${year} — Individual Standings`}>
@@ -400,10 +408,17 @@ const dth = 'font-head text-[10px] font-bold tracking-[0.1em] uppercase text-mut
             <!-- ── TABLET: table in card (sm–lg) ──────────────────────────────── -->
             <div class="hidden sm:block lg:hidden overflow-x-auto">
               <div class="bg-surface border border-line rounded-xl overflow-hidden">
-                <table class="w-full border-collapse text-sm">
+                <table class="w-full border-collapse text-sm table-fixed">
+                  <colgroup>
+                    <col class="w-10" />
+                    <col />
+                    <col class="w-12" />
+                    {standings.races.map(() => <col style={`width: ${raceColWidth}`} />)}
+                    <col class="w-16" />
+                  </colgroup>
                   <thead>
                     <tr>
-                      <th class={`${th} w-8 text-center`}>#</th>
+                      <th class={`${th} text-center`}>#</th>
                       <th class={`${th} text-left`}>Runner</th>
                       <th class={`${th} text-left`}>Cat</th>
                       {standings.races.map(raceId => {
@@ -438,13 +453,13 @@ const dth = 'font-head text-[10px] font-bold tracking-[0.1em] uppercase text-mut
                           <td class="py-2.5 px-2 text-center align-middle">
                             <span class="font-mono text-sm font-medium text-muted tabular-nums">{runner.position}</span>
                           </td>
-                          <td class="py-2.5 px-2 align-middle">
-                            <div class="font-semibold leading-tight">
+                          <td class="py-2.5 px-2 align-middle max-w-0 overflow-hidden">
+                            <div class="font-semibold leading-tight truncate">
                               {runner.seriesRunnerId != null && runnerUrlMap[runner.seriesRunnerId]
                                 ? <a href={runnerUrlMap[runner.seriesRunnerId]} class="link link-hover">{runner.name}</a>
                                 : runner.name}
                             </div>
-                            <div class="text-xs text-muted mt-0.5">{clubName}</div>
+                            <div class="text-xs text-muted mt-0.5 truncate">{clubName}</div>
                           </td>
                           <td class="py-2.5 px-2 text-content/60 text-xs tabular-nums align-middle">
                             {effectiveSex}{effectiveAge}
@@ -490,10 +505,17 @@ const dth = 'font-head text-[10px] font-bold tracking-[0.1em] uppercase text-mut
 
             <!-- ── DESKTOP: plain table (lg+) ──────────────────────────────────── -->
             <div class="hidden lg:block overflow-x-auto">
-              <table class="w-full border-collapse text-sm">
+              <table class="w-full border-collapse text-sm table-fixed">
+                <colgroup>
+                  <col class="w-10" />
+                  <col />
+                  <col class="w-12" />
+                  {standings.races.map(() => <col style={`width: ${raceColWidth}`} />)}
+                  <col class="w-16" />
+                </colgroup>
                 <thead>
                   <tr>
-                    <th class={`${dth} w-8 text-center`}>#</th>
+                    <th class={`${dth} text-center`}>#</th>
                     <th class={`${dth} text-left`}>Runner</th>
                     <th class={`${dth} text-left`}>Cat</th>
                     {standings.races.map(raceId => {
@@ -528,13 +550,13 @@ const dth = 'font-head text-[10px] font-bold tracking-[0.1em] uppercase text-mut
                         <td class="py-2.5 px-2 text-center align-middle">
                           <span class="font-mono text-sm font-medium text-muted tabular-nums">{runner.position}</span>
                         </td>
-                        <td class="py-2.5 pl-2 pr-4 align-middle">
-                          <div class="font-semibold leading-tight">
+                        <td class="py-2.5 pl-2 pr-4 align-middle max-w-0 overflow-hidden">
+                          <div class="font-semibold leading-tight truncate">
                             {runner.seriesRunnerId != null && runnerUrlMap[runner.seriesRunnerId]
                               ? <a href={runnerUrlMap[runner.seriesRunnerId]} class="link link-hover">{runner.name}</a>
                               : runner.name}
                           </div>
-                          <div class="text-xs text-muted mt-0.5">{clubName}</div>
+                          <div class="text-xs text-muted mt-0.5 truncate">{clubName}</div>
                         </td>
                         <td class="py-2.5 pr-4 text-content/60 text-xs tabular-nums align-middle">
                           {effectiveSex}{effectiveAge}
