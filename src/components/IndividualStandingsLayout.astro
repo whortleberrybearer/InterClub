@@ -22,7 +22,7 @@ import { getRaces } from '../lib/data';
 import { resolveIndividualCategoryName } from '../lib/results';
 import type { Club, IndividualStandings, Series } from '../lib/types';
 import { siteUrl } from '../lib/url';
-import { getSeriesLongLabel } from '../lib/format';
+import { getSeriesLabel, getSeriesLongLabel } from '../lib/format';
 
 export interface Props {
   series: Series;
@@ -37,7 +37,7 @@ const { series, year, standings, clubs, runnerUrlMap } = Astro.props;
 const linkedRaceIds = new Set(Astro.props.linkedRaceIds);
 
 const seriesLong = getSeriesLongLabel(series);
-const seriesShort  = series === 'road-gp' ? 'Road GP' : 'Fell Championship';
+const seriesShort  = getSeriesLabel(series);
 const backHref     = siteUrl(`/${series}/${year}`);
 const indivHref    = siteUrl(`/${series}/${year}/individual-standings`);
 const teamHref     = siteUrl(`/${series}/${year}/team-standings`);
