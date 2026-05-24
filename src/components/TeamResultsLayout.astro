@@ -20,9 +20,10 @@ export interface Props {
   provisional: boolean;
   clubs: Club[];
   config: SeriesConfig;
+  runnerUrlMap: Record<number, string>;
 }
 
-const { series, year, raceId, teamResults, provisional, clubs, config } = Astro.props;
+const { series, year, raceId, teamResults, provisional, clubs, config, runnerUrlMap } = Astro.props;
 
 const race = getRace(year, series, raceId);
 const title = race?.name ?? raceId;
@@ -180,12 +181,18 @@ const categoryById = Object.fromEntries((config.teamCategories ?? []).map(c => [
                   <div id={detailId} class="hidden border-t border-dashed border-line">
                     <div class="grid gap-x-3 gap-y-0.5 p-3"
                          style="grid-template-columns: repeat(auto-fill, minmax(140px, 1fr))">
-                      {clubResult.scorers.map(scorer => (
-                        <div class="flex items-baseline gap-1.5 py-[3px] min-w-0">
-                          <span class="font-mono text-[11px] text-muted w-[22px] text-right shrink-0 tabular-nums">{scorer.position}</span>
-                          <span class="text-[12.5px] flex-1 min-w-0 truncate">{scorer.name || '–'}</span>
-                        </div>
-                      ))}
+                      {clubResult.scorers.map(scorer => {
+                        const url = scorer.seriesRunnerId != null ? runnerUrlMap[scorer.seriesRunnerId] : undefined;
+                        return (
+                          <div class="flex items-baseline gap-1.5 py-[3px] min-w-0">
+                            <span class="font-mono text-[11px] text-muted w-[22px] text-right shrink-0 tabular-nums">{scorer.position}</span>
+                            {url
+                              ? <a href={url} class="text-[12.5px] flex-1 min-w-0 truncate link link-hover">{scorer.name || '–'}</a>
+                              : <span class="text-[12.5px] flex-1 min-w-0 truncate">{scorer.name || '–'}</span>
+                            }
+                          </div>
+                        );
+                      })}
                     </div>
                   </div>
                 </div>
@@ -248,12 +255,18 @@ const categoryById = Object.fromEntries((config.teamCategories ?? []).map(c => [
                   </button>
                   <div id={detailId} class="hidden border-t border-dashed border-line">
                     <div class="grid grid-cols-2 gap-x-3 gap-y-0.5 p-3">
-                      {clubResult.scorers.map(scorer => (
-                        <div class="flex items-baseline gap-1.5 py-[3px] min-w-0">
-                          <span class="font-mono text-[10px] text-muted w-5 text-right shrink-0 tabular-nums">{scorer.position}</span>
-                          <span class="text-xs flex-1 min-w-0 truncate">{scorer.name || '–'}</span>
-                        </div>
-                      ))}
+                      {clubResult.scorers.map(scorer => {
+                        const url = scorer.seriesRunnerId != null ? runnerUrlMap[scorer.seriesRunnerId] : undefined;
+                        return (
+                          <div class="flex items-baseline gap-1.5 py-[3px] min-w-0">
+                            <span class="font-mono text-[10px] text-muted w-5 text-right shrink-0 tabular-nums">{scorer.position}</span>
+                            {url
+                              ? <a href={url} class="text-xs flex-1 min-w-0 truncate link link-hover">{scorer.name || '–'}</a>
+                              : <span class="text-xs flex-1 min-w-0 truncate">{scorer.name || '–'}</span>
+                            }
+                          </div>
+                        );
+                      })}
                     </div>
                   </div>
                 </div>

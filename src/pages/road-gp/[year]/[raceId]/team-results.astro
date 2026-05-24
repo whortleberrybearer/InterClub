@@ -2,10 +2,14 @@
 // src/pages/road-gp/[year]/[raceId]/team-results.astro
 import TeamResultsLayout from '../../../../components/TeamResultsLayout.astro';
 import { getTeamResultsStaticPaths } from '../../../../lib/results';
+import { buildRunnerUrlMap } from '../../../../lib/runners';
 import type { Club, SeriesConfig, TeamResults } from '../../../../lib/types';
 
 export async function getStaticPaths() {
-  return getTeamResultsStaticPaths('road-gp');
+  return getTeamResultsStaticPaths('road-gp').map(p => ({
+    ...p,
+    props: { ...p.props, runnerUrlMap: buildRunnerUrlMap(p.props.year, 'road-gp') },
+  }));
 }
 
 interface Props {
@@ -15,6 +19,7 @@ interface Props {
   provisional: boolean;
   clubs: Club[];
   config: SeriesConfig;
+  runnerUrlMap: Record<number, string>;
 }
 ---
 

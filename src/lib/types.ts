@@ -127,7 +127,8 @@ export interface TeamCategory {
 
 export interface TeamScorer {
   name: string;
-  position: number;   // rank within the sex/age group used for team scoring
+  position: number;         // rank within the sex/age group used for team scoring
+  seriesRunnerId?: number;  // optional; links scorer to a runner profile page
 }
 
 export interface TeamClubResult {
