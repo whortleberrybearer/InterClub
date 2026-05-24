@@ -67,7 +67,10 @@ const { items, defaultSex } = Astro.props;
     On tablet (sm+): sex toggle buttons appear inline at the left, separated by a divider.
     On mobile: only category chips (sex toggle is in the row above).
   -->
-  <div class="overflow-x-auto max-w-4xl mx-auto">
+  <div class="relative max-w-4xl mx-auto">
+    <div class="chip-fade-left  pointer-events-none absolute left-0  inset-y-0 w-10 bg-gradient-to-r from-surface to-transparent sm:from-canvas z-10 hidden" aria-hidden="true" />
+    <div class="chip-fade-right pointer-events-none absolute right-0 inset-y-0 w-10 bg-gradient-to-l from-surface to-transparent sm:from-canvas z-10" aria-hidden="true" />
+  <div class="chip-scroll overflow-x-auto scrollbar-hide">
     <div
       class:list={['flex items-center gap-1.5 px-4 min-w-max', defaultSex != null ? 'pb-3 pt-3 sm:py-3' : 'py-3']}
       role="tablist"
@@ -112,4 +115,23 @@ const { items, defaultSex } = Astro.props;
 
     </div>
   </div>
+  </div>
 </div>
+
+<script>
+  document.querySelectorAll<HTMLElement>('.chip-scroll').forEach(scroller => {
+    const parent    = scroller.parentElement!;
+    const fadeLeft  = parent.querySelector<HTMLElement>('.chip-fade-left')!;
+    const fadeRight = parent.querySelector<HTMLElement>('.chip-fade-right')!;
+
+    function update() {
+      const atStart = scroller.scrollLeft <= 0;
+      const atEnd   = scroller.scrollLeft + scroller.clientWidth >= scroller.scrollWidth - 1;
+      fadeLeft.classList.toggle('hidden', atStart);
+      fadeRight.classList.toggle('hidden', atEnd);
+    }
+
+    scroller.addEventListener('scroll', update, { passive: true });
+    update(); // set initial state
+  });
+</script>
