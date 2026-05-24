@@ -222,13 +222,13 @@ const categoryById = Object.fromEntries((config.teamCategories ?? []).map(c => [
             )}
           </div>
 
-          <!-- Cards: 1-col on mobile, 2-col on tablet -->
-          <div class="sm:grid sm:grid-cols-2 sm:gap-3">
+          <!-- Cards: full-width single column at all mobile/tablet sizes -->
+          <div>
             {cat.clubs.map(clubResult => {
               const clubName = clubById[clubResult.club]?.name ?? clubResult.club;
               const detailId = `mb-detail-${i}-${clubResult.club}`;
               return (
-                <div class="bg-surface border border-line rounded-xl mb-2 sm:mb-0 overflow-hidden">
+                <div class="bg-surface border border-line rounded-xl mb-2 overflow-hidden">
                   <button
                     class="accordion-toggle w-full flex items-center gap-3 py-3 pl-3 pr-3 text-left hover:bg-canvas/50 transition-colors"
                     data-target={detailId}
