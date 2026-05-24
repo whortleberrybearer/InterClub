@@ -1,5 +1,6 @@
 ---
 import Layout from '../components/Layout.astro';
+import PageLabel from '../components/PageLabel.astro';
 
 const SECTIONS = [
   { id: 'runner',    label: 'Runners'         },
@@ -12,12 +13,10 @@ const SECTIONS = [
 <Layout title="Search" noPad>
   <!-- Hero: shown when query ≥ 3 chars, renders full-width via named slot -->
   <div slot="hero" id="search-hero" class="hidden bg-surface border-b border-line">
-    <div class="max-w-4xl mx-auto px-4 pt-6 pb-5">
-      <div class="font-head text-[10px] font-bold tracking-[0.14em] uppercase text-muted mb-1">Search Results</div>
-      <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-        <h1 id="query-heading" class="font-head text-[28px] md:text-[38px] font-black tracking-tight leading-none"></h1>
-        <span id="match-count" class="font-mono text-sm text-muted"></span>
-      </div>
+    <div class="max-w-4xl mx-auto px-4 pt-5 pb-7">
+      <PageLabel label="Search Results" />
+      <h1 id="query-heading" class="font-head text-[clamp(2rem,5vw,3.5rem)] font-extrabold tracking-[-0.025em] leading-[1] text-content mb-2"></h1>
+      <p id="match-count" class="text-[15px] leading-relaxed text-muted"></p>
     </div>
   </div>
 
@@ -220,7 +219,8 @@ const SECTIONS = [
     grid.classList.remove('hidden')
     hero.classList.remove('hidden')
     queryHead.textContent = `"${q}"`
-    matchCount.textContent = `${results.length} match${results.length === 1 ? '' : 'es'} across ${groups.filter(g => g.total > 0).length} sections`
+    const sectionCount = groups.filter(g => g.total > 0).length
+    matchCount.textContent = `${results.length} match${results.length === 1 ? '' : 'es'} across ${sectionCount} section${sectionCount === 1 ? '' : 's'}`
     renderSections(groups, q)
   }
 
