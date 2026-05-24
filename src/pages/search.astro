@@ -65,6 +65,8 @@ const SECTIONS = [
   import Fuse from 'fuse.js'
   import { createFuse, loadIndex } from '../lib/search-client'
   import type { SearchRecord } from '../lib/search-client'
+  import { escHtml, groupResults, rowHtml } from '../lib/search-render'
+  import type { SectionGroup } from '../lib/search-render'
 
   const base = import.meta.env.BASE_URL.replace(/\/$/, '')
 
@@ -91,53 +93,7 @@ const SECTIONS = [
     return fusePromise
   }
 
-  // ── Icons ──────────────────────────────────────────────────────────
-  function iconSvg(type: SearchRecord['type']): string {
-    switch (type) {
-      case 'runner':
-        return `<svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-          <circle cx="7" cy="4" r="2.2" stroke="currentColor" stroke-width="1.4"/>
-          <path d="M2.5 12c0-2.2 2-3.6 4.5-3.6S11.5 9.8 11.5 12" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
-        </svg>`
-      case 'race-detail':
-      case 'race-results':
-        return `<svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-          <path d="M2 11.5L4.5 8L7 10L11.5 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-          <circle cx="11.5" cy="4" r="1.5" fill="currentColor"/>
-        </svg>`
-      case 'standings':
-        return `<svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-          <path d="M3.5 2.5h7v2.5a3.5 3.5 0 01-7 0V2.5z" stroke="currentColor" stroke-width="1.4"/>
-          <path d="M10.5 3.5h1.5v1a1.5 1.5 0 01-1.5 1.5M3.5 3.5H2v1a1.5 1.5 0 001.5 1.5" stroke="currentColor" stroke-width="1.4"/>
-          <path d="M5.5 11.5h3M7 8.5v3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
-        </svg>`
-      default: // year / archive
-        return `<svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-          <circle cx="7" cy="7" r="5" stroke="currentColor" stroke-width="1.4"/>
-          <path d="M7 4.5V7l1.8 1.2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
-        </svg>`
-    }
-  }
-
-  function badgeStyle(type: SearchRecord['type']): string {
-    switch (type) {
-      case 'runner':
-        return 'background:oklch(97% 0.04 60);color:oklch(72% 0.18 60)'
-      case 'race-detail':
-      case 'race-results':
-        return 'background:var(--color-teal-bg);color:var(--color-teal)'
-      case 'standings':
-        return 'background:oklch(95% 0.04 220);color:oklch(45% 0.12 220)'
-      default:
-        return 'background:var(--color-canvas);color:var(--color-muted)'
-    }
-  }
-
-  // ── Helpers ────────────────────────────────────────────────────────
-  function escHtml(s: string): string {
-    return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')
-  }
-
+  // ── Highlight ──────────────────────────────────────────────────────
   function highlight(text: string, q: string): string {
     if (!q) return escHtml(text)
     const idx = text.toLowerCase().indexOf(q.toLowerCase())
@@ -151,41 +107,7 @@ const SECTIONS = [
     )
   }
 
-  function recordSectionId(r: SearchRecord): string {
-    if (r.type === 'race-detail' || r.type === 'race-results') return 'race'
-    return r.type
-  }
-
-  // ── Row HTML ───────────────────────────────────────────────────────
-  function rowHtml(r: SearchRecord, q: string): string {
-    return `<a href="${escHtml(r.url)}" class="flex items-center gap-3 px-4 py-[0.6875rem] border-t border-line no-underline text-content transition-colors duration-100 hover:bg-canvas">` +
-      `<span style="width:28px;height:28px;flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;border-radius:7px;${badgeStyle(r.type)}">` +
-      iconSvg(r.type) +
-      `</span>` +
-      `<span style="flex:1;min-width:0">` +
-        `<span style="display:block;font-size:14.5px;font-weight:500;line-height:1.2;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">` +
-          highlight(r.label, q) +
-        `</span>` +
-        (r.subtitle ? `<span style="display:block;font-size:11.5px;color:var(--color-muted);margin-top:1px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${escHtml(r.subtitle)}</span>` : '') +
-      `</span>` +
-      `<span style="color:var(--color-muted);flex-shrink:0;font-size:14px">›</span>` +
-      `</a>`
-  }
-
   // ── Sections ───────────────────────────────────────────────────────
-  type SectionGroup = { id: string; items: SearchRecord[]; total: number }
-
-  function groupResults(results: SearchRecord[]): SectionGroup[] {
-    const map: Record<string, SearchRecord[]> = { runner: [], race: [], standings: [], year: [] }
-    for (const r of results) map[recordSectionId(r)].push(r)
-    return [
-      { id: 'runner',    items: map.runner,    total: map.runner.length },
-      { id: 'race',      items: map.race,      total: map.race.length },
-      { id: 'standings', items: map.standings, total: map.standings.length },
-      { id: 'year',      items: map.year,      total: map.year.length },
-    ]
-  }
-
   function renderSections(groups: SectionGroup[], q: string): void {
     for (const g of groups) {
       const section = document.getElementById(`section-${g.id}`)!
@@ -195,7 +117,7 @@ const SECTIONS = [
       if (g.total === 0) { section.classList.add('hidden'); continue }
       section.classList.remove('hidden')
       countEl.textContent = String(g.total)
-      rowsEl.innerHTML = g.items.map(r => rowHtml(r, q)).join('')
+      rowsEl.innerHTML = g.items.map(r => rowHtml(r, t => highlight(t, q))).join('')
     }
   }
 
