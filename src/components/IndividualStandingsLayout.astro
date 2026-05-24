@@ -123,6 +123,29 @@ const dth = 'font-head text-[10px] font-bold tracking-[0.1em] uppercase text-mut
     }))}
   />
 
+  <!-- Filter bar: sits flush below the chip bar on mobile + tablet -->
+  <div slot="chip-bar" class="lg:hidden bg-surface border-b border-line w-full">
+    <div class="flex gap-2 max-w-4xl mx-auto px-4 py-2.5">
+      <div class="flex-1 min-w-0">
+        <input
+          id="runner-search"
+          type="search"
+          placeholder="Filter by name…"
+          class="input w-full !bg-canvas"
+          autocomplete="off"
+        />
+      </div>
+      {standingsClubs.length > 1 && (
+        <select id="club-filter" class="input w-48 shrink-0 !bg-canvas">
+          <option value="">All clubs</option>
+          {standingsClubs.map(club => (
+            <option value={club.id}>{club.name}</option>
+          ))}
+        </select>
+      )}
+    </div>
+  </div>
+
   <!-- ── Outer wrapper: 2-col grid at lg (sidebar | content) ──────────────── -->
   <div class="lg:grid lg:grid-cols-[220px_1fr] lg:gap-8 lg:items-start">
 
@@ -148,7 +171,7 @@ const dth = 'font-head text-[10px] font-bold tracking-[0.1em] uppercase text-mut
       <p class="font-head text-[10px] font-bold tracking-[0.12em] uppercase text-muted mb-1 pl-1">Category</p>
       <nav class="flex flex-col">
         {sortedCats.map(({ cat, i }) => {
-          const label  = resolveIndividualCategoryName(cat.id, cat.sex, cat.ageCategory, cat.name);
+          const label  = chipLabel(cat);
           const active = i === defaultCatIndex;
           const hidden = showSexToggle && !!cat.sex && cat.sex !== defaultSex;
           return (
@@ -198,11 +221,11 @@ const dth = 'font-head text-[10px] font-bold tracking-[0.1em] uppercase text-mut
     <!-- ── Main content column ───────────────────────────────────────────────── -->
     <div>
 
-      <!-- Search + club filter side by side -->
-      <div class="flex gap-2 mb-4">
+      <!-- Search + club filter (desktop only — mobile/tablet version is in the chip-bar slot) -->
+      <div class="hidden lg:flex gap-2 mb-4">
         <div class="flex-1 min-w-0">
           <input
-            id="runner-search"
+            id="runner-search-desktop"
             type="search"
             placeholder="Filter by name…"
             class="input w-full"
@@ -210,7 +233,7 @@ const dth = 'font-head text-[10px] font-bold tracking-[0.1em] uppercase text-mut
           />
         </div>
         {standingsClubs.length > 1 && (
-          <select id="club-filter" class="input w-48 shrink-0">
+          <select id="club-filter-desktop" class="input w-48 shrink-0">
             <option value="">All clubs</option>
             {standingsClubs.map(club => (
               <option value={club.id}>{club.name}</option>
@@ -632,32 +655,40 @@ const dth = 'font-head text-[10px] font-bold tracking-[0.1em] uppercase text-mut
   sidebarSexBtns.forEach(btn => btn.addEventListener('click', () => activateSex(btn.dataset.sex!)));
   chipSexBtns.forEach(btn => btn.addEventListener('click', () => activateSex(btn.dataset.sex!)));
 
-  // ── Filter: name search + club chips + age chips ─────────────────────────────
-  const searchInput    = document.querySelector<HTMLInputElement>('#runner-search');
-  const clubFilterSelect = document.querySelector<HTMLSelectElement>('#club-filter');
+  // ── Filter: name search + club select + age chips ────────────────────────────
+  // Two versions of each input exist: mobile/tablet (in chip-bar slot) and
+  // desktop (in main). Only one is ever visible; hidden inputs stay at their
+  // default empty value, so OR-ing the two values always picks the active one.
+  const searchMobile  = document.querySelector<HTMLInputElement>('#runner-search');
+  const searchDesktop = document.querySelector<HTMLInputElement>('#runner-search-desktop');
+  const clubMobile    = document.querySelector<HTMLSelectElement>('#club-filter');
+  const clubDesktop   = document.querySelector<HTMLSelectElement>('#club-filter-desktop');
+
+  const getSearchQuery = () => (searchMobile?.value || searchDesktop?.value || '').toLowerCase().trim();
+  const getActiveClub  = () => clubMobile?.value || clubDesktop?.value || '';
 
   function filterAllPanels() {
     document.querySelectorAll<HTMLElement>('[data-panel]').forEach(filterPanel);
   }
 
   function filterPanel(panel: HTMLElement) {
-    const activeAges  = [...panel.querySelectorAll<HTMLElement>('.filter-age.active-filter')]
+    const activeAges = [...panel.querySelectorAll<HTMLElement>('.filter-age.active-filter')]
       .map(b => b.dataset.value ?? '');
-    const activeClub = clubFilterSelect?.value ?? '';
-    const nameQuery   = (searchInput?.value ?? '').toLowerCase().trim();
+    const activeClub = getActiveClub();
+    const nameQuery  = getSearchQuery();
 
     const matches = (el: HTMLElement) => {
-      const ageOk  = activeAges.length === 0  || activeAges.includes(el.dataset.ageCat ?? '');
+      const ageOk  = activeAges.length === 0 || activeAges.includes(el.dataset.ageCat ?? '');
       const clubOk = !activeClub || el.dataset.club === activeClub;
-      const nameOk = !nameQuery               || (el.dataset.name ?? '').toLowerCase().includes(nameQuery);
+      const nameOk = !nameQuery  || (el.dataset.name ?? '').toLowerCase().includes(nameQuery);
       return ageOk && clubOk && nameOk;
     };
     panel.querySelectorAll<HTMLElement>('tr[data-name]').forEach(row  => { row.style.display  = matches(row)  ? '' : 'none'; });
     panel.querySelectorAll<HTMLElement>('.runner-card').forEach(card => { card.style.display = matches(card) ? '' : 'none'; });
   }
 
-  searchInput?.addEventListener('input', filterAllPanels);
-  clubFilterSelect?.addEventListener('change', filterAllPanels);
+  [searchMobile, searchDesktop].forEach(el => el?.addEventListener('input', filterAllPanels));
+  [clubMobile, clubDesktop].forEach(el => el?.addEventListener('change', filterAllPanels));
 
   // Age filter chips
   document.querySelectorAll<HTMLButtonElement>('.filter-age').forEach(btn => {
