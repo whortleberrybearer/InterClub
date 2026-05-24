@@ -120,7 +120,7 @@ const categoryById = Object.fromEntries((config.teamCategories ?? []).map(c => [
             <div class="pb-3 mb-3.5 border-b-2 border-content flex items-baseline justify-between">
               <h2 class="font-head text-[26px] font-extrabold tracking-tight leading-none">{label}</h2>
               {catConfig && (
-                <span class="text-sm text-muted shrink-0 ml-4">{catConfig.scorerCount} scorer{catConfig.scorerCount !== 1 ? 's' : ''}</span>
+                <span class="text-sm text-muted shrink-0 ml-4">{catConfig.scorerCount} scorer{catConfig.scorerCount !== 1 ? 's' : ''} per team</span>
               )}
             </div>
 
@@ -193,7 +193,7 @@ const categoryById = Object.fromEntries((config.teamCategories ?? []).map(c => [
           <div class="pb-3 mb-3.5 border-b-2 border-content flex items-baseline justify-between">
             <h2 class="font-head text-[22px] sm:text-[26px] font-extrabold tracking-tight leading-none">{label}</h2>
             {catConfig && (
-              <span class="text-sm text-muted shrink-0 ml-4">{catConfig.scorerCount} scorer{catConfig.scorerCount !== 1 ? 's' : ''}</span>
+              <span class="text-sm text-muted shrink-0 ml-4">{catConfig.scorerCount} scorer{catConfig.scorerCount !== 1 ? 's' : ''} per team</span>
             )}
           </div>
 
