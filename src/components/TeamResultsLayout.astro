@@ -144,7 +144,7 @@ const categoryById = Object.fromEntries((config.teamCategories ?? []).map(c => [
                     <div class="text-right shrink-0 flex flex-col items-end justify-center min-h-10">
                       <div class="font-mono text-[22px] font-medium leading-none tabular-nums">{clubResult.total}</div>
                       {catConfig && clubResult.scorers.length < catConfig.scorerCount && (
-                        <div class="font-mono text-[10px] text-muted mt-0.5 tabular-nums">{clubResult.scorers.length} scorers</div>
+                        <div class="font-mono text-[10px] text-muted mt-0.5 tabular-nums">{clubResult.scorers.length} scorer{clubResult.scorers.length !== 1 ? 's' : ''}</div>
                       )}
                     </div>
                     <span class="chevron text-content/30 text-xs transition-transform shrink-0">▾</span>
@@ -218,7 +218,7 @@ const categoryById = Object.fromEntries((config.teamCategories ?? []).map(c => [
                     <div class="text-right shrink-0 flex flex-col items-end justify-center min-h-10">
                       <div class="font-mono text-[22px] font-medium leading-none tabular-nums">{clubResult.total}</div>
                       {catConfig && clubResult.scorers.length < catConfig.scorerCount && (
-                        <div class="font-mono text-[10px] text-muted mt-0.5 tabular-nums">{clubResult.scorers.length} scorers</div>
+                        <div class="font-mono text-[10px] text-muted mt-0.5 tabular-nums">{clubResult.scorers.length} scorer{clubResult.scorers.length !== 1 ? 's' : ''}</div>
                       )}
                     </div>
                     <span class="chevron text-content/30 text-xs transition-transform shrink-0">▾</span>
