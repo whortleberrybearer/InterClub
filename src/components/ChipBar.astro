@@ -45,7 +45,7 @@ const { items, defaultSex } = Astro.props;
     Hidden on tablet where the buttons appear inline in the scroll row instead.
   -->
   {defaultSex != null && (
-    <div class="flex gap-1.5 px-4 pt-3 pb-2 sm:hidden">
+    <div class="flex justify-center gap-1.5 px-4 pt-3 pb-2 sm:hidden">
       {(['M', 'F'] as const).map(s => (
         <button
           class:list={[
