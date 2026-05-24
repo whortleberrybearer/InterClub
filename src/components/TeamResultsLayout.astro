@@ -88,33 +88,24 @@ const categoryById = Object.fromEntries((config.teamCategories ?? []).map(c => [
 
     <!-- Sticky sidebar -->
     <aside class="sticky top-6 self-start">
-      <p class="font-head text-[10px] font-bold tracking-[0.12em] uppercase text-muted mb-2 pl-1">Categories</p>
-      <div class="flex flex-col gap-0.5">
+      <p class="font-head text-[10px] font-bold tracking-[0.12em] uppercase text-muted mb-2 pl-1">Category</p>
+      <nav class="flex flex-col">
         {teamResults.categories.map((cat, i) => {
-          const label      = categoryById[cat.id]?.name ?? cat.id;
-          const winner     = cat.clubs[0];
-          const winnerName = winner
-            ? (clubById[winner.club]?.name ?? winner.club).split(' ').slice(0, 2).join(' ')
-            : null;
+          const label = categoryById[cat.id]?.name ?? cat.id;
           return (
             <button
               class:list={[
-                'cat-sidebar-btn text-left flex items-center justify-between px-3 py-2.5 rounded-lg border transition-colors',
-                i === 0 ? 'border-amber bg-amber-bg' : 'border-transparent hover:bg-canvas',
+                'cat-sidebar-btn w-full flex items-center px-3 py-2 rounded-lg border-l-2 text-left transition-colors font-head text-[13px] font-bold tracking-[0.04em] uppercase',
+                i === 0 ? 'border-l-amber bg-amber-bg text-amber'
+                        : 'border-l-transparent hover:bg-canvas text-content',
               ]}
               data-target={`dt-cat-panel-${i}`}
             >
-              <span class="min-w-0">
-                <div class="font-head text-[14px] font-bold tracking-[0.02em] uppercase text-content">{label}</div>
-                {winnerName && winner && (
-                  <div class="text-[11px] text-muted mt-0.5 truncate">{winnerName} · {winner.total}</div>
-                )}
-              </span>
-              <span class="font-mono text-[11px] text-muted shrink-0 ml-2">{cat.clubs.length}</span>
+              <span>{label}</span>
             </button>
           );
         })}
-      </div>
+      </nav>
     </aside>
 
     <!-- Main pane: one panel per category, all but first hidden -->
@@ -325,9 +316,12 @@ const categoryById = Object.fromEntries((config.teamCategories ?? []).map(c => [
       const targetId = btn.dataset.target!;
       sidebarBtns.forEach(b => {
         const active = b === btn;
-        b.classList.toggle('border-amber',       active);
-        b.classList.toggle('bg-amber-bg',        active);
-        b.classList.toggle('border-transparent', !active);
+        b.classList.toggle('border-l-amber',       active);
+        b.classList.toggle('bg-amber-bg',          active);
+        b.classList.toggle('text-amber',           active);
+        b.classList.toggle('border-l-transparent', !active);
+        b.classList.toggle('hover:bg-canvas',      !active);
+        b.classList.toggle('text-content',         !active);
       });
       document.querySelectorAll<HTMLElement>('[id^="dt-cat-panel-"]').forEach(panel => {
         panel.classList.toggle('hidden', panel.id !== targetId);
