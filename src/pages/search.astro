@@ -87,15 +87,6 @@ const SECTIONS = [
         ))}
       </div>
 
-      <!-- Desktop tip bar -->
-      <div class="hidden md:flex mt-5 px-4 py-3.5 bg-surface border border-dashed border-line rounded-xl items-center justify-between text-sm text-muted">
-        <span>
-          <span class="font-mono">Tip:</span> use
-          <kbd class="font-mono text-[11px] px-1.5 py-0.5 bg-canvas border border-line rounded text-content mx-1">⌘K</kbd>
-          from anywhere to search · <span class="font-mono">minimum</span> 3 characters
-        </span>
-        <a href="#" id="full-index-link" class="text-amber font-medium hover:underline">All results →</a>
-      </div>
     </div>
   </div>
 </Layout>
@@ -120,7 +111,6 @@ const SECTIONS = [
   const emptyQuery = document.getElementById('empty-query')!
   const grid       = document.getElementById('results-grid')!
   const inner      = document.getElementById('results-inner')!
-  const fullLink   = document.getElementById('full-index-link') as HTMLAnchorElement | null
 
   // State
   let activeFilter = 'all'
@@ -338,7 +328,6 @@ const SECTIONS = [
     inner.className = activeFilter === 'all' ? 'grid gap-4 md:grid-cols-2' : 'grid gap-4'
     renderSections(visibleGroups, q, limit)
 
-    if (fullLink) fullLink.href = `${base}/search?q=${encodeURIComponent(lastQuery)}`
   }
 
   // ── Clear ───────────────────────────────────────────────────────────
