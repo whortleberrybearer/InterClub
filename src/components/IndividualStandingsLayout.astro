@@ -22,6 +22,7 @@ import { getRaces } from '../lib/data';
 import { resolveIndividualCategoryName } from '../lib/results';
 import type { Club, IndividualStandings, Series } from '../lib/types';
 import { siteUrl } from '../lib/url';
+import { getSeriesLongLabel } from '../lib/format';
 
 export interface Props {
   series: Series;
@@ -35,7 +36,7 @@ export interface Props {
 const { series, year, standings, clubs, runnerUrlMap } = Astro.props;
 const linkedRaceIds = new Set(Astro.props.linkedRaceIds);
 
-const seriesLabel = series === 'road-gp' ? 'Road Grand Prix' : 'Fell Championship';
+const seriesLong = getSeriesLongLabel(series);
 const seriesShort  = series === 'road-gp' ? 'Road GP' : 'Fell Championship';
 const backHref     = siteUrl(`/${series}/${year}`);
 const indivHref    = siteUrl(`/${series}/${year}/individual-standings`);
@@ -107,7 +108,7 @@ const raceColWidth = standings.races.length >= 7 ? '3rem'
                    : '6rem';
 ---
 
-<Layout title={`${seriesLabel} ${year} — Individual Standings`}>
+<Layout title={`${seriesLong} ${year} — Individual Standings`}>
 
   <StandingsHeader
     slot="hero"
@@ -122,7 +123,7 @@ const raceColWidth = standings.races.length >= 7 ? '3rem'
       <h1 class="font-head text-[28px] lg:text-[32px] font-extrabold tracking-tight leading-none">Individual Standings</h1>
       {standings.provisional && <span class="badge badge-warning">Provisional</span>}
     </div>
-    <p class="text-sm text-muted mt-2">{year} Inter Club {seriesLabel}</p>
+    <p class="text-sm text-muted mt-2">{year} Inter Club {seriesLong}</p>
     {standings.maxCountingRaces && (
       <p class="text-sm text-muted mt-0.5">Best {standings.maxCountingRaces} races count</p>
     )}
