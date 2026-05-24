@@ -115,50 +115,9 @@
   import Fuse from 'fuse.js'
   import { createFuse, loadIndex, runSearch } from '../lib/search-client'
   import type { SearchRecord } from '../lib/search-client'
+  import { escHtml, groupResults, rowHtml } from '../lib/search-render'
 
   const base = import.meta.env.BASE_URL.replace(/\/$/, '')
-
-  // ── HTML helpers ─────────────────────────────────────────────────
-  function escHtml(s: string): string {
-    return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')
-  }
-
-  function iconSvg(type: SearchRecord['type']): string {
-    switch (type) {
-      case 'runner':
-        return `<svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="4" r="2.2" stroke="currentColor" stroke-width="1.4"/><path d="M2.5 12c0-2.2 2-3.6 4.5-3.6S11.5 9.8 11.5 12" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>`
-      case 'race-detail':
-      case 'race-results':
-        return `<svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 11.5L4.5 8L7 10L11.5 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="11.5" cy="4" r="1.5" fill="currentColor"/></svg>`
-      case 'standings':
-        return `<svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3.5 2.5h7v2.5a3.5 3.5 0 01-7 0V2.5z" stroke="currentColor" stroke-width="1.4"/><path d="M10.5 3.5h1.5v1a1.5 1.5 0 01-1.5 1.5M3.5 3.5H2v1a1.5 1.5 0 001.5 1.5" stroke="currentColor" stroke-width="1.4"/><path d="M5.5 11.5h3M7 8.5v3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>`
-      default:
-        return `<svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5" stroke="currentColor" stroke-width="1.4"/><path d="M7 4.5V7l1.8 1.2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>`
-    }
-  }
-
-  function badgeStyle(type: SearchRecord['type']): string {
-    switch (type) {
-      case 'runner':      return 'background:oklch(97% 0.04 60);color:oklch(72% 0.18 60)'
-      case 'race-detail':
-      case 'race-results':return 'background:var(--color-teal-bg);color:var(--color-teal)'
-      case 'standings':   return 'background:oklch(95% 0.04 220);color:oklch(45% 0.12 220)'
-      default:            return 'background:var(--color-canvas);color:var(--color-muted)'
-    }
-  }
-
-  function rowHtml(r: SearchRecord, q: string): string {
-    return `<a href="${escHtml(r.url)}" class="flex items-center gap-3 px-4 py-[0.5625rem] border-t border-line no-underline text-content transition-colors duration-100 hover:bg-canvas">` +
-      `<span style="width:28px;height:28px;flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;border-radius:7px;${badgeStyle(r.type)}">` +
-        iconSvg(r.type) +
-      `</span>` +
-      `<span style="flex:1;min-width:0">` +
-        `<span style="display:block;font-size:13.5px;font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${escHtml(r.label)}</span>` +
-        (r.subtitle ? `<span style="display:block;font-size:11.5px;color:var(--color-muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${escHtml(r.subtitle)}</span>` : '') +
-      `</span>` +
-      `<span style="color:var(--color-muted);flex-shrink:0;font-size:14px">›</span>` +
-      `</a>`
-  }
 
   // ── Recent searches (localStorage) ──────────────────────────────
   const RECENT_KEY = 'ic-recent-searches'
@@ -206,20 +165,6 @@
     return fusePromise
   }
 
-  // ── Group results by section ─────────────────────────────────────
-  type GroupItem = { sectionId: string; label: string; items: SearchRecord[]; total: number }
-
-  function groupBySection(results: SearchRecord[]): GroupItem[] {
-    const map: Record<string, SearchRecord[]> = { runner: [], race: [], standings: [], year: [] }
-    for (const r of results) {
-      const id = (r.type === 'race-detail' || r.type === 'race-results') ? 'race' : r.type
-      if (map[id]) map[id].push(r)
-    }
-    const labels: Record<string, string> = { runner: 'Runners', race: 'Race Results', standings: 'Standings', year: 'Archives' }
-    return Object.entries(map)
-      .filter(([, items]) => items.length > 0)
-      .map(([id, items]) => ({ sectionId: id, label: labels[id], items, total: items.length }))
-  }
 
   // ── MOBILE ───────────────────────────────────────────────────────
   const iconBtn     = document.getElementById('sb-icon-btn')!
@@ -274,7 +219,7 @@
     document.getElementById('sb-recent')?.classList.add('hidden')
     const fuse = await ensureFuse()
     const results = runSearch(fuse, query, 20)
-    const groups = groupBySection(results)
+    const groups = groupResults(results).filter(g => g.total > 0)
     const total = results.length
 
     if (total === 0) {
@@ -291,7 +236,7 @@
         `<span style="font-family:var(--ff-head);font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--color-muted)">${escHtml(g.label)} · ${g.total}</span>` +
         `<a href="${escHtml(searchUrl)}" style="font-size:12px;font-weight:500;color:var(--color-amber);text-decoration:none">See all →</a>` +
       `</div>` +
-      `<div style="background:var(--color-surface)">${g.items.slice(0, 3).map(r => rowHtml(r, query)).join('')}</div>` +
+      `<div style="background:var(--color-surface)">${g.items.slice(0, 3).map(r => rowHtml(r, escHtml, true)).join('')}</div>` +
       `</div>`
     ).join('') +
     `<a href="${escHtml(searchUrl)}" data-search-cta style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px;margin:12px;background:var(--color-content);color:#fff;border-radius:10px;text-decoration:none;border:none">` +
@@ -344,25 +289,24 @@
   }
 
   const DESKTOP_LIMITS: Record<string, number> = { runner: 3, race: 2, standings: 1, year: 1 }
-  const SECTION_LABELS: Record<string, string> = { runner: 'Runners', race: 'Race Results', standings: 'Standings', year: 'Archives' }
 
   function renderDropdown(results: SearchRecord[], query: string): void {
     if (results.length === 0) { dropdown.classList.add('hidden'); return }
 
-    const groups = groupBySection(results)
+    const groups = groupResults(results).filter(g => g.total > 0)
     const total = results.length
     const searchUrl = `${base}/search?q=${encodeURIComponent(query.trim())}`
 
     dropdown.innerHTML = groups.map(g => {
-      const limit = DESKTOP_LIMITS[g.sectionId] ?? 2
+      const limit = DESKTOP_LIMITS[g.id] ?? 2
       return (
         `<div style="padding:10px 14px 6px;display:flex;align-items:baseline;justify-content:space-between;background:var(--color-canvas)">` +
-          `<span style="font-family:var(--ff-head);font-size:10px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--color-muted)">${escHtml(SECTION_LABELS[g.sectionId])}</span>` +
+          `<span style="font-family:var(--ff-head);font-size:10px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--color-muted)">${escHtml(g.label)}</span>` +
           `<span style="font-family:var(--ff-mono);font-size:10px;color:var(--color-muted)">${g.total} match${g.total === 1 ? '' : 'es'}</span>` +
         `</div>` +
         g.items.slice(0, limit).map((r, i) =>
-          `<div${i === 0 && g.sectionId === 'runner' ? ' style="background:oklch(97% 0.04 60)"' : ''}>` +
-          rowHtml(r, query) +
+          `<div${i === 0 && g.id === 'runner' ? ' style="background:oklch(97% 0.04 60)"' : ''}>` +
+          rowHtml(r, escHtml, true) +
           `</div>`
         ).join('')
       )
