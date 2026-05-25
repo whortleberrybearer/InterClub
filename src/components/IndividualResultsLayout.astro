@@ -24,7 +24,6 @@ const { series, year, raceId, results, provisional, clubs, config, runnerUrlMap 
 const race = getRace(year, series, raceId);
 const title = race?.name ?? raceId;
 const seriesLabel = series === 'road-gp' ? 'Road GP' : 'Fell';
-const seriesLong  = series === 'road-gp' ? 'Road Grand Prix' : 'Fell Championship';
 
 const allRaces = getRaces(year, series);
 const raceIndex = allRaces.findIndex(r => r.id === raceId);
@@ -75,7 +74,7 @@ const clubTurnout = [...clubCountMap.entries()]
     isGuest: id === 'Guest',
   }))
   .sort((a, b) => b.count - a.count);
-const maxClubCount = Math.max(...clubTurnout.map(c => c.count), 1);
+const maxClubCount = clubTurnout.reduce((m, c) => Math.max(m, c.count), 1);
 
 const eyebrow = [
   raceNumber != null ? `Race ${raceNumber}` : null,
@@ -88,7 +87,6 @@ const metaLine = [race?.location ?? null, race?.distance ?? null].filter(Boolean
 
 const showTeamResults = hasTeamResults(year, series, raceId);
 
-const firstCat  = teamCategories[0];
 const hasGuests  = results.some(r => r.club === 'Guest');
 // "Full" chip appears when guests are present; it is the initial active state in that case
 const showFullChip = hasGuests && teamCategories.length > 0;
@@ -97,8 +95,6 @@ const hasMale       = results.some(r => r.sex === 'M');
 const hasFemale     = results.some(r => r.sex === 'F');
 const showSexToggle = hasMale && hasFemale;
 
-// SSR shows all results — no sex is pre-selected
-const initialResults = results;
 ---
 
 <Layout title={`${title} — Results`}>
@@ -360,7 +356,7 @@ const initialResults = results;
             </tr>
           </thead>
           <tbody id="results-tbody">
-            {initialResults.map(r => {
+            {results.map(r => {
               const url      = r.seriesRunnerId != null ? runnerUrlMap[r.seriesRunnerId] : undefined;
               const fullName = `${r.firstName ?? ''} ${r.lastName ?? ''}`.trim();
               const clubName = r.club === 'Guest' ? 'Guest' : (clubById[r.club]?.name ?? r.club);
@@ -400,6 +396,8 @@ const initialResults = results;
 </Layout>
 
 <script>
+  import { formatTime } from '../lib/format';
+
   type Result = {
     position: number | null;
     icPosition: number | null;
@@ -433,8 +431,6 @@ const initialResults = results;
   // ── Team category chips (chip bar) ↔ desktop sidebar ──
   const chips       = document.querySelectorAll<HTMLButtonElement>('.chip-btn');
   const teamCatBtns = document.querySelectorAll<HTMLButtonElement>('.team-cat-btn');
-  const catHeading  = document.getElementById('cat-heading');
-  const catSub      = document.getElementById('cat-sub');
 
   function syncChipBar(activeTarget: string) {
     chips.forEach(c => {
@@ -464,9 +460,6 @@ const initialResults = results;
     // sidebarIdx === -1 → "Full" sidebar button is active, team cat buttons all inactive
     setSidebarBtnActive(fullSidebarBtn, sidebarIdx === -1);
     teamCatBtns.forEach((b, bi) => setSidebarBtnActive(b, bi === sidebarIdx));
-    const activeBtn = sidebarIdx >= 0 ? teamCatBtns[sidebarIdx] : null;
-    if (catHeading) catHeading.textContent = activeBtn ? (activeBtn.dataset.catLabel ?? '') : 'All Results';
-    if (catSub) catSub.textContent = activeBtn?.dataset.catScorers ? `${activeBtn.dataset.catScorers} scorers per club` : '';
   }
 
   chips.forEach(chip => {
@@ -489,39 +482,28 @@ const initialResults = results;
     syncSidebar(-1);
   });
 
-  // ── Inline sex toggle chips (same pattern as age chips) ──
+  // ── Inline sex + age filter chips (multi-select toggles) ──
   const sexFilterBtns = document.querySelectorAll<HTMLButtonElement>('.result-sex-btn');
-
-  sexFilterBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      btn.classList.toggle('active-filter');
-      const on = btn.classList.contains('active-filter');
-      btn.classList.toggle('bg-amber',     on);
-      btn.classList.toggle('border-amber', on);
-      btn.classList.toggle('text-white',   on);
-      btn.classList.toggle('bg-surface',   !on);
-      btn.classList.toggle('border-line',  !on);
-      btn.classList.toggle('text-muted',   !on);
-      render();
-    });
-  });
-
-  // ── Inline age filter chips (multi-select toggles) ──
   const ageFilterBtns = document.querySelectorAll<HTMLButtonElement>('.result-age-btn');
 
-  ageFilterBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      btn.classList.toggle('active-filter');
-      const on = btn.classList.contains('active-filter');
-      btn.classList.toggle('bg-amber',     on);
-      btn.classList.toggle('border-amber', on);
-      btn.classList.toggle('text-white',   on);
-      btn.classList.toggle('bg-surface',   !on);
-      btn.classList.toggle('border-line',  !on);
-      btn.classList.toggle('text-muted',   !on);
-      render();
+  function attachFilterToggle(buttons: NodeListOf<HTMLButtonElement>) {
+    buttons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        btn.classList.toggle('active-filter');
+        const on = btn.classList.contains('active-filter');
+        btn.classList.toggle('bg-amber',     on);
+        btn.classList.toggle('border-amber', on);
+        btn.classList.toggle('text-white',   on);
+        btn.classList.toggle('bg-surface',   !on);
+        btn.classList.toggle('border-line',  !on);
+        btn.classList.toggle('text-muted',   !on);
+        render();
+      });
     });
-  });
+  }
+
+  attachFilterToggle(sexFilterBtns);
+  attachFilterToggle(ageFilterBtns);
 
   // ── Text / club inputs ──
   function syncInputs(changedId: string, value: string) {
@@ -542,20 +524,6 @@ const initialResults = results;
   // ── Helpers ──
   function esc(s: string): string {
     return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
-  }
-
-  function formatTime(time: string | null | undefined): string {
-    if (!time) return '–';
-    const parts = time.trim().split(':');
-    if (parts.length === 2) {
-      const [mm, ss] = parts;
-      return `00:${mm.padStart(2, '0')}:${ss.padStart(2, '0')}`;
-    }
-    if (parts.length === 3) {
-      const [hh, mm, ss] = parts;
-      return `${hh.padStart(2, '0')}:${mm.padStart(2, '0')}:${ss.padStart(2, '0')}`;
-    }
-    return time;
   }
 
   function buildRow(r: Result): string {
