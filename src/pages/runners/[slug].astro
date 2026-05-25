@@ -1,6 +1,6 @@
 ---
 import Layout from '../../components/Layout.astro';
-import { getRunnerProfileStaticPaths } from '../../lib/runners';
+import { getRunnerProfileStaticPaths, resolveClubName } from '../../lib/runners';
 import { siteUrl } from '../../lib/url';
 import type { GlobalRunner, RunnerYearBlock, RunnerClubHistory, RunnerAwardSummary } from '../../lib/types';
 
@@ -17,8 +17,29 @@ interface Props {
 
 const { runner, clubHistory, awardSummary, yearBlocks } = Astro.props;
 const title = `${runner.firstName} ${runner.lastName}`;
+const initials = `${runner.firstName[0] ?? ''}${runner.lastName[0] ?? ''}`.toUpperCase();
+const sexLabel = runner.sex === 'M' ? 'Men' : 'Women';
+const currentClubName = resolveClubName(runner.club);
+
 const allYears = yearBlocks.map(b => b.year);
-const hasAwards = awardSummary.roadGp.length + awardSummary.fell.length > 0;
+const hasRoadGpAwards = awardSummary.roadGp.length > 0;
+const hasFellAwards = awardSummary.fell.length > 0;
+
+// Compute career stats
+const totalRaces = yearBlocks.reduce(
+  (sum, b) => sum + (b.roadGp?.races.length ?? 0) + (b.fell?.races.length ?? 0), 0
+);
+const totalSeasons = yearBlocks.length;
+const totalWins = yearBlocks.reduce((sum, b) => {
+  const rg = b.roadGp?.races.filter(r => r.icPosition === 1).length ?? 0;
+  const fl = b.fell?.races.filter(r => r.icPosition === 1).length ?? 0;
+  return sum + rg + fl;
+}, 0);
+const totalPodiums = yearBlocks.reduce((sum, b) => {
+  const rg = b.roadGp?.races.filter(r => r.icPosition !== null && r.icPosition <= 3).length ?? 0;
+  const fl = b.fell?.races.filter(r => r.icPosition !== null && r.icPosition <= 3).length ?? 0;
+  return sum + rg + fl;
+}, 0);
 
 function formatDateShort(isoDate: string): string {
   const d = new Date(isoDate);
@@ -36,121 +57,281 @@ function positionLabel(pos: number): string {
 ---
 
 <Layout title={title}>
-  <h1 class="text-2xl font-bold mb-1">{title}</h1>
-  <p class="text-sm text-content/60 mb-4">
-    {runner.sex === 'M' ? 'Men' : 'Women'} &middot; {runner.ageCategory}
-  </p>
 
-  <!-- Stats panel -->
-  <div class={`bg-surface border border-line rounded-lg p-4 mb-6 grid gap-6 ${hasAwards ? 'grid-cols-2' : 'grid-cols-1'}`}>
-    <div>
-      <h2 class="text-xs font-bold uppercase tracking-wider text-content/50 mb-2">Competed for</h2>
-      {clubHistory.map(ch => (
-        <div class="flex justify-between gap-4 text-sm mb-1">
-          <span class="font-medium">{ch.clubName}</span>
-          <span class="text-content/60">{ch.yearRanges}</span>
+  <!-- ── Dark hero ── -->
+  <div slot="hero" class="bg-hdr-dark text-hdr-text">
+    <div class="max-w-4xl mx-auto px-4 pt-4 pb-6">
+
+      <p class="font-mono text-xs text-hdr-muted mb-4 tracking-wide">← Runners</p>
+
+      <!-- Identity row -->
+      <div class="flex items-center gap-4 sm:gap-6">
+        <!-- Initials avatar -->
+        <div
+          class="size-14 sm:size-20 shrink-0 rounded-full bg-amber flex items-center justify-center font-head font-extrabold text-xl sm:text-3xl tracking-tight select-none"
+          style="color: oklch(18% 0.02 250)"
+          aria-hidden="true"
+        >
+          {initials}
         </div>
-      ))}
+
+        <div class="min-w-0">
+          <p class="font-head font-bold text-xs uppercase tracking-widest text-amber mb-1">
+            {currentClubName}
+          </p>
+          <h1 class="font-head font-extrabold text-4xl sm:text-5xl tracking-tight leading-none">
+            {title}
+          </h1>
+          <p class="font-mono text-xs text-hdr-muted mt-2 tracking-wider uppercase">
+            {sexLabel} · {runner.ageCategory}
+          </p>
+        </div>
+      </div>
+
+      <!-- Stats strip -->
+      <div class="grid grid-cols-4 mt-5 pt-4 border-t border-white/10 divide-x divide-white/10">
+        {[
+          { value: totalRaces,   label: 'Races',   amber: false },
+          { value: totalWins,    label: 'Wins',    amber: true  },
+          { value: totalPodiums, label: 'Podiums', amber: false },
+          { value: totalSeasons, label: 'Seasons', amber: false },
+        ].map(stat => (
+          <div class="text-center py-1 px-2">
+            <div class:list={[
+              'font-head font-extrabold text-2xl sm:text-3xl leading-none',
+              stat.amber ? 'text-amber' : 'text-hdr-text',
+            ]}>
+              {stat.value}
+            </div>
+            <div class="font-head font-bold text-xs uppercase tracking-widest text-hdr-muted mt-1.5">
+              {stat.label}
+            </div>
+          </div>
+        ))}
+      </div>
+
     </div>
-    {hasAwards && (
-      <div>
-        <h2 class="text-xs font-bold uppercase tracking-wider text-content/50 mb-2">Awards</h2>
-        {awardSummary.roadGp.length > 0 && (
-          <div class="mb-3">
-            <div class="text-xs font-bold uppercase tracking-wider text-content/40 mb-1">Road GP</div>
+  </div>
+
+  <!-- ── Body: sidebar + main ── -->
+  <div class="md:grid md:grid-cols-[220px_1fr] md:gap-7 lg:grid-cols-[260px_1fr]">
+
+    <!-- Sidebar -->
+    <aside class="mb-6 md:mb-0 space-y-4">
+
+      <!-- Competed for -->
+      <div class="bg-surface border border-line rounded-xl p-4">
+        <h2 class="font-head font-bold text-xs uppercase tracking-widest text-muted mb-3">
+          Competed for
+        </h2>
+        <div class="space-y-2">
+          {clubHistory.map(ch => (
+            <div class="flex justify-between items-baseline gap-3 text-sm">
+              <span class="font-semibold">{ch.clubName}</span>
+              <span class="font-mono text-xs text-muted shrink-0">{ch.yearRanges}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <!-- Road GP Awards -->
+      {hasRoadGpAwards && (
+        <div class="bg-surface border border-line rounded-xl p-4">
+          <h2 class="font-head font-bold text-xs uppercase tracking-widest text-amber mb-3">
+            Road GP Awards
+          </h2>
+          <div class="space-y-1.5">
             {awardSummary.roadGp.map(a => (
-              <div class="text-sm">{a.categoryName} &mdash; {positionLabel(a.position)}{a.count > 1 ? ` ×${a.count}` : ''}</div>
+              <div class="flex items-center gap-2 text-sm">
+                <!-- Trophy icon -->
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" class="shrink-0 text-amber" aria-hidden="true">
+                  <path d="M3 1.5h6v3a3 3 0 0 1-6 0v-3Z" fill="currentColor"/>
+                  <path d="M2 2.5H1v1a1.5 1.5 0 0 0 1.5 1.5" stroke="currentColor" stroke-width="0.8"/>
+                  <path d="M10 2.5h1v1a1.5 1.5 0 0 1-1.5 1.5" stroke="currentColor" stroke-width="0.8"/>
+                  <path d="M4.5 8h3v1h-3z" fill="currentColor"/>
+                  <path d="M3.5 10h5v0.6h-5z" fill="currentColor"/>
+                </svg>
+                <span class="font-medium flex-1 text-content">{a.categoryName}</span>
+                <span class="font-mono text-xs text-muted">
+                  {positionLabel(a.position)}{a.count > 1 ? ` ×${a.count}` : ''}
+                </span>
+              </div>
             ))}
           </div>
-        )}
-        {awardSummary.fell.length > 0 && (
-          <div>
-            <div class="text-xs font-bold uppercase tracking-wider text-content/40 mb-1">Fell</div>
+        </div>
+      )}
+
+      <!-- Fell Awards -->
+      {hasFellAwards && (
+        <div class="bg-surface border border-line rounded-xl p-4">
+          <h2 class="font-head font-bold text-xs uppercase tracking-widest text-teal mb-3">
+            Fell Awards
+          </h2>
+          <div class="space-y-1.5">
             {awardSummary.fell.map(a => (
-              <div class="text-sm">{a.categoryName} &mdash; {positionLabel(a.position)}{a.count > 1 ? ` ×${a.count}` : ''}</div>
+              <div class="flex items-center gap-2 text-sm">
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" class="shrink-0 text-teal" aria-hidden="true">
+                  <path d="M3 1.5h6v3a3 3 0 0 1-6 0v-3Z" fill="currentColor"/>
+                  <path d="M2 2.5H1v1a1.5 1.5 0 0 0 1.5 1.5" stroke="currentColor" stroke-width="0.8"/>
+                  <path d="M10 2.5h1v1a1.5 1.5 0 0 1-1.5 1.5" stroke="currentColor" stroke-width="0.8"/>
+                  <path d="M4.5 8h3v1h-3z" fill="currentColor"/>
+                  <path d="M3.5 10h5v0.6h-5z" fill="currentColor"/>
+                </svg>
+                <span class="font-medium flex-1 text-content">{a.categoryName}</span>
+                <span class="font-mono text-xs text-muted">
+                  {positionLabel(a.position)}{a.count > 1 ? ` ×${a.count}` : ''}
+                </span>
+              </div>
             ))}
           </div>
-        )}
-      </div>
-    )}
-  </div>
+        </div>
+      )}
 
-  <!-- Filter bar -->
-  <div class="bg-surface border border-line rounded-lg p-3 mb-6 flex flex-wrap gap-2 items-center">
-    <div class="flex gap-1">
-      <button class="btn btn-sm btn-active" data-series-filter="all">All</button>
-      <button class="btn btn-sm btn-ghost" data-series-filter="road-gp">Road GP</button>
-      <button class="btn btn-sm btn-ghost" data-series-filter="fell">Fell</button>
+    </aside>
+
+    <!-- Main content -->
+    <div>
+
+      <!-- Filter bar -->
+      <div class="bg-surface border border-line rounded-xl p-3 mb-6 flex flex-wrap gap-2 items-center">
+        <div class="flex gap-1">
+          <button class="btn btn-sm btn-active" data-series-filter="all">All</button>
+          <button class="btn btn-sm btn-ghost" data-series-filter="road-gp">Road GP</button>
+          <button class="btn btn-sm btn-ghost" data-series-filter="fell">Fell</button>
+        </div>
+        <select id="filter-year" class="select select-sm">
+          <option value="">All Years</option>
+          {allYears.map(y => <option value={String(y)}>{y}</option>)}
+        </select>
+        <select id="filter-race" class="select select-sm">
+          <option value="">All Races</option>
+        </select>
+      </div>
+
+      <!-- Year blocks -->
+      <div id="profile-content">
+        {yearBlocks.map(block => {
+          const blockRaces = (block.roadGp?.races.length ?? 0) + (block.fell?.races.length ?? 0);
+          const blockAwardsRoad = block.roadGp?.awards ?? [];
+          const blockAwardsFell = block.fell?.awards ?? [];
+          return (
+            <div data-year={String(block.year)} class="mb-8">
+
+              <!-- Year heading -->
+              <div class="flex items-baseline gap-2 flex-wrap border-b-2 border-content pb-1.5 mb-4">
+                <span class="font-head font-extrabold text-2xl tracking-tight leading-none">
+                  {block.year}
+                </span>
+                {blockAwardsRoad.map(a => (
+                  <span class="inline-flex items-center gap-1 bg-amber text-white font-head font-bold uppercase tracking-wider text-xs px-2.5 py-0.5 rounded-full">
+                    <svg width="10" height="10" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+                      <path d="M3 1.5h6v3a3 3 0 0 1-6 0v-3Z" fill="currentColor"/>
+                      <path d="M4.5 8h3v1h-3z" fill="currentColor"/>
+                      <path d="M3.5 10h5v0.6h-5z" fill="currentColor"/>
+                    </svg>
+                    Road GP · {a.categoryName} · {positionLabel(a.position)}
+                  </span>
+                ))}
+                {blockAwardsFell.map(a => (
+                  <span class="inline-flex items-center gap-1 bg-teal text-white font-head font-bold uppercase tracking-wider text-xs px-2.5 py-0.5 rounded-full">
+                    <svg width="10" height="10" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+                      <path d="M3 1.5h6v3a3 3 0 0 1-6 0v-3Z" fill="currentColor"/>
+                      <path d="M4.5 8h3v1h-3z" fill="currentColor"/>
+                      <path d="M3.5 10h5v0.6h-5z" fill="currentColor"/>
+                    </svg>
+                    Fell · {a.categoryName} · {positionLabel(a.position)}
+                  </span>
+                ))}
+                <span class="flex-1"></span>
+                <span class="font-mono text-xs text-muted">
+                  {blockRaces} race{blockRaces !== 1 ? 's' : ''}
+                </span>
+              </div>
+
+              <!-- Road GP races -->
+              {block.roadGp && (
+                <div data-series="road-gp" class="mb-5">
+                  <h3 class="font-head font-bold text-xs uppercase tracking-widest text-amber mb-2">
+                    Road GP
+                    <span class="font-mono normal-case tracking-normal font-normal text-muted ml-1.5">
+                      {block.roadGp.races.length} race{block.roadGp.races.length !== 1 ? 's' : ''}
+                    </span>
+                  </h3>
+                  <table class="w-full text-sm border-collapse">
+                    <tbody>
+                      {block.roadGp.races.map(race => (
+                        <tr
+                          data-race-id={race.raceId}
+                          data-race-name={race.raceName}
+                          class="border-b border-line last:border-b-0"
+                        >
+                          <td class="py-2 pr-3 font-mono text-xs text-muted w-10 tabular-nums align-middle">
+                            {formatDateShort(race.date)}
+                          </td>
+                          <td class="py-2 font-medium align-middle">
+                            {race.hasResults
+                              ? <a href={siteUrl(`/road-gp/${block.year}/${race.raceId}/results`)} class="link link-hover">{race.raceName}</a>
+                              : <span class="text-muted">{race.raceName}</span>}
+                          </td>
+                          <td class:list={[
+                            'py-2 text-right font-mono text-sm tabular-nums align-middle',
+                            !race.time ? 'text-muted' : '',
+                          ]}>
+                            {race.time || '–'}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+
+              <!-- Fell races -->
+              {block.fell && (
+                <div data-series="fell" class="mb-5">
+                  <h3 class="font-head font-bold text-xs uppercase tracking-widest text-teal mb-2">
+                    Fell
+                    <span class="font-mono normal-case tracking-normal font-normal text-muted ml-1.5">
+                      {block.fell.races.length} race{block.fell.races.length !== 1 ? 's' : ''}
+                    </span>
+                  </h3>
+                  <table class="w-full text-sm border-collapse">
+                    <tbody>
+                      {block.fell.races.map(race => (
+                        <tr
+                          data-race-id={race.raceId}
+                          data-race-name={race.raceName}
+                          class="border-b border-line last:border-b-0"
+                        >
+                          <td class="py-2 pr-3 font-mono text-xs text-muted w-10 tabular-nums align-middle">
+                            {formatDateShort(race.date)}
+                          </td>
+                          <td class="py-2 font-medium align-middle">
+                            {race.hasResults
+                              ? <a href={siteUrl(`/fell/${block.year}/${race.raceId}/results`)} class="link link-hover">{race.raceName}</a>
+                              : <span class="text-muted">{race.raceName}</span>}
+                          </td>
+                          <td class:list={[
+                            'py-2 text-right font-mono text-sm tabular-nums align-middle',
+                            !race.time ? 'text-muted' : '',
+                          ]}>
+                            {race.time || '–'}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+
+            </div>
+          );
+        })}
+      </div>
+
     </div>
-    <select id="filter-year" class="select select-sm">
-      <option value="">All Years</option>
-      {allYears.map(y => <option value={String(y)}>{y}</option>)}
-    </select>
-    <select id="filter-race" class="select select-sm">
-      <option value="">All Races</option>
-    </select>
   </div>
 
-  <!-- Year blocks -->
-  <div id="profile-content">
-    {yearBlocks.map(block => (
-      <div data-year={String(block.year)} class="mb-8">
-        <h2 class="text-lg font-bold text-amber border-b border-line pb-1 mb-4">{block.year}</h2>
-
-        {block.roadGp && (
-          <div data-series="road-gp" class="mb-5">
-            <h3 class="text-xs font-bold uppercase tracking-wider text-content/50 mb-2">Road GP</h3>
-            {block.roadGp.awards.map(award => (
-              <a href={siteUrl(`/road-gp/${block.year}/`)} class="inline-flex items-center gap-1 text-sm text-success hover:underline mb-2">
-                🏆 {award.categoryName} — {positionLabel(award.position)}
-              </a>
-            ))}
-            <table class="table table-sm w-full">
-              <tbody>
-                {block.roadGp.races.map(race => (
-                  <tr data-race-id={race.raceId} data-race-name={race.raceName}>
-                    <td class="text-content/50 text-xs w-12 tabular-nums">{formatDateShort(race.date)}</td>
-                    <td>
-                      {race.hasResults
-                        ? <a href={siteUrl(`/road-gp/${block.year}/${race.raceId}/results`)} class="link link-hover">{race.raceName}</a>
-                        : race.raceName}
-                    </td>
-                    <td class="text-right tabular-nums font-mono text-sm">{race.time || '–'}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        )}
-
-        {block.fell && (
-          <div data-series="fell" class="mb-5">
-            <h3 class="text-xs font-bold uppercase tracking-wider text-content/50 mb-2">Fell</h3>
-            {block.fell.awards.map(award => (
-              <a href={siteUrl(`/fell/${block.year}/`)} class="inline-flex items-center gap-1 text-sm text-success hover:underline mb-2">
-                🏆 {award.categoryName} — {positionLabel(award.position)}
-              </a>
-            ))}
-            <table class="table table-sm w-full">
-              <tbody>
-                {block.fell.races.map(race => (
-                  <tr data-race-id={race.raceId} data-race-name={race.raceName}>
-                    <td class="text-content/50 text-xs w-12 tabular-nums">{formatDateShort(race.date)}</td>
-                    <td>
-                      {race.hasResults
-                        ? <a href={siteUrl(`/fell/${block.year}/${race.raceId}/results`)} class="link link-hover">{race.raceName}</a>
-                        : race.raceName}
-                    </td>
-                    <td class="text-right tabular-nums font-mono text-sm">{race.time || '–'}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        )}
-      </div>
-    ))}
-  </div>
 </Layout>
 
 <script>
