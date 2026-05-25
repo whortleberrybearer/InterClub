@@ -1,97 +1,70 @@
 ---
-// src/pages/road-gp/index.astro
-import Layout from '../../components/Layout.astro';
-import RaceList from '../../components/RaceList.astro';
+import SeriesDetailLayout from '../../components/SeriesDetailLayout.astro';
 import { getCurrentYear, getAvailableYears, getRaces } from '../../lib/data';
-import { hasTeamStandings } from '../../lib/results';
+import { hasTeamStandings, hasIndividualStandings, getSeriesConfig } from '../../lib/results';
 import { siteUrl } from '../../lib/url';
 
 const currentYear = getCurrentYear();
 const availableYears = getAvailableYears('road-gp');
 const races = getRaces(currentYear, 'road-gp');
-const standingsUrl = hasTeamStandings(currentYear, 'road-gp')
+const config = getSeriesConfig(currentYear, 'road-gp');
+const teamStandingsUrl = hasTeamStandings(currentYear, 'road-gp')
   ? siteUrl(`/road-gp/${currentYear}/team-standings`)
+  : undefined;
+const individualStandingsUrl = hasIndividualStandings(currentYear, 'road-gp')
+  ? siteUrl(`/road-gp/${currentYear}/individual-standings`)
   : undefined;
 ---
 
-<Layout title="Road Grand Prix">
-  <p class="mb-6 text-content/80">
-    The Inter Club Road Grand Prix is a series of seven races of between four and five miles, held
-    midweek from April to September. Races are free to enter and run in a spirit of fun as well as
-    being quite competitive. Each host club provides a complimentary buffet after their event. Race
-    numbers are assigned before the season and remain valid throughout.
+<SeriesDetailLayout
+  series="road-gp"
+  year={currentYear}
+  races={races}
+  config={config}
+  availableYears={availableYears}
+  seriesTitle="Road Grand Prix"
+  subtitle="7 races · April – September · Lancashire"
+  teamStandingsUrl={teamStandingsUrl}
+  individualStandingsUrl={individualStandingsUrl}
+>
+  <div slot="description">
+    <p>
+      The Inter Club Road Grand Prix is a series of seven races of between four and five miles, held
+      midweek from April to September. Races are free to enter and run in a spirit of fun as well as
+      being quite competitive. Each host club provides a complimentary buffet after their event. Race
+      numbers are assigned before the season and remain valid throughout.
+    </p>
+    <p class="mt-3 pl-4 border-l-2 border-amber text-muted text-sm">
+      The Road Grand Prix perpetual trophy was donated by David Wood in memory of his wife
+      Margaret, a former member of Lytham St. Annes Road Runners.
+    </p>
+  </div>
+
+  <li slot="rules" class="relative pl-5 text-[13px] leading-relaxed mb-1.5">
+    <span class="absolute left-0 top-0.5 text-amber font-bold">·</span>
+    No headphones or similar devices are permitted in IC Road races
+  </li>
+  <li slot="rules" class="relative pl-5 text-[13px] leading-relaxed mb-1.5">
+    <span class="absolute left-0 top-0.5 text-amber font-bold">·</span>
+    Minimum age is 15 on the day of competition
+  </li>
+  <li slot="rules" class="relative pl-5 text-[13px] leading-relaxed mb-1.5">
+    <span class="absolute left-0 top-0.5 text-amber font-bold">·</span>
+    Club members only — no guest runners
+  </li>
+  <li slot="rules" class="relative pl-5 text-[13px] leading-relaxed mb-1.5">
+    <span class="absolute left-0 top-0.5 text-amber font-bold">·</span>
+    Club vest or top must be worn; athletes not in club kit may be removed from official results
+  </li>
+  <li slot="rules" class="relative pl-5 text-[13px] leading-relaxed">
+    <span class="absolute left-0 top-0.5 text-amber font-bold">·</span>
+    Race number must be worn; athletes without a number will be shown as Non-Counter in the results
+  </li>
+
+  <p slot="individual-awards">
+    Individual standings are based on the lowest total positions from your best 4 of 7 races.
+    Awards are presented to the 1st, 2nd, and 3rd place finishers overall, and to the top 2 in
+    each veteran category. Awards are presented at the following season's buffet. Only one award
+    per athlete.
   </p>
-
-  <div class="card shadow-sm mb-6">
-    <div class="card-body gap-2 py-4">
-      <h2 class="text-lg font-semibold">Key Rules</h2>
-      <ul class="list-disc list-inside space-y-1 text-sm text-content/80">
-        <li>No headphones or similar devices are permitted in IC Road races</li>
-        <li>Minimum age is 15 on the day of competition</li>
-        <li>Club members only — no guest runners</li>
-        <li>Club vest or top must be worn; athletes not in club kit may be removed from official results</li>
-        <li>Race number must be worn; athletes without a number will be shown as Non-Counter in the results</li>
-      </ul>
-    </div>
-  </div>
-
-  <RaceList
-    races={races}
-    year={currentYear}
-    series="road-gp"
-    availableYears={availableYears}
-    currentYear={currentYear}
-    seriesBasePath="/road-gp"
-    seriesLabel="Road Grand Prix"
-    standingsUrl={standingsUrl}
-  />
-
-  <div class="card shadow-sm mt-6">
-    <div class="card-body gap-2 py-4">
-      <h2 class="text-lg font-semibold">Team Categories</h2>
-      <div class="overflow-x-auto">
-        <table class="table table-sm">
-          <thead>
-            <tr>
-              <th>Category</th>
-              <th>Scorers</th>
-              <th>Eligibility</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr><td>Open</td><td>10</td><td>All finishers</td></tr>
-            <tr><td>Ladies</td><td>5</td><td>Women</td></tr>
-            <tr><td>Lady Vets</td><td>5</td><td>Women 40+</td></tr>
-            <tr><td>Vets</td><td>6</td><td>Men 40+, Women 35+</td></tr>
-            <tr><td>Vet 50s</td><td>4</td><td>Men &amp; Women 50+</td></tr>
-            <tr><td>Vet 60s</td><td>3</td><td>Men &amp; Women 60+</td></tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-
-  <div class="card shadow-sm mt-4">
-    <div class="card-body gap-2 py-4">
-      <h2 class="text-lg font-semibold">Team Scoring</h2>
-      <ul class="list-disc list-inside space-y-1 text-sm text-content/80">
-        <li>1st team 7 points, 2nd team 6 points … 7th team 1 point</li>
-        <li>Incomplete teams still score and are ordered by number of finishing runners</li>
-        <li>Where multiple clubs have the same number of finishers, normal scoring rules apply</li>
-        <li>Clubs with no finishers score 0 points</li>
-      </ul>
-    </div>
-  </div>
-
-  <div class="card shadow-sm mt-4">
-    <div class="card-body gap-2 py-4">
-      <h2 class="text-lg font-semibold">Individual Awards</h2>
-      <p class="text-sm text-content/80">
-        Individual standings are based on the lowest total positions from your best 4 of 7 races.
-        Awards are presented to the 1st, 2nd, and 3rd place finishers overall, and to the top 2 in
-        each veteran category. Awards are presented at the following season's buffet. Only one award
-        per athlete.
-      </p>
-    </div>
-  </div>
-</Layout>
+</SeriesDetailLayout>
