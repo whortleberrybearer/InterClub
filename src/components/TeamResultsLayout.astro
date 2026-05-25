@@ -40,7 +40,7 @@ const categoryById = Object.fromEntries((config.teamCategories ?? []).map(c => [
 
   <!-- ── Full-width race header (hero slot) ── -->
   <div slot="hero" class="bg-surface">
-    <div class="max-w-4xl mx-auto px-4 pt-8 pb-5">
+    <div class="max-w-4xl xl:max-w-5xl mx-auto px-4 pt-8 pb-5">
       <div class="mb-5">
         <a href={siteUrl(`/${series}/${year}`)} class="btn btn-ghost btn-sm gap-1 -ml-3">← {seriesLabel} {year}</a>
       </div>
@@ -58,7 +58,7 @@ const categoryById = Object.fromEntries((config.teamCategories ?? []).map(c => [
 
     <!-- Individual / Team tab strip -->
     <div class="border-b border-line">
-      <div class="max-w-4xl mx-auto px-4">
+      <div class="max-w-4xl xl:max-w-5xl mx-auto px-4">
         <div class="flex">
           <a
             href={siteUrl(`/${series}/${year}/${raceId}/results`)}
@@ -86,7 +86,7 @@ const categoryById = Object.fromEntries((config.teamCategories ?? []).map(c => [
   <!-- ══════════════════════════════════════════════
        DESKTOP (lg+): sticky sidebar + main pane
   ══════════════════════════════════════════════ -->
-  <div class="hidden lg:grid grid-cols-[220px_1fr] gap-8 items-start">
+  <div class="hidden lg:grid grid-cols-[220px_1fr] xl:grid-cols-[260px_1fr] gap-8 items-start">
 
     <!-- Sticky sidebar -->
     <aside class="sticky top-6 self-start">
