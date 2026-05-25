@@ -33,7 +33,7 @@ export interface CourseRecord {
 
 export interface RaceResult {
   position: number | null;
-  icPosition: number | null;
+  categoryPositions: Record<string, number | null>;
   firstName: string;
   lastName: string;
   club: string;        // club id (e.g. 'blackpool') or 'Guest'
