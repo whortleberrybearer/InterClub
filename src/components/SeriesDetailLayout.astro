@@ -1,0 +1,321 @@
+---
+// src/components/SeriesDetailLayout.astro
+import Layout from './Layout.astro';
+import { hasResults, hasTeamResults, isResultsProvisional } from '../lib/results';
+import { siteUrl } from '../lib/url';
+import { formatRaceDate } from '../lib/format';
+import type { Race, Series, SeriesConfig } from '../lib/types';
+
+export interface Props {
+  series: Series;
+  year: number;
+  races: Race[];
+  config: SeriesConfig;
+  availableYears: number[];
+  seriesTitle: string;
+  subtitle: string;
+  teamStandingsUrl?: string;
+  individualStandingsUrl?: string;
+}
+
+const {
+  series, year, races, config, availableYears,
+  seriesTitle, subtitle, teamStandingsUrl, individualStandingsUrl,
+} = Astro.props;
+
+// Race states — determines past/next/upcoming highlight and result links
+let nextFound = false;
+const raceStates = races.map(race => {
+  const past = hasResults(year, series, race.id);
+  const hasTeam = hasTeamResults(year, series, race.id);
+  const provisional = past && isResultsProvisional(year, series, race.id);
+  const isNext = !past && !nextFound;
+  if (isNext) nextFound = true;
+  return { race, past, hasTeam, provisional, isNext };
+});
+
+const pastCount = raceStates.filter(s => s.past).length;
+const nextRaceIndex = raceStates.findIndex(s => s.isNext);
+const nextRaceNumber = nextRaceIndex >= 0 ? nextRaceIndex + 1 : null;
+
+// Archive data
+const pastYears = availableYears.filter(y => y < year).sort((a, b) => b - a);
+const recentYears = pastYears.slice(0, 4);
+const oldestYear = pastYears[pastYears.length - 1] ?? null;
+
+const decadeGroups = [
+  { label: '2020s',   years: pastYears.filter(y => y >= 2020) },
+  { label: '2010s',   years: pastYears.filter(y => y >= 2010 && y < 2020) },
+  { label: '2000s',   years: pastYears.filter(y => y >= 2000 && y < 2010) },
+  { label: '1990s',   years: pastYears.filter(y => y >= 1990 && y < 2000) },
+  { label: '1985–89', years: pastYears.filter(y => y < 1990) },
+].filter(g => g.years.length > 0);
+
+const teamCategories = config.teamCategories ?? [];
+const hasEligibility = teamCategories.some(c => c.eligibility);
+
+const scoringRules = [
+  '1st team 7 points, 2nd team 6 points … 7th team 1 point',
+  'Incomplete teams still score, ordered by finishers',
+  'Tied finisher counts use normal scoring rules',
+  'Clubs with no finishers score 0 points',
+];
+---
+
+<Layout title={seriesTitle}>
+
+  <!-- ════ HERO ════ -->
+  <div slot="hero" class="bg-surface border-b border-line">
+    <div class="max-w-4xl mx-auto px-4">
+
+      <!-- Mobile / Tablet -->
+      <div class="lg:hidden py-5 md:py-6">
+        <div class="flex items-start justify-between gap-3">
+          <div>
+            <div class="font-head text-[10px] font-bold tracking-[0.16em] uppercase text-amber">{year} Season</div>
+            <h1 class="font-head text-[28px] md:text-[36px] font-extrabold tracking-tight leading-[1.05] mt-1">{seriesTitle}</h1>
+            <div class="font-mono text-[13px] text-muted mt-1">{subtitle}</div>
+          </div>
+          {pastYears.length > 0 && (
+            <details class="relative shrink-0 mt-0.5">
+              <summary class="list-none cursor-pointer flex items-center gap-1.5 border border-dashed border-line rounded-lg px-3 py-1.5 font-head text-[11px] font-bold tracking-[0.1em] uppercase text-muted hover:text-content transition-colors select-none">
+                Past seasons <span class="font-mono text-[10px]">▾</span>
+              </summary>
+              <div class="absolute right-0 top-[calc(100%+6px)] z-10 bg-surface border border-line rounded-xl shadow-lg p-2.5 w-60 max-h-72 overflow-y-auto">
+                <div class="font-head text-[10px] font-bold tracking-[0.12em] uppercase text-muted px-1.5 pb-2 border-b border-line mb-1.5">Browse archive</div>
+                <div class="grid grid-cols-4 gap-1">
+                  {pastYears.map(y => (
+                    <a
+                      href={siteUrl(`/${series}/${y}/`)}
+                      class="text-center py-1.5 font-mono text-[12px] text-content bg-canvas rounded-md hover:text-amber transition-colors no-underline"
+                    >
+                      {String(y).slice(2)}
+                    </a>
+                  ))}
+                </div>
+              </div>
+            </details>
+          )}
+        </div>
+        {(teamStandingsUrl || individualStandingsUrl) && (
+          <div class="flex gap-2 mt-3">
+            {teamStandingsUrl && (
+              <a href={teamStandingsUrl} class="btn btn-primary btn-sm flex-1 justify-center">Team Standings →</a>
+            )}
+            {individualStandingsUrl && (
+              <a href={individualStandingsUrl} class="btn btn-sm flex-1 justify-center" style="color: var(--color-amber); border: 1px solid var(--color-amber);">Individual →</a>
+            )}
+          </div>
+        )}
+      </div>
+
+      <!-- Desktop -->
+      <div class="hidden lg:block py-9 pb-7">
+        <div class="flex items-center gap-3 mb-2">
+          <span class="font-head text-[11px] font-bold tracking-[0.16em] uppercase text-amber">{year} Season</span>
+          <span class="w-6 h-px bg-line"></span>
+          {nextRaceNumber && (
+            <span class="font-mono text-[12px] text-muted">Round {nextRaceNumber} of {races.length} next</span>
+          )}
+        </div>
+        <h1 class="font-head text-[52px] font-extrabold tracking-[-0.025em] leading-[0.95]">{seriesTitle}</h1>
+        <div class="flex items-end justify-between mt-5 gap-8">
+          <div class="text-base leading-[1.55] text-content max-w-[600px]">
+            <slot name="description" />
+          </div>
+          {(teamStandingsUrl || individualStandingsUrl) && (
+            <div class="flex gap-2.5 shrink-0">
+              {teamStandingsUrl && (
+                <a href={teamStandingsUrl} class="btn btn-primary">Team Standings →</a>
+              )}
+              {individualStandingsUrl && (
+                <a href={individualStandingsUrl} class="btn" style="color: var(--color-amber); border: 1px solid var(--color-amber); padding: 0.5rem 1.375rem;">Individual →</a>
+              )}
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════ MAIN ════ -->
+
+  <!-- Description: mobile/tablet only (desktop gets it in hero) -->
+  <div class="lg:hidden mb-6">
+    <slot name="description" />
+  </div>
+
+  <!-- Two-column on desktop: main + sticky sidebar -->
+  <div class="lg:grid lg:grid-cols-[1fr_220px] lg:gap-8 lg:items-start">
+
+    <!-- ── Main column ── -->
+    <div>
+
+      <!-- Schedule -->
+      <div class="card overflow-hidden">
+        <div class="flex items-baseline justify-between px-4 py-3.5 border-b border-line">
+          <span class="font-head text-[14px] font-bold tracking-[0.05em] uppercase">Schedule</span>
+          <span class="font-mono text-[11px] text-muted">{pastCount} of {races.length} run</span>
+        </div>
+        <table class="table">
+          <thead>
+            <tr>
+              <th class="hidden sm:table-cell w-10 text-center">#</th>
+              <th>Date</th>
+              <th>Race</th>
+              <th class="hidden md:table-cell">Location</th>
+              <th class="text-right pr-4">Results</th>
+            </tr>
+          </thead>
+          <tbody>
+            {raceStates.map(({ race, past, hasTeam, provisional, isNext }, i) => (
+              <tr class:list={[
+                'border-b border-line last:border-0',
+                isNext && 'bg-amber-bg',
+                past && 'opacity-70',
+              ]}>
+                <td class="hidden sm:table-cell py-3 px-2 text-center font-mono text-xs text-muted">{i + 1}</td>
+                <td class="py-3 pl-4 sm:pl-2 pr-2">
+                  <div class="font-mono text-[13px]">{formatRaceDate(race.date)}</div>
+                  {race.time && <div class="font-mono text-[11px] text-muted">{race.time}</div>}
+                </td>
+                <td class="py-3 px-2">
+                  <div class:list={['text-[14px]', isNext ? 'font-semibold' : 'font-medium']}>{race.name}</div>
+                  {isNext && (
+                    <span class="badge badge-warning mt-1 text-[9px]">Next</span>
+                  )}
+                  {provisional && (
+                    <span class="badge badge-warning mt-1 ml-1 text-[9px]">Provisional</span>
+                  )}
+                </td>
+                <td class="hidden md:table-cell py-3 px-2 text-[13px] text-muted">{race.location ?? ''}</td>
+                <td class="py-3 pr-4 pl-2 text-right">
+                  {past ? (
+                    <div class="flex flex-col gap-1 items-end sm:flex-row sm:justify-end sm:gap-3">
+                      <a href={siteUrl(`/${series}/${year}/${race.id}/results`)} class="text-[12px] font-semibold text-amber hover:underline no-underline">Results →</a>
+                      {hasTeam && (
+                        <a href={siteUrl(`/${series}/${year}/${race.id}/team-results`)} class="text-[12px] text-muted hover:underline no-underline">Team →</a>
+                      )}
+                    </div>
+                  ) : (
+                    <span class="font-mono text-[12px] text-muted/50">—</span>
+                  )}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      <!-- 2×2 info cards -->
+      <div class="grid md:grid-cols-2 gap-5 mt-5">
+
+        <!-- Key Rules -->
+        <div class="card p-5">
+          <div class="font-head text-[13px] font-bold tracking-[0.05em] uppercase mb-3">Key Rules</div>
+          <ul class="space-y-0">
+            <slot name="rules" />
+          </ul>
+        </div>
+
+        <!-- Team Categories -->
+        <div class="card overflow-hidden">
+          <div class="font-head text-[13px] font-bold tracking-[0.05em] uppercase px-5 py-3.5 border-b border-line">Team Categories</div>
+          <table class="table table-sm">
+            <thead>
+              <tr>
+                <th>Category</th>
+                <th class="w-16">Scorers</th>
+                {hasEligibility && <th>Eligibility</th>}
+              </tr>
+            </thead>
+            <tbody>
+              {teamCategories.map(cat => (
+                <tr>
+                  <td class="font-medium">{cat.name}</td>
+                  <td class="font-mono">{cat.scorerCount}</td>
+                  {hasEligibility && <td class="text-muted text-xs">{cat.eligibility ?? ''}</td>}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Team Scoring -->
+        <div class="card p-5">
+          <div class="font-head text-[13px] font-bold tracking-[0.05em] uppercase mb-3">Team Scoring</div>
+          <ul class="space-y-1">
+            {scoringRules.map(rule => (
+              <li class="relative pl-4 text-[13px] leading-relaxed">
+                <span class="absolute left-0 top-0.5 font-mono text-[11px] text-muted">›</span>
+                {rule}
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <!-- Individual Awards -->
+        <div class="card p-5">
+          <div class="font-head text-[13px] font-bold tracking-[0.05em] uppercase mb-3">Individual Awards</div>
+          <div class="text-[13px] leading-relaxed">
+            <slot name="individual-awards" />
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ── Desktop sidebar ── -->
+    <aside class="hidden lg:block sticky top-6 self-start">
+      <div class="card p-5">
+        <div class="font-head text-[10px] font-bold tracking-[0.16em] uppercase text-muted mb-1">The Archive</div>
+        <div class="font-head text-[20px] font-extrabold tracking-tight mb-2">Past seasons</div>
+        <p class="text-[12px] text-muted leading-relaxed mb-4 pb-4 border-b border-line">
+          Race lists, results and standings for every season{oldestYear ? ` since ${oldestYear}` : ''}. Selecting a year opens its own archive page.
+        </p>
+        {decadeGroups.map((group, gi) => (
+          <div class:list={[gi < decadeGroups.length - 1 && 'mb-4']}>
+            <div class="font-mono text-[10px] tracking-[0.1em] uppercase text-muted mb-1.5">{group.label}</div>
+            <div class="grid grid-cols-4 gap-1">
+              {group.years.map(y => (
+                <a
+                  href={siteUrl(`/${series}/${y}/`)}
+                  class="text-center py-1.5 font-mono text-[11px] text-content bg-canvas rounded-md hover:text-amber transition-colors no-underline"
+                >
+                  {String(y).slice(2)}
+                </a>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+      {oldestYear && (
+        <div class="mt-3.5 p-3.5 bg-canvas border border-dashed border-line rounded-xl text-[12px] text-muted leading-relaxed">
+          <strong class="text-content">Series founded {oldestYear}.</strong> {pastYears.length} seasons of results.
+        </div>
+      )}
+    </aside>
+
+  </div>
+
+  <!-- Recent seasons: mobile/tablet only -->
+  {recentYears.length > 0 && (
+    <div class="lg:hidden mt-8 pt-6 border-t border-line">
+      <div class="font-head text-[10px] font-bold tracking-[0.16em] uppercase text-muted mb-3">Recent seasons</div>
+      <div class="grid grid-cols-4 gap-2">
+        {recentYears.map((y, i) => (
+          <a
+            href={siteUrl(`/${series}/${y}/`)}
+            class="card p-3 no-underline flex flex-col justify-between min-h-[72px] hover:border-amber transition-colors"
+          >
+            <div class="font-head text-[20px] font-extrabold tracking-tight leading-none">{y}</div>
+            <div class="font-mono text-[10px] text-muted mt-2">
+              {i === 0 ? 'Last season' : `${recentYears[0] - y} yr ago`}
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  )}
+
+</Layout>
