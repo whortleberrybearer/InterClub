@@ -344,7 +344,8 @@ const showSexToggle = hasMale && hasFemale;
           <colgroup>
             <col class="w-10" />
             {teamCategories.map(() => <col class="hidden lg:table-column w-9" />)}
-            <col class="w-11" />
+            <col class="w-9" />
+            <col class="w-9" />
             <col />
             <col class="w-12" />
             <col class="w-20" />
@@ -358,7 +359,7 @@ const showSexToggle = hasMale && hasFemale;
                   data-cat-id={cat.id}
                 >{cat.name}</th>
               ))}
-              <th id="ic-header" class="font-head text-[10px] font-bold tracking-[0.1em] uppercase text-muted text-left py-2.5 px-2 bg-surface border-b-2 border-content">Open</th>
+              <th id="ic-header" class="lg:hidden font-head text-[10px] font-bold tracking-[0.1em] uppercase text-muted text-left py-2.5 px-2 bg-surface border-b-2 border-content">Open</th>
               <th class="no-col font-head text-[10px] font-bold tracking-[0.1em] uppercase text-muted text-left py-2.5 px-2 bg-surface border-b-2 border-content">No.</th>
               <th class="font-head text-[10px] font-bold tracking-[0.1em] uppercase text-muted text-left py-2.5 px-2 bg-surface border-b-2 border-content">Runner</th>
               <th class="font-head text-[10px] font-bold tracking-[0.1em] uppercase text-muted text-left py-2.5 px-2 bg-surface border-b-2 border-content">Cat</th>
@@ -379,7 +380,7 @@ const showSexToggle = hasMale && hasFemale;
                       {r.categoryPositions[cat.id] ?? '–'}
                     </td>
                   ))}
-                  <td class="py-2.5 px-2 font-mono text-[12px] text-muted align-middle">{openPos}</td>
+                  <td class="lg:hidden py-2.5 px-2 font-mono text-[12px] text-muted align-middle">{openPos}</td>
                   <td class="no-col py-2.5 px-2 font-mono text-[12px] text-muted align-middle">{r.raceNumber ?? '–'}</td>
                   <td class="py-2.5 px-2 align-middle max-w-0 overflow-hidden">
                     <div class="font-semibold leading-tight truncate">
@@ -617,7 +618,7 @@ const showSexToggle = hasMale && hasFemale;
     return `<tr class="border-b border-line last:border-0">
       <td class="py-2.5 pl-4 pr-2 font-mono text-[13px] font-medium text-muted align-middle">${r.position ?? '–'}</td>
       ${catCells}
-      <td class="py-2.5 px-2 font-mono text-[12px] text-muted align-middle">${icVal}</td>
+      <td class="lg:hidden py-2.5 px-2 font-mono text-[12px] text-muted align-middle">${icVal}</td>
       <td class="no-col py-2.5 px-2 font-mono text-[12px] text-muted align-middle">${r.raceNumber ?? '–'}</td>
       <td class="py-2.5 px-2 align-middle max-w-0 overflow-hidden">
         <div class="font-semibold leading-tight truncate">${nameCell}</div>
