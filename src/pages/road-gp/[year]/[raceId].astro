@@ -10,14 +10,16 @@ import type { Race } from '../../../lib/types';
 export async function getStaticPaths() {
   const currentYear = getCurrentYear();
   const allYears = getAvailableYears('road-gp');
-  return getRaces(currentYear, 'road-gp').map(race => {
+  const allRaces = getRaces(currentYear, 'road-gp');
+
+  return allRaces.map((race, index) => {
     const pastResults = allYears
       .filter(y => y < currentYear && hasResults(y, 'road-gp', race.id))
       .sort((a, b) => b - a)
       .map(y => ({ year: y, url: siteUrl(`/road-gp/${y}/${race.id}/results/`) }));
     return {
       params: { year: String(currentYear), raceId: race.id },
-      props: { race, year: currentYear, pastResults },
+      props: { race, year: currentYear, pastResults, raceIndex: index + 1, totalRaces: allRaces.length },
     };
   });
 }
@@ -26,9 +28,11 @@ interface Props {
   race: Race;
   year: number;
   pastResults: { year: number; url: string }[];
+  raceIndex: number;
+  totalRaces: number;
 }
 
-const { race, year, pastResults } = Astro.props;
+const { race, year, pastResults, raceIndex, totalRaces } = Astro.props;
 const {
   name, date, time, location, distance, ascent,
   detailsUrl, image, startAddress, mapEmbedUrl,
@@ -39,162 +43,223 @@ const formattedDate = formatRaceDate(date, time);
 const currentYear = getCurrentYear();
 const backUrl = year === currentYear ? siteUrl('/road-gp/') : siteUrl(`/road-gp/${year}/`);
 const resultsExist = hasResults(year, 'road-gp', race.id);
-const hasAddressText = !!(startAddress || parking);
-const hasCourseContent = !!(routeDescription || routeImage || (courseRecords && courseRecords.length > 0));
-const hasRouteText = !!(routeDescription || (courseRecords && courseRecords.length > 0));
+const hasGettingHere = !!(startAddress || mapEmbedUrl || parking);
+const hasCourse = !!(routeDescription || routeImage || (courseRecords && courseRecords.length > 0));
+const mRecord = courseRecords?.find(r => r.sex === 'M');
+const fRecord = courseRecords?.find(r => r.sex === 'F');
+const hasStats = !!(mRecord || fRecord);
 ---
 
 <Layout title={name}>
-  <div class="mb-4">
-    <a href={backUrl} class="btn btn-ghost btn-sm gap-1 -ml-3">← Road Grand Prix</a>
-  </div>
+  <!-- Dark editorial hero -->
+  <div slot="hero" class="bg-content text-white">
+    <div class="max-w-4xl mx-auto px-4 py-5 md:py-7">
 
-  <div class="card shadow-sm">
-    {image && (
-      <figure>
-        <img src={siteUrl(`/images/${image}`)} alt={name} class="w-full h-56 object-cover" />
-      </figure>
-    )}
-    <div class="card-body gap-4">
+      <a href={backUrl} class="text-[11px] text-white/50 hover:text-white/80 transition-colors mb-4 inline-block">
+        ← Road Grand Prix
+      </a>
 
-      <!-- Header -->
-      <p class="text-sm text-content/50 uppercase tracking-wide font-medium">{formattedDate}</p>
-      <h1 class="text-2xl font-bold">{name}</h1>
-      {location && <p class="text-content/70">{location}</p>}
-      {(distance || ascent) && (
-        <div class="flex flex-wrap gap-2">
-          {distance && <span class="badge badge-outline">{distance}</span>}
-          {ascent && <span class="badge badge-outline">↑ {ascent}</span>}
+      <div class="font-head text-[10px] font-bold tracking-[0.14em] uppercase text-amber mb-2">
+        Road Grand Prix · Race {raceIndex} of {totalRaces}
+      </div>
+
+      <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between sm:gap-6">
+        <div>
+          <h1 class="font-head text-[clamp(1.75rem,5vw,2.5rem)] font-extrabold tracking-tight leading-none mb-2">
+            {name}
+          </h1>
+          <p class="font-mono text-sm text-white/60 mb-1">{formattedDate}</p>
+          {location && <p class="text-sm text-white/60 mb-3">{location}</p>}
+          {(distance || ascent) && (
+            <div class="flex gap-2 flex-wrap">
+              {distance && (
+                <span class="font-mono text-[11px] font-medium border border-white/20 rounded-full px-3 py-0.5 text-white">
+                  {distance}
+                </span>
+              )}
+              {ascent && (
+                <span class="font-mono text-[11px] font-medium border border-white/20 rounded-full px-3 py-0.5 text-white/70">
+                  ↑ {ascent}
+                </span>
+              )}
+            </div>
+          )}
         </div>
-      )}
 
-      <!-- Getting Here -->
-      {(startAddress || mapEmbedUrl) && (
-        <>
-          <div class="divider my-1 text-sm font-semibold">Getting Here</div>
-          {hasAddressText ? (
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <dl class="flex flex-col gap-3">
-                {startAddress && (
-                  <div>
-                    <dt class="text-xs text-content/50 uppercase tracking-wide mb-1">Start location</dt>
-                    <dd class="font-medium">{startAddress}</dd>
-                  </div>
-                )}
-                {parking && (
-                  <div>
-                    <dt class="text-xs text-content/50 uppercase tracking-wide mb-1">Parking</dt>
-                    <dd class="text-content/80">{parking}</dd>
-                  </div>
-                )}
-              </dl>
-              {mapEmbedUrl && (
-                <iframe
-                  src={mapEmbedUrl}
-                  class="w-full h-64 rounded-lg border-0"
-                  loading="lazy"
-                  referrerpolicy="no-referrer-when-downgrade"
-                ></iframe>
-              )}
-            </div>
-          ) : (
-            <iframe
-              src={mapEmbedUrl}
-              class="w-full h-64 rounded-lg border-0"
-              loading="lazy"
-              referrerpolicy="no-referrer-when-downgrade"
-            ></iframe>
-          )}
-        </>
-      )}
-
-      <!-- The Course -->
-      {hasCourseContent && (
-        <>
-          <div class="divider my-1 text-sm font-semibold">The Course</div>
-          {hasRouteText ? (
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div class="flex flex-col gap-3">
-                {routeDescription && (
-                  <p class="text-content/80">{routeDescription}</p>
-                )}
-                {courseRecords && courseRecords.length > 0 && (
-                  <div>
-                    <p class="text-xs text-content/50 uppercase tracking-wide mb-2">Course Records</p>
-                    <div class="flex flex-col gap-1">
-                      {courseRecords.map(record => (
-                        <div class="flex items-center gap-2 text-sm">
-                          <span class={`badge badge-sm ${record.sex === 'M' ? 'badge-info' : 'badge-secondary'}`}>
-                            {record.sex === 'M' ? 'Men' : 'Women'}
-                          </span>
-                          <span class="font-medium font-mono">{record.time}</span>
-                          <span class="text-content/70">{record.name}</span>
-                          <span class="text-content/50">({record.year})</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
-              </div>
-              {routeImage && (
-                <img
-                  src={siteUrl(`/images/${routeImage}`)}
-                  alt={`${name} route`}
-                  class="w-full rounded-lg object-cover"
-                  loading="lazy"
-                />
-              )}
-            </div>
-          ) : (
-            <img
-              src={siteUrl(`/images/${routeImage}`)}
-              alt={`${name} route`}
-              class="w-full rounded-lg object-cover"
-              loading="lazy"
-            />
-          )}
-        </>
-      )}
-
-      <!-- After the Race -->
-      {postRaceVenue && (
-        <>
-          <div class="divider my-1 text-sm font-semibold">After the Race</div>
-          <p class="text-content/80">{postRaceVenue}</p>
-        </>
-      )}
-
-      <!-- Past Results -->
-      {pastResults.length > 0 && (
-        <>
-          <div class="divider my-1 text-sm font-semibold">Past Results</div>
-          <div class="flex flex-wrap items-center gap-2">
-            {pastResults.map((r, i) => (
-              <>
-                {i > 0 && <span class="text-content/30">·</span>}
-                <a href={r.url} class="link link-hover text-sm">{r.year}</a>
-              </>
-            ))}
+        {(resultsExist || detailsUrl) && (
+          <div class="flex gap-2 mt-4 sm:mt-0 flex-shrink-0">
+            {resultsExist && (
+              <a
+                href={siteUrl(`/road-gp/${year}/${race.id}/results/`)}
+                class="btn btn-primary whitespace-nowrap"
+              >
+                View Results →
+              </a>
+            )}
+            {detailsUrl && (
+              <a
+                href={detailsUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="btn border-white/25 text-white hover:bg-white/10 whitespace-nowrap"
+              >
+                Race details ↗
+              </a>
+            )}
           </div>
-        </>
-      )}
+        )}
+      </div>
 
-      <!-- Actions -->
-      {(detailsUrl || resultsExist) && (
-        <div class="card-actions mt-2 flex-wrap">
-          {detailsUrl && (
-            <a href={detailsUrl} target="_blank" rel="noopener noreferrer" class="btn btn-primary">
-              View race details ↗
-            </a>
+      {hasStats && (
+        <div class="mt-5 pt-4 border-t border-white/10 grid grid-cols-3 gap-4 max-w-xs">
+          {distance && (
+            <div>
+              <div class="font-mono text-base font-medium text-amber leading-none">{distance}</div>
+              <div class="text-[10px] uppercase tracking-wide text-white/50 mt-1">Distance</div>
+            </div>
           )}
-          {resultsExist && (
-            <a href={siteUrl(`/road-gp/${year}/${race.id}/results/`)} class="btn btn-outline">
-              View Results
-            </a>
+          {mRecord && (
+            <div>
+              <div class="font-mono text-base font-medium text-amber leading-none">{mRecord.time}</div>
+              <div class="text-[10px] uppercase tracking-wide text-white/50 mt-1">M Record</div>
+            </div>
+          )}
+          {fRecord && (
+            <div>
+              <div class="font-mono text-base font-medium text-amber leading-none">{fRecord.time}</div>
+              <div class="text-[10px] uppercase tracking-wide text-white/50 mt-1">F Record</div>
+            </div>
           )}
         </div>
       )}
 
     </div>
+  </div>
+
+  <!-- Optional race image -->
+  {image && (
+    <img
+      src={siteUrl(`/images/${image}`)}
+      alt={name}
+      class="w-full h-48 sm:h-60 object-cover rounded-xl mb-5 -mt-2"
+    />
+  )}
+
+  <div class="flex flex-col gap-5">
+
+    <!-- Getting Here -->
+    {hasGettingHere && (
+      <div class="card shadow-sm">
+        <div class="card-body gap-4">
+          <h2 class="font-head text-base font-bold tracking-wide uppercase">Getting Here</h2>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <dl class="flex flex-col gap-4 order-2 sm:order-1">
+              {startAddress && (
+                <div>
+                  <dt class="text-[10px] font-bold tracking-[0.12em] uppercase text-muted mb-1">
+                    Start location
+                  </dt>
+                  <dd class="font-medium text-sm leading-snug">{startAddress}</dd>
+                </div>
+              )}
+              {parking && (
+                <div>
+                  <dt class="text-[10px] font-bold tracking-[0.12em] uppercase text-muted mb-1">
+                    Parking
+                  </dt>
+                  <dd class="text-sm text-content/80 leading-relaxed whitespace-pre-line">{parking}</dd>
+                </div>
+              )}
+            </dl>
+            {mapEmbedUrl && (
+              <div class="order-1 sm:order-2">
+                <iframe
+                  src={mapEmbedUrl}
+                  class="w-full h-52 sm:h-full min-h-44 rounded-lg border-0"
+                  loading="lazy"
+                  referrerpolicy="no-referrer-when-downgrade"
+                ></iframe>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    )}
+
+    <!-- The Course -->
+    {hasCourse && (
+      <div class="card shadow-sm">
+        <div class="card-body gap-4">
+          <h2 class="font-head text-base font-bold tracking-wide uppercase">The Course</h2>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div class="flex flex-col gap-4">
+              {routeDescription && (
+                <p class="text-sm text-content/80 leading-relaxed whitespace-pre-line">{routeDescription}</p>
+              )}
+              {courseRecords && courseRecords.length > 0 && (
+                <div>
+                  <p class="text-[10px] font-bold tracking-[0.12em] uppercase text-muted mb-2">
+                    Course Records
+                  </p>
+                  <div class="flex flex-col divide-y divide-line">
+                    {courseRecords.map(rec => (
+                      <div class="flex items-center gap-3 py-2">
+                        <span class={`badge badge-sm w-14 justify-center shrink-0 ${rec.sex === 'M' ? 'badge-info' : 'badge-secondary'}`}>
+                          {rec.sex === 'M' ? 'Men' : 'Women'}
+                        </span>
+                        <span class="font-mono text-sm font-semibold min-w-[3rem]">{rec.time}</span>
+                        <span class="text-sm flex-1">{rec.name}</span>
+                        <span class="font-mono text-xs text-muted">{rec.year}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+            {routeImage && (
+              <img
+                src={siteUrl(`/images/${routeImage}`)}
+                alt={`${name} route`}
+                class="w-full rounded-lg object-cover min-h-40"
+                loading="lazy"
+              />
+            )}
+          </div>
+        </div>
+      </div>
+    )}
+
+    <!-- After the Race -->
+    {postRaceVenue && (
+      <div class="card shadow-sm">
+        <div class="card-body gap-2">
+          <h2 class="font-head text-base font-bold tracking-wide uppercase">After the Race</h2>
+          <p class="text-sm text-content/80">{postRaceVenue}</p>
+        </div>
+      </div>
+    )}
+
+    <!-- Past Results -->
+    {pastResults.length > 0 && (
+      <div class="card shadow-sm">
+        <div class="card-body gap-3">
+          <div class="flex items-baseline justify-between">
+            <h2 class="font-head text-base font-bold tracking-wide uppercase">Past Results</h2>
+            <span class="font-mono text-xs text-muted">{pastResults.length} seasons</span>
+          </div>
+          <div class="flex flex-wrap gap-2">
+            {pastResults.map(r => (
+              <a
+                href={r.url}
+                class="font-mono text-xs font-medium px-3 py-1 rounded-full border border-line text-content hover:bg-canvas transition-colors"
+              >
+                {r.year}
+              </a>
+            ))}
+          </div>
+        </div>
+      </div>
+    )}
+
   </div>
 </Layout>
