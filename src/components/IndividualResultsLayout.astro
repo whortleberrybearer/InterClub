@@ -360,7 +360,7 @@ const showSexToggle = hasMale && hasFemale;
               const url      = r.seriesRunnerId != null ? runnerUrlMap[r.seriesRunnerId] : undefined;
               const fullName = `${r.firstName ?? ''} ${r.lastName ?? ''}`.trim();
               const clubName = r.club === 'Guest' ? 'Guest' : (clubById[r.club]?.name ?? r.club);
-              const ic       = r.club === 'Guest' ? '–' : (r.icPosition ?? '–');
+              const ic       = r.club === 'Guest' ? '–' : (r.categoryPositions['open'] ?? '–');
               return (
                 <tr class="border-b border-line last:border-0">
                   <td class="py-2.5 pl-4 pr-2 font-mono text-[13px] font-medium text-muted align-middle">{r.position ?? '–'}</td>
@@ -400,7 +400,7 @@ const showSexToggle = hasMale && hasFemale;
 
   type Result = {
     position: number | null;
-    icPosition: number | null;
+    categoryPositions: Record<string, number | null>;
     raceNumber: number | null;
     firstName: string;
     lastName: string;
@@ -530,7 +530,7 @@ const showSexToggle = hasMale && hasFemale;
     const url      = r.seriesRunnerId != null ? runnerUrlMap[r.seriesRunnerId] : null;
     const fullName = `${esc(r.firstName ?? '')} ${esc(r.lastName ?? '')}`.trim();
     const clubName = r.club === 'Guest' ? 'Guest' : esc(clubById[r.club]?.name ?? r.club);
-    const ic       = r.club === 'Guest' ? '–' : String(r.icPosition ?? '–');
+    const ic       = r.club === 'Guest' ? '–' : String(r.categoryPositions['open'] ?? '–');
     const nameCell = url ? `<a href="${url}" class="link link-hover">${fullName}</a>` : fullName;
     const cat      = esc((r.sex ?? '') + (r.ageCategory ?? ''));
     return `<tr class="border-b border-line last:border-0">

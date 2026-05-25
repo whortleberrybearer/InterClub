@@ -13,7 +13,7 @@ export function parseResultsCsv(csv: string): RaceResult[] {
     const num = (name: string) => { const v = get(name); return v ? parseInt(v, 10) : null; };
     return {
       position: num('position'),
-      icPosition: num('ic_position'),
+      categoryPositions: {},
       firstName: get('first_name'),
       lastName: get('last_name'),
       club: get('club'),
