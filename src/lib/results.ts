@@ -7,13 +7,22 @@ export function parseResultsCsv(csv: string): RaceResult[] {
   const headers = lines[0].split(',');
   const idx = (name: string) => headers.indexOf(name);
 
+  // Identify all cat_* columns upfront
+  const catColumns = headers.filter(h => h.startsWith('cat_'));
+
   return lines.slice(1).filter(l => l.trim()).map(line => {
     const cols = line.split(',');
     const get = (name: string) => cols[idx(name)]?.trim() ?? '';
     const num = (name: string) => { const v = get(name); return v ? parseInt(v, 10) : null; };
+
+    const categoryPositions: Record<string, number | null> = {};
+    for (const col of catColumns) {
+      categoryPositions[col.slice(4)] = num(col); // strip 'cat_' prefix to get category id
+    }
+
     return {
       position: num('position'),
-      categoryPositions: {},
+      categoryPositions,
       firstName: get('first_name'),
       lastName: get('last_name'),
       club: get('club'),
