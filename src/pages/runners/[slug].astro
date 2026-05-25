@@ -25,22 +25,6 @@ const allYears = yearBlocks.map(b => b.year);
 const hasRoadGpAwards = awardSummary.roadGp.length > 0;
 const hasFellAwards = awardSummary.fell.length > 0;
 
-// Compute career stats
-const totalRaces = yearBlocks.reduce(
-  (sum, b) => sum + (b.roadGp?.races.length ?? 0) + (b.fell?.races.length ?? 0), 0
-);
-const totalSeasons = yearBlocks.length;
-const totalWins = yearBlocks.reduce((sum, b) => {
-  const rg = b.roadGp?.races.filter(r => r.icPosition === 1).length ?? 0;
-  const fl = b.fell?.races.filter(r => r.icPosition === 1).length ?? 0;
-  return sum + rg + fl;
-}, 0);
-const totalPodiums = yearBlocks.reduce((sum, b) => {
-  const rg = b.roadGp?.races.filter(r => r.icPosition !== null && r.icPosition <= 3).length ?? 0;
-  const fl = b.fell?.races.filter(r => r.icPosition !== null && r.icPosition <= 3).length ?? 0;
-  return sum + rg + fl;
-}, 0);
-
 function formatDateShort(isoDate: string): string {
   const d = new Date(isoDate);
   return `${d.getUTCDate()}/${d.getUTCMonth() + 1}`;
@@ -86,28 +70,6 @@ function positionLabel(pos: number): string {
             {sexLabel} · {runner.ageCategory}
           </p>
         </div>
-      </div>
-
-      <!-- Stats strip -->
-      <div class="grid grid-cols-4 mt-5 pt-4 border-t border-white/10 divide-x divide-white/10">
-        {[
-          { value: totalRaces,   label: 'Races',   amber: false },
-          { value: totalWins,    label: 'Wins',    amber: true  },
-          { value: totalPodiums, label: 'Podiums', amber: false },
-          { value: totalSeasons, label: 'Seasons', amber: false },
-        ].map(stat => (
-          <div class="text-center py-1 px-2">
-            <div class:list={[
-              'font-head font-extrabold text-2xl sm:text-3xl leading-none',
-              stat.amber ? 'text-amber' : 'text-hdr-text',
-            ]}>
-              {stat.value}
-            </div>
-            <div class="font-head font-bold text-xs uppercase tracking-widest text-hdr-muted mt-1.5">
-              {stat.label}
-            </div>
-          </div>
-        ))}
       </div>
 
     </div>
