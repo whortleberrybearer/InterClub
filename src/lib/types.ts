@@ -123,6 +123,7 @@ export interface TeamCategory {
   id: string;
   name: string;
   scorerCount: number;
+  eligibility?: string;   // e.g. "All finishers", "Women", "Men & Women 40+"
 }
 
 export interface TeamScorer {
