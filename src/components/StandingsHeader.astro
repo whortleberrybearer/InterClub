@@ -21,7 +21,7 @@ const { backHref, backLabel, activeTab, individualHref, teamHref } = Astro.props
 <div class="bg-surface">
 
   <!-- Back link + page-specific heading content -->
-  <div class="max-w-4xl mx-auto px-4 pt-8 pb-5">
+  <div class="max-w-4xl xl:max-w-5xl mx-auto px-4 pt-8 pb-5">
     <div class="mb-5">
       <a href={backHref} class="btn btn-ghost btn-sm gap-1 -ml-3">{backLabel}</a>
     </div>
@@ -34,7 +34,7 @@ const { backHref, backLabel, activeTab, individualHref, teamHref } = Astro.props
   <!-- Tab nav: border-b is on the full-width wrapper; -mb-px on each link
        pulls it down 1px so the active tab's border-b-2 overlaps the line -->
   <div class="border-b border-line">
-    <div class="max-w-4xl mx-auto px-4">
+    <div class="max-w-4xl xl:max-w-5xl mx-auto px-4">
       <div class="flex">
         <a
           href={individualHref}
