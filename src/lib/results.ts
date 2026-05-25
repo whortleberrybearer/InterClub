@@ -238,6 +238,16 @@ export function hasResults(year: number, series: Series, raceId: string): boolea
   );
 }
 
+export function isResultsProvisional(year: number, series: Series, raceId: string): boolean {
+  const files = csvFilesForSeries(series);
+  const hasFinal = Object.keys(files).some(k =>
+    k.includes(`/${year}/${series}/results/${raceId}.csv`) && !k.includes('-provisional')
+  );
+  return !hasFinal && Object.keys(files).some(k =>
+    k.includes(`/${year}/${series}/results/${raceId}-provisional.csv`)
+  );
+}
+
 export function getResultsStaticPaths(series: Series) {
   const files = csvFilesForSeries(series);
   const seen = new Map<string, { year: number; raceId: string; provisional: boolean }>();
