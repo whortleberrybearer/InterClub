@@ -78,6 +78,7 @@ export interface RunnerProfileRace {
   raceId: string;
   time: string;
   hasResults: boolean;
+  icPosition: number | null;   // IC competition position; null for guests or missing data
 }
 
 export interface RunnerProfileAward {
