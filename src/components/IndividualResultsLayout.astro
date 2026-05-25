@@ -101,7 +101,7 @@ const showSexToggle = hasMale && hasFemale;
 
   <!-- ════ HERO: light surface header ════ -->
   <div slot="hero" class="bg-surface border-b border-line">
-    <div class="max-w-4xl mx-auto px-4 pt-4 pb-4">
+    <div class="max-w-4xl xl:max-w-5xl mx-auto px-4 pt-4 pb-4">
 
       <a href={siteUrl(`/${series}/${year}`)} class="block text-[12px] text-muted hover:text-content transition-colors mb-2">
         ← {seriesLabel} {year}
@@ -144,7 +144,7 @@ const showSexToggle = hasMale && hasFemale;
     </div>
 
     <div class="border-t border-line">
-      <div class="max-w-4xl mx-auto px-4 flex">
+      <div class="max-w-4xl xl:max-w-5xl mx-auto px-4 flex">
         <a
           href={siteUrl(`/${series}/${year}/${raceId}/results`)}
           class="flex-1 md:flex-none font-head text-[13px] font-bold tracking-[0.06em] uppercase py-2.5 md:mr-7 border-b-2 -mb-px text-center md:text-left border-amber text-content"
@@ -178,7 +178,7 @@ const showSexToggle = hasMale && hasFemale;
 
   <!-- Filter bar: sits flush below the chip bar on mobile + tablet -->
   <div slot="chip-bar" class="lg:hidden bg-surface sm:bg-transparent border-b border-line sm:border-b-0 w-full">
-    <div class="flex gap-2 max-w-4xl mx-auto px-4 py-2.5">
+    <div class="flex gap-2 max-w-4xl xl:max-w-5xl mx-auto px-4 py-2.5">
       <input
         id="filter-name-mobile"
         type="search"
@@ -194,7 +194,7 @@ const showSexToggle = hasMale && hasFemale;
   </div>
 
   <!-- ════ MAIN: sidebar (desktop) + table ════ -->
-  <div class="lg:grid lg:grid-cols-[220px_1fr] lg:gap-8 lg:items-start">
+  <div class="lg:grid lg:grid-cols-[220px_1fr] xl:grid-cols-[260px_1fr] lg:gap-8 lg:items-start">
 
     <!-- Desktop sidebar -->
     <aside class="hidden lg:block lg:sticky lg:top-6 lg:self-start">
