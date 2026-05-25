@@ -13,6 +13,21 @@ export function formatRaceDate(date: string, time?: string): string {
   return time ? `${dateStr} · ${time}` : dateStr;
 }
 
+/** Normalise any stored time to hh:mm:ss (zero-padded). */
+export function formatTime(time: string | null | undefined): string {
+  if (!time) return '–';
+  const parts = time.trim().split(':');
+  if (parts.length === 2) {
+    const [mm, ss] = parts;
+    return `00:${mm.padStart(2, '0')}:${ss.padStart(2, '0')}`;
+  }
+  if (parts.length === 3) {
+    const [hh, mm, ss] = parts;
+    return `${hh.padStart(2, '0')}:${mm.padStart(2, '0')}:${ss.padStart(2, '0')}`;
+  }
+  return time;
+}
+
 export function getSeriesLabel(series: Series): string {
   return series === 'road-gp' ? 'Road GP' : 'Fell Championship';
 }

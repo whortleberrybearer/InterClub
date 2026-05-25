@@ -1,0 +1,599 @@
+---
+// src/components/IndividualResultsLayout.astro
+import Layout from './Layout.astro';
+import ChipBar from './ChipBar.astro';
+import { getRace, getRaces } from '../lib/data';
+import { hasTeamResults } from '../lib/results';
+import { siteUrl } from '../lib/url';
+import { formatRaceDate, formatTime } from '../lib/format';
+import type { Club, RaceResult, Series, SeriesConfig } from '../lib/types';
+
+export interface Props {
+  series: Series;
+  year: number;
+  raceId: string;
+  results: RaceResult[];
+  provisional: boolean;
+  clubs: Club[];
+  config: SeriesConfig;
+  runnerUrlMap: Record<number, string>;
+}
+
+const { series, year, raceId, results, provisional, clubs, config, runnerUrlMap } = Astro.props;
+
+const race = getRace(year, series, raceId);
+const title = race?.name ?? raceId;
+const seriesLabel = series === 'road-gp' ? 'Road GP' : 'Fell';
+const seriesLong  = series === 'road-gp' ? 'Road Grand Prix' : 'Fell Championship';
+
+const allRaces = getRaces(year, series);
+const raceIndex = allRaces.findIndex(r => r.id === raceId);
+const raceNumber = raceIndex >= 0 ? raceIndex + 1 : null;
+const raceTotal  = allRaces.length;
+
+const clubById = Object.fromEntries(clubs.map(c => [c.id, c]));
+const teamCategories = config.teamCategories ?? [];
+
+const withTime      = results.filter(r => r.time && r.position != null);
+const finisherCount = withTime.length;
+
+// Fastest per sex:category — keyed as "M:V35" etc.
+type CatLeader = { name: string; clubShort: string; time: string };
+const leaderByKey = new Map<string, CatLeader>();
+for (const r of withTime) {
+  const key = `${r.sex}:${r.ageCategory}`;
+  if (!leaderByKey.has(key)) {
+    leaderByKey.set(key, {
+      name: r.firstName ? `${r.firstName[0]}. ${r.lastName}` : r.lastName,
+      clubShort: r.club === 'Guest' ? '' : (clubById[r.club]?.shortName ?? r.club),
+      time: formatTime(r.time),
+    });
+  }
+}
+
+// Age categories: config order, filtered to only those that appear in actual results
+const ageCatOrder = config.ageCategories ?? [];
+const distinctAgeCats = ageCatOrder.filter(cat => results.some(r => r.ageCategory === cat));
+type LeaderRow = { cat: string; leader: CatLeader };
+const maleLeaders:   LeaderRow[] = ageCatOrder
+  .map(cat => ({ cat, leader: leaderByKey.get(`M:${cat}`) }))
+  .filter((r): r is LeaderRow => r.leader != null);
+const femaleLeaders: LeaderRow[] = ageCatOrder
+  .map(cat => ({ cat, leader: leaderByKey.get(`F:${cat}`) }))
+  .filter((r): r is LeaderRow => r.leader != null);
+
+// Club turnout sorted descending
+const clubCountMap = new Map<string, number>();
+for (const r of results) {
+  clubCountMap.set(r.club, (clubCountMap.get(r.club) ?? 0) + 1);
+}
+const clubTurnout = [...clubCountMap.entries()]
+  .map(([id, count]) => ({
+    id,
+    count,
+    displayName: id === 'Guest' ? 'Guests' : (clubById[id]?.name ?? id),
+    isGuest: id === 'Guest',
+  }))
+  .sort((a, b) => b.count - a.count);
+const maxClubCount = Math.max(...clubTurnout.map(c => c.count), 1);
+
+const eyebrow = [
+  raceNumber != null ? `Race ${raceNumber}` : null,
+  race?.date ? formatRaceDate(race.date) : null,
+  race?.location ?? null,
+  race?.distance ?? null,
+].filter(Boolean).join(' · ');
+
+const metaLine = [race?.location ?? null, race?.distance ?? null].filter(Boolean).join(' · ');
+
+const showTeamResults = hasTeamResults(year, series, raceId);
+
+const firstCat  = teamCategories[0];
+const hasGuests  = results.some(r => r.club === 'Guest');
+// "Full" chip appears when guests are present; it is the initial active state in that case
+const showFullChip = hasGuests && teamCategories.length > 0;
+
+const hasMale       = results.some(r => r.sex === 'M');
+const hasFemale     = results.some(r => r.sex === 'F');
+const showSexToggle = hasMale && hasFemale;
+
+// SSR shows all results — no sex is pre-selected
+const initialResults = results;
+---
+
+<Layout title={`${title} — Results`}>
+
+  <!-- ════ HERO: light surface header ════ -->
+  <div slot="hero" class="bg-surface border-b border-line">
+    <div class="max-w-4xl mx-auto px-4 pt-4 pb-4">
+
+      <a href={siteUrl(`/${series}/${year}`)} class="block text-[12px] text-muted hover:text-content transition-colors mb-2">
+        ← {seriesLabel} {year}
+      </a>
+
+      <div class="lg:flex lg:items-end lg:justify-between lg:gap-6">
+
+        <div class="flex-1 min-w-0">
+          {eyebrow && (
+            <p class="font-head text-[10px] font-bold tracking-[0.14em] uppercase text-muted mb-1">{eyebrow}</p>
+          )}
+
+          <div class="flex items-center gap-2 flex-wrap mb-1">
+            <h1 class="font-head text-[22px] lg:text-[30px] font-extrabold tracking-tight leading-[1.1]">{title}</h1>
+            {provisional && (
+              <span class="font-head text-[10px] font-bold tracking-[0.08em] uppercase bg-[oklch(88%_0.12_60)] text-[oklch(35%_0.12_60)] px-2 py-0.5 rounded-full">
+                Provisional
+              </span>
+            )}
+          </div>
+
+          {metaLine && <p class="text-[13px] text-muted lg:hidden">{metaLine}</p>}
+
+          {raceNumber != null && raceTotal > 1 && (
+            <div class="hidden lg:flex items-center gap-3 mt-2">
+              <span class="font-mono text-[11px] text-muted tracking-[0.04em]">Race {raceNumber} of {raceTotal}</span>
+              <div class="flex gap-[3px]">
+                {Array.from({ length: raceTotal }, (_, i) => (
+                  <span
+                    class="h-[4px] w-[14px] rounded-[2px]"
+                    style={`background: ${i < raceNumber ? 'var(--color-amber)' : 'var(--color-line)'}`}
+                  />
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+
+      </div>
+    </div>
+
+    <div class="border-t border-line">
+      <div class="max-w-4xl mx-auto px-4 flex">
+        <a
+          href={siteUrl(`/${series}/${year}/${raceId}/results`)}
+          class="flex-1 md:flex-none font-head text-[13px] font-bold tracking-[0.06em] uppercase py-2.5 md:mr-7 border-b-2 -mb-px text-center md:text-left border-amber text-content"
+        >Individual</a>
+        {showTeamResults ? (
+          <a
+            href={siteUrl(`/${series}/${year}/${raceId}/team-results`)}
+            class="flex-1 md:flex-none font-head text-[13px] font-bold tracking-[0.06em] uppercase py-2.5 md:mr-7 border-b-2 -mb-px text-center md:text-left border-transparent text-muted hover:text-content transition-colors"
+          >Team</a>
+        ) : (
+          <span class="flex-1 md:flex-none font-head text-[13px] font-bold tracking-[0.06em] uppercase py-2.5 md:mr-7 border-b-2 border-transparent text-muted/40 cursor-not-allowed text-center md:text-left">Team</span>
+        )}
+      </div>
+    </div>
+  </div>
+
+  <!-- ════ CHIP-BAR: [Full +] team category chips (mobile + tablet) ════ -->
+  {(teamCategories.length > 0 || showFullChip) && (
+    <ChipBar
+      slot="chip-bar"
+      items={[
+        ...(showFullChip ? [{ label: 'Full', target: 'ind-full', active: true }] : []),
+        ...teamCategories.map((cat, i) => ({
+          label:  cat.name,
+          target: `ind-cat-${i}`,
+          active: !showFullChip && i === 0,
+        })),
+      ]}
+    />
+  )}
+
+  <!-- Filter bar: sits flush below the chip bar on mobile + tablet -->
+  <div slot="chip-bar" class="lg:hidden bg-surface sm:bg-transparent border-b border-line sm:border-b-0 w-full">
+    <div class="flex gap-2 max-w-4xl mx-auto px-4 py-2.5">
+      <input
+        id="filter-name-mobile"
+        type="search"
+        placeholder="Search name or number…"
+        class="input flex-1 min-w-0 !bg-canvas sm:!bg-surface"
+        autocomplete="off"
+      />
+      <select id="filter-club-mobile" class="input w-auto !bg-canvas sm:!bg-surface">
+        <option value="">All Clubs</option>
+        {clubs.map(c => <option value={c.id}>{c.name}</option>)}
+      </select>
+    </div>
+  </div>
+
+  <!-- ════ MAIN: sidebar (desktop) + table ════ -->
+  <div class="lg:grid lg:grid-cols-[220px_1fr] lg:gap-8 lg:items-start">
+
+    <!-- Desktop sidebar -->
+    <aside class="hidden lg:block lg:sticky lg:top-6 lg:self-start">
+
+      {teamCategories.length > 0 && (
+        <div>
+          <p class="font-head text-[10px] font-bold tracking-[0.12em] uppercase text-muted mb-2 pl-1">Results</p>
+          <nav class="flex flex-col">
+            {showFullChip && (
+              <button
+                class:list={[
+                  'full-sidebar-btn w-full flex items-center px-3 py-2 rounded-lg border-l-2 text-left transition-colors font-head text-[13px] font-bold tracking-[0.04em] uppercase cursor-pointer',
+                  'border-l-amber bg-amber-bg text-amber',
+                ]}
+              >
+                Full
+              </button>
+            )}
+            {teamCategories.map((cat, i) => (
+              <button
+                class:list={[
+                  'team-cat-btn w-full flex items-center px-3 py-2 rounded-lg border-l-2 text-left transition-colors font-head text-[13px] font-bold tracking-[0.04em] uppercase cursor-pointer',
+                  !showFullChip && i === 0
+                    ? 'border-l-amber bg-amber-bg text-amber'
+                    : 'border-l-transparent hover:bg-canvas text-content',
+                ]}
+                data-cat-label={cat.name}
+                data-cat-scorers={cat.scorerCount}
+              >
+                {cat.name}
+              </button>
+            ))}
+          </nav>
+        </div>
+      )}
+
+      {(maleLeaders.length > 0 || femaleLeaders.length > 0) && (
+        <div class="mt-6 pt-5 border-t border-line">
+          <p class="font-head text-[10px] font-bold tracking-[0.12em] uppercase text-muted mb-2.5 pl-1">Category Leaders</p>
+
+          {([['Men', maleLeaders], ['Women', femaleLeaders]] as const).map(([label, rows]) => rows.length > 0 && (
+            <div class="mb-3 last:mb-0">
+              <div class="font-head text-[9px] font-bold tracking-[0.12em] uppercase text-muted/60 pl-1 mb-1">{label}</div>
+              <div class="flex flex-col pl-1">
+                {rows.map(({ cat, leader }, i) => (
+                  <div
+                    class:list={['items-baseline py-1', i < rows.length - 1 ? 'border-b border-dashed border-line' : '']}
+                    style="display:grid;grid-template-columns:36px 1fr auto;column-gap:6px"
+                  >
+                    <span class="font-mono text-[10px] font-semibold text-content bg-canvas px-[4px] py-[1px] rounded text-center tracking-[0.03em]">{cat}</span>
+                    <span class="text-[11px] text-content truncate overflow-hidden">
+                      {leader.name}
+                      {leader.clubShort && <span class="text-muted font-normal"> · {leader.clubShort}</span>}
+                    </span>
+                    <span class="font-mono text-[11px] text-muted tabular-nums">{leader.time}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {clubTurnout.length > 0 && (
+        <div class="mt-6 pt-5 border-t border-line">
+          <div class="flex items-baseline justify-between mb-2.5 px-1">
+            <p class="font-head text-[10px] font-bold tracking-[0.12em] uppercase text-muted">Club Turnout</p>
+            <span class="font-mono text-[10px] text-muted">{finisherCount} total</span>
+          </div>
+          <div class="flex flex-col gap-1.5 pl-1">
+            {clubTurnout.map(({ displayName, count, isGuest }) => (
+              <div>
+                <div class="flex items-baseline justify-between text-[11.5px] mb-[3px]">
+                  <span class:list={['truncate overflow-hidden max-w-[130px]', isGuest ? 'text-muted' : 'text-content']}>{displayName}</span>
+                  <span class:list={['font-mono text-[11px] font-medium', isGuest ? 'text-muted' : 'text-content']}>{count}</span>
+                </div>
+                <div class="h-[3px] rounded-[2px] bg-line overflow-hidden">
+                  <div
+                    class:list={['h-full rounded-[2px]', isGuest ? 'bg-muted opacity-40' : 'bg-amber']}
+                    style={`width:${Math.round((count / maxClubCount) * 100)}%`}
+                  />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+    </aside>
+
+    <!-- Main pane -->
+    <div>
+
+      <!-- Desktop filters: search + club — above the title rule -->
+      <div class="hidden lg:flex items-center gap-2.5 mb-4 flex-wrap">
+        <div class="relative flex-1 min-w-0">
+          <span class="absolute left-3 top-1/2 -translate-y-1/2 font-mono text-[13px] text-muted pointer-events-none select-none">⌕</span>
+          <input
+            id="filter-name-desktop"
+            type="search"
+            placeholder="Search name or number…"
+            class="w-full bg-surface border border-line rounded-lg pl-8 pr-3 py-2 font-body text-[13px] text-content outline-none"
+          />
+        </div>
+        <select id="filter-club-desktop" class="bg-surface border border-line rounded-lg px-3 py-2 font-body text-[13px] text-muted outline-none min-w-[180px]">
+          <option value="">All Clubs</option>
+          {clubs.map(c => <option value={c.id}>{c.name}</option>)}
+        </select>
+      </div>
+
+      {/* Sex + age filter strip — commented out, may restore later
+      {(showSexToggle || distinctAgeCats.length > 0) && (
+        <div class="flex gap-1.5 flex-wrap mb-3 sm:mb-4">
+          {showSexToggle && (
+            <>
+              <button
+                class="result-sex-btn font-head text-xs font-bold tracking-[0.06em] uppercase px-3 py-[5px] rounded-full border border-line bg-surface text-muted hover:text-content transition-colors cursor-pointer"
+                data-sex="M"
+              >Male</button>
+              <button
+                class="result-sex-btn font-head text-xs font-bold tracking-[0.06em] uppercase px-3 py-[5px] rounded-full border border-line bg-surface text-muted hover:text-content transition-colors cursor-pointer"
+                data-sex="F"
+              >Female</button>
+              {distinctAgeCats.length > 0 && (
+                <div class="w-px self-stretch bg-line mx-1.5" aria-hidden="true" />
+              )}
+            </>
+          )}
+          {distinctAgeCats.map(cat => (
+            <button
+              class="result-age-btn font-head text-xs font-bold tracking-[0.06em] uppercase px-3 py-[5px] rounded-full border border-line bg-surface text-muted hover:text-content transition-colors cursor-pointer"
+              data-age={cat}
+            >{cat}</button>
+          ))}
+        </div>
+      )}
+      */}
+
+      <!-- Results table: plain on mobile/desktop, white card on tablet -->
+      <div class="sm:bg-surface sm:border sm:border-line sm:rounded-xl sm:overflow-hidden lg:bg-transparent lg:border-0 lg:rounded-none lg:overflow-visible">
+      <div class="overflow-x-auto">
+        <table class="w-full border-collapse text-[13.5px] table-fixed">
+          <colgroup>
+            <col class="w-10" />
+            <col class="w-9" />
+            <col class="w-11" />
+            <col />
+            <col class="w-12" />
+            <col class="w-20" />
+          </colgroup>
+          <thead>
+            <tr>
+              <th class="font-head text-[10px] font-bold tracking-[0.1em] uppercase text-muted text-left py-2.5 pl-4 pr-2 bg-surface border-b-2 border-content">Pos</th>
+              <th class="font-head text-[10px] font-bold tracking-[0.1em] uppercase text-muted text-left py-2.5 px-2 bg-surface border-b-2 border-content">IC</th>
+              <th class="font-head text-[10px] font-bold tracking-[0.1em] uppercase text-muted text-left py-2.5 px-2 bg-surface border-b-2 border-content">No.</th>
+              <th class="font-head text-[10px] font-bold tracking-[0.1em] uppercase text-muted text-left py-2.5 px-2 bg-surface border-b-2 border-content">Runner</th>
+              <th class="font-head text-[10px] font-bold tracking-[0.1em] uppercase text-muted text-left py-2.5 px-2 bg-surface border-b-2 border-content">Cat</th>
+              <th class="font-head text-[10px] font-bold tracking-[0.1em] uppercase text-muted text-right py-2.5 px-2 pr-4 bg-surface border-b-2 border-content">Time</th>
+            </tr>
+          </thead>
+          <tbody id="results-tbody">
+            {initialResults.map(r => {
+              const url      = r.seriesRunnerId != null ? runnerUrlMap[r.seriesRunnerId] : undefined;
+              const fullName = `${r.firstName ?? ''} ${r.lastName ?? ''}`.trim();
+              const clubName = r.club === 'Guest' ? 'Guest' : (clubById[r.club]?.name ?? r.club);
+              const ic       = r.club === 'Guest' ? '–' : (r.icPosition ?? '–');
+              return (
+                <tr class="border-b border-line last:border-0">
+                  <td class="py-2.5 pl-4 pr-2 font-mono text-[13px] font-medium text-muted align-middle">{r.position ?? '–'}</td>
+                  <td class="py-2.5 px-2 font-mono text-[12px] text-muted align-middle">{ic}</td>
+                  <td class="py-2.5 px-2 font-mono text-[12px] text-muted align-middle">{r.raceNumber ?? '–'}</td>
+                  <td class="py-2.5 px-2 align-middle max-w-0 overflow-hidden">
+                    <div class="font-semibold leading-tight truncate">
+                      {url
+                        ? <a href={url} class="link link-hover">{fullName}</a>
+                        : fullName
+                      }
+                    </div>
+                    <div class="text-xs text-muted mt-0.5 truncate">{clubName}</div>
+                  </td>
+                  <td class="py-2.5 px-2 font-mono text-[11px] text-muted align-middle">{(r.sex ?? '') + (r.ageCategory ?? '')}</td>
+                  <td class="py-2.5 px-2 pr-4 font-mono text-[13px] font-medium text-right tabular-nums align-middle">{formatTime(r.time)}</td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+      </div>
+
+
+    </div>
+  </div>
+
+  <script type="application/json" id="results-data" set:html={JSON.stringify(results).replace(/<\/script>/gi, '<\\/script>')}></script>
+  <script type="application/json" id="clubs-data" set:html={JSON.stringify(clubs).replace(/<\/script>/gi, '<\\/script>')}></script>
+  <script type="application/json" id="runner-url-map" set:html={JSON.stringify(runnerUrlMap).replace(/<\/script>/gi, '<\\/script>')}></script>
+
+</Layout>
+
+<script>
+  type Result = {
+    position: number | null;
+    icPosition: number | null;
+    raceNumber: number | null;
+    firstName: string;
+    lastName: string;
+    club: string;
+    ageCategory: string;
+    sex: string;
+    time: string;
+    seriesRunnerId: number | null;
+  };
+
+  const allResults: Result[] = JSON.parse(document.getElementById('results-data')!.textContent!);
+  const clubs: Array<{ id: string; name: string; shortName: string }> =
+    JSON.parse(document.getElementById('clubs-data')!.textContent!);
+  const clubById     = Object.fromEntries(clubs.map(c => [c.id, c]));
+  const runnerUrlMap: Record<number, string> =
+    JSON.parse(document.getElementById('runner-url-map')!.textContent!);
+
+  const tbody = document.getElementById('results-tbody')!;
+
+  // (no pre-selected sex state — filters are read from DOM at render time)
+
+  // Inputs — mobile & desktop
+  const nameM = document.getElementById('filter-name-mobile')  as HTMLInputElement | null;
+  const nameD = document.getElementById('filter-name-desktop') as HTMLInputElement | null;
+  const clubM = document.getElementById('filter-club-mobile')  as HTMLSelectElement | null;
+  const clubD = document.getElementById('filter-club-desktop') as HTMLSelectElement | null;
+
+  // ── Team category chips (chip bar) ↔ desktop sidebar ──
+  const chips       = document.querySelectorAll<HTMLButtonElement>('.chip-btn');
+  const teamCatBtns = document.querySelectorAll<HTMLButtonElement>('.team-cat-btn');
+  const catHeading  = document.getElementById('cat-heading');
+  const catSub      = document.getElementById('cat-sub');
+
+  function syncChipBar(activeTarget: string) {
+    chips.forEach(c => {
+      const active = c.dataset.target === activeTarget;
+      c.classList.toggle('bg-amber',     active);
+      c.classList.toggle('border-amber', active);
+      c.classList.toggle('text-white',   active);
+      c.classList.toggle('bg-surface',   !active);
+      c.classList.toggle('border-line',  !active);
+      c.classList.toggle('text-muted',   !active);
+      c.setAttribute('aria-selected', active ? 'true' : 'false');
+    });
+  }
+
+  const fullSidebarBtn = document.querySelector<HTMLButtonElement>('.full-sidebar-btn');
+
+  function setSidebarBtnActive(btn: Element | null, active: boolean) {
+    btn?.classList.toggle('border-l-amber',       active);
+    btn?.classList.toggle('bg-amber-bg',          active);
+    btn?.classList.toggle('text-amber',           active);
+    btn?.classList.toggle('border-l-transparent', !active);
+    btn?.classList.toggle('hover:bg-canvas',      !active);
+    btn?.classList.toggle('text-content',         !active);
+  }
+
+  function syncSidebar(sidebarIdx: number) {
+    // sidebarIdx === -1 → "Full" sidebar button is active, team cat buttons all inactive
+    setSidebarBtnActive(fullSidebarBtn, sidebarIdx === -1);
+    teamCatBtns.forEach((b, bi) => setSidebarBtnActive(b, bi === sidebarIdx));
+    const activeBtn = sidebarIdx >= 0 ? teamCatBtns[sidebarIdx] : null;
+    if (catHeading) catHeading.textContent = activeBtn ? (activeBtn.dataset.catLabel ?? '') : 'All Results';
+    if (catSub) catSub.textContent = activeBtn?.dataset.catScorers ? `${activeBtn.dataset.catScorers} scorers per club` : '';
+  }
+
+  chips.forEach(chip => {
+    chip.addEventListener('click', () => {
+      const target = chip.dataset.target!;
+      syncChipBar(target);
+      syncSidebar(target === 'ind-full' ? -1 : parseInt(target.replace('ind-cat-', ''), 10));
+    });
+  });
+
+  teamCatBtns.forEach((btn, i) => {
+    btn.addEventListener('click', () => {
+      syncChipBar(`ind-cat-${i}`);
+      syncSidebar(i);
+    });
+  });
+
+  fullSidebarBtn?.addEventListener('click', () => {
+    syncChipBar('ind-full');
+    syncSidebar(-1);
+  });
+
+  // ── Inline sex toggle chips (same pattern as age chips) ──
+  const sexFilterBtns = document.querySelectorAll<HTMLButtonElement>('.result-sex-btn');
+
+  sexFilterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      btn.classList.toggle('active-filter');
+      const on = btn.classList.contains('active-filter');
+      btn.classList.toggle('bg-amber',     on);
+      btn.classList.toggle('border-amber', on);
+      btn.classList.toggle('text-white',   on);
+      btn.classList.toggle('bg-surface',   !on);
+      btn.classList.toggle('border-line',  !on);
+      btn.classList.toggle('text-muted',   !on);
+      render();
+    });
+  });
+
+  // ── Inline age filter chips (multi-select toggles) ──
+  const ageFilterBtns = document.querySelectorAll<HTMLButtonElement>('.result-age-btn');
+
+  ageFilterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      btn.classList.toggle('active-filter');
+      const on = btn.classList.contains('active-filter');
+      btn.classList.toggle('bg-amber',     on);
+      btn.classList.toggle('border-amber', on);
+      btn.classList.toggle('text-white',   on);
+      btn.classList.toggle('bg-surface',   !on);
+      btn.classList.toggle('border-line',  !on);
+      btn.classList.toggle('text-muted',   !on);
+      render();
+    });
+  });
+
+  // ── Text / club inputs ──
+  function syncInputs(changedId: string, value: string) {
+    if (changedId === 'filter-name-mobile'  && nameD) nameD.value = value;
+    if (changedId === 'filter-name-desktop' && nameM) nameM.value = value;
+    if (changedId === 'filter-club-mobile'  && clubD) clubD.value = value;
+    if (changedId === 'filter-club-desktop' && clubM) clubM.value = value;
+  }
+
+  [nameM, nameD, clubM, clubD].forEach(el => {
+    if (!el) return;
+    el.addEventListener('input', () => {
+      syncInputs(el.id, el.value);
+      render();
+    });
+  });
+
+  // ── Helpers ──
+  function esc(s: string): string {
+    return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
+
+  function formatTime(time: string | null | undefined): string {
+    if (!time) return '–';
+    const parts = time.trim().split(':');
+    if (parts.length === 2) {
+      const [mm, ss] = parts;
+      return `00:${mm.padStart(2, '0')}:${ss.padStart(2, '0')}`;
+    }
+    if (parts.length === 3) {
+      const [hh, mm, ss] = parts;
+      return `${hh.padStart(2, '0')}:${mm.padStart(2, '0')}:${ss.padStart(2, '0')}`;
+    }
+    return time;
+  }
+
+  function buildRow(r: Result): string {
+    const url      = r.seriesRunnerId != null ? runnerUrlMap[r.seriesRunnerId] : null;
+    const fullName = `${esc(r.firstName ?? '')} ${esc(r.lastName ?? '')}`.trim();
+    const clubName = r.club === 'Guest' ? 'Guest' : esc(clubById[r.club]?.name ?? r.club);
+    const ic       = r.club === 'Guest' ? '–' : String(r.icPosition ?? '–');
+    const nameCell = url ? `<a href="${url}" class="link link-hover">${fullName}</a>` : fullName;
+    const cat      = esc((r.sex ?? '') + (r.ageCategory ?? ''));
+    return `<tr class="border-b border-line last:border-0">
+      <td class="py-2.5 pl-4 pr-2 font-mono text-[13px] font-medium text-muted align-middle">${r.position ?? '–'}</td>
+      <td class="py-2.5 px-2 font-mono text-[12px] text-muted align-middle">${ic}</td>
+      <td class="py-2.5 px-2 font-mono text-[12px] text-muted align-middle">${r.raceNumber ?? '–'}</td>
+      <td class="py-2.5 px-2 align-middle max-w-0 overflow-hidden">
+        <div class="font-semibold leading-tight truncate">${nameCell}</div>
+        <div class="text-xs text-muted mt-0.5 truncate">${clubName}</div>
+      </td>
+      <td class="py-2.5 px-2 font-mono text-[11px] text-muted align-middle">${cat}</td>
+      <td class="py-2.5 px-2 pr-4 font-mono text-[13px] font-medium text-right tabular-nums align-middle">${formatTime(r.time)}</td>
+    </tr>`;
+  }
+
+  function render() {
+    const name = (nameM?.value ?? nameD?.value ?? '').toLowerCase();
+    const club = clubM?.value ?? clubD?.value ?? '';
+    // Read active filters from DOM — empty array means "show all"
+    const activeSexes   = [...sexFilterBtns].filter(b => b.classList.contains('active-filter')).map(b => b.dataset.sex ?? '');
+    const activeAgeCats = [...ageFilterBtns].filter(b => b.classList.contains('active-filter')).map(b => b.dataset.age ?? '');
+
+    const filtered = allResults.filter(r => {
+      if (activeSexes.length   > 0 && !activeSexes.includes(r.sex ?? ''))           return false;
+      if (activeAgeCats.length > 0 && !activeAgeCats.includes(r.ageCategory ?? '')) return false;
+      if (name && !(`${r.firstName} ${r.lastName}`).toLowerCase().includes(name) &&
+          !(r.raceNumber !== null && String(r.raceNumber).startsWith(name)))         return false;
+      if (club && r.club !== club) return false;
+      return true;
+    });
+
+    tbody.innerHTML = filtered.map(buildRow).join('');
+  }
+</script>
