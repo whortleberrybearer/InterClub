@@ -1,11 +1,11 @@
 {
   "ageCategories": ["U17", "U20", "U23", "SEN", "V35", "V40", "V45", "V50", "V55", "V60", "V65", "V70", "V75", "V80"],
   "teamCategories": [
-    { "id": "open",   "name": "Open",    "scorerCount": 10 },
-    { "id": "ladies", "name": "Ladies",  "scorerCount": 5  },
-    { "id": "fv40",   "name": "FV40",    "scorerCount": 5  },
-    { "id": "vets",   "name": "Vets",    "scorerCount": 6  },
-    { "id": "vet50s", "name": "Vet 50s", "scorerCount": 4  },
-    { "id": "vet60s", "name": "Vet 60s", "scorerCount": 3  }
+    { "id": "open",   "name": "Open",    "scorerCount": 10, "eligibility": "All finishers" },
+    { "id": "ladies", "name": "Ladies",  "scorerCount": 5,  "eligibility": "Women" },
+    { "id": "fv40",   "name": "FV40",    "scorerCount": 5,  "eligibility": "Women 40+" },
+    { "id": "vets",   "name": "Vets",    "scorerCount": 6,  "eligibility": "Men 40+, Women 35+" },
+    { "id": "vet50s", "name": "Vet 50s", "scorerCount": 4,  "eligibility": "Men & Women 50+" },
+    { "id": "vet60s", "name": "Vet 60s", "scorerCount": 3,  "eligibility": "Men & Women 60+" }
   ]
 }
