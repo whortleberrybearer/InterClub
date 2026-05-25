@@ -606,7 +606,7 @@ const showSexToggle = hasMale && hasFemale;
     const clubName = r.club === 'Guest' ? 'Guest' : esc(clubById[r.club]?.name ?? r.club);
     const displayCatId = activeCategoryId ?? 'open';
     const icVal    = r.club === 'Guest' ? '–' : String(r.categoryPositions[displayCatId] ?? '–');
-    const nameCell = url ? `<a href="${url}" class="link link-hover">${fullName}</a>` : fullName;
+    const nameCell = url ? `<a href="${esc(url)}" class="link link-hover">${fullName}</a>` : fullName;
     const cat      = esc((r.sex ?? '') + (r.ageCategory ?? ''));
 
     const catCells = teamCategories.map(tc => {
