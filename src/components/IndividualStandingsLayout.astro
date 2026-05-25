@@ -144,7 +144,7 @@ const raceColWidth = standings.races.length >= 7 ? '3rem'
 
   <!-- Filter bar: sits flush below the chip bar on mobile + tablet -->
   <div slot="chip-bar" class="lg:hidden bg-surface sm:bg-transparent border-b border-line sm:border-b-0 w-full">
-    <div class="flex gap-2 max-w-4xl mx-auto px-4 py-2.5">
+    <div class="flex gap-2 max-w-4xl xl:max-w-5xl mx-auto px-4 py-2.5">
       <div class="flex-1 min-w-0">
         <input
           id="runner-search"
@@ -166,7 +166,7 @@ const raceColWidth = standings.races.length >= 7 ? '3rem'
   </div>
 
   <!-- ── Outer wrapper: 2-col grid at lg (sidebar | content) ──────────────── -->
-  <div class="lg:grid lg:grid-cols-[220px_1fr] lg:gap-8 lg:items-start">
+  <div class="lg:grid lg:grid-cols-[220px_1fr] xl:grid-cols-[260px_1fr] lg:gap-8 lg:items-start">
 
     <!-- ── Desktop sidebar (lg+ only) ───────────────────────────────────────── -->
     <aside class="hidden lg:block sticky top-6 self-start">
