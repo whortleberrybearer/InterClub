@@ -33,6 +33,10 @@ const raceTotal  = allRaces.length;
 const clubById = Object.fromEntries(clubs.map(c => [c.id, c]));
 const teamCategories = config.teamCategories ?? [];
 
+const hasCategoryData = results.some(r =>
+  Object.values(r.categoryPositions).some(v => v !== null)
+);
+
 const withTime      = results.filter(r => r.time && r.position != null);
 const finisherCount = withTime.length;
 
@@ -339,7 +343,7 @@ const showSexToggle = hasMale && hasFemale;
         <table class="w-full border-collapse text-[13.5px] table-fixed">
           <colgroup>
             <col class="w-10" />
-            <col class="w-9" />
+            {teamCategories.map(() => <col class="hidden lg:table-column w-9" />)}
             <col class="w-11" />
             <col />
             <col class="w-12" />
@@ -348,8 +352,14 @@ const showSexToggle = hasMale && hasFemale;
           <thead>
             <tr>
               <th class="font-head text-[10px] font-bold tracking-[0.1em] uppercase text-muted text-left py-2.5 pl-4 pr-2 bg-surface border-b-2 border-content">Pos</th>
-              <th class="font-head text-[10px] font-bold tracking-[0.1em] uppercase text-muted text-left py-2.5 px-2 bg-surface border-b-2 border-content">IC</th>
-              <th class="font-head text-[10px] font-bold tracking-[0.1em] uppercase text-muted text-left py-2.5 px-2 bg-surface border-b-2 border-content">No.</th>
+              {teamCategories.map(cat => (
+                <th
+                  class="hidden lg:table-cell font-head text-[10px] font-bold tracking-[0.1em] uppercase text-amber/60 text-left py-2.5 px-2 bg-surface border-b-2 border-content"
+                  data-cat-id={cat.id}
+                >{cat.name}</th>
+              ))}
+              <th id="ic-header" class="font-head text-[10px] font-bold tracking-[0.1em] uppercase text-muted text-left py-2.5 px-2 bg-surface border-b-2 border-content">Open</th>
+              <th class="no-col font-head text-[10px] font-bold tracking-[0.1em] uppercase text-muted text-left py-2.5 px-2 bg-surface border-b-2 border-content">No.</th>
               <th class="font-head text-[10px] font-bold tracking-[0.1em] uppercase text-muted text-left py-2.5 px-2 bg-surface border-b-2 border-content">Runner</th>
               <th class="font-head text-[10px] font-bold tracking-[0.1em] uppercase text-muted text-left py-2.5 px-2 bg-surface border-b-2 border-content">Cat</th>
               <th class="font-head text-[10px] font-bold tracking-[0.1em] uppercase text-muted text-right py-2.5 px-2 pr-4 bg-surface border-b-2 border-content">Time</th>
@@ -360,12 +370,17 @@ const showSexToggle = hasMale && hasFemale;
               const url      = r.seriesRunnerId != null ? runnerUrlMap[r.seriesRunnerId] : undefined;
               const fullName = `${r.firstName ?? ''} ${r.lastName ?? ''}`.trim();
               const clubName = r.club === 'Guest' ? 'Guest' : (clubById[r.club]?.name ?? r.club);
-              const ic       = r.club === 'Guest' ? '–' : (r.categoryPositions['open'] ?? '–');
+              const openPos  = r.club === 'Guest' ? '–' : (r.categoryPositions['open'] ?? '–');
               return (
                 <tr class="border-b border-line last:border-0">
                   <td class="py-2.5 pl-4 pr-2 font-mono text-[13px] font-medium text-muted align-middle">{r.position ?? '–'}</td>
-                  <td class="py-2.5 px-2 font-mono text-[12px] text-muted align-middle">{ic}</td>
-                  <td class="py-2.5 px-2 font-mono text-[12px] text-muted align-middle">{r.raceNumber ?? '–'}</td>
+                  {teamCategories.map(cat => (
+                    <td class="hidden lg:table-cell py-2.5 px-2 font-mono text-[12px] text-amber/80 font-medium align-middle">
+                      {r.categoryPositions[cat.id] ?? '–'}
+                    </td>
+                  ))}
+                  <td class="py-2.5 px-2 font-mono text-[12px] text-muted align-middle">{openPos}</td>
+                  <td class="no-col py-2.5 px-2 font-mono text-[12px] text-muted align-middle">{r.raceNumber ?? '–'}</td>
                   <td class="py-2.5 px-2 align-middle max-w-0 overflow-hidden">
                     <div class="font-semibold leading-tight truncate">
                       {url
@@ -392,6 +407,14 @@ const showSexToggle = hasMale && hasFemale;
   <script type="application/json" id="results-data" set:html={JSON.stringify(results).replace(/<\/script>/gi, '<\\/script>')}></script>
   <script type="application/json" id="clubs-data" set:html={JSON.stringify(clubs).replace(/<\/script>/gi, '<\\/script>')}></script>
   <script type="application/json" id="runner-url-map" set:html={JSON.stringify(runnerUrlMap).replace(/<\/script>/gi, '<\\/script>')}></script>
+  <script type="application/json" id="team-categories-data" set:html={JSON.stringify(teamCategories).replace(/<\/script>/gi, '<\\/script>')}></script>
+  <script type="application/json" id="has-category-data" set:html={JSON.stringify(hasCategoryData).replace(/<\/script>/gi, '<\\/script>')}></script>
+
+  <style>
+    @media (max-width: 1023px) {
+      table.cat-active .no-col { display: none; }
+    }
+  </style>
 
 </Layout>
 
