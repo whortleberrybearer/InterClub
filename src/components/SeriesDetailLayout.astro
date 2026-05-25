@@ -1,5 +1,4 @@
 ---
-// src/components/SeriesDetailLayout.astro
 import Layout from './Layout.astro';
 import { hasResults, hasTeamResults, isResultsProvisional } from '../lib/results';
 import { siteUrl } from '../lib/url';
@@ -234,7 +233,7 @@ const scoringRules = [
                 <tr>
                   <td class="font-medium">{cat.name}</td>
                   <td class="font-mono">{cat.scorerCount}</td>
-                  {hasEligibility && <td class="text-muted text-xs">{cat.eligibility ?? ''}</td>}
+                  {hasEligibility && <td class="text-muted text-xs">{cat.eligibility ?? '—'}</td>}
                 </tr>
               ))}
             </tbody>
