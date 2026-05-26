@@ -340,15 +340,15 @@ const showSexToggle = hasMale && hasFemale;
       <!-- Results table: plain on mobile/desktop, white card on tablet -->
       <div class="sm:bg-surface sm:border sm:border-line sm:rounded-xl sm:overflow-hidden lg:bg-transparent lg:border-0 lg:rounded-none lg:overflow-visible">
       <div class="overflow-x-auto">
-        <table class="w-full border-collapse text-[13.5px] table-fixed">
+        <table class="w-full lg:min-w-[40rem] border-collapse text-[13.5px] table-fixed">
           <colgroup>
             <col class="w-10" />
             {teamCategories.map(() => <col class="hidden lg:table-column w-9" />)}
-            <col class="w-9" />
+            <col class="w-9 lg:hidden" />
             <col class="w-9" />
             <col />
             <col class="w-12" />
-            <col class="w-20" />
+            <col class="w-24" />
           </colgroup>
           <thead>
             <tr>
