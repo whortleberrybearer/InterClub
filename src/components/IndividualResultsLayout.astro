@@ -343,8 +343,8 @@ const showSexToggle = hasMale && hasFemale;
         <table class="w-full md:min-w-[40rem] border-collapse text-[13.5px] table-fixed">
           <colgroup>
             <col class="w-10" />
-            {teamCategories.map(() => <col class="w-0 md:w-9" />)}
-            <col class="w-9 md:w-0" />
+            {teamCategories.map(() => <col class="hidden md:table-column w-9" />)}
+            <col class="w-9 md:hidden" />
             <col class="no-col w-9" />
             <col />
             <col class="w-12" />
@@ -414,7 +414,7 @@ const showSexToggle = hasMale && hasFemale;
   <style is:global>
     @media (max-width: 767px) {
       table.cat-active .no-col { display: none; }
-      table.cat-active col.no-col { width: 0; }
+      table.cat-active col.no-col { display: none; }
     }
   </style>
 
