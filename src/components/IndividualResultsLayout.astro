@@ -534,7 +534,6 @@ const showSexToggle = hasMale && hasFemale;
         activeCategoryId = teamCategories[idx]?.id ?? null;
       }
       applyMobileCategoryState(activeCategoryId);
-      applyDesktopCategoryHighlight(activeCategoryId);
       render();
     });
   });
@@ -545,7 +544,6 @@ const showSexToggle = hasMale && hasFemale;
       syncSidebar(i);
       activeCategoryId = teamCategories[i]?.id ?? null;
       applyMobileCategoryState(activeCategoryId);
-      applyDesktopCategoryHighlight(activeCategoryId);
       render();
     });
   });
@@ -555,7 +553,6 @@ const showSexToggle = hasMale && hasFemale;
     syncSidebar(-1);
     activeCategoryId = null;
     applyMobileCategoryState(null);
-    applyDesktopCategoryHighlight(null);
     render();
   });
 
@@ -652,12 +649,14 @@ const showSexToggle = hasMale && hasFemale;
     });
 
     tbody.innerHTML = filtered.map(buildRow).join('');
+    applyDesktopCategoryHighlight(activeCategoryId);
   }
 
-  // Apply initial desktop highlight for the pre-selected category (when no Full chip)
-  applyDesktopCategoryHighlight(activeCategoryId);
+  // Apply initial state for the pre-selected category (when no Full chip)
   if (activeCategoryId !== null) {
     applyMobileCategoryState(activeCategoryId);
     render();
+  } else {
+    applyDesktopCategoryHighlight(null);
   }
 </script>
