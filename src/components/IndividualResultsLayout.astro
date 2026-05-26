@@ -376,7 +376,7 @@ const showSexToggle = hasMale && hasFemale;
                 <tr class="border-b border-line last:border-0">
                   <td class="py-2.5 pl-4 pr-2 font-mono text-[13px] font-medium text-muted align-middle">{r.position ?? '–'}</td>
                   {teamCategories.map(cat => (
-                    <td class="hidden md:table-cell py-2.5 px-2 font-mono text-[12px] text-muted font-medium align-middle">
+                    <td class="hidden md:table-cell py-2.5 px-2 font-mono text-[12px] text-muted font-medium align-middle" data-cat-id={cat.id}>
                       {r.categoryPositions[cat.id] ?? '–'}
                     </td>
                   ))}
@@ -512,12 +512,12 @@ const showSexToggle = hasMale && hasFemale;
   }
 
   function applyDesktopCategoryHighlight(catId: string | null) {
-    document.querySelectorAll<HTMLElement>('th[data-cat-id]').forEach(th => {
-      const isActive = th.dataset.catId === catId;
+    document.querySelectorAll<HTMLElement>('[data-cat-id]').forEach(el => {
+      const isActive = el.dataset.catId === catId;
       const hasActiveFilter = catId !== null;
-      th.classList.toggle('text-content',   isActive);
-      th.classList.toggle('text-muted/30',  !isActive && hasActiveFilter);
-      th.classList.toggle('text-muted',     !isActive && !hasActiveFilter);
+      el.classList.toggle('text-content',   isActive);
+      el.classList.toggle('text-muted/30',  !isActive && hasActiveFilter);
+      el.classList.toggle('text-muted',     !isActive && !hasActiveFilter);
     });
   }
 
@@ -614,7 +614,7 @@ const showSexToggle = hasMale && hasFemale;
 
     const catCells = teamCategories.map(tc => {
       const pos = r.categoryPositions[tc.id] ?? null;
-      return `<td class="hidden md:table-cell py-2.5 px-2 font-mono text-[12px] text-muted font-medium align-middle">${pos ?? '–'}</td>`;
+      return `<td class="hidden md:table-cell py-2.5 px-2 font-mono text-[12px] text-muted font-medium align-middle" data-cat-id="${tc.id}">${pos ?? '–'}</td>`;
     }).join('');
 
     return `<tr class="border-b border-line last:border-0">
