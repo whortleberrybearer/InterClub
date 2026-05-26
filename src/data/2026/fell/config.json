@@ -1,8 +1,8 @@
 {
   "ageCategories": ["SEN", "V40", "V50", "V60", "V70"],
   "teamCategories": [
-    { "id": "open",   "name": "Open",   "scorerCount": 6, "eligibility": "Any age, any sex" },
-    { "id": "ladies", "name": "Ladies", "scorerCount": 3, "eligibility": "Women" },
-    { "id": "vets",   "name": "Vets",   "scorerCount": 4, "eligibility": "Men & Women 40+" }
+    { "id": "open",   "name": "Open",   "shortName": "OPN", "scorerCount": 6, "eligibility": "Any age, any sex" },
+    { "id": "ladies", "name": "Ladies", "shortName": "LAD", "scorerCount": 3, "eligibility": "Women" },
+    { "id": "vets",   "name": "Vets",   "shortName": "VET", "scorerCount": 4, "eligibility": "Men & Women 40+" }
   ]
 }

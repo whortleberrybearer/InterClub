@@ -122,6 +122,7 @@ export interface SeriesConfig {
 export interface TeamCategory {
   id: string;
   name: string;
+  shortName?: string;     // abbreviated column header (≤3 chars); falls back to first 3 chars of name
   scorerCount: number;
   eligibility?: string;   // e.g. "All finishers", "Women", "Men & Women 40+"
 }
