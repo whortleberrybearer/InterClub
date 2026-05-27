@@ -188,11 +188,13 @@ function Parse-Positions {
     # This works regardless of how many leading columns the format has.
     $headerRow = -1
     $script:colMap = @{ RaceNum = 1; Pos = 2; IC = 3; First = 9; Last = 10; Cat = 11; Sex = 12; Club = 14; Time = 15 }
+    $script:catCols = @{}   # category_id -> column_number (for multiple category columns)
 
     for ($hr = 1; $hr -le [Math]::Min(20, $totalRows); $hr++) {
-        $detected = @{}
+        $detected = @{ CatMulti = @{} }
         for ($c = 1; $c -le $totalCols; $c++) {
             $h = $Sheet.Cells.Item($hr, $c).Text.Trim().ToLower()
+            $hOrig = $Sheet.Cells.Item($hr, $c).Text.Trim()
             # First-occurrence-wins for all fields
             switch -Wildcard ($h) {
                 "runner*"       { if (-not $detected["RaceNum"]) { $detected["RaceNum"] = $c } }
@@ -210,6 +212,7 @@ function Parse-Positions {
                 "surname*"      { if (-not $detected["Last"])    { $detected["Last"]    = $c } }
                 "last name*"    { if (-not $detected["Last"])    { $detected["Last"]    = $c } }
                 "family*"       { if (-not $detected["Last"])    { $detected["Last"]    = $c } }
+                "cat_*"         { $detected["CatMulti"][$h] = $c }
                 "cat*"          { if (-not $detected["Cat"])     { $detected["Cat"]     = $c } }
                 "class*"        { if (-not $detected["Cat"])     { $detected["Cat"]     = $c } }
                 "sex"           { if (-not $detected["Sex"])     { $detected["Sex"]     = $c } }
@@ -218,6 +221,22 @@ function Parse-Positions {
                 "club"          { if (-not $detected["Club"])    { $detected["Club"]    = $c } }
                 "team"          { if (-not $detected["Club"])    { $detected["Club"]    = $c } }
                 "time"          { if (-not $detected["Time"])    { $detected["Time"]    = $c } }
+            }
+            # Detect common team category column headers and map to category IDs
+            if (-not $detected["Cat"]) {
+                $catId = switch -Regex ($h) {
+                    '^(open|team)$'                           { "open" }
+                    '^(lady|ladies?|women?|female)$'          { "ladies" }
+                    '^vet(?:eran)?s?$'                        { "vets" }
+                    '^(?:lady|female)[-\s]?vet(?:eran)?s?$'   { "lady-vets" }
+                    '^f[-\s]?v[-\s]?40|fv40$'                 { "lady-vets" }
+                    '^v[-\s]?50|vet[-\s]?50s?$'               { "v50" }
+                    '^v[-\s]?60|vet[-\s]?60s?$'               { "v60" }
+                    default                                    { $null }
+                }
+                if ($catId) {
+                    $detected["CatMulti"][$catId] = $c
+                }
             }
         }
         # Require at least Pos + one of Last/Time to confirm this is the results header row
@@ -232,6 +251,10 @@ function Parse-Positions {
             if ($detected["Sex"])     { $script:colMap["Sex"]     = $detected["Sex"]     }
             if ($detected["Club"])    { $script:colMap["Club"]    = $detected["Club"]    }
             if ($detected["Time"])    { $script:colMap["Time"]    = $detected["Time"]    }
+            # Store multiple category columns (cat_open, cat_ladies, etc.)
+            if ($detected["CatMulti"]) {
+                $script:catCols = $detected["CatMulti"]
+            }
             break
         }
     }
@@ -249,7 +272,8 @@ function Parse-Positions {
     # accidentally read from the wrong column (e.g. the position column in 2015).
     if (-not $detected["RaceNum"]) { $script:colMap["RaceNum"] = 0 }
 
-    Write-Host "  Header row: $headerRow | Cols: RaceNum=$($script:colMap['RaceNum']) Pos=$($script:colMap['Pos']) IC=$($script:colMap['IC']) First=$($script:colMap['First']) Last=$($script:colMap['Last']) Cat=$($script:colMap['Cat']) Sex=$($script:colMap['Sex']) Club=$($script:colMap['Club']) Time=$($script:colMap['Time'])" -ForegroundColor DarkGray
+    $catColsDesc = if ($script:catCols.Count -gt 0) { " CatCols: $($script:catCols.Keys -join ',')" } else { "" }
+    Write-Host "  Header row: $headerRow | Cols: RaceNum=$($script:colMap['RaceNum']) Pos=$($script:colMap['Pos']) IC=$($script:colMap['IC']) First=$($script:colMap['First']) Last=$($script:colMap['Last']) Cat=$($script:colMap['Cat']) Sex=$($script:colMap['Sex']) Club=$($script:colMap['Club']) Time=$($script:colMap['Time'])$catColsDesc" -ForegroundColor DarkGray
 
     # Data starts at the row after the header; fall back to scanning col 1 if no header found
     if ($headerRow -gt 0) {
@@ -283,6 +307,13 @@ function Parse-Positions {
         $club    = $Sheet.Cells.Item($r, $colMap["Club"]).Text.Trim()
         $time    = $Sheet.Cells.Item($r, $colMap["Time"]).Text.Trim()
 
+        # Extract multiple category positions (from detected category columns)
+        $catPositions = @{}
+        foreach ($catId in $script:catCols.Keys) {
+            $catValue = $Sheet.Cells.Item($r, $script:catCols[$catId]).Text.Trim()
+            $catPositions[$catId] = if ($catValue -match '^\d+$') { [int]$catValue } else { $null }
+        }
+
         # 2015 format: sex column absent — derive from category prefix (M/F/JM/JW)
         if ($sex -eq "" -and $cat -ne "") { $sex = Get-Sex2015 $cat }
         # 2015 format: category uses M/M-40/F/F-40 notation — convert to SEN/V40 etc.
@@ -305,6 +336,7 @@ function Parse-Positions {
             Category = $cat
             Sex      = $sex
             Time     = $time
+            CategoryPositions = $catPositions
         })
     }
 }
@@ -1466,14 +1498,35 @@ try {
     $guestCount = ($results | Where-Object { $null -eq $_.IcPos }).Count
     Write-Host "  $($results.Count) runners - $icCount IC, $guestCount guest"
 
+    # Sort detected category IDs; cat_open is always first (from IC column)
+    $sortedCatIds = @($script:catCols.Keys | Sort-Object)
+
+    # Build CSV header: position, cat_open, [other cat columns], race_number, names, club, age_category, sex, time, series_runner_id
+    $csvHeader = "position,cat_open"
+    foreach ($catId in $sortedCatIds) {
+        $csvHeader += ",cat_$catId"
+    }
+    $csvHeader += ",race_number,first_name,last_name,club,age_category,sex,time,series_runner_id"
+
     # Build CSV lines
-    $csvLines = [System.Collections.Generic.List[string]]@(
-        "position,ic_position,race_number,first_name,last_name,club,category,sex,time"
-    )
+    $csvLines = [System.Collections.Generic.List[string]]@($csvHeader)
     foreach ($r in $results) {
-        $ic  = if ($null -ne $r.IcPos)  { $r.IcPos  } else { "" }
+        $open = if ($null -ne $r.IcPos) { $r.IcPos } else { "" }
+        $line = "$($r.Position),$open"
+
+        # Add category position values in the same order as header
+        foreach ($catId in $sortedCatIds) {
+            $catVal = if ($r.CategoryPositions.ContainsKey($catId) -and $null -ne $r.CategoryPositions[$catId]) {
+                $r.CategoryPositions[$catId]
+            } else {
+                ""
+            }
+            $line += ",$catVal"
+        }
+
         $num = if ($null -ne $r.RaceNum) { $r.RaceNum } else { "" }
-        $csvLines.Add("$($r.Position),$ic,$num,$($r.First),$($r.Last),$($r.Club),$($r.Category),$($r.Sex),$($r.Time)")
+        $line += ",$num,$($r.First),$($r.Last),$($r.Club),$($r.Category),$($r.Sex),$($r.Time),"
+        $csvLines.Add($line)
     }
 
     # ── 2. Validation - spot-check every 5 results ──────────────────────────
@@ -1727,8 +1780,12 @@ try {
         $standingsJsonStr | Set-Content -Path $standingsFile -Encoding UTF8
         Write-Host "Written: $standingsFile" -ForegroundColor Green
 
-        Copy-Item -Path $ExcelFile -Destination $xlsxDest -Force
-        Write-Host "Copied:  $xlsxDest" -ForegroundColor Green
+        if ($ExcelFile -ne $xlsxDest) {
+            Copy-Item -Path $ExcelFile -Destination $xlsxDest -Force
+            Write-Host "Copied:  $xlsxDest" -ForegroundColor Green
+        } else {
+            Write-Host "Skipped copy: Excel file already in results directory" -ForegroundColor DarkGray
+        }
     }
 
     Write-Host ""
