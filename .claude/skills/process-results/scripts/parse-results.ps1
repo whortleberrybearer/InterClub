@@ -1269,8 +1269,8 @@ function Build-TeamResultsJson {
         }
 
         $categories.Add([ordered]@{
-            category = $catId
-            clubs    = $clubs.ToArray()
+            id    = $catId
+            clubs = $clubs.ToArray()
         })
     }
 
@@ -1308,7 +1308,7 @@ function Update-TeamStandings {
     foreach ($catId in $AllCategories) {
         # Find existing category entry
         $existingCat = if ($existing) {
-            $existing.categories | Where-Object { $_.category -eq $catId } | Select-Object -First 1
+            $existing.categories | Where-Object { $_.id -eq $catId } | Select-Object -First 1
         } else { $null }
 
         $clubs = [System.Collections.Generic.List[object]]@()
@@ -1363,8 +1363,8 @@ function Update-TeamStandings {
         }
 
         $newCategories.Add([ordered]@{
-            category = $catId
-            clubs    = @($sorted)
+            id    = $catId
+            clubs = @($sorted)
         })
     }
 
