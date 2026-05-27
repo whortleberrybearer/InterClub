@@ -2,6 +2,8 @@
 
 /* ── Design tokens ── */
 @theme {
+  --breakpoint-xs:    375px;
+
   --color-surface:    #ffffff;
   --color-canvas:     oklch(97% 0.006 250);
   --color-line:       oklch(91% 0.006 250);
