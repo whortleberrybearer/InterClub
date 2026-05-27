@@ -8,6 +8,8 @@ model: claude-haiku-4-5-20251001
 
 Use this skill when the user wants to ingest a race results Excel file into the InterClub site data.
 
+The skill automatically detects and handles multiple team category columns (e.g., `cat_open`, `cat_ladies`, `cat_vets`) in Excel sheets, outputting them to the CSV with one column per category position.
+
 Announce: "Using process-results skill to run the ingestion pipeline."
 
 ## Parameters
