@@ -134,12 +134,14 @@ Runner data degrades gracefully: rows with no `series_runner_id` simply render w
 ### Results CSV schema
 
 ```
-position,ic_position,race_number,first_name,last_name,club,age_category,sex,time
-1,1,42,Luke,Minns,blackpool,V35,M,19:35
-9,, ,T.,Guest,Guest,SEN,M,22:14
+position,cat_open,cat_vets,cat_vet50s,cat_ladies,race_number,first_name,last_name,club,age_category,sex,time,series_runner_id
+1,1,,,,,55,Luke,Minns,blackpool,V35,M,19:35,100
+9,,,,, ,T.,Guest,Guest,SEN,M,22:14,
 ```
 
-`club` is a club `id` from `clubs.json`, or `Guest` for non-club runners. `ic_position` is empty for guests. `race_number` is optional — the column may be omitted entirely from older CSVs or left empty for individual runners; both cases parse as `null` on `RaceResult.raceNumber`. All fields are optional to support partial historical data.
+`club` is a club `id` from `clubs.json`, or `Guest` for non-club runners. `race_number` is optional — the column may be omitted entirely from older CSVs or left empty for individual runners; both cases parse as `null` on `RaceResult.raceNumber`. All fields are optional to support partial historical data.
+
+**`cat_*` columns** — one column per team category defined in the series `config.json` (e.g. `cat_open`, `cat_ladies`, `cat_fv40`, `cat_vets`, `cat_vet50s`, `cat_vet60s`). Each holds the runner's finishing position within that category's scoring group, or blank if the runner does not compete in that category. Parsed into `RaceResult.categoryPositions` as `Record<string, number | null>` (key = category id with `cat_` prefix stripped).
 
 The optional `series_runner_id` column (last column, integer) links a row to `id` in `src/data/{year}/{series}/runners.json`, enabling runner profile links and profile page aggregation.
 
@@ -159,7 +161,7 @@ Team results are computed externally and placed alongside the individual results
           "club": "wesham",
           "total": 175,
           "scorers": [
-            { "name": "M. Swarbrick", "position": 5 },
+            { "name": "M. Swarbrick", "position": 5, "seriesRunnerId": 42 },
             { "name": "J. Townsend",  "position": 8 }
           ]
         }
@@ -173,6 +175,7 @@ Team results are computed externally and placed alongside the individual results
 - `club` — id matching `clubs.json[].id`
 - `points` — stored explicitly; a club that fails to field enough scorers receives 0 points
 - scorer `position` — the runner's rank within the sex/age group used for team scoring
+- scorer `seriesRunnerId` — optional; links the scorer name to a runner profile page
 
 ### Data loading
 
@@ -261,13 +264,14 @@ Season individual standings are computed externally and placed at `src/data/{yea
 {
   "ageCategories": ["SEN", "V40", "V50"],
   "teamCategories": [
-    { "id": "open", "name": "Open", "scorerCount": 6 }
+    { "id": "open", "name": "Open", "shortName": "OPN", "scorerCount": 6 }
   ]
 }
 ```
 
-- `ageCategories` — age bands shown in the results filter bar
+- `ageCategories` — age bands shown in the results filter bar (optional; omit for series with no age filtering)
 - `teamCategories` — defines team scoring groups; `id` is referenced by team results JSON files and `awards.json`
+- `teamCategories[].shortName` — optional 2–3 char abbreviation used as column header on results and standings pages; falls back to first 3 chars of `name`
 
 ### Awards JSON schema
 
