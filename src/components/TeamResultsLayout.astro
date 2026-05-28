@@ -8,10 +8,11 @@
 //   Desktop (lg+)   — sticky sidebar + selected category pane with collapsible cards
 import Layout from './Layout.astro';
 import ChipBar from './ChipBar.astro';
+import PageHeader from './PageHeader.astro';
 import TeamClubCard from './TeamClubCard.astro';
-import { getRace } from '../lib/data';
+import { getRace, getRaces } from '../lib/data';
 import { siteUrl } from '../lib/url';
-import { getSeriesLabel, getSeriesLongLabel } from '../lib/format';
+import { formatRaceDate } from '../lib/format';
 import type { Club, Series, SeriesConfig, TeamResults } from '../lib/types';
 
 export interface Props {
@@ -29,8 +30,16 @@ const { series, year, raceId, teamResults, provisional, clubs, config, runnerUrl
 
 const race = getRace(year, series, raceId);
 const title = race?.name ?? raceId;
-const seriesLabel = getSeriesLabel(series);
-const seriesLong  = getSeriesLongLabel(series);
+const allRaces   = getRaces(year, series);
+const raceIndex  = allRaces.findIndex(r => r.id === raceId);
+const raceNumber = raceIndex >= 0 ? raceIndex + 1 : null;
+const raceTotal  = allRaces.length;
+
+const raceMeta = [
+  race?.date ? formatRaceDate(race.date, race?.time) : null,
+  race?.location ?? null,
+  race?.distance ?? null,
+].filter(Boolean) as string[];
 
 const clubById     = Object.fromEntries(clubs.map(c => [c.id, c]));
 const categoryById = Object.fromEntries((config.teamCategories ?? []).map(c => [c.id, c]));
@@ -39,39 +48,24 @@ const categoryById = Object.fromEntries((config.teamCategories ?? []).map(c => [
 <Layout title={`${title} — Team Results`}>
 
   <!-- ── Full-width race header (hero slot) ── -->
-  <div slot="hero" class="bg-surface">
-    <div class="max-w-4xl xl:max-w-5xl mx-auto px-4 pt-8 pb-5">
-      <div class="mb-5">
-        <a href={siteUrl(`/${series}/${year}`)} class="btn btn-ghost btn-sm gap-1 -ml-3">← {seriesLabel} {year}</a>
-      </div>
-      <p class="font-head text-[10px] font-bold tracking-[0.14em] uppercase text-muted mb-1">Race Results</p>
-      <div class="flex items-center gap-3 flex-wrap">
-        <h1 class="font-head text-[28px] lg:text-[32px] font-extrabold tracking-tight leading-none">{title}</h1>
-        {provisional && (
-          <span class="badge badge-warning">Provisional</span>
-        )}
-      </div>
-      <p class="text-sm text-muted mt-2">{year} Inter Club {seriesLong}</p>
+  <PageHeader
+    slot="hero"
+    eyebrow={raceNumber != null ? `Race ${raceNumber}${raceTotal > 1 ? ` of ${raceTotal}` : ''}` : undefined}
+    title={title}
+    subtitleParts={raceMeta}
+    provisional={provisional}
+  >
+    <div class="flex">
+      <a
+        href={siteUrl(`/${series}/${year}/${raceId}/results`)}
+        class="flex-1 md:flex-none font-head text-[13px] font-bold tracking-[0.06em] uppercase py-2.5 md:mr-7 border-b-2 -mb-px text-center md:text-left border-transparent text-hdr-muted hover:text-hdr-text transition-colors"
+      >Individual</a>
+      <a
+        href={siteUrl(`/${series}/${year}/${raceId}/team-results`)}
+        class="flex-1 md:flex-none font-head text-[13px] font-bold tracking-[0.06em] uppercase py-2.5 md:mr-7 border-b-2 -mb-px text-center md:text-left border-amber text-hdr-text transition-colors"
+      >Team</a>
     </div>
-
-    <div class="border-b border-line" />
-
-    <!-- Individual / Team tab strip -->
-    <div class="border-b border-line">
-      <div class="max-w-4xl xl:max-w-5xl mx-auto px-4">
-        <div class="flex">
-          <a
-            href={siteUrl(`/${series}/${year}/${raceId}/results`)}
-            class="flex-1 md:flex-none font-head text-[13px] font-bold tracking-[0.06em] uppercase py-2.5 md:mr-7 border-b-2 -mb-px text-center md:text-left border-transparent text-muted hover:text-content transition-colors"
-          >Individual</a>
-          <a
-            href={siteUrl(`/${series}/${year}/${raceId}/team-results`)}
-            class="flex-1 md:flex-none font-head text-[13px] font-bold tracking-[0.06em] uppercase py-2.5 md:mr-7 border-b-2 -mb-px text-center md:text-left border-amber text-content transition-colors"
-          >Team</a>
-        </div>
-      </div>
-    </div>
-  </div>
+  </PageHeader>
 
   <!-- ── Category chip bar (mobile + tablet, hidden on desktop) ── -->
   <ChipBar
