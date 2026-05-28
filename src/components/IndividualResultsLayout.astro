@@ -2,6 +2,7 @@
 // src/components/IndividualResultsLayout.astro
 import Layout from './Layout.astro';
 import ChipBar from './ChipBar.astro';
+import PageHeader from './PageHeader.astro';
 import { getRace, getRaces } from '../lib/data';
 import { hasTeamResults } from '../lib/results';
 import { siteUrl } from '../lib/url';
@@ -80,14 +81,11 @@ const clubTurnout = [...clubCountMap.entries()]
   .sort((a, b) => b.count - a.count);
 const maxClubCount = clubTurnout.reduce((m, c) => Math.max(m, c.count), 1);
 
-const eyebrow = [
-  raceNumber != null ? `Race ${raceNumber}` : null,
-  race?.date ? formatRaceDate(race.date) : null,
+const raceMeta = [
+  race?.date ? formatRaceDate(race.date, race?.time) : null,
   race?.location ?? null,
   race?.distance ?? null,
-].filter(Boolean).join(' · ');
-
-const metaLine = [race?.location ?? null, race?.distance ?? null].filter(Boolean).join(' · ');
+].filter(Boolean) as string[];
 
 const showTeamResults = hasTeamResults(year, series, raceId);
 
@@ -103,67 +101,29 @@ const showSexToggle = hasMale && hasFemale;
 
 <Layout title={`${title} — Results`}>
 
-  <!-- ════ HERO: light surface header ════ -->
-  <div slot="hero" class="bg-surface border-b border-line">
-    <div class="max-w-4xl xl:max-w-5xl mx-auto px-4 pt-4 pb-4">
-
-      <a href={siteUrl(`/${series}/${year}`)} class="block text-[12px] text-muted hover:text-content transition-colors mb-2">
-        ← {seriesLabel} {year}
-      </a>
-
-      <div class="lg:flex lg:items-end lg:justify-between lg:gap-6">
-
-        <div class="flex-1 min-w-0">
-          {eyebrow && (
-            <p class="font-head text-[10px] font-bold tracking-[0.14em] uppercase text-muted mb-1">{eyebrow}</p>
-          )}
-
-          <div class="flex items-center gap-2 flex-wrap mb-1">
-            <h1 class="font-head text-[22px] lg:text-[30px] font-extrabold tracking-tight leading-[1.1]">{title}</h1>
-            {provisional && (
-              <span class="font-head text-[10px] font-bold tracking-[0.08em] uppercase bg-[oklch(88%_0.12_60)] text-[oklch(35%_0.12_60)] px-2 py-0.5 rounded-full">
-                Provisional
-              </span>
-            )}
-          </div>
-
-          {metaLine && <p class="text-[13px] text-muted lg:hidden">{metaLine}</p>}
-
-          {raceNumber != null && raceTotal > 1 && (
-            <div class="hidden lg:flex items-center gap-3 mt-2">
-              <span class="font-mono text-[11px] text-muted tracking-[0.04em]">Race {raceNumber} of {raceTotal}</span>
-              <div class="flex gap-[3px]">
-                {Array.from({ length: raceTotal }, (_, i) => (
-                  <span
-                    class="h-[4px] w-[14px] rounded-[2px]"
-                    style={`background: ${i < raceNumber ? 'var(--color-amber)' : 'var(--color-line)'}`}
-                  />
-                ))}
-              </div>
-            </div>
-          )}
-        </div>
-
-      </div>
-    </div>
-
-    <div class="border-t border-line">
-      <div class="max-w-4xl xl:max-w-5xl mx-auto px-4 flex">
+  <!-- ════ HERO ════ -->
+  <PageHeader
+    slot="hero"
+    eyebrow={raceNumber != null ? `Race ${raceNumber}${raceTotal > 1 ? ` of ${raceTotal}` : ''}` : undefined}
+    title={title}
+    subtitleParts={raceMeta}
+    provisional={provisional}
+  >
+    <div class="flex">
+      <a
+        href={siteUrl(`/${series}/${year}/${raceId}/results`)}
+        class="flex-1 md:flex-none font-head text-[13px] font-bold tracking-[0.06em] uppercase py-2.5 md:mr-7 border-b-2 -mb-px text-center md:text-left border-amber text-hdr-text"
+      >Individual</a>
+      {showTeamResults ? (
         <a
-          href={siteUrl(`/${series}/${year}/${raceId}/results`)}
-          class="flex-1 md:flex-none font-head text-[13px] font-bold tracking-[0.06em] uppercase py-2.5 md:mr-7 border-b-2 -mb-px text-center md:text-left border-amber text-content"
-        >Individual</a>
-        {showTeamResults ? (
-          <a
-            href={siteUrl(`/${series}/${year}/${raceId}/team-results`)}
-            class="flex-1 md:flex-none font-head text-[13px] font-bold tracking-[0.06em] uppercase py-2.5 md:mr-7 border-b-2 -mb-px text-center md:text-left border-transparent text-muted hover:text-content transition-colors"
-          >Team</a>
-        ) : (
-          <span class="flex-1 md:flex-none font-head text-[13px] font-bold tracking-[0.06em] uppercase py-2.5 md:mr-7 border-b-2 border-transparent text-muted/40 cursor-not-allowed text-center md:text-left">Team</span>
-        )}
-      </div>
+          href={siteUrl(`/${series}/${year}/${raceId}/team-results`)}
+          class="flex-1 md:flex-none font-head text-[13px] font-bold tracking-[0.06em] uppercase py-2.5 md:mr-7 border-b-2 -mb-px text-center md:text-left border-transparent text-hdr-muted hover:text-hdr-text transition-colors"
+        >Team</a>
+      ) : (
+        <span class="flex-1 md:flex-none font-head text-[13px] font-bold tracking-[0.06em] uppercase py-2.5 md:mr-7 border-b-2 border-transparent text-hdr-muted/40 cursor-not-allowed text-center md:text-left">Team</span>
+      )}
     </div>
-  </div>
+  </PageHeader>
 
   <!-- ════ CHIP-BAR: [Full +] team category chips (mobile + tablet) ════ -->
   {(teamCategories.length > 0 || showFullChip) && (

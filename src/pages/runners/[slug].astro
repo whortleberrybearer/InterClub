@@ -1,5 +1,6 @@
 ---
 import Layout from '../../components/Layout.astro';
+import PageHeader from '../../components/PageHeader.astro';
 import { getRunnerProfileStaticPaths, resolveClubName } from '../../lib/runners';
 import { siteUrl } from '../../lib/url';
 import type { GlobalRunner, RunnerYearBlock, RunnerClubHistory, RunnerAwardSummary } from '../../lib/types';
@@ -17,7 +18,6 @@ interface Props {
 
 const { runner, clubHistory, awardSummary, yearBlocks } = Astro.props;
 const title = `${runner.firstName} ${runner.lastName}`;
-const initials = `${runner.firstName[0] ?? ''}${runner.lastName[0] ?? ''}`.toUpperCase();
 const sexLabel = runner.sex === 'M' ? 'Men' : 'Women';
 const currentClubName = resolveClubName(runner.club);
 
@@ -43,37 +43,12 @@ function positionLabel(pos: number): string {
 <Layout title={title}>
 
   <!-- ── Dark hero ── -->
-  <div slot="hero" class="bg-hdr-dark text-hdr-text">
-    <div class="max-w-4xl xl:max-w-5xl mx-auto px-4 pt-4 pb-6">
-
-      <p class="font-mono text-xs text-hdr-muted mb-4 tracking-wide">← Runners</p>
-
-      <!-- Identity row -->
-      <div class="flex items-center gap-4 sm:gap-6">
-        <!-- Initials avatar -->
-        <div
-          class="size-14 sm:size-20 shrink-0 rounded-full bg-amber flex items-center justify-center font-head font-extrabold text-xl sm:text-3xl tracking-tight select-none"
-          style="color: oklch(18% 0.02 250)"
-          aria-hidden="true"
-        >
-          {initials}
-        </div>
-
-        <div class="min-w-0">
-          <p class="font-head font-bold text-xs uppercase tracking-widest text-amber mb-1">
-            {currentClubName}
-          </p>
-          <h1 class="font-head font-extrabold text-4xl sm:text-5xl tracking-tight leading-none">
-            {title}
-          </h1>
-          <p class="font-mono text-xs text-hdr-muted mt-2 tracking-wider uppercase">
-            {sexLabel} · {runner.ageCategory}
-          </p>
-        </div>
-      </div>
-
-    </div>
-  </div>
+  <PageHeader
+    slot="hero"
+    eyebrow={currentClubName}
+    title={title}
+    subtitleParts={[sexLabel, runner.ageCategory]}
+  />
 
   <!-- ── Body: sidebar + main ── -->
   <div class="md:grid md:grid-cols-[220px_1fr] md:gap-7 lg:grid-cols-[260px_1fr]">

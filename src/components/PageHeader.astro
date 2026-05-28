@@ -1,0 +1,75 @@
+---
+// src/components/PageHeader.astro
+//
+// Shared dark hero header for race results and runner profile pages.
+// Renders the full-bleed bg-hdr-dark band with:
+//   - an optional amber eyebrow line
+//   - a bold h1 (with optional Provisional badge)
+//   - an optional muted mono subtitle row (items separated by 1px lines)
+//   - an optional tab strip via the default slot (separator line is handled here)
+//
+// Usage:
+//   <PageHeader slot="hero" eyebrow="Race 1 of 7" title={title} subtitleParts={raceMeta}>
+//     <!-- tab strip (optional) -->
+//     <div class="flex">
+//       <a class="...tab-active...">Individual</a>
+//       <a class="...tab-inactive...">Team</a>
+//     </div>
+//   </PageHeader>
+
+export interface Props {
+  /** Amber label rendered above the title (e.g. "Race 1 of 7" or a club name). */
+  eyebrow?: string;
+  /** Main page heading. */
+  title: string;
+  /** Optional metadata items rendered as a muted mono row with 1 px separators. */
+  subtitleParts?: string[];
+  /** When true, shows a "Provisional" badge inline with the title. */
+  provisional?: boolean;
+}
+
+const { eyebrow, title, subtitleParts = [], provisional = false } = Astro.props;
+const hasTabStrip = Astro.slots.has('default');
+---
+
+<div class="bg-hdr-dark text-hdr-text">
+  <div class="max-w-4xl xl:max-w-5xl mx-auto px-4 pt-4 pb-4">
+
+    {eyebrow && (
+      <p class="font-head text-[11px] font-bold tracking-[0.14em] uppercase text-amber mb-1.5">
+        {eyebrow}
+      </p>
+    )}
+
+    <div class="flex items-center gap-2.5 flex-wrap mb-1">
+      <h1 class="font-head text-[28px] lg:text-[38px] font-extrabold tracking-tight leading-[1.1]">
+        {title}
+      </h1>
+      {provisional && (
+        <span class="font-head text-[10px] font-bold tracking-[0.08em] uppercase bg-[oklch(88%_0.12_60)] text-[oklch(35%_0.12_60)] px-2 py-0.5 rounded-full">
+          Provisional
+        </span>
+      )}
+    </div>
+
+    {subtitleParts.length > 0 && (
+      <div class="flex items-center flex-wrap gap-x-2.5 gap-y-0.5 font-mono text-[12px] text-hdr-muted mt-1">
+        {subtitleParts.map((part, i) => (
+          <>
+            {i > 0 && <span class="w-px h-[11px] bg-white/20 self-center flex-shrink-0" />}
+            <span>{part}</span>
+          </>
+        ))}
+      </div>
+    )}
+
+  </div>
+
+  {hasTabStrip && (
+    <div class="border-t border-white/10">
+      <div class="max-w-4xl xl:max-w-5xl mx-auto px-4">
+        <slot />
+      </div>
+    </div>
+  )}
+</div>

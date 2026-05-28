@@ -55,33 +55,27 @@ const hasStats = !!(mRecord || fRecord);
   <div slot="hero" class="bg-content text-white">
     <div class="max-w-4xl xl:max-w-5xl mx-auto px-4 py-5 md:py-7">
 
-      <a href={backUrl} class="text-[11px] text-white/50 hover:text-white/80 transition-colors mb-4 inline-block">
-        ← Road Grand Prix
+      <a href={backUrl} class="text-[12px] text-white/50 hover:text-white/80 transition-colors mb-3 inline-block">
+        ← Road Grand Prix {year}
       </a>
 
-      <div class="font-head text-[10px] font-bold tracking-[0.14em] uppercase text-amber mb-2">
+      <div class="font-head text-[11px] font-bold tracking-[0.14em] uppercase text-amber mb-1.5">
         Road Grand Prix · Race {raceIndex} of {totalRaces}
       </div>
 
       <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between sm:gap-6">
         <div>
-          <h1 class="font-head text-[clamp(1.75rem,5vw,2.5rem)] font-extrabold tracking-tight leading-none mb-2">
+          <h1 class="font-head text-[clamp(1.75rem,5vw,2.5rem)] font-extrabold tracking-tight leading-none mb-1.5">
             {name}
           </h1>
-          <p class="font-mono text-sm text-white/60 mb-1">{formattedDate}</p>
-          {location && <p class="text-sm text-white/60 mb-3">{location}</p>}
-          {(distance || ascent) && (
-            <div class="flex gap-2 flex-wrap">
-              {distance && (
-                <span class="font-mono text-[11px] font-medium border border-white/20 rounded-full px-3 py-0.5 text-white">
-                  {distance}
-                </span>
-              )}
-              {ascent && (
-                <span class="font-mono text-[11px] font-medium border border-white/20 rounded-full px-3 py-0.5 text-white/70">
-                  ↑ {ascent}
-                </span>
-              )}
+          {(formattedDate || location || distance || ascent) && (
+            <div class="flex items-center flex-wrap gap-x-2.5 gap-y-1 font-mono text-[12px] text-white/55 mt-1">
+              {formattedDate && <span>{formattedDate}</span>}
+              {formattedDate && location && <span class="w-px h-[11px] bg-white/25 self-center flex-shrink-0" />}
+              {location && <span>{location}</span>}
+              {(distance || ascent) && (formattedDate || location) && <span class="w-px h-[11px] bg-white/25 self-center flex-shrink-0" />}
+              {distance && <span class="border border-white/25 rounded-full px-2.5 py-0.5">{distance}</span>}
+              {ascent && <span class="border border-white/25 rounded-full px-2.5 py-0.5">↑ {ascent}</span>}
             </div>
           )}
         </div>
