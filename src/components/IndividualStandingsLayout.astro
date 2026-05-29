@@ -61,6 +61,14 @@ function chipLabel(cat: typeof standings.categories[number]): string {
   return cat.ageCategory; // V40, V45, V50 …
 }
 
+// A runner has "qualified" when they have completed the required number of counting races.
+// When maxCountingRaces is not set there is no threshold, so everyone is considered qualified.
+function hasQualified(runner: typeof standings.categories[number]['runners'][number]): boolean {
+  if (!standings.maxCountingRaces) return true;
+  const countingCount = Object.values(runner.results).filter(r => r?.counting).length;
+  return countingCount >= standings.maxCountingRaces;
+}
+
 // Full label used in sidebar and panel headings — appends Male/Female when sex is set
 function fullCategoryLabel(cat: typeof standings.categories[number]): string {
   const base = chipLabel(cat);
@@ -442,7 +450,7 @@ const raceColWidth = standings.races.length >= 7 ? '3rem'
                             );
                           })}
                           <td class="py-2.5 pl-3 pr-3 text-right border-l-2 border-content align-middle">
-                            <strong class:list={['font-mono tabular-nums text-base', runner.position <= 3 ? 'text-content' : 'text-muted']}>
+                            <strong class:list={['font-mono tabular-nums text-base', hasQualified(runner) ? 'text-content' : 'text-muted']}>
                               {runner.total}
                             </strong>
                           </td>
@@ -530,7 +538,7 @@ const raceColWidth = standings.races.length >= 7 ? '3rem'
                           );
                         })}
                         <td class="py-2.5 pl-3 pr-2 text-right border-l-2 border-content align-middle">
-                          <strong class:list={['font-mono tabular-nums text-base', runner.position <= 3 ? 'text-content' : 'text-muted']}>
+                          <strong class:list={['font-mono tabular-nums text-base', hasQualified(runner) ? 'text-content' : 'text-muted']}>
                             {runner.total}
                           </strong>
                         </td>
