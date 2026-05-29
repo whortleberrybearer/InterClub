@@ -1,5 +1,8 @@
 ---
-// src/components/SearchBox.astro
+interface Props {
+  dark?: boolean;
+}
+const { dark = false } = Astro.props;
 ---
 
 <!-- Mobile: icon button (hidden md+) -->
@@ -79,9 +82,9 @@
 <div class="hidden md:block relative" id="sb-desktop">
   <div
     id="sb-input-wrap-desktop"
-    class="flex items-center gap-2 bg-surface border border-line rounded-lg px-3 py-1.5 w-56 lg:w-72 transition-all"
+    class={`flex items-center gap-2 rounded-lg px-3 py-1.5 w-56 lg:w-72 transition-all ${dark ? 'bg-white/10 border border-white/20' : 'bg-surface border border-line'}`}
   >
-    <svg width="13" height="13" viewBox="0 0 16 16" fill="none" class="text-muted shrink-0">
+    <svg width="13" height="13" viewBox="0 0 16 16" fill="none" class={dark ? 'text-hdr-muted shrink-0' : 'text-muted shrink-0'}>
       <circle cx="7" cy="7" r="4.5" stroke="currentColor" stroke-width="1.6"/>
       <path d="M10.5 10.5L14 14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
     </svg>
@@ -90,7 +93,7 @@
       type="search"
       placeholder="Search…"
       autocomplete="off"
-      class="flex-1 bg-transparent text-sm text-content outline-none min-w-0"
+      class={`flex-1 bg-transparent text-sm outline-none min-w-0 ${dark ? 'text-hdr-text placeholder:text-hdr-muted' : 'text-content'}`}
       style="font-family:var(--ff-body)"
     />
     <kbd

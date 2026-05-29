@@ -21,10 +21,20 @@ function isActive(path: string): boolean {
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="light">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Set theme before paint to avoid a flash of wrong theme -->
+    <script is:inline>
+      (function () {
+        try {
+          var t = localStorage.getItem('ic-theme');
+          if (!t && window.matchMedia('(prefers-color-scheme: dark)').matches) t = 'dark';
+          if (t === 'dark') document.documentElement.dataset.theme = 'dark';
+        } catch (e) {}
+      })();
+    </script>
     <title>{title} — Inter Club</title>
     <link rel="icon" type="image/svg+xml" href={`${base}/favicon.svg`} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -32,23 +42,42 @@ function isActive(path: string): boolean {
     <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800&family=Barlow:wght@400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
   </head>
   <body class="min-h-screen bg-canvas flex flex-col">
-    <header class="bg-surface border-b border-line">
-      <div class="flex items-center justify-between max-w-4xl xl:max-w-5xl mx-auto px-4 h-14">
-        <a href={`${base}/`} class="btn btn-ghost text-lg font-bold tracking-tight">Inter Club</a>
-        <div class="flex items-center gap-1">
-          <a
-            href={`${base}/road-gp/`}
-            class={`btn btn-ghost btn-sm ${isActive('/road-gp') ? 'btn-active' : ''}`}
-          >Road GP</a>
-          <a
-            href={`${base}/fell/`}
-            class={`btn btn-ghost btn-sm ${isActive('/fell') ? 'btn-active' : ''}`}
-          >Fell</a>
-          <a
-            href={`${base}/contact/`}
-            class={`btn btn-ghost btn-sm ${isActive('/contact') ? 'btn-active' : ''}`}
-          >Contact</a>
-          <SearchBox />
+    <header class="bg-hdr-dark">
+      <div class="flex items-center gap-1 max-w-4xl xl:max-w-5xl mx-auto px-4 h-14">
+        <a href={`${base}/`} class="font-head font-black text-[22px] tracking-tight text-hdr-text mr-2 shrink-0">Inter Club</a>
+        <a
+          href={`${base}/road-gp/`}
+          class={`text-[13px] font-medium px-2.5 py-1.5 rounded-md transition-colors ${isActive('/road-gp') ? 'text-hdr-dark bg-amber' : 'text-hdr-muted hover:bg-white/10'}`}
+        >Road GP</a>
+        <a
+          href={`${base}/fell/`}
+          class={`text-[13px] font-medium px-2.5 py-1.5 rounded-md transition-colors ${isActive('/fell') ? 'text-hdr-dark bg-amber' : 'text-hdr-muted hover:bg-white/10'}`}
+        >Fell</a>
+        <div class="ml-auto flex items-center gap-1">
+          <SearchBox dark={true} />
+          <button
+            id="theme-toggle"
+            type="button"
+            aria-label="Toggle dark mode"
+            class="w-[30px] h-[30px] inline-flex items-center justify-center rounded-lg text-hdr-muted hover:bg-white/10 transition-colors shrink-0"
+          >
+            <!-- Sun icon: shown in dark mode to switch to light -->
+            <svg class="ic-sun hidden" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="5"/>
+              <line x1="12" y1="1" x2="12" y2="3"/>
+              <line x1="12" y1="21" x2="12" y2="23"/>
+              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+              <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+              <line x1="1" y1="12" x2="3" y2="12"/>
+              <line x1="21" y1="12" x2="23" y2="12"/>
+              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+              <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+            </svg>
+            <!-- Moon icon: shown in light mode to switch to dark -->
+            <svg class="ic-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+            </svg>
+          </button>
         </div>
       </div>
     </header>
@@ -60,8 +89,33 @@ function isActive(path: string): boolean {
       <slot />
     </main>
 
-    <footer class="flex justify-center p-4 bg-surface text-content/60 text-sm mt-8">
-      <p>Inter Club Running Competition · Lancashire</p>
+    <footer class="bg-surface border-t border-line mt-8">
+      <div class="flex items-center justify-center gap-2.5 px-5 py-4 text-[11px] tracking-wide text-muted">
+        <span>© 2026 Barry Wheeler</span>
+        <span class="w-[3px] h-[3px] rounded-full bg-muted opacity-50 inline-block shrink-0"></span>
+        <a href={`${base}/contact/`} class="font-semibold hover:text-amber transition-colors">Contact</a>
+      </div>
     </footer>
+
+    <script>
+      const toggle = document.getElementById('theme-toggle')!;
+      const html = document.documentElement;
+
+      function applyTheme(theme: string): void {
+        html.dataset.theme = theme;
+        const sun  = toggle.querySelector<HTMLElement>('.ic-sun')!;
+        const moon = toggle.querySelector<HTMLElement>('.ic-moon')!;
+        sun.classList.toggle('hidden', theme !== 'dark');
+        moon.classList.toggle('hidden', theme === 'dark');
+        try { localStorage.setItem('ic-theme', theme); } catch {}
+      }
+
+      // Sync icons to whatever theme the inline script already set
+      applyTheme(html.dataset.theme ?? 'light');
+
+      toggle.addEventListener('click', () => {
+        applyTheme(html.dataset.theme === 'dark' ? 'light' : 'dark');
+      });
+    </script>
   </body>
 </html>
