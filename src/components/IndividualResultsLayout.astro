@@ -302,25 +302,25 @@ const showSexToggle = hasMale && hasFemale;
       <div class="overflow-x-auto">
         <table class="w-full sm:min-w-[40rem] border-collapse text-[13.5px] table-fixed">
           <colgroup>
-            <col class="hidden xs:table-column w-10" />
+            <col class="w-10" />
             {teamCategories.map(() => <col class="hidden sm:table-column w-9" />)}
-            <col class="w-9 sm:hidden" />
-            <col class="no-col w-14" />
+            <col class="hidden xs:table-column sm:hidden w-9" />
+            <col class="no-col hidden xs:table-column w-14" />
             <col />
             <col class="w-12" />
             <col class="w-24" />
           </colgroup>
           <thead>
             <tr>
-              <th class="hidden xs:table-cell font-head text-[10px] font-bold tracking-[0.1em] uppercase text-muted text-left py-2.5 pl-4 pr-2 bg-surface border-b-2 border-content">Pos</th>
+              <th class="font-head text-[10px] font-bold tracking-[0.1em] uppercase text-muted text-left py-2.5 pl-4 pr-2 bg-surface border-b-2 border-content">Pos</th>
               {teamCategories.map(cat => (
                 <th
                   class="hidden sm:table-cell font-head text-[10px] font-bold tracking-[0.1em] uppercase text-muted text-left py-2.5 px-2 bg-surface border-b-2 border-content"
                   data-cat-id={cat.id}
                 >{cat.shortName ?? cat.name.substring(0, 3)}</th>
               ))}
-              <th id="ic-header" class="sm:hidden font-head text-[10px] font-bold tracking-[0.1em] uppercase text-muted text-left py-2.5 px-2 bg-surface border-b-2 border-content">{teamCategories.find(c => c.id === 'open')?.shortName ?? 'OPN'}</th>
-              <th class="no-col font-head text-[10px] font-bold tracking-[0.1em] uppercase text-muted text-left py-2.5 px-2 bg-surface border-b-2 border-content">No.</th>
+              <th id="ic-header" class="hidden xs:table-cell sm:hidden font-head text-[10px] font-bold tracking-[0.1em] uppercase text-muted text-left py-2.5 px-2 bg-surface border-b-2 border-content">{teamCategories.find(c => c.id === 'open')?.shortName ?? 'OPN'}</th>
+              <th class="no-col hidden xs:table-cell font-head text-[10px] font-bold tracking-[0.1em] uppercase text-muted text-left py-2.5 px-2 bg-surface border-b-2 border-content">No.</th>
               <th class="font-head text-[10px] font-bold tracking-[0.1em] uppercase text-muted text-left py-2.5 px-2 bg-surface border-b-2 border-content">Runner</th>
               <th class="font-head text-[10px] font-bold tracking-[0.1em] uppercase text-muted text-left py-2.5 px-2 bg-surface border-b-2 border-content">Cat</th>
               <th class="font-head text-[10px] font-bold tracking-[0.1em] uppercase text-muted text-right py-2.5 px-2 pr-4 bg-surface border-b-2 border-content">Time</th>
@@ -334,14 +334,14 @@ const showSexToggle = hasMale && hasFemale;
               const openPos  = r.club === 'Guest' ? '–' : (r.categoryPositions['open'] ?? '–');
               return (
                 <tr class="border-b border-line last:border-0">
-                  <td class="hidden xs:table-cell py-2.5 pl-4 pr-2 font-mono text-[13px] font-medium text-muted align-middle">{r.position ?? '–'}</td>
+                  <td class="py-2.5 pl-4 pr-2 font-mono text-[13px] font-medium text-muted align-middle">{r.position ?? '–'}</td>
                   {teamCategories.map(cat => (
                     <td class="hidden sm:table-cell py-2.5 px-2 font-mono text-[12px] text-muted font-medium align-middle" data-cat-id={cat.id}>
                       {r.categoryPositions[cat.id] ?? '–'}
                     </td>
                   ))}
-                  <td class="sm:hidden py-2.5 px-2 font-mono text-[12px] text-muted align-middle">{openPos}</td>
-                  <td class="no-col py-2.5 px-2 font-mono text-[12px] text-muted align-middle">{r.raceNumber ?? '–'}</td>
+                  <td class="hidden xs:table-cell sm:hidden py-2.5 px-2 font-mono text-[12px] text-muted align-middle">{openPos}</td>
+                  <td class="no-col hidden xs:table-cell py-2.5 px-2 font-mono text-[12px] text-muted align-middle">{r.raceNumber ?? '–'}</td>
                   <td class="py-2.5 px-2 align-middle max-w-0 overflow-hidden">
                     <div class="font-semibold leading-tight truncate">
                       {url
@@ -575,10 +575,10 @@ const showSexToggle = hasMale && hasFemale;
     }).join('');
 
     return `<tr class="border-b border-line last:border-0">
-      <td class="hidden xs:table-cell py-2.5 pl-4 pr-2 font-mono text-[13px] font-medium text-muted align-middle">${r.position ?? '–'}</td>
+      <td class="py-2.5 pl-4 pr-2 font-mono text-[13px] font-medium text-muted align-middle">${r.position ?? '–'}</td>
       ${catCells}
-      <td class="sm:hidden py-2.5 px-2 font-mono text-[12px] text-muted align-middle">${icVal}</td>
-      <td class="no-col py-2.5 px-2 font-mono text-[12px] text-muted align-middle">${r.raceNumber ?? '–'}</td>
+      <td class="hidden xs:table-cell sm:hidden py-2.5 px-2 font-mono text-[12px] text-muted align-middle">${icVal}</td>
+      <td class="no-col hidden xs:table-cell py-2.5 px-2 font-mono text-[12px] text-muted align-middle">${r.raceNumber ?? '–'}</td>
       <td class="py-2.5 px-2 align-middle max-w-0 overflow-hidden">
         <div class="font-semibold leading-tight truncate">${nameCell}</div>
         <div class="text-xs text-muted mt-0.5 truncate">${clubName}</div>
