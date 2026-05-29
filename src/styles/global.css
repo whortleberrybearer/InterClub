@@ -180,3 +180,17 @@ body { color: var(--color-content); }
 .label      { display: block; margin-bottom: 0.25rem; }
 .label-text { font-size: 0.875rem; font-weight: 500; }
 
+/* ── Dark mode token overrides ── */
+html[data-theme="dark"] {
+  --color-surface:   oklch(26% 0.014 250);
+  --color-canvas:    oklch(21% 0.012 250);
+  --color-line:      oklch(36% 0.012 250);
+  --color-content:   oklch(95% 0.005 250);
+  --color-muted:     oklch(70% 0.012 250);
+  --color-amber:     oklch(76% 0.16 60);
+  --color-amber-bg:  oklch(32% 0.055 60);
+  --color-teal:      oklch(70% 0.12 195);
+  --color-teal-bg:   oklch(31% 0.05 195);
+  --color-hdr-dark:  oklch(15% 0.014 250);
+}
+
