@@ -103,7 +103,15 @@ foreach ($r in $seriesRunners) {
     if (-not $exactIndex.ContainsKey($key)) { $exactIndex[$key] = $r }
 }
 
-# Name-only index: "first|last" -> list (for possible-match detection)
+# Name+club index: "first|last|club" -> list (for category-mismatch auto-match)
+$nameClubIndex = @{}
+foreach ($r in $seriesRunners) {
+    $key = "$(Normalize $r.firstName)|$(Normalize $r.lastName)|$(Normalize $r.club)"
+    if (-not $nameClubIndex.ContainsKey($key)) { $nameClubIndex[$key] = [System.Collections.Generic.List[object]]::new() }
+    $nameClubIndex[$key].Add($r)
+}
+
+# Name-only index: "first|last" -> list (for possible-match hints when club also differs)
 $nameIndex = @{}
 foreach ($r in $seriesRunners) {
     $key = "$(Normalize $r.firstName)|$(Normalize $r.lastName)"
@@ -152,23 +160,46 @@ foreach ($cat in $standings.categories) {
             Write-Host "  = Matched:  '$($runner.name)' [$($cat.id)] -> id=$($found.id)" -ForegroundColor DarkGray
             $matched++
         } else {
-            # Try all splits against name-only index for possible-match hints
-            $candidates = $null
+            # Second pass: name+club match regardless of age category.
+            # A single candidate here is unambiguous — same person, category just differs
+            # (e.g. runner was SEN in the standings year but V35 in runners.json).
+            $clubCandidates = $null
             foreach ($np in $splits) {
-                $nameKey = "$(Normalize $np.First)|$(Normalize $np.Last)"
-                if ($nameIndex.ContainsKey($nameKey)) {
-                    $candidates = $nameIndex[$nameKey]
+                $clubKey = "$(Normalize $np.First)|$(Normalize $np.Last)|$(Normalize $club)"
+                if ($nameClubIndex.ContainsKey($clubKey)) {
+                    $clubCandidates = $nameClubIndex[$clubKey]
                     break
                 }
             }
 
-            if ($candidates) {
-                $opts = ($candidates | ForEach-Object { "id=$($_.id) club=$($_.club) sex=$($_.sex) cat=$($_.ageCategory)" }) -join "; "
-                Write-Warning "Possible match for '$($runner.name)' [$($cat.id)] club=$club cat=$ageCat -- candidates: $opts"
+            if ($clubCandidates -and $clubCandidates.Count -eq 1) {
+                $found = $clubCandidates[0]
+                $runner | Add-Member -NotePropertyName seriesRunnerId -NotePropertyValue ([int]$found.id) -Force
+                Write-Host "  ~ Matched:  '$($runner.name)' [$($cat.id)] cat=$ageCat -> id=$($found.id) cat=$($found.ageCategory) (category mismatch auto-resolved)" -ForegroundColor DarkCyan
+                $matched++
+            } elseif ($clubCandidates -and $clubCandidates.Count -gt 1) {
+                $opts = ($clubCandidates | ForEach-Object { "id=$($_.id) cat=$($_.ageCategory)" }) -join "; "
+                Write-Warning "Ambiguous name+club match for '$($runner.name)' [$($cat.id)] club=$club cat=$ageCat -- candidates: $opts"
                 $needsReview++
             } else {
-                Write-Warning "No match for '$($runner.name)' [$($cat.id)] club=$club cat=$ageCat"
-                $failed++
+                # Fall back to name-only index for cross-club possible-match hints
+                $nameCandidates = $null
+                foreach ($np in $splits) {
+                    $nameKey = "$(Normalize $np.First)|$(Normalize $np.Last)"
+                    if ($nameIndex.ContainsKey($nameKey)) {
+                        $nameCandidates = $nameIndex[$nameKey]
+                        break
+                    }
+                }
+
+                if ($nameCandidates) {
+                    $opts = ($nameCandidates | ForEach-Object { "id=$($_.id) club=$($_.club) sex=$($_.sex) cat=$($_.ageCategory)" }) -join "; "
+                    Write-Warning "Possible match for '$($runner.name)' [$($cat.id)] club=$club cat=$ageCat -- candidates: $opts"
+                    $needsReview++
+                } else {
+                    Write-Warning "No match for '$($runner.name)' [$($cat.id)] club=$club cat=$ageCat"
+                    $failed++
+                }
             }
         }
     }
