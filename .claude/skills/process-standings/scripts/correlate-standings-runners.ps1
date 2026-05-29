@@ -64,12 +64,32 @@ if (-not (Test-Path $runnersFile))   { throw "runners.json not found: $runnersFi
 
 function Normalize { param([string]$s) return $s.Trim().ToLower() }
 
-function Split-FullName {
+# Return all possible (First, Last) splits of a full name, ordered from
+# last-space split (most common) to first-space split.  This covers compound
+# surnames: "Katherine Price Edwards" yields
+#   ("Katherine Price", "Edwards") and ("Katherine", "Price Edwards")
+# so the lookup succeeds regardless of which part runners.json stores as lastName.
+function Get-NameSplits {
     param([string]$FullName)
-    $n   = $FullName.Trim()
-    $idx = $n.LastIndexOf(' ')
-    if ($idx -lt 0) { return @{ First = $n; Last = "" } }
-    return @{ First = $n.Substring(0, $idx).Trim(); Last = $n.Substring($idx + 1).Trim() }
+    $n = $FullName.Trim()
+    $splits = [System.Collections.Generic.List[hashtable]]::new()
+
+    $positions = [System.Collections.Generic.List[int]]::new()
+    for ($i = 0; $i -lt $n.Length; $i++) {
+        if ($n[$i] -eq ' ') { $positions.Add($i) }
+    }
+
+    if ($positions.Count -eq 0) {
+        $splits.Add(@{ First = $n; Last = "" })
+        return $splits
+    }
+
+    # Emit splits from last space to first space (last-space first = most common case)
+    for ($p = $positions.Count - 1; $p -ge 0; $p--) {
+        $idx = $positions[$p]
+        $splits.Add(@{ First = $n.Substring(0, $idx).Trim(); Last = $n.Substring($idx + 1).Trim() })
+    }
+    return $splits
 }
 
 $seriesRunners = [System.Collections.Generic.List[object]]::new()
@@ -111,28 +131,45 @@ foreach ($cat in $standings.categories) {
             continue
         }
 
-        $np       = Split-FullName $runner.name
+        $splits   = Get-NameSplits $runner.name
         $club     = if ($runner.PSObject.Properties['club'])        { $runner.club }        else { "" }
         $ageCat   = if ($runner.PSObject.Properties['ageCategory']) { $runner.ageCategory } `
                     elseif ($cat.PSObject.Properties['ageCategory']) { $cat.ageCategory }   `
                     else { "" }
 
-        $exactKey = "$(Normalize $np.First)|$(Normalize $np.Last)|$(Normalize $club)|$(Normalize $ageCat)"
-        $nameKey  = "$(Normalize $np.First)|$(Normalize $np.Last)"
+        # Try each split until an exact match is found
+        $found = $null
+        foreach ($np in $splits) {
+            $exactKey = "$(Normalize $np.First)|$(Normalize $np.Last)|$(Normalize $club)|$(Normalize $ageCat)"
+            if ($exactIndex.ContainsKey($exactKey)) {
+                $found = $exactIndex[$exactKey]
+                break
+            }
+        }
 
-        if ($exactIndex.ContainsKey($exactKey)) {
-            $found = $exactIndex[$exactKey]
+        if ($found) {
             $runner | Add-Member -NotePropertyName seriesRunnerId -NotePropertyValue ([int]$found.id) -Force
             Write-Host "  = Matched:  '$($runner.name)' [$($cat.id)] -> id=$($found.id)" -ForegroundColor DarkGray
             $matched++
-        } elseif ($nameIndex.ContainsKey($nameKey)) {
-            $candidates = $nameIndex[$nameKey]
-            $opts = ($candidates | ForEach-Object { "id=$($_.id) club=$($_.club) sex=$($_.sex) cat=$($_.ageCategory)" }) -join "; "
-            Write-Warning "Possible match for '$($runner.name)' [$($cat.id)] club=$club cat=$ageCat -- candidates: $opts"
-            $needsReview++
         } else {
-            Write-Warning "No match for '$($runner.name)' [$($cat.id)] club=$club cat=$ageCat"
-            $failed++
+            # Try all splits against name-only index for possible-match hints
+            $candidates = $null
+            foreach ($np in $splits) {
+                $nameKey = "$(Normalize $np.First)|$(Normalize $np.Last)"
+                if ($nameIndex.ContainsKey($nameKey)) {
+                    $candidates = $nameIndex[$nameKey]
+                    break
+                }
+            }
+
+            if ($candidates) {
+                $opts = ($candidates | ForEach-Object { "id=$($_.id) club=$($_.club) sex=$($_.sex) cat=$($_.ageCategory)" }) -join "; "
+                Write-Warning "Possible match for '$($runner.name)' [$($cat.id)] club=$club cat=$ageCat -- candidates: $opts"
+                $needsReview++
+            } else {
+                Write-Warning "No match for '$($runner.name)' [$($cat.id)] club=$club cat=$ageCat"
+                $failed++
+            }
         }
     }
 }

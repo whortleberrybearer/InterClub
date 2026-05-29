@@ -63,14 +63,33 @@ function Normalize {
     return $s.Trim().ToLower()
 }
 
-# Split "First Last" on the final space: handles "T. Guest", "Barry O'Cleirigh",
-# "James Robert Danson", hyphenated surnames, etc.
-function Split-FullName {
+# Return all possible (First, Last) splits of a full name, ordered from
+# last-space split (most common) to first-space split.  This covers compound
+# surnames: "Katherine Price Edwards" yields
+#   ("Katherine Price", "Edwards") and ("Katherine", "Price Edwards")
+# so the lookup succeeds regardless of which part runners.json stores as lastName.
+function Get-NameSplits {
     param([string]$FullName)
-    $n   = $FullName.Trim()
-    $idx = $n.LastIndexOf(' ')
-    if ($idx -lt 0) { return @{ First = $n; Last = "" } }
-    return @{ First = $n.Substring(0, $idx).Trim(); Last = $n.Substring($idx + 1).Trim() }
+    $n = $FullName.Trim()
+    $splits = [System.Collections.Generic.List[hashtable]]::new()
+
+    # Collect all space positions
+    $positions = [System.Collections.Generic.List[int]]::new()
+    for ($i = 0; $i -lt $n.Length; $i++) {
+        if ($n[$i] -eq ' ') { $positions.Add($i) }
+    }
+
+    if ($positions.Count -eq 0) {
+        $splits.Add(@{ First = $n; Last = "" })
+        return $splits
+    }
+
+    # Emit splits from last space to first space (last-space first = most common case)
+    for ($p = $positions.Count - 1; $p -ge 0; $p--) {
+        $idx = $positions[$p]
+        $splits.Add(@{ First = $n.Substring(0, $idx).Trim(); Last = $n.Substring($idx + 1).Trim() })
+    }
+    return $splits
 }
 
 # --- Main ---------------------------------------------------------------------
@@ -135,17 +154,23 @@ foreach ($cat in $teamData.categories) {
                 continue
             }
 
-            $fullName = $scorer.name.Trim()
-            $np       = Split-FullName $fullName
-            $key      = "$(Normalize $np.First)|$(Normalize $np.Last)|$(Normalize $clubId)"
+            $fullName  = $scorer.name.Trim()
+            $splits    = Get-NameSplits $fullName
+            $candidates = $null
 
-            if (-not $nameClubIndex.ContainsKey($key)) {
+            foreach ($np in $splits) {
+                $key = "$(Normalize $np.First)|$(Normalize $np.Last)|$(Normalize $clubId)"
+                if ($nameClubIndex.ContainsKey($key)) {
+                    $candidates = $nameClubIndex[$key]
+                    break
+                }
+            }
+
+            if (-not $candidates) {
                 $msg = "[$($cat.category) / $clubId] '$fullName' -- no match in runners.json"
                 $failures.Add($msg)
                 continue
             }
-
-            $candidates = $nameClubIndex[$key]
 
             if ($candidates.Count -eq 1) {
                 $runner   = $candidates[0]
