@@ -257,7 +257,7 @@ function Parse-AgeCategory {
 }
 
 # Parses "Y2D - Ladies" or "Y2D - Men" overall sheet.
-# Header row 1, data from row 3 (row 2 is blank in both standard and no-score formats).
+# Header row 1, data from row 2 onward (row 2 may or may not be blank; blank rows are skipped).
 # $OverallCategoryId: "female" or "male"
 # $Sex: "F" or "M"
 # Returns list of PSCustomObject for the overall category.
@@ -271,7 +271,7 @@ function Parse-OverallSheet {
     $runners     = [System.Collections.Generic.List[PSCustomObject]]@()
     $posCounter  = 0
 
-    for ($r = 3; $r -le $totalRows; $r++) {
+    for ($r = 2; $r -le $totalRows; $r++) {
         $first   = $Sheet.Cells.Item($r, 2).Text.Trim()
         $last    = $Sheet.Cells.Item($r, 3).Text.Trim()
         $cat     = $Sheet.Cells.Item($r, 4).Text.Trim()
