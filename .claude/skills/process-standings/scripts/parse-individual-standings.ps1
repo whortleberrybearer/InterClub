@@ -102,8 +102,8 @@ function Get-CategoryInfo {
     switch ($ExcelCat.Trim()) {
         "JF"   { return @{ Id = "jun-female"; Sex = "F"; AgeCategory = "JUN" } }
         "JM"   { return @{ Id = "jun-male";   Sex = "M"; AgeCategory = "JUN" } }
-        "F"    { return $null }
-        "M"    { return $null }
+        "F"    { return @{ Id = "sen-female"; Sex = "F"; AgeCategory = "SEN" } }
+        "M"    { return @{ Id = "sen-male";   Sex = "M"; AgeCategory = "SEN" } }
         "F-35" { return @{ Id = "v35-female"; Sex = "F"; AgeCategory = "V35" } }
         "F-40" { return @{ Id = "v40-female"; Sex = "F"; AgeCategory = "V40" } }
         "F-45" { return @{ Id = "v45-female"; Sex = "F"; AgeCategory = "V45" } }
@@ -332,12 +332,17 @@ function Parse-OverallSheet {
 # Categories absent from the parsed data are automatically skipped by Build-IndividualStandingsJson.
 function Get-AllCategoryDefinitions {
     $defs = [System.Collections.Generic.List[hashtable]]::new()
-    # Overall categories first (no AgeCategory — span all ages)
-    $defs.Add(@{ Id = "male";       Sex = "M"; AgeCategory = $null; Name = "Men"   })
-    $defs.Add(@{ Id = "female";     Sex = "F"; AgeCategory = $null; Name = "Women" })
+    # Overall categories first (no AgeCategory — span all ages).
+    # Name is intentionally not set: the site's chipLabel falls back to 'Overall' when
+    # both name and ageCategory are absent, giving the correct chip label automatically.
+    $defs.Add(@{ Id = "male";   Sex = "M"; AgeCategory = $null; Name = $null })
+    $defs.Add(@{ Id = "female"; Sex = "F"; AgeCategory = $null; Name = $null })
     # Juniors
     $defs.Add(@{ Id = "jun-male";   Sex = "M"; AgeCategory = "JUN"; Name = $null })
     $defs.Add(@{ Id = "jun-female"; Sex = "F"; AgeCategory = "JUN"; Name = $null })
+    # Seniors
+    $defs.Add(@{ Id = "sen-male";   Sex = "M"; AgeCategory = "SEN"; Name = $null })
+    $defs.Add(@{ Id = "sen-female"; Sex = "F"; AgeCategory = "SEN"; Name = $null })
     # V35 female only
     $defs.Add(@{ Id = "v35-female"; Sex = "F"; AgeCategory = "V35"; Name = $null })
     # V40 and above — male then female for each age band
