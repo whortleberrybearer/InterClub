@@ -304,7 +304,7 @@ const showSexToggle = hasMale && hasFemale;
           <colgroup>
             <col class="pos-col hidden xs:table-column w-10" />
             {teamCategories.map(() => <col class="hidden sm:table-column w-9" />)}
-            <col class="w-9 sm:hidden" />
+            <col class="ic-col w-9 sm:hidden" />
             <col class="no-col w-14" />
             <col />
             <col class="w-12" />
@@ -319,7 +319,7 @@ const showSexToggle = hasMale && hasFemale;
                   data-cat-id={cat.id}
                 >{cat.shortName ?? cat.name.substring(0, 3)}</th>
               ))}
-              <th id="ic-header" class="sm:hidden font-head text-[10px] font-bold tracking-[0.1em] uppercase text-muted text-left py-2.5 px-2 bg-surface border-b-2 border-content">{teamCategories.find(c => c.id === 'open')?.shortName ?? 'OPN'}</th>
+              <th id="ic-header" class="ic-col sm:hidden font-head text-[10px] font-bold tracking-[0.1em] uppercase text-muted text-left py-2.5 px-2 bg-surface border-b-2 border-content">{teamCategories.find(c => c.id === 'open')?.shortName ?? 'OPN'}</th>
               <th class="no-col font-head text-[10px] font-bold tracking-[0.1em] uppercase text-muted text-left py-2.5 px-2 bg-surface border-b-2 border-content">No.</th>
               <th class="font-head text-[10px] font-bold tracking-[0.1em] uppercase text-muted text-left py-2.5 px-2 bg-surface border-b-2 border-content">Runner</th>
               <th class="font-head text-[10px] font-bold tracking-[0.1em] uppercase text-muted text-left py-2.5 px-2 bg-surface border-b-2 border-content">Cat</th>
@@ -340,7 +340,7 @@ const showSexToggle = hasMale && hasFemale;
                       {r.categoryPositions[cat.id] ?? '–'}
                     </td>
                   ))}
-                  <td class="sm:hidden py-2.5 px-2 font-mono text-[12px] text-muted align-middle">{openPos}</td>
+                  <td class="ic-col sm:hidden py-2.5 px-2 font-mono text-[12px] text-muted align-middle">{openPos}</td>
                   <td class="no-col py-2.5 px-2 font-mono text-[12px] text-muted align-middle">{r.raceNumber ?? '–'}</td>
                   <td class="py-2.5 px-2 align-middle max-w-0 overflow-hidden">
                     <div class="font-semibold leading-tight truncate">
@@ -381,9 +381,10 @@ const showSexToggle = hasMale && hasFemale;
       table.full-active col.no-col   { display: none; }
       table.full-active .pos-col     { display: table-cell; }
       table.full-active col.pos-col  { display: table-column; }
-      /* Hide ic-header only below xs (375px); it remains visible at xs–sm */
+      /* Hide OPN column (header + value cells) below xs (375px); remains visible at xs–sm */
       @media (max-width: 374px) {
-        table.full-active #ic-header { display: none; }
+        table.full-active .ic-col     { display: none; }
+        table.full-active col.ic-col  { display: none; }
       }
     }
   </style>
@@ -592,7 +593,7 @@ const showSexToggle = hasMale && hasFemale;
     return `<tr class="border-b border-line last:border-0">
       <td class="pos-col hidden xs:table-cell py-2.5 pl-4 pr-2 font-mono text-[13px] font-medium text-muted align-middle">${r.position ?? '–'}</td>
       ${catCells}
-      <td class="sm:hidden py-2.5 px-2 font-mono text-[12px] text-muted align-middle">${icVal}</td>
+      <td class="ic-col sm:hidden py-2.5 px-2 font-mono text-[12px] text-muted align-middle">${icVal}</td>
       <td class="no-col py-2.5 px-2 font-mono text-[12px] text-muted align-middle">${r.raceNumber ?? '–'}</td>
       <td class="py-2.5 px-2 align-middle max-w-0 overflow-hidden">
         <div class="font-semibold leading-tight truncate">${nameCell}</div>
