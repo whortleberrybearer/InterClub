@@ -234,8 +234,9 @@ function Parse-AgeCategory {
         if ($hasRaceCols) {
             $racePositions = [ordered]@{}
             foreach ($col in $raceColMap.Keys) {
-                $posVal = $Sheet.Cells.Item($r, [int]$col).Text.Trim()
-                $racePositions[$raceColMap["$col"]] = if ($posVal -match '^\d+$') { [int]$posVal } else { 999 }
+                # Use .Value2 (not .Text) so narrow columns don't return '#' for multi-digit positions
+                $rawVal = $Sheet.Cells.Item($r, [int]$col).Value2
+                $racePositions[$raceColMap["$col"]] = if ($rawVal -is [double] -or $rawVal -is [int]) { [int]$rawVal } else { 999 }
             }
             $raceResults = Build-RaceResults -RacePositions $racePositions -MaxCounting $MaxCounting
         }
@@ -303,8 +304,9 @@ function Parse-OverallSheet {
         if ($hasRaceCols) {
             $racePositions = [ordered]@{}
             foreach ($col in $raceColMap.Keys) {
-                $posVal = $Sheet.Cells.Item($r, [int]$col).Text.Trim()
-                $racePositions[$raceColMap["$col"]] = if ($posVal -match '^\d+$') { [int]$posVal } else { 999 }
+                # Use .Value2 (not .Text) so narrow columns don't return '#' for multi-digit positions
+                $rawVal = $Sheet.Cells.Item($r, [int]$col).Value2
+                $racePositions[$raceColMap["$col"]] = if ($rawVal -is [double] -or $rawVal -is [int]) { [int]$rawVal } else { 999 }
             }
             $raceResults = Build-RaceResults -RacePositions $racePositions -MaxCounting $MaxCounting
         }
@@ -326,18 +328,38 @@ function Parse-OverallSheet {
 
 # --- Output builder -----------------------------------------------------------
 
+# Returns ordered list of all recognised category definitions (id, Sex, AgeCategory, Name).
+# Categories absent from the parsed data are automatically skipped by Build-IndividualStandingsJson.
+function Get-AllCategoryDefinitions {
+    $defs = [System.Collections.Generic.List[hashtable]]::new()
+    # Overall categories first (no AgeCategory — span all ages)
+    $defs.Add(@{ Id = "male";       Sex = "M"; AgeCategory = $null; Name = "Men"   })
+    $defs.Add(@{ Id = "female";     Sex = "F"; AgeCategory = $null; Name = "Women" })
+    # Juniors
+    $defs.Add(@{ Id = "jun-male";   Sex = "M"; AgeCategory = "JUN"; Name = $null })
+    $defs.Add(@{ Id = "jun-female"; Sex = "F"; AgeCategory = "JUN"; Name = $null })
+    # V35 female only
+    $defs.Add(@{ Id = "v35-female"; Sex = "F"; AgeCategory = "V35"; Name = $null })
+    # V40 and above — male then female for each age band
+    foreach ($age in @(40, 45, 50, 55, 60, 65, 70, 75, 80, 85)) {
+        $defs.Add(@{ Id = "v$age-male";   Sex = "M"; AgeCategory = "V$age"; Name = $null })
+        $defs.Add(@{ Id = "v$age-female"; Sex = "F"; AgeCategory = "V$age"; Name = $null })
+    }
+    return $defs
+}
+
 function Build-IndividualStandingsJson {
     param(
         $AllRunners,
         [string[]]$RaceIds,
-        [object[]]$IndividualCategories,
+        [int]$MaxCounting,
         [bool]$IsProvisional
     )
 
     $categories = [System.Collections.Generic.List[object]]@()
 
-    foreach ($cat in $IndividualCategories) {
-        $catRunners = @($AllRunners | Where-Object { $_.CategoryId -eq $cat.id })
+    foreach ($catDef in (Get-AllCategoryDefinitions)) {
+        $catRunners = @($AllRunners | Where-Object { $_.CategoryId -eq $catDef.Id })
         if ($catRunners.Count -eq 0) { continue }
 
         $sorted = @($catRunners | Sort-Object Position)
@@ -366,17 +388,22 @@ function Build-IndividualStandingsJson {
             })
         }
 
-        $categories.Add([ordered]@{
-            category = $cat.id
-            runners  = $runnerEntries.ToArray()
-        })
+        # Build category object with only the fields that are set
+        $catObj = [ordered]@{}
+        $catObj['id'] = $catDef.Id
+        if ($catDef.Sex)         { $catObj['sex']         = $catDef.Sex }
+        if ($catDef.AgeCategory) { $catObj['ageCategory'] = $catDef.AgeCategory }
+        if ($catDef.Name)        { $catObj['name']        = $catDef.Name }
+        $catObj['runners'] = $runnerEntries.ToArray()
+        $categories.Add($catObj)
     }
 
-    return [ordered]@{
-        provisional = $IsProvisional
-        races       = $RaceIds
-        categories  = $categories.ToArray()
-    }
+    $root = [ordered]@{}
+    $root['provisional'] = $IsProvisional
+    if ($MaxCounting -gt 0) { $root['maxCountingRaces'] = $MaxCounting }
+    $root['races']      = $RaceIds
+    $root['categories'] = $categories.ToArray()
+    return $root
 }
 
 # --- Main ---------------------------------------------------------------------
@@ -445,16 +472,15 @@ Write-Host "  Output:      $outputFile"
 if ($DryRun) { Write-Host "  *** DRY RUN - no files written ***" -ForegroundColor Magenta }
 Write-Host ""
 
-$config               = Get-Content $configFile -Raw | ConvertFrom-Json
-$maxCounting          = if ($config.maxCountingRaces) { [int]$config.maxCountingRaces } else { 4 }
-$individualCategories = @($config.individualCategories)
-$races                = Get-Content $racesFile -Raw | ConvertFrom-Json
-$raceIds              = @($races | ForEach-Object { $_.id })
+$config      = Get-Content $configFile -Raw | ConvertFrom-Json
+$maxCounting = if ($config.maxCountingRaces) { [int]$config.maxCountingRaces } else { 4 }
+$races       = Get-Content $racesFile -Raw | ConvertFrom-Json
+$raceIds     = @($races | ForEach-Object { $_.id })
 
 Write-Host "Series config" -ForegroundColor Yellow
 Write-Host "  Max counting races: $maxCounting"
 Write-Host "  Race IDs: $($raceIds -join ', ')"
-Write-Host "  Individual categories: $(($individualCategories | ForEach-Object { $_.id }) -join ', ')"
+Write-Host "  Individual categories: derived from parsed data (all recognised bands)"
 Write-Host ""
 
 $raceColMap    = Get-RaceColMap
@@ -559,10 +585,10 @@ try {
     Write-Host "Building individual standings JSON..." -ForegroundColor DarkGray
 
     $standingsJson = Build-IndividualStandingsJson `
-        -AllRunners           $allRunners `
-        -RaceIds              $raceIds `
-        -IndividualCategories $individualCategories `
-        -IsProvisional        ([bool]$Provisional)
+        -AllRunners    $allRunners `
+        -RaceIds       $raceIds `
+        -MaxCounting   $maxCounting `
+        -IsProvisional ([bool]$Provisional)
     $standingsJsonStr = $standingsJson | ConvertTo-Json -Depth 10
 
     $totalCats    = $standingsJson.categories.Count
