@@ -1,63 +1,63 @@
-﻿{
+{
   "categories": [
     {
       "id": "open",
       "clubs": [
-        { "position": 1, "club": "preston", "points": 7, "scorers": [] },
-        { "position": 2, "club": "red-rose", "points": 6, "scorers": [{ "position": 1 }, { "position": 2 }, { "position": 3 }, { "position": 4 }, { "position": 5 }] },
-        { "position": 3, "club": "blackpool", "points": 5, "scorers": [] },
-        { "position": 4, "club": "lytham", "points": 4, "scorers": [{ "position": 9 }, { "position": 13 }, { "position": 15 }, { "position": 18 }, { "position": 30 }] },
-        { "position": 5, "club": "thornton", "points": 3, "scorers": [] },
-        { "position": 6, "club": "chorley", "points": 2, "scorers": [{ "position": 8 }, { "position": 10 }, { "position": 22 }, { "position": 23 }, { "position": 25 }] },
-        { "position": 7, "club": "wesham", "points": 1, "scorers": [{ "position": 6 }, { "position": 12 }, { "position": 20 }, { "position": 28 }, { "position": 32 }] }
+        { "position": 1, "club": "preston", "points": 7, "total": 15, "scorers": [{ "position": 1 }, { "position": 2 }, { "position": 3 }, { "position": 4 }, { "position": 5 }] },
+        { "position": 2, "club": "red-rose", "points": 6, "total": 85, "scorers": [{ "position": 9 }, { "position": 13 }, { "position": 15 }, { "position": 18 }, { "position": 30 }] },
+        { "position": 3, "club": "blackpool", "points": 5, "total": 88, "scorers": [{ "position": 8 }, { "position": 10 }, { "position": 22 }, { "position": 23 }, { "position": 25 }] },
+        { "position": 4, "club": "lytham", "points": 4, "total": 98, "scorers": [{ "position": 6 }, { "position": 12 }, { "position": 20 }, { "position": 28 }, { "position": 32 }] },
+        { "position": 5, "club": "thornton", "points": 3, "total": 182, "scorers": [{ "position": 33 }, { "position": 34 }, { "position": 35 }, { "position": 38 }, { "position": 42 }] },
+        { "position": 6, "club": "chorley", "points": 2, "total": 76, "scorers": [{ "position": 7 }, { "position": 14 }, { "position": 24 }, { "position": 31 }] },
+        { "position": 7, "club": "wesham", "points": 1, "total": 63, "scorers": [{ "position": 16 }, { "position": 21 }, { "position": 26 }] }
       ]
     },
     {
       "id": "vets",
       "clubs": [
-        { "position": 1, "club": "preston", "points": 4, "scorers": [{ "position": 33 }, { "position": 34 }, { "position": 35 }, { "position": 38 }, { "position": 42 }] },
-        { "position": 2, "club": "lytham", "points": 3, "scorers": [] },
-        { "position": 3, "club": "chorley", "points": 2, "scorers": [{ "position": 7 }, { "position": 14 }, { "position": 24 }, { "position": 31 }] },
-        { "position": 4, "club": "blackpool", "points": 1, "scorers": [] },
-        { "position": 5, "club": "red-rose", "points": 0, "scorers": [{ "position": 16 }, { "position": 21 }, { "position": 26 }] },
-        { "position": 6, "club": "thornton", "points": 0, "scorers": [] },
-        { "position": 7, "club": "wesham", "points": 0, "scorers": [{ "position": 1 }, { "position": 2 }, { "position": 10 }, { "position": 12 }, { "position": 25 }] }
+        { "position": 1, "club": "preston", "points": 4, "total": 25, "scorers": [{ "position": 1 }, { "position": 2 }, { "position": 10 }, { "position": 12 }] },
+        { "position": 2, "club": "lytham", "points": 3, "total": 43, "scorers": [{ "position": 3 }, { "position": 6 }, { "position": 13 }, { "position": 21 }] },
+        { "position": 3, "club": "chorley", "points": 2, "total": 53, "scorers": [{ "position": 4 }, { "position": 8 }, { "position": 17 }, { "position": 24 }] },
+        { "position": 4, "club": "blackpool", "points": 1, "total": 54, "scorers": [{ "position": 5 }, { "position": 15 }, { "position": 16 }, { "position": 18 }] },
+        { "position": 5, "club": "red-rose", "points": 0, "total": 75, "scorers": [{ "position": 7 }, { "position": 11 }, { "position": 23 }, { "position": 34 }] },
+        { "position": 6, "club": "thornton", "points": 0, "total": 112, "scorers": [{ "position": 26 }, { "position": 27 }, { "position": 28 }, { "position": 31 }] },
+        { "position": 7, "club": "wesham", "points": 0, "total": 42, "scorers": [{ "position": 9 }, { "position": 14 }, { "position": 19 }] }
       ]
     },
     {
       "id": "v50",
       "clubs": [
-        { "position": 1, "club": "preston", "points": 3, "scorers": [] },
-        { "position": 2, "club": "chorley", "points": 2, "scorers": [{ "position": 3 }, { "position": 6 }, { "position": 13 }, { "position": 21 }, { "position": 43 }] },
-        { "position": 3, "club": "red-rose", "points": 1, "scorers": [] },
-        { "position": 4, "club": "wesham", "points": 0, "scorers": [{ "position": 4 }, { "position": 8 }, { "position": 17 }, { "position": 24 }] },
-        { "position": 5, "club": "blackpool", "points": 0, "scorers": [] },
-        { "position": 6, "club": "lytham", "points": 0, "scorers": [{ "position": 5 }, { "position": 15 }, { "position": 16 }, { "position": 18 }] },
-        { "position": 7, "club": "thornton", "points": 0, "scorers": [{ "position": 7 }, { "position": 11 }, { "position": 23 }, { "position": 34 }] }
+        { "position": 1, "club": "preston", "points": 3, "total": 15, "scorers": [{ "position": 1 }, { "position": 6 }, { "position": 8 }] },
+        { "position": 2, "club": "chorley", "points": 2, "total": 17, "scorers": [{ "position": 2 }, { "position": 4 }, { "position": 11 }] },
+        { "position": 3, "club": "red-rose", "points": 1, "total": 27, "scorers": [{ "position": 3 }, { "position": 7 }, { "position": 17 }] },
+        { "position": 4, "club": "wesham", "points": 0, "total": 28, "scorers": [{ "position": 5 }, { "position": 10 }, { "position": 13 }] },
+        { "position": 5, "club": "blackpool", "points": 0, "total": 42, "scorers": [{ "position": 12 }, { "position": 14 }, { "position": 16 }] },
+        { "position": 6, "club": "lytham", "points": 0, "total": 43, "scorers": [{ "position": 9 }, { "position": 15 }, { "position": 19 }] },
+        { "position": 7, "club": "thornton", "points": 0, "total": 63, "scorers": [{ "position": 20 }, { "position": 21 }, { "position": 22 }] }
       ]
     },
     {
       "id": "v60",
       "clubs": [
-        { "position": 1, "club": "red-rose", "points": 2, "scorers": [{ "position": 9 }, { "position": 14 }, { "position": 19 }] },
-        { "position": 2, "club": "preston", "points": 1, "scorers": [] },
-        { "position": 3, "club": "lytham", "points": 0, "scorers": [{ "position": 1 }, { "position": 6 }, { "position": 8 }, { "position": 15 }] },
-        { "position": 4, "club": "blackpool", "points": 0, "scorers": [{ "position": 2 }, { "position": 4 }, { "position": 11 }, { "position": 17 }] },
-        { "position": 5, "club": "chorley", "points": 0, "scorers": [{ "position": 3 }, { "position": 7 }, { "position": 17 }, { "position": 27 }] },
-        { "position": 6, "club": "thornton", "points": 0, "scorers": [{ "position": 5 }, { "position": 10 }, { "position": 13 }, { "position": 28 }] },
-        { "position": 7, "club": "wesham", "points": 0, "scorers": [{ "position": 12 }, { "position": 14 }, { "position": 16 }, { "position": 42 }, { "position": 43 }] }
+        { "position": 1, "club": "red-rose", "points": 2, "total": 4, "scorers": [{ "position": 1 }, { "position": 3 }] },
+        { "position": 2, "club": "preston", "points": 1, "total": 6, "scorers": [{ "position": 2 }, { "position": 4 }] },
+        { "position": 3, "club": "lytham", "points": 0, "total": 14, "scorers": [{ "position": 5 }, { "position": 9 }] },
+        { "position": 4, "club": "blackpool", "points": 0, "total": 18, "scorers": [{ "position": 8 }, { "position": 10 }] },
+        { "position": 5, "club": "chorley", "points": 0, "total": 19, "scorers": [{ "position": 7 }, { "position": 12 }] },
+        { "position": 6, "club": "thornton", "points": 0, "total": 29, "scorers": [{ "position": 14 }, { "position": 15 }] },
+        { "position": 7, "club": "wesham", "points": 0, "total": 6, "scorers": [{ "position": 6 }] }
       ]
     },
     {
       "id": "ladies",
       "clubs": [
-        { "position": 1, "club": "lytham", "points": 3, "scorers": [] },
-        { "position": 2, "club": "red-rose", "points": 2, "scorers": [{ "position": 13 }, { "position": 4 }] },
-        { "position": 3, "club": "blackpool", "points": 1, "scorers": [] },
-        { "position": 4, "club": "thornton", "points": 0, "scorers": [{ "position": 24 }, { "position": 6 }] },
-        { "position": 5, "club": "preston", "points": 0, "scorers": [] },
-        { "position": 6, "club": "chorley", "points": 0, "scorers": [{ "position": 5 }, { "position": 9 }, { "position": 14 }] },
-        { "position": 7, "club": "wesham", "points": 0, "scorers": [{ "position": 8 }, { "position": 10 }, { "position": 18 }] }
+        { "position": 1, "club": "lytham", "points": 3, "total": 13, "scorers": [{ "position": 1 }, { "position": 5 }, { "position": 7 }] },
+        { "position": 2, "club": "red-rose", "points": 2, "total": 18, "scorers": [{ "position": 2 }, { "position": 6 }, { "position": 10 }] },
+        { "position": 3, "club": "blackpool", "points": 1, "total": 20, "scorers": [{ "position": 3 }, { "position": 4 }, { "position": 13 }] },
+        { "position": 4, "club": "thornton", "points": 0, "total": 37, "scorers": [{ "position": 11 }, { "position": 12 }, { "position": 14 }] },
+        { "position": 5, "club": "preston", "points": 0, "total": 25, "scorers": [{ "position": 9 }, { "position": 16 }] },
+        { "position": 6, "club": "chorley", "points": 0, "total": 0, "scorers": [] },
+        { "position": 7, "club": "wesham", "points": 0, "total": 0, "scorers": [] }
       ]
     }
   ]
