@@ -347,7 +347,7 @@ const raceColWidth = standings.races.length >= 7 ? '3rem'
                     <div slot="score" class="text-right shrink-0">
                       <div class="font-mono text-xl font-medium leading-none tabular-nums">{runner.total}</div>
                       <div class="font-head text-[9px] font-bold tracking-[0.12em] uppercase text-muted mt-0.5">
-                        {Object.keys(runner.results).length} run
+                        {Object.values(runner.results).filter(r => r !== null).length} run
                       </div>
                     </div>
 
