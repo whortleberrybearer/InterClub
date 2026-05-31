@@ -181,7 +181,7 @@ export interface IndividualStandingsRunner {
   sex?: string;          // 'M' or 'F'; optional when inherited from category
   ageCategory?: string;  // e.g. 'SEN', 'V40'; optional when inherited from category
   total: number;
-  results: Record<string, IndividualRaceResult>;  // keyed by race id; only races the runner entered
+  results: Record<string, IndividualRaceResult | null>;  // keyed by race id; null means the runner did not enter that race
   seriesRunnerId?: number;   // optional; links standing entry to a runner profile
 }
 
