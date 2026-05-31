@@ -263,7 +263,7 @@ const raceColWidth = standings.races.length >= 7 ? '3rem'
         const isDefault      = i === defaultCatIndex;
         const label          = fullCategoryLabel(cat);
         const qualifiedCount = standings.maxCountingRaces
-          ? cat.runners.filter(r => Object.keys(r.results).length >= standings.maxCountingRaces!).length
+          ? cat.runners.filter(r => Object.values(r.results).filter(res => res?.counting).length >= standings.maxCountingRaces!).length
           : null;
         const distinctAgeCats = [...new Set(
           cat.runners.map(r => r.ageCategory ?? cat.ageCategory)
