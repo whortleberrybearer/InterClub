@@ -24,83 +24,63 @@
   "individualAwards": [
     {
       "id": "m",
+      "sex": "M",
       "awards": [
-        {
-          "position": 1,
-          "name": "Patrick Brown",
-          "club": "preston"
-        },
-        {
-          "position": 2,
-          "name": "Alistair Palmer",
-          "club": "preston"
-        }
-      ],
-      "sex": "M"
+        { "position": 1, "name": "Patrick Brown", "club": "preston", "ageCategory": "SEN", "seriesRunnerId": 2 },
+        { "position": 2, "name": "Alistair Palmer", "club": "preston", "ageCategory": "SEN", "seriesRunnerId": 1 }
+      ]
     },
     {
       "id": "m-v40",
-      "awards": [
-        {
-          "position": 1,
-          "name": "Andy Cottam",
-          "club": "chorley"
-        },
-        {
-          "position": 2,
-          "name": "Dan Edwards",
-          "club": "lytham"
-        }
-      ],
       "sex": "M",
-      "ageCategory": "V40"
+      "ageCategory": "V40",
+      "awards": [
+        { "position": 1, "name": "Andy Cottam", "club": "preston", "seriesRunnerId": 3 },
+        { "position": 2, "name": "Dan Edwards", "club": "chorley", "seriesRunnerId": 58 }
+      ]
     },
     {
       "id": "m-v50",
-      "awards": [
-        {
-          "position": 1,
-          "name": "Paul Bass",
-          "club": "wesham"
-        }
-      ],
       "sex": "M",
-      "ageCategory": "V50"
+      "ageCategory": "V50",
+      "awards": [
+        { "position": 1, "name": "Darren McDermott", "club": "preston", "seriesRunnerId": 5 },
+        { "position": 2, "name": "Paul Bass", "club": "chorley", "seriesRunnerId": 12 }
+      ]
     },
     {
       "id": "m-v60",
-      "awards": [
-        {
-          "position": 1,
-          "name": "Philip Butler",
-          "club": "lytham"
-        }
-      ],
       "sex": "M",
-      "ageCategory": "V60"
+      "ageCategory": "V60",
+      "awards": [
+        { "position": 1, "name": "John Griffiths", "club": "preston", "seriesRunnerId": 8 },
+        { "position": 2, "name": "Philip Butler", "club": "red-rose", "seriesRunnerId": 24 }
+      ]
     },
     {
       "id": "f",
+      "sex": "F",
       "awards": [
-        {
-          "position": 1,
-          "name": "Basia Pawelczak",
-          "club": "blackpool"
-        }
-      ],
-      "sex": "F"
+        { "position": 1, "name": "Samantha Edwards", "club": "red-rose", "ageCategory": "SEN", "seriesRunnerId": 68 },
+        { "position": 2, "name": "Basia Pawelczak", "club": "blackpool", "ageCategory": "SEN", "seriesRunnerId": 34 }
+      ]
+    },
+    {
+      "id": "f-v40",
+      "sex": "F",
+      "ageCategory": "V40",
+      "awards": [
+        { "position": 1, "name": "Olga Wiggins", "club": "preston", "seriesRunnerId": 53 }
+      ]
     },
     {
       "id": "f-v50",
-      "awards": [
-        {
-          "position": 1,
-          "name": "Kay Twist",
-          "club": "lytham"
-        }
-      ],
       "sex": "F",
-      "ageCategory": "V50"
+      "ageCategory": "V50",
+      "awards": [
+        { "position": 1, "name": "Laura Lawler", "club": "blackpool", "seriesRunnerId": 73 },
+        { "position": 2, "name": "Kay Twist", "club": "wesham", "seriesRunnerId": 46 }
+      ]
     }
   ]
 }
