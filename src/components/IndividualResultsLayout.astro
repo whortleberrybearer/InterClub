@@ -93,6 +93,36 @@ const hasGuests  = results.some(r => r.club === 'Guest');
 // "Full" chip appears when guests are present; it is the initial active state in that case
 const showFullChip = hasGuests && teamCategories.length > 0;
 
+// ── Mobile-first initial display state ──────────────────────────────────────
+// Compute the same initial state the JS would derive, and bake it into the SSR
+// HTML so there is no visible difference when the client script runs.
+//   • Full chip present (guests exist) → Full mode (activeCatId = null)
+//   • No Full chip, team cats exist   → first category active
+//   • No team cats                    → no filtering
+const initialActiveCatId: string | null =
+  showFullChip || teamCategories.length === 0
+    ? null
+    : (teamCategories[0]?.id ?? null);
+
+// CSS class pre-applied to the table so column visibility is correct before JS
+const initialTableClass =
+  showFullChip ? 'full-active'
+  : teamCategories.length > 0 ? 'cat-active'
+  : '';
+
+// Header text for the mobile "ic" column
+const initialIcHeaderText =
+  initialActiveCatId !== null
+    ? (teamCategories[0]?.shortName ?? (teamCategories[0]?.name ?? '').substring(0, 3))
+    : (teamCategories.find(c => c.id === 'open')?.shortName ?? 'OPN');
+
+// Pre-filter rows to match the initial active category so the table already
+// shows only the visible set — render() on first load is a no-op change.
+const initialDisplayResults =
+  hasCategoryData && initialActiveCatId !== null
+    ? results.filter(r => (r.categoryPositions[initialActiveCatId] ?? null) !== null)
+    : results;
+
 const hasMale       = results.some(r => r.sex === 'M');
 const hasFemale     = results.some(r => r.sex === 'F');
 const showSexToggle = hasMale && hasFemale;
@@ -300,7 +330,7 @@ const showSexToggle = hasMale && hasFemale;
       <!-- Results table: plain on mobile/desktop, white card on tablet -->
       <div class="sm:bg-surface sm:border sm:border-line sm:rounded-xl sm:overflow-hidden lg:bg-transparent lg:border-0 lg:rounded-none lg:overflow-visible">
       <div class="overflow-x-auto">
-        <table class="w-full sm:min-w-[40rem] border-collapse text-[13.5px] table-fixed">
+        <table class:list={['w-full sm:min-w-[40rem] border-collapse text-[13.5px] table-fixed', initialTableClass]}>
           <colgroup>
             <col class="pos-col hidden xs:table-column w-9" />
             {teamCategories.map(() => <col class="hidden sm:table-column w-9" />)}
@@ -319,7 +349,7 @@ const showSexToggle = hasMale && hasFemale;
                   data-cat-id={cat.id}
                 >{cat.shortName ?? cat.name.substring(0, 3)}</th>
               ))}
-              <th id="ic-header" class="ic-col sm:hidden font-head text-[10px] font-bold tracking-[0.1em] uppercase text-muted text-left py-2.5 px-2 bg-surface border-b-2 border-content">{teamCategories.find(c => c.id === 'open')?.shortName ?? 'OPN'}</th>
+              <th id="ic-header" class="ic-col sm:hidden font-head text-[10px] font-bold tracking-[0.1em] uppercase text-muted text-left py-2.5 px-2 bg-surface border-b-2 border-content">{initialIcHeaderText}</th>
               <th class="no-col font-head text-[10px] font-bold tracking-[0.1em] uppercase text-muted text-left py-2.5 px-2 bg-surface border-b-2 border-content">No.</th>
               <th class="font-head text-[10px] font-bold tracking-[0.1em] uppercase text-muted text-left py-2.5 px-2 bg-surface border-b-2 border-content">Runner</th>
               <th class="font-head text-[10px] font-bold tracking-[0.1em] uppercase text-muted text-left py-2.5 px-2 bg-surface border-b-2 border-content">Cat</th>
@@ -327,7 +357,7 @@ const showSexToggle = hasMale && hasFemale;
             </tr>
           </thead>
           <tbody id="results-tbody">
-            {results.map(r => {
+            {initialDisplayResults.map(r => {
               const url      = r.seriesRunnerId != null ? runnerUrlMap[r.seriesRunnerId] : undefined;
               const fullName = `${r.firstName ?? ''} ${r.lastName ?? ''}`.trim();
               const clubName = r.club === 'Guest' ? 'Guest' : (clubById[r.club]?.name ?? r.club);
@@ -484,7 +514,11 @@ const showSexToggle = hasMale && hasFemale;
     }
   }
 
-  // Apply initial state (Full mode on page load)
+  // Apply initial state.  The SSR HTML already has the correct table class,
+  // ic-header text, and pre-filtered rows, so applyMobileCategoryState is a
+  // near no-op here (adds/removes classes that are already set).  We do NOT
+  // call render() on first load — that would replace the SSR tbody with
+  // identical content, causing an unnecessary repaint on mobile.
   applyMobileCategoryState(activeCategoryId);
 
   function applyDesktopCategoryHighlight(catId: string | null) {
@@ -628,11 +662,8 @@ const showSexToggle = hasMale && hasFemale;
     applyDesktopCategoryHighlight(activeCategoryId);
   }
 
-  // Apply initial state for the pre-selected category (when no Full chip)
-  if (activeCategoryId !== null) {
-    applyMobileCategoryState(activeCategoryId);
-    render();
-  } else {
-    applyDesktopCategoryHighlight(null);
-  }
+  // Apply desktop column highlight without rebuilding rows.
+  // SSR already rendered the correct rows, so we only need the visual
+  // highlight that dims non-active category columns on desktop.
+  applyDesktopCategoryHighlight(activeCategoryId);
 </script>
