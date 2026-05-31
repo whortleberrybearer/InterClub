@@ -3637,6 +3637,7 @@
                                                "name":  "Laura Lawler",
                                                "club":  "blackpool",
                                                "ageCategory":  "V50",
+                                               "seriesRunnerId":  73,
                                                "total":  300,
                                                "results":  {
                                                                "mearley-clough":  null,
@@ -3659,6 +3660,7 @@
                                                "name":  "Kay Twist",
                                                "club":  "wesham",
                                                "ageCategory":  "V50",
+                                               "seriesRunnerId":  46,
                                                "total":  296,
                                                "results":  {
                                                                "mearley-clough":  {
@@ -3681,11 +3683,12 @@
                                                "name":  "Julia Rolfe",
                                                "club":  "lytham",
                                                "ageCategory":  "V60",
+                                               "seriesRunnerId":  49,
                                                "total":  294,
                                                "results":  {
                                                                "mearley-clough":  {
                                                                                       "points":  96,
-                                                                                      "counting":  true
+                                                                                      "counting":  false
                                                                                   },
                                                                "edenfield":  {
                                                                                  "points":  98,
@@ -3697,7 +3700,7 @@
                                                                                    },
                                                                "pendleton":  {
                                                                                  "points":  99,
-                                                                                 "counting":  false
+                                                                                 "counting":  true
                                                                              }
                                                            }
                                            },
@@ -3706,6 +3709,7 @@
                                                "name":  "Paula Plowman",
                                                "club":  "red-rose",
                                                "ageCategory":  "V60",
+                                               "seriesRunnerId":  47,
                                                "total":  291,
                                                "results":  {
                                                                "mearley-clough":  {
@@ -3714,7 +3718,7 @@
                                                                                   },
                                                                "edenfield":  {
                                                                                  "points":  96,
-                                                                                 "counting":  true
+                                                                                 "counting":  false
                                                                              },
                                                                "hameldon-quarry":  {
                                                                                        "points":  96,
@@ -3722,7 +3726,7 @@
                                                                                    },
                                                                "pendleton":  {
                                                                                  "points":  98,
-                                                                                 "counting":  false
+                                                                                 "counting":  true
                                                                              }
                                                            }
                                            },
@@ -3731,18 +3735,19 @@
                                                "name":  "Pam Hardman",
                                                "club":  "lytham",
                                                "ageCategory":  "V60",
+                                               "seriesRunnerId":  92,
                                                "total":  195,
                                                "results":  {
                                                                "mearley-clough":  null,
-                                                               "edenfield":  {
-                                                                                 "points":  98,
-                                                                                 "counting":  true
-                                                                             },
+                                                               "edenfield":  null,
                                                                "hameldon-quarry":  {
-                                                                                       "points":  97,
+                                                                                       "points":  98,
                                                                                        "counting":  true
                                                                                    },
-                                                               "pendleton":  null
+                                                               "pendleton":  {
+                                                                                 "points":  97,
+                                                                                 "counting":  true
+                                                                             }
                                                            }
                                            },
                                            {
@@ -3750,6 +3755,7 @@
                                                "name":  "Melanie Koth",
                                                "club":  "lytham",
                                                "ageCategory":  "V50",
+                                               "seriesRunnerId":  30,
                                                "total":  100,
                                                "results":  {
                                                                "mearley-clough":  {
@@ -3766,15 +3772,16 @@
                                                "name":  "Carmel Sullivan",
                                                "club":  "wesham",
                                                "ageCategory":  "V50",
+                                               "seriesRunnerId":  37,
                                                "total":  99,
                                                "results":  {
-                                                               "mearley-clough":  null,
+                                                               "mearley-clough":  {
+                                                                                      "points":  99,
+                                                                                      "counting":  true
+                                                                                  },
                                                                "edenfield":  null,
                                                                "hameldon-quarry":  null,
-                                                               "pendleton":  {
-                                                                                 "points":  99,
-                                                                                 "counting":  true
-                                                                             }
+                                                               "pendleton":  null
                                                            }
                                            },
                                            {
@@ -3782,14 +3789,15 @@
                                                "name":  "Claire Markham",
                                                "club":  "lytham",
                                                "ageCategory":  "V50",
+                                               "seriesRunnerId":  75,
                                                "total":  97,
                                                "results":  {
                                                                "mearley-clough":  null,
-                                                               "edenfield":  null,
-                                                               "hameldon-quarry":  {
-                                                                                       "points":  97,
-                                                                                       "counting":  true
-                                                                                   },
+                                                               "edenfield":  {
+                                                                                 "points":  97,
+                                                                                 "counting":  true
+                                                                             },
+                                                               "hameldon-quarry":  null,
                                                                "pendleton":  null
                                                            }
                                            },
@@ -3798,15 +3806,16 @@
                                                "name":  "F. Bridge",
                                                "club":  "thornton",
                                                "ageCategory":  "V50",
+                                               "seriesRunnerId":  106,
                                                "total":  96,
                                                "results":  {
                                                                "mearley-clough":  null,
                                                                "edenfield":  null,
-                                                               "hameldon-quarry":  {
-                                                                                       "points":  96,
-                                                                                       "counting":  true
-                                                                                   },
-                                                               "pendleton":  null
+                                                               "hameldon-quarry":  null,
+                                                               "pendleton":  {
+                                                                                 "points":  96,
+                                                                                 "counting":  true
+                                                                             }
                                                            }
                                            },
                                            {
@@ -3814,14 +3823,15 @@
                                                "name":  "Beverley Gigli",
                                                "club":  "blackpool",
                                                "ageCategory":  "V50",
+                                               "seriesRunnerId":  77,
                                                "total":  95,
                                                "results":  {
                                                                "mearley-clough":  null,
-                                                               "edenfield":  null,
-                                                               "hameldon-quarry":  {
-                                                                                       "points":  95,
-                                                                                       "counting":  true
-                                                                                   },
+                                                               "edenfield":  {
+                                                                                 "points":  95,
+                                                                                 "counting":  true
+                                                                             },
+                                                               "hameldon-quarry":  null,
                                                                "pendleton":  null
                                                            }
                                            },
@@ -3830,6 +3840,7 @@
                                                "name":  "Alison Mercer",
                                                "club":  "red-rose",
                                                "ageCategory":  "V60",
+                                               "seriesRunnerId":  94,
                                                "total":  95,
                                                "results":  {
                                                                "mearley-clough":  null,
@@ -3846,15 +3857,16 @@
                                                "name":  "D. Saunders",
                                                "club":  "thornton",
                                                "ageCategory":  "V50",
+                                               "seriesRunnerId":  108,
                                                "total":  95,
                                                "results":  {
                                                                "mearley-clough":  null,
                                                                "edenfield":  null,
-                                                               "hameldon-quarry":  {
-                                                                                       "points":  95,
-                                                                                       "counting":  true
-                                                                                   },
-                                                               "pendleton":  null
+                                                               "hameldon-quarry":  null,
+                                                               "pendleton":  {
+                                                                                 "points":  95,
+                                                                                 "counting":  true
+                                                                             }
                                                            }
                                            }
                                        ]
