@@ -1,4 +1,4 @@
-﻿{
+{
     "provisional":  false,
     "maxCountingRaces":  3,
     "races":  [
@@ -17,6 +17,7 @@
                                                "name":  "Patrick Brown",
                                                "club":  "preston",
                                                "ageCategory":  "SEN",
+                                               "seriesRunnerId":  2,
                                                "total":  299,
                                                "results":  {
                                                                "mearley-clough":  {
@@ -27,11 +28,11 @@
                                                                                  "points":  100,
                                                                                  "counting":  true
                                                                              },
-                                                               "hameldon-quarry":  {
-                                                                                       "points":  100,
-                                                                                       "counting":  true
-                                                                                   },
-                                                               "pendleton":  null
+                                                               "hameldon-quarry":  null,
+                                                               "pendleton":  {
+                                                                                 "points":  100,
+                                                                                 "counting":  true
+                                                                             }
                                                            }
                                            },
                                            {
@@ -39,6 +40,7 @@
                                                "name":  "Alistair Palmer",
                                                "club":  "preston",
                                                "ageCategory":  "SEN",
+                                               "seriesRunnerId":  1,
                                                "total":  299,
                                                "results":  {
                                                                "mearley-clough":  {
@@ -64,6 +66,7 @@
                                                "name":  "Andy Cottam",
                                                "club":  "preston",
                                                "ageCategory":  "V40",
+                                               "seriesRunnerId":  3,
                                                "total":  294,
                                                "results":  {
                                                                "mearley-clough":  {
@@ -74,11 +77,11 @@
                                                                                  "points":  98,
                                                                                  "counting":  true
                                                                              },
-                                                               "hameldon-quarry":  {
-                                                                                       "points":  98,
-                                                                                       "counting":  true
-                                                                                   },
-                                                               "pendleton":  null
+                                                               "hameldon-quarry":  null,
+                                                               "pendleton":  {
+                                                                                 "points":  98,
+                                                                                 "counting":  true
+                                                                             }
                                                            }
                                            },
                                            {
@@ -86,6 +89,7 @@
                                                "name":  "Darren McDermott",
                                                "club":  "preston",
                                                "ageCategory":  "V50",
+                                               "seriesRunnerId":  5,
                                                "total":  287,
                                                "results":  {
                                                                "mearley-clough":  {
@@ -94,10 +98,13 @@
                                                                                   },
                                                                "edenfield":  null,
                                                                "hameldon-quarry":  {
-                                                                                       "points":  96,
+                                                                                       "points":  95,
                                                                                        "counting":  true
                                                                                    },
-                                                               "pendleton":  null
+                                                               "pendleton":  {
+                                                                                 "points":  96,
+                                                                                 "counting":  true
+                                                                             }
                                                            }
                                            },
                                            {
@@ -105,6 +112,7 @@
                                                "name":  "Tom Brown",
                                                "club":  "preston",
                                                "ageCategory":  "SEN",
+                                               "seriesRunnerId":  7,
                                                "total":  286,
                                                "results":  {
                                                                "mearley-clough":  {
@@ -127,6 +135,7 @@
                                                "name":  "Dan Edwards",
                                                "club":  "chorley",
                                                "ageCategory":  "V40",
+                                               "seriesRunnerId":  58,
                                                "total":  281,
                                                "results":  {
                                                                "mearley-clough":  {
@@ -149,6 +158,7 @@
                                                "name":  "John Griffiths",
                                                "club":  "preston",
                                                "ageCategory":  "V60",
+                                               "seriesRunnerId":  8,
                                                "total":  275,
                                                "results":  {
                                                                "mearley-clough":  {
@@ -171,11 +181,12 @@
                                                "name":  "Christopher Bridge",
                                                "club":  "red-rose",
                                                "ageCategory":  "SEN",
+                                               "seriesRunnerId":  16,
                                                "total":  269,
                                                "results":  {
                                                                "mearley-clough":  {
                                                                                       "points":  82,
-                                                                                      "counting":  true
+                                                                                      "counting":  false
                                                                                   },
                                                                "edenfield":  {
                                                                                  "points":  89,
@@ -187,7 +198,7 @@
                                                                                    },
                                                                "pendleton":  {
                                                                                  "points":  93,
-                                                                                 "counting":  false
+                                                                                 "counting":  true
                                                                              }
                                                            }
                                            },
@@ -196,11 +207,12 @@
                                                "name":  "Dominic Kirby",
                                                "club":  "lytham",
                                                "ageCategory":  "V40",
+                                               "seriesRunnerId":  15,
                                                "total":  267,
                                                "results":  {
                                                                "mearley-clough":  {
                                                                                       "points":  83,
-                                                                                      "counting":  true
+                                                                                      "counting":  false
                                                                                   },
                                                                "edenfield":  {
                                                                                  "points":  88,
@@ -212,7 +224,7 @@
                                                                                    },
                                                                "pendleton":  {
                                                                                  "points":  90,
-                                                                                 "counting":  false
+                                                                                 "counting":  true
                                                                              }
                                                            }
                                            },
@@ -221,11 +233,12 @@
                                                "name":  "Tom Prescott",
                                                "club":  "preston",
                                                "ageCategory":  "SEN",
+                                               "seriesRunnerId":  14,
                                                "total":  266,
                                                "results":  {
                                                                "mearley-clough":  {
                                                                                       "points":  84,
-                                                                                      "counting":  true
+                                                                                      "counting":  false
                                                                                   },
                                                                "edenfield":  {
                                                                                  "points":  84,
@@ -237,7 +250,7 @@
                                                                                    },
                                                                "pendleton":  {
                                                                                  "points":  91,
-                                                                                 "counting":  false
+                                                                                 "counting":  true
                                                                              }
                                                            }
                                            },
@@ -246,6 +259,7 @@
                                                "name":  "Paul Bass",
                                                "club":  "chorley",
                                                "ageCategory":  "V50",
+                                               "seriesRunnerId":  12,
                                                "total":  260,
                                                "results":  {
                                                                "mearley-clough":  {
@@ -254,7 +268,7 @@
                                                                                   },
                                                                "edenfield":  {
                                                                                  "points":  79,
-                                                                                 "counting":  true
+                                                                                 "counting":  false
                                                                              },
                                                                "hameldon-quarry":  {
                                                                                        "points":  86,
@@ -262,7 +276,7 @@
                                                                                    },
                                                                "pendleton":  {
                                                                                  "points":  88,
-                                                                                 "counting":  false
+                                                                                 "counting":  true
                                                                              }
                                                            }
                                            },
@@ -271,11 +285,12 @@
                                                "name":  "Steve Myerscough",
                                                "club":  "wesham",
                                                "ageCategory":  "V50",
+                                               "seriesRunnerId":  23,
                                                "total":  250,
                                                "results":  {
                                                                "mearley-clough":  {
                                                                                       "points":  75,
-                                                                                      "counting":  true
+                                                                                      "counting":  false
                                                                                   },
                                                                "edenfield":  {
                                                                                  "points":  78,
@@ -287,7 +302,7 @@
                                                                                    },
                                                                "pendleton":  {
                                                                                  "points":  87,
-                                                                                 "counting":  false
+                                                                                 "counting":  true
                                                                              }
                                                            }
                                            },
@@ -296,6 +311,7 @@
                                                "name":  "Steve Tappenden",
                                                "club":  "preston",
                                                "ageCategory":  "V40",
+                                               "seriesRunnerId":  22,
                                                "total":  250,
                                                "results":  {
                                                                "mearley-clough":  {
@@ -318,6 +334,7 @@
                                                "name":  "Daniel Mounslea",
                                                "club":  "wesham",
                                                "ageCategory":  "SEN",
+                                               "seriesRunnerId":  60,
                                                "total":  244,
                                                "results":  {
                                                                "mearley-clough":  {
@@ -340,11 +357,12 @@
                                                "name":  "Philip Butler",
                                                "club":  "red-rose",
                                                "ageCategory":  "V60",
+                                               "seriesRunnerId":  24,
                                                "total":  241,
                                                "results":  {
                                                                "mearley-clough":  {
                                                                                       "points":  74,
-                                                                                      "counting":  true
+                                                                                      "counting":  false
                                                                                   },
                                                                "edenfield":  {
                                                                                  "points":  75,
@@ -356,7 +374,7 @@
                                                                                    },
                                                                "pendleton":  {
                                                                                  "points":  85,
-                                                                                 "counting":  false
+                                                                                 "counting":  true
                                                                              }
                                                            }
                                            },
@@ -365,6 +383,7 @@
                                                "name":  "Ian Nichols Hogg",
                                                "club":  "wesham",
                                                "ageCategory":  "SEN",
+                                               "seriesRunnerId":  29,
                                                "total":  222,
                                                "results":  {
                                                                "mearley-clough":  {
@@ -387,6 +406,7 @@
                                                "name":  "Stephen Wise",
                                                "club":  "lytham",
                                                "ageCategory":  "V60",
+                                               "seriesRunnerId":  32,
                                                "total":  220,
                                                "results":  {
                                                                "mearley-clough":  {
@@ -397,11 +417,11 @@
                                                                                  "points":  71,
                                                                                  "counting":  true
                                                                              },
-                                                               "hameldon-quarry":  {
-                                                                                       "points":  83,
-                                                                                       "counting":  true
-                                                                                   },
-                                                               "pendleton":  null
+                                                               "hameldon-quarry":  null,
+                                                               "pendleton":  {
+                                                                                 "points":  83,
+                                                                                 "counting":  true
+                                                                             }
                                                            }
                                            },
                                            {
@@ -409,6 +429,7 @@
                                                "name":  "Greg Oulton",
                                                "club":  "lytham",
                                                "ageCategory":  "V50",
+                                               "seriesRunnerId":  74,
                                                "total":  213,
                                                "results":  {
                                                                "mearley-clough":  null,
@@ -431,6 +452,7 @@
                                                "name":  "John Collier",
                                                "club":  "wesham",
                                                "ageCategory":  "V70",
+                                               "seriesRunnerId":  36,
                                                "total":  212,
                                                "results":  {
                                                                "mearley-clough":  {
@@ -453,6 +475,7 @@
                                                "name":  "Michael McLoughlin",
                                                "club":  "preston",
                                                "ageCategory":  "V70",
+                                               "seriesRunnerId":  42,
                                                "total":  208,
                                                "results":  {
                                                                "mearley-clough":  {
@@ -475,6 +498,7 @@
                                                "name":  "Anthony Blight",
                                                "club":  "blackpool",
                                                "ageCategory":  "V50",
+                                               "seriesRunnerId":  45,
                                                "total":  198,
                                                "results":  {
                                                                "mearley-clough":  {
@@ -497,6 +521,7 @@
                                                "name":  "Jon Green",
                                                "club":  "preston",
                                                "ageCategory":  "V40",
+                                               "seriesRunnerId":  64,
                                                "total":  195,
                                                "results":  {
                                                                "mearley-clough":  null,
@@ -516,6 +541,7 @@
                                                "name":  "Simon Scarr",
                                                "club":  "blackpool",
                                                "ageCategory":  "V60",
+                                               "seriesRunnerId":  50,
                                                "total":  194,
                                                "results":  {
                                                                "mearley-clough":  {
@@ -538,6 +564,7 @@
                                                "name":  "James Danson",
                                                "club":  "wesham",
                                                "ageCategory":  "V50",
+                                               "seriesRunnerId":  52,
                                                "total":  193,
                                                "results":  {
                                                                "mearley-clough":  {
@@ -560,6 +587,7 @@
                                                "name":  "Alek Walker",
                                                "club":  "wesham",
                                                "ageCategory":  "V40",
+                                               "seriesRunnerId":  4,
                                                "total":  193,
                                                "results":  {
                                                                "mearley-clough":  {
@@ -579,6 +607,7 @@
                                                "name":  "Darren Fishwick",
                                                "club":  "chorley",
                                                "ageCategory":  "V50",
+                                               "seriesRunnerId":  63,
                                                "total":  189,
                                                "results":  {
                                                                "mearley-clough":  null,
@@ -598,6 +627,7 @@
                                                "name":  "Martin Bates",
                                                "club":  "wesham",
                                                "ageCategory":  "V60",
+                                               "seriesRunnerId":  54,
                                                "total":  186,
                                                "results":  {
                                                                "mearley-clough":  {
@@ -620,6 +650,7 @@
                                                "name":  "John Dunn",
                                                "club":  "blackpool",
                                                "ageCategory":  "V40",
+                                               "seriesRunnerId":  56,
                                                "total":  180,
                                                "results":  {
                                                                "mearley-clough":  {
@@ -641,19 +672,20 @@
                                                "position":  29,
                                                "name":  "Simon Shaw",
                                                "club":  "red-rose",
-                                               "ageCategory":  "SEN",
+                                               "ageCategory":  "V60",
+                                               "seriesRunnerId":  67,
                                                "total":  174,
                                                "results":  {
-                                                               "mearley-clough":  {
-                                                                                      "points":  85,
-                                                                                      "counting":  true
-                                                                                  },
+                                                               "mearley-clough":  null,
                                                                "edenfield":  {
-                                                                                 "points":  89,
+                                                                                 "points":  85,
                                                                                  "counting":  true
                                                                              },
                                                                "hameldon-quarry":  null,
-                                                               "pendleton":  null
+                                                               "pendleton":  {
+                                                                                 "points":  89,
+                                                                                 "counting":  true
+                                                                             }
                                                            }
                                            },
                                            {
@@ -661,17 +693,18 @@
                                                "name":  "Carl Groome",
                                                "club":  "wesham",
                                                "ageCategory":  "V50",
+                                               "seriesRunnerId":  13,
                                                "total":  172,
                                                "results":  {
-                                                               "mearley-clough":  null,
+                                                               "mearley-clough":  {
+                                                                                      "points":  85,
+                                                                                      "counting":  true
+                                                                                  },
                                                                "edenfield":  {
-                                                                                 "points":  81,
+                                                                                 "points":  87,
                                                                                  "counting":  true
                                                                              },
-                                                               "hameldon-quarry":  {
-                                                                                       "points":  91,
-                                                                                       "counting":  true
-                                                                                   },
+                                                               "hameldon-quarry":  null,
                                                                "pendleton":  null
                                                            }
                                            },
@@ -680,6 +713,7 @@
                                                "name":  "Steven Bamber",
                                                "club":  "preston",
                                                "ageCategory":  "V60",
+                                               "seriesRunnerId":  19,
                                                "total":  165,
                                                "results":  {
                                                                "mearley-clough":  {
@@ -687,11 +721,11 @@
                                                                                       "counting":  true
                                                                                   },
                                                                "edenfield":  null,
-                                                               "hameldon-quarry":  {
-                                                                                       "points":  86,
-                                                                                       "counting":  true
-                                                                                   },
-                                                               "pendleton":  null
+                                                               "hameldon-quarry":  null,
+                                                               "pendleton":  {
+                                                                                 "points":  86,
+                                                                                 "counting":  true
+                                                                             }
                                                            }
                                            },
                                            {
@@ -699,6 +733,7 @@
                                                "name":  "Stephen Woodruffe",
                                                "club":  "red-rose",
                                                "ageCategory":  "V60",
+                                               "seriesRunnerId":  18,
                                                "total":  160,
                                                "results":  {
                                                                "mearley-clough":  {
@@ -718,6 +753,7 @@
                                                "name":  "Adrian Pilkington",
                                                "club":  "chorley",
                                                "ageCategory":  "V50",
+                                               "seriesRunnerId":  17,
                                                "total":  158,
                                                "results":  {
                                                                "mearley-clough":  {
@@ -737,6 +773,7 @@
                                                "name":  "Simon Major",
                                                "club":  "red-rose",
                                                "ageCategory":  "SEN",
+                                               "seriesRunnerId":  26,
                                                "total":  153,
                                                "results":  {
                                                                "mearley-clough":  {
@@ -756,6 +793,7 @@
                                                "name":  "David Lea",
                                                "club":  "preston",
                                                "ageCategory":  "V60",
+                                               "seriesRunnerId":  27,
                                                "total":  151,
                                                "results":  {
                                                                "mearley-clough":  {
@@ -775,6 +813,7 @@
                                                "name":  "Steve Baker",
                                                "club":  "chorley",
                                                "ageCategory":  "V60",
+                                               "seriesRunnerId":  25,
                                                "total":  144,
                                                "results":  {
                                                                "mearley-clough":  {
@@ -794,6 +833,7 @@
                                                "name":  "Chris Bluck",
                                                "club":  "blackpool",
                                                "ageCategory":  "V40",
+                                               "seriesRunnerId":  41,
                                                "total":  141,
                                                "results":  {
                                                                "mearley-clough":  {
@@ -801,11 +841,11 @@
                                                                                       "counting":  true
                                                                                   },
                                                                "edenfield":  null,
-                                                               "hameldon-quarry":  {
-                                                                                       "points":  81,
-                                                                                       "counting":  true
-                                                                                   },
-                                                               "pendleton":  null
+                                                               "hameldon-quarry":  null,
+                                                               "pendleton":  {
+                                                                                 "points":  81,
+                                                                                 "counting":  true
+                                                                             }
                                                            }
                                            },
                                            {
@@ -813,6 +853,7 @@
                                                "name":  "Darrell Pickering",
                                                "club":  "blackpool",
                                                "ageCategory":  "V60",
+                                               "seriesRunnerId":  43,
                                                "total":  137,
                                                "results":  {
                                                                "mearley-clough":  {
@@ -820,11 +861,11 @@
                                                                                       "counting":  true
                                                                                   },
                                                                "edenfield":  null,
-                                                               "hameldon-quarry":  {
-                                                                                       "points":  79,
-                                                                                       "counting":  true
-                                                                                   },
-                                                               "pendleton":  null
+                                                               "hameldon-quarry":  null,
+                                                               "pendleton":  {
+                                                                                 "points":  79,
+                                                                                 "counting":  true
+                                                                             }
                                                            }
                                            },
                                            {
@@ -832,6 +873,7 @@
                                                "name":  "Craig Walker",
                                                "club":  "preston",
                                                "ageCategory":  "SEN",
+                                               "seriesRunnerId":  31,
                                                "total":  136,
                                                "results":  {
                                                                "mearley-clough":  {
@@ -851,6 +893,7 @@
                                                "name":  "Nick Johns",
                                                "club":  "preston",
                                                "ageCategory":  "V40",
+                                               "seriesRunnerId":  39,
                                                "total":  132,
                                                "results":  {
                                                                "mearley-clough":  {
@@ -870,6 +913,7 @@
                                                "name":  "Pete McDermott",
                                                "club":  "preston",
                                                "ageCategory":  "V70",
+                                               "seriesRunnerId":  80,
                                                "total":  132,
                                                "results":  {
                                                                "mearley-clough":  null,
@@ -889,14 +933,15 @@
                                                "name":  "Keith Johnston",
                                                "club":  "chorley",
                                                "ageCategory":  "V40",
+                                               "seriesRunnerId":  83,
                                                "total":  99,
                                                "results":  {
                                                                "mearley-clough":  null,
-                                                               "edenfield":  {
-                                                                                 "points":  99,
-                                                                                 "counting":  true
-                                                                             },
-                                                               "hameldon-quarry":  null,
+                                                               "edenfield":  null,
+                                                               "hameldon-quarry":  {
+                                                                                       "points":  99,
+                                                                                       "counting":  true
+                                                                                   },
                                                                "pendleton":  null
                                                            }
                                            },
@@ -905,14 +950,15 @@
                                                "name":  "Chris Banks",
                                                "club":  "wesham",
                                                "ageCategory":  "SEN",
+                                               "seriesRunnerId":  84,
                                                "total":  97,
                                                "results":  {
-                                                               "mearley-clough":  {
-                                                                                      "points":  97,
-                                                                                      "counting":  true
-                                                                                  },
+                                                               "mearley-clough":  null,
                                                                "edenfield":  null,
-                                                               "hameldon-quarry":  null,
+                                                               "hameldon-quarry":  {
+                                                                                       "points":  97,
+                                                                                       "counting":  true
+                                                                                   },
                                                                "pendleton":  null
                                                            }
                                            },
@@ -921,14 +967,672 @@
                                                "name":  "D. Cowburn",
                                                "club":  "chorley",
                                                "ageCategory":  "V50",
+                                               "seriesRunnerId":  95,
                                                "total":  95,
                                                "results":  {
                                                                "mearley-clough":  null,
                                                                "edenfield":  null,
+                                                               "hameldon-quarry":  null,
+                                                               "pendleton":  {
+                                                                                 "points":  95,
+                                                                                 "counting":  true
+                                                                             }
+                                                           }
+                                           },
+                                           {
+                                               "position":  45,
+                                               "name":  "Thomas Crabtree",
+                                               "club":  "wesham",
+                                               "ageCategory":  "SEN",
+                                               "seriesRunnerId":  6,
+                                               "total":  95,
+                                               "results":  {
+                                                               "mearley-clough":  {
+                                                                                      "points":  95,
+                                                                                      "counting":  true
+                                                                                  },
+                                                               "edenfield":  null,
+                                                               "hameldon-quarry":  null,
+                                                               "pendleton":  null
+                                                           }
+                                           },
+                                           {
+                                               "position":  46,
+                                               "name":  "A. Hall",
+                                               "club":  "blackpool",
+                                               "ageCategory":  "SEN",
+                                               "seriesRunnerId":  96,
+                                               "total":  94,
+                                               "results":  {
+                                                               "mearley-clough":  null,
+                                                               "edenfield":  null,
+                                                               "hameldon-quarry":  null,
+                                                               "pendleton":  {
+                                                                                 "points":  94,
+                                                                                 "counting":  true
+                                                                             }
+                                                           }
+                                           },
+                                           {
+                                               "position":  47,
+                                               "name":  "Norman Hayhurst",
+                                               "club":  "preston",
+                                               "ageCategory":  "V60",
+                                               "seriesRunnerId":  85,
+                                               "total":  93,
+                                               "results":  {
+                                                               "mearley-clough":  null,
+                                                               "edenfield":  null,
                                                                "hameldon-quarry":  {
-                                                                                       "points":  95,
+                                                                                       "points":  93,
                                                                                        "counting":  true
                                                                                    },
+                                                               "pendleton":  null
+                                                           }
+                                           },
+                                           {
+                                               "position":  48,
+                                               "name":  "S. Hall",
+                                               "club":  "blackpool",
+                                               "ageCategory":  "V40",
+                                               "seriesRunnerId":  97,
+                                               "total":  92,
+                                               "results":  {
+                                                               "mearley-clough":  null,
+                                                               "edenfield":  null,
+                                                               "hameldon-quarry":  null,
+                                                               "pendleton":  {
+                                                                                 "points":  92,
+                                                                                 "counting":  true
+                                                                             }
+                                                           }
+                                           },
+                                           {
+                                               "position":  49,
+                                               "name":  "Stephen Dunn",
+                                               "club":  "blackpool",
+                                               "ageCategory":  "V40",
+                                               "seriesRunnerId":  57,
+                                               "total":  92,
+                                               "results":  {
+                                                               "mearley-clough":  {
+                                                                                      "points":  92,
+                                                                                      "counting":  true
+                                                                                  },
+                                                               "edenfield":  null,
+                                                               "hameldon-quarry":  null,
+                                                               "pendleton":  null
+                                                           }
+                                           },
+                                           {
+                                               "position":  50,
+                                               "name":  "Stuart Nixon",
+                                               "club":  "preston",
+                                               "ageCategory":  "V40",
+                                               "seriesRunnerId":  65,
+                                               "total":  91,
+                                               "results":  {
+                                                               "mearley-clough":  null,
+                                                               "edenfield":  {
+                                                                                 "points":  91,
+                                                                                 "counting":  true
+                                                                             },
+                                                               "hameldon-quarry":  null,
+                                                               "pendleton":  null
+                                                           }
+                                           },
+                                           {
+                                               "position":  51,
+                                               "name":  "John Rainford",
+                                               "club":  "preston",
+                                               "ageCategory":  "V60",
+                                               "seriesRunnerId":  9,
+                                               "total":  90,
+                                               "results":  {
+                                                               "mearley-clough":  {
+                                                                                      "points":  90,
+                                                                                      "counting":  true
+                                                                                  },
+                                                               "edenfield":  null,
+                                                               "hameldon-quarry":  null,
+                                                               "pendleton":  null
+                                                           }
+                                           },
+                                           {
+                                               "position":  52,
+                                               "name":  "Steve Dunn",
+                                               "club":  "blackpool",
+                                               "ageCategory":  "V40",
+                                               "total":  90,
+                                               "results":  {
+                                                               "mearley-clough":  null,
+                                                               "edenfield":  null,
+                                                               "hameldon-quarry":  {
+                                                                                       "points":  90,
+                                                                                       "counting":  true
+                                                                                   },
+                                                               "pendleton":  null
+                                                           }
+                                           },
+                                           {
+                                               "position":  53,
+                                               "name":  "Tim Webster",
+                                               "club":  "chorley",
+                                               "ageCategory":  "V40",
+                                               "seriesRunnerId":  59,
+                                               "total":  89,
+                                               "results":  {
+                                                               "mearley-clough":  {
+                                                                                      "points":  89,
+                                                                                      "counting":  true
+                                                                                  },
+                                                               "edenfield":  null,
+                                                               "hameldon-quarry":  null,
+                                                               "pendleton":  null
+                                                           }
+                                           },
+                                           {
+                                               "position":  54,
+                                               "name":  "Michael Riley",
+                                               "club":  "chorley",
+                                               "ageCategory":  "V50",
+                                               "seriesRunnerId":  10,
+                                               "total":  88,
+                                               "results":  {
+                                                               "mearley-clough":  {
+                                                                                      "points":  88,
+                                                                                      "counting":  true
+                                                                                  },
+                                                               "edenfield":  null,
+                                                               "hameldon-quarry":  null,
+                                                               "pendleton":  null
+                                                           }
+                                           },
+                                           {
+                                               "position":  55,
+                                               "name":  "Mark Warner",
+                                               "club":  "blackpool",
+                                               "ageCategory":  "SEN",
+                                               "seriesRunnerId":  11,
+                                               "total":  87,
+                                               "results":  {
+                                                               "mearley-clough":  {
+                                                                                      "points":  87,
+                                                                                      "counting":  true
+                                                                                  },
+                                                               "edenfield":  null,
+                                                               "hameldon-quarry":  null,
+                                                               "pendleton":  null
+                                                           }
+                                           },
+                                           {
+                                               "position":  56,
+                                               "name":  "Michael Croft",
+                                               "club":  "preston",
+                                               "ageCategory":  "V40",
+                                               "seriesRunnerId":  66,
+                                               "total":  86,
+                                               "results":  {
+                                                               "mearley-clough":  null,
+                                                               "edenfield":  {
+                                                                                 "points":  86,
+                                                                                 "counting":  true
+                                                                             },
+                                                               "hameldon-quarry":  null,
+                                                               "pendleton":  null
+                                                           }
+                                           },
+                                           {
+                                               "position":  57,
+                                               "name":  "Steve Pepper",
+                                               "club":  "lytham",
+                                               "ageCategory":  "V40",
+                                               "seriesRunnerId":  87,
+                                               "total":  83,
+                                               "results":  {
+                                                               "mearley-clough":  null,
+                                                               "edenfield":  null,
+                                                               "hameldon-quarry":  {
+                                                                                       "points":  83,
+                                                                                       "counting":  true
+                                                                                   },
+                                                               "pendleton":  null
+                                                           }
+                                           },
+                                           {
+                                               "position":  58,
+                                               "name":  "Chris Cottam",
+                                               "club":  "lytham",
+                                               "ageCategory":  "SEN",
+                                               "seriesRunnerId":  88,
+                                               "total":  82,
+                                               "results":  {
+                                                               "mearley-clough":  null,
+                                                               "edenfield":  null,
+                                                               "hameldon-quarry":  {
+                                                                                       "points":  82,
+                                                                                       "counting":  true
+                                                                                   },
+                                                               "pendleton":  null
+                                                           }
+                                           },
+                                           {
+                                               "position":  59,
+                                               "name":  "D. Miller",
+                                               "club":  "chorley",
+                                               "ageCategory":  "V70",
+                                               "seriesRunnerId":  99,
+                                               "total":  80,
+                                               "results":  {
+                                                               "mearley-clough":  null,
+                                                               "edenfield":  null,
+                                                               "hameldon-quarry":  null,
+                                                               "pendleton":  {
+                                                                                 "points":  80,
+                                                                                 "counting":  true
+                                                                             }
+                                                           }
+                                           },
+                                           {
+                                               "position":  60,
+                                               "name":  "Rob Mather",
+                                               "club":  "red-rose",
+                                               "ageCategory":  "V50",
+                                               "seriesRunnerId":  90,
+                                               "total":  79,
+                                               "results":  {
+                                                               "mearley-clough":  null,
+                                                               "edenfield":  null,
+                                                               "hameldon-quarry":  {
+                                                                                       "points":  79,
+                                                                                       "counting":  true
+                                                                                   },
+                                                               "pendleton":  null
+                                                           }
+                                           },
+                                           {
+                                               "position":  61,
+                                               "name":  "Albert Forga",
+                                               "club":  "lytham",
+                                               "ageCategory":  "V50",
+                                               "seriesRunnerId":  91,
+                                               "total":  78,
+                                               "results":  {
+                                                               "mearley-clough":  null,
+                                                               "edenfield":  null,
+                                                               "hameldon-quarry":  {
+                                                                                       "points":  78,
+                                                                                       "counting":  true
+                                                                                   },
+                                                               "pendleton":  null
+                                                           }
+                                           },
+                                           {
+                                               "position":  62,
+                                               "name":  "David Williamson",
+                                               "club":  "blackpool",
+                                               "ageCategory":  "V50",
+                                               "seriesRunnerId":  20,
+                                               "total":  78,
+                                               "results":  {
+                                                               "mearley-clough":  {
+                                                                                      "points":  78,
+                                                                                      "counting":  true
+                                                                                  },
+                                                               "edenfield":  null,
+                                                               "hameldon-quarry":  null,
+                                                               "pendleton":  null
+                                                           }
+                                           },
+                                           {
+                                               "position":  63,
+                                               "name":  "Scott Ross",
+                                               "club":  "blackpool",
+                                               "ageCategory":  "V50",
+                                               "seriesRunnerId":  21,
+                                               "total":  77,
+                                               "results":  {
+                                                               "mearley-clough":  {
+                                                                                      "points":  77,
+                                                                                      "counting":  true
+                                                                                  },
+                                                               "edenfield":  null,
+                                                               "hameldon-quarry":  null,
+                                                               "pendleton":  null
+                                                           }
+                                           },
+                                           {
+                                               "position":  64,
+                                               "name":  "Graham Schofield",
+                                               "club":  "chorley",
+                                               "ageCategory":  "V70",
+                                               "seriesRunnerId":  100,
+                                               "total":  76,
+                                               "results":  {
+                                                               "mearley-clough":  null,
+                                                               "edenfield":  null,
+                                                               "hameldon-quarry":  null,
+                                                               "pendleton":  {
+                                                                                 "points":  76,
+                                                                                 "counting":  true
+                                                                             }
+                                                           }
+                                           },
+                                           {
+                                               "position":  65,
+                                               "name":  "Bill Beckett",
+                                               "club":  "chorley",
+                                               "ageCategory":  "V50",
+                                               "seriesRunnerId":  70,
+                                               "total":  76,
+                                               "results":  {
+                                                               "mearley-clough":  null,
+                                                               "edenfield":  {
+                                                                                 "points":  76,
+                                                                                 "counting":  true
+                                                                             },
+                                                               "hameldon-quarry":  null,
+                                                               "pendleton":  null
+                                                           }
+                                           },
+                                           {
+                                               "position":  66,
+                                               "name":  "C. Bligh",
+                                               "club":  "thornton",
+                                               "ageCategory":  "V60",
+                                               "seriesRunnerId":  101,
+                                               "total":  75,
+                                               "results":  {
+                                                               "mearley-clough":  null,
+                                                               "edenfield":  null,
+                                                               "hameldon-quarry":  null,
+                                                               "pendleton":  {
+                                                                                 "points":  75,
+                                                                                 "counting":  true
+                                                                             }
+                                                           }
+                                           },
+                                           {
+                                               "position":  67,
+                                               "name":  "Chris Collings",
+                                               "club":  "red-rose",
+                                               "ageCategory":  "SEN",
+                                               "seriesRunnerId":  93,
+                                               "total":  75,
+                                               "results":  {
+                                                               "mearley-clough":  null,
+                                                               "edenfield":  null,
+                                                               "hameldon-quarry":  {
+                                                                                       "points":  75,
+                                                                                       "counting":  true
+                                                                                   },
+                                                               "pendleton":  null
+                                                           }
+                                           },
+                                           {
+                                               "position":  68,
+                                               "name":  "J. Street",
+                                               "club":  "thornton",
+                                               "ageCategory":  "V50",
+                                               "seriesRunnerId":  102,
+                                               "total":  74,
+                                               "results":  {
+                                                               "mearley-clough":  null,
+                                                               "edenfield":  null,
+                                                               "hameldon-quarry":  null,
+                                                               "pendleton":  {
+                                                                                 "points":  74,
+                                                                                 "counting":  true
+                                                                             }
+                                                           }
+                                           },
+                                           {
+                                               "position":  69,
+                                               "name":  "S. Robinson",
+                                               "club":  "thornton",
+                                               "ageCategory":  "V60",
+                                               "seriesRunnerId":  103,
+                                               "total":  73,
+                                               "results":  {
+                                                               "mearley-clough":  null,
+                                                               "edenfield":  null,
+                                                               "hameldon-quarry":  null,
+                                                               "pendleton":  {
+                                                                                 "points":  73,
+                                                                                 "counting":  true
+                                                                             }
+                                                           }
+                                           },
+                                           {
+                                               "position":  70,
+                                               "name":  "Michael Hendry",
+                                               "club":  "chorley",
+                                               "ageCategory":  "V40",
+                                               "seriesRunnerId":  71,
+                                               "total":  73,
+                                               "results":  {
+                                                               "mearley-clough":  null,
+                                                               "edenfield":  {
+                                                                                 "points":  73,
+                                                                                 "counting":  true
+                                                                             },
+                                                               "hameldon-quarry":  null,
+                                                               "pendleton":  null
+                                                           }
+                                           },
+                                           {
+                                               "position":  71,
+                                               "name":  "M. Carey",
+                                               "club":  "thornton",
+                                               "ageCategory":  "V40",
+                                               "seriesRunnerId":  104,
+                                               "total":  71,
+                                               "results":  {
+                                                               "mearley-clough":  null,
+                                                               "edenfield":  null,
+                                                               "hameldon-quarry":  null,
+                                                               "pendleton":  {
+                                                                                 "points":  71,
+                                                                                 "counting":  true
+                                                                             }
+                                                           }
+                                           },
+                                           {
+                                               "position":  72,
+                                               "name":  "A. Blight",
+                                               "club":  "blackpool",
+                                               "ageCategory":  "V50",
+                                               "total":  70,
+                                               "results":  {
+                                                               "mearley-clough":  null,
+                                                               "edenfield":  null,
+                                                               "hameldon-quarry":  null,
+                                                               "pendleton":  {
+                                                                                 "points":  70,
+                                                                                 "counting":  true
+                                                                             }
+                                                           }
+                                           },
+                                           {
+                                               "position":  73,
+                                               "name":  "D. Greene",
+                                               "club":  "thornton",
+                                               "ageCategory":  "V50",
+                                               "seriesRunnerId":  109,
+                                               "total":  69,
+                                               "results":  {
+                                                               "mearley-clough":  null,
+                                                               "edenfield":  null,
+                                                               "hameldon-quarry":  null,
+                                                               "pendleton":  {
+                                                                                 "points":  69,
+                                                                                 "counting":  true
+                                                                             }
+                                                           }
+                                           },
+                                           {
+                                               "position":  74,
+                                               "name":  "Dougie Potter",
+                                               "club":  "preston",
+                                               "ageCategory":  "V40",
+                                               "seriesRunnerId":  28,
+                                               "total":  69,
+                                               "results":  {
+                                                               "mearley-clough":  {
+                                                                                      "points":  69,
+                                                                                      "counting":  true
+                                                                                  },
+                                                               "edenfield":  null,
+                                                               "hameldon-quarry":  null,
+                                                               "pendleton":  null
+                                                           }
+                                           },
+                                           {
+                                               "position":  75,
+                                               "name":  "Michael Edge",
+                                               "club":  "wesham",
+                                               "ageCategory":  "V60",
+                                               "seriesRunnerId":  72,
+                                               "total":  68,
+                                               "results":  {
+                                                               "mearley-clough":  null,
+                                                               "edenfield":  {
+                                                                                 "points":  68,
+                                                                                 "counting":  true
+                                                                             },
+                                                               "hameldon-quarry":  null,
+                                                               "pendleton":  null
+                                                           }
+                                           },
+                                           {
+                                               "position":  76,
+                                               "name":  "Peter Bolton",
+                                               "club":  "red-rose",
+                                               "ageCategory":  "V60",
+                                               "seriesRunnerId":  33,
+                                               "total":  65,
+                                               "results":  {
+                                                               "mearley-clough":  {
+                                                                                      "points":  65,
+                                                                                      "counting":  true
+                                                                                  },
+                                                               "edenfield":  null,
+                                                               "hameldon-quarry":  null,
+                                                               "pendleton":  null
+                                                           }
+                                           },
+                                           {
+                                               "position":  77,
+                                               "name":  "Peter Singleton",
+                                               "club":  "blackpool",
+                                               "ageCategory":  "V60",
+                                               "seriesRunnerId":  35,
+                                               "total":  64,
+                                               "results":  {
+                                                               "mearley-clough":  {
+                                                                                      "points":  64,
+                                                                                      "counting":  true
+                                                                                  },
+                                                               "edenfield":  null,
+                                                               "hameldon-quarry":  null,
+                                                               "pendleton":  null
+                                                           }
+                                           },
+                                           {
+                                               "position":  78,
+                                               "name":  "Kurt Broadbent",
+                                               "club":  "blackpool",
+                                               "ageCategory":  "V40",
+                                               "seriesRunnerId":  76,
+                                               "total":  61,
+                                               "results":  {
+                                                               "mearley-clough":  null,
+                                                               "edenfield":  {
+                                                                                 "points":  61,
+                                                                                 "counting":  true
+                                                                             },
+                                                               "hameldon-quarry":  null,
+                                                               "pendleton":  null
+                                                           }
+                                           },
+                                           {
+                                               "position":  79,
+                                               "name":  "William Johnstone",
+                                               "club":  "preston",
+                                               "ageCategory":  "V60",
+                                               "seriesRunnerId":  40,
+                                               "total":  61,
+                                               "results":  {
+                                                               "mearley-clough":  {
+                                                                                      "points":  61,
+                                                                                      "counting":  true
+                                                                                  },
+                                                               "edenfield":  null,
+                                                               "hameldon-quarry":  null,
+                                                               "pendleton":  null
+                                                           }
+                                           },
+                                           {
+                                               "position":  80,
+                                               "name":  "Rick Pinches",
+                                               "club":  "blackpool",
+                                               "ageCategory":  "V50",
+                                               "seriesRunnerId":  79,
+                                               "total":  58,
+                                               "results":  {
+                                                               "mearley-clough":  null,
+                                                               "edenfield":  {
+                                                                                 "points":  58,
+                                                                                 "counting":  true
+                                                                             },
+                                                               "hameldon-quarry":  null,
+                                                               "pendleton":  null
+                                                           }
+                                           },
+                                           {
+                                               "position":  81,
+                                               "name":  "Coner Millward",
+                                               "club":  "blackpool",
+                                               "ageCategory":  "SEN",
+                                               "seriesRunnerId":  44,
+                                               "total":  57,
+                                               "results":  {
+                                                               "mearley-clough":  {
+                                                                                      "points":  57,
+                                                                                      "counting":  true
+                                                                                  },
+                                                               "edenfield":  null,
+                                                               "hameldon-quarry":  null,
+                                                               "pendleton":  null
+                                                           }
+                                           },
+                                           {
+                                               "position":  82,
+                                               "name":  "John Hyde",
+                                               "club":  "red-rose",
+                                               "ageCategory":  "V70",
+                                               "seriesRunnerId":  61,
+                                               "total":  55,
+                                               "results":  {
+                                                               "mearley-clough":  {
+                                                                                      "points":  55,
+                                                                                      "counting":  true
+                                                                                  },
+                                                               "edenfield":  null,
+                                                               "hameldon-quarry":  null,
+                                                               "pendleton":  null
+                                                           }
+                                           },
+                                           {
+                                               "position":  83,
+                                               "name":  "T. Roberts",
+                                               "club":  "blackpool",
+                                               "ageCategory":  "SEN",
+                                               "total":  0,
+                                               "results":  {
+                                                               "mearley-clough":  null,
+                                                               "edenfield":  null,
+                                                               "hameldon-quarry":  null,
                                                                "pendleton":  null
                                                            }
                                            }
