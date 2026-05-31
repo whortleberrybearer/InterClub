@@ -3436,11 +3436,12 @@
                                                "position":  1,
                                                "name":  "Olga Wiggins",
                                                "club":  "preston",
+                                               "seriesRunnerId":  53,
                                                "total":  296,
                                                "results":  {
                                                                "mearley-clough":  {
                                                                                       "points":  97,
-                                                                                      "counting":  true
+                                                                                      "counting":  false
                                                                                   },
                                                                "edenfield":  {
                                                                                  "points":  100,
@@ -3452,7 +3453,7 @@
                                                                                    },
                                                                "pendleton":  {
                                                                                  "points":  97,
-                                                                                 "counting":  false
+                                                                                 "counting":  true
                                                                              }
                                                            }
                                            },
@@ -3460,24 +3461,26 @@
                                                "position":  2,
                                                "name":  "Cass Chisholm",
                                                "club":  "lytham",
+                                               "seriesRunnerId":  86,
                                                "total":  200,
                                                "results":  {
-                                                               "mearley-clough":  {
-                                                                                      "points":  100,
-                                                                                      "counting":  true
-                                                                                  },
-                                                               "edenfield":  {
+                                                               "mearley-clough":  null,
+                                                               "edenfield":  null,
+                                                               "hameldon-quarry":  {
+                                                                                       "points":  100,
+                                                                                       "counting":  true
+                                                                                   },
+                                                               "pendleton":  {
                                                                                  "points":  100,
                                                                                  "counting":  true
-                                                                             },
-                                                               "hameldon-quarry":  null,
-                                                               "pendleton":  null
+                                                                             }
                                                            }
                                            },
                                            {
                                                "position":  3,
                                                "name":  "Xavia Cooper",
                                                "club":  "lytham",
+                                               "seriesRunnerId":  51,
                                                "total":  197,
                                                "results":  {
                                                                "mearley-clough":  {
@@ -3485,17 +3488,18 @@
                                                                                       "counting":  true
                                                                                   },
                                                                "edenfield":  null,
-                                                               "hameldon-quarry":  {
-                                                                                       "points":  98,
-                                                                                       "counting":  true
-                                                                                   },
-                                                               "pendleton":  null
+                                                               "hameldon-quarry":  null,
+                                                               "pendleton":  {
+                                                                                 "points":  98,
+                                                                                 "counting":  true
+                                                                             }
                                                            }
                                            },
                                            {
                                                "position":  4,
                                                "name":  "Leanne Bluck",
                                                "club":  "blackpool",
+                                               "seriesRunnerId":  55,
                                                "total":  190,
                                                "results":  {
                                                                "mearley-clough":  {
@@ -3503,17 +3507,18 @@
                                                                                       "counting":  true
                                                                                   },
                                                                "edenfield":  null,
-                                                               "hameldon-quarry":  {
-                                                                                       "points":  94,
-                                                                                       "counting":  true
-                                                                                   },
-                                                               "pendleton":  null
+                                                               "hameldon-quarry":  null,
+                                                               "pendleton":  {
+                                                                                 "points":  94,
+                                                                                 "counting":  true
+                                                                             }
                                                            }
                                            },
                                            {
                                                "position":  5,
                                                "name":  "Jen Salt",
                                                "club":  "wesham",
+                                               "seriesRunnerId":  48,
                                                "total":  100,
                                                "results":  {
                                                                "mearley-clough":  {
@@ -3529,6 +3534,23 @@
                                                "position":  5,
                                                "name":  "Ginny Hester",
                                                "club":  "lytham",
+                                               "seriesRunnerId":  78,
+                                               "total":  99,
+                                               "results":  {
+                                                               "mearley-clough":  null,
+                                                               "edenfield":  {
+                                                                                 "points":  99,
+                                                                                 "counting":  true
+                                                                             },
+                                                               "hameldon-quarry":  null,
+                                                               "pendleton":  null
+                                                           }
+                                           },
+                                           {
+                                               "position":  6,
+                                               "name":  "J. Hall",
+                                               "club":  "blackpool",
+                                               "seriesRunnerId":  98,
                                                "total":  99,
                                                "results":  {
                                                                "mearley-clough":  null,
@@ -3541,24 +3563,10 @@
                                                            }
                                            },
                                            {
-                                               "position":  6,
-                                               "name":  "J. Hall",
-                                               "club":  "blackpool",
-                                               "total":  99,
-                                               "results":  {
-                                                               "mearley-clough":  null,
-                                                               "edenfield":  null,
-                                                               "hameldon-quarry":  {
-                                                                                       "points":  99,
-                                                                                       "counting":  true
-                                                                                   },
-                                                               "pendleton":  null
-                                                           }
-                                           },
-                                           {
                                                "position":  7,
                                                "name":  "Amanda Fuller",
                                                "club":  "blackpool",
+                                               "seriesRunnerId":  62,
                                                "total":  98,
                                                "results":  {
                                                                "mearley-clough":  {
@@ -3574,6 +3582,7 @@
                                                "position":  8,
                                                "name":  "E. Stanier",
                                                "club":  "red-rose",
+                                               "seriesRunnerId":  105,
                                                "total":  96,
                                                "results":  {
                                                                "mearley-clough":  null,
@@ -3589,30 +3598,32 @@
                                                "position":  9,
                                                "name":  "D. Jackson",
                                                "club":  "thornton",
+                                               "seriesRunnerId":  107,
                                                "total":  95,
                                                "results":  {
                                                                "mearley-clough":  null,
                                                                "edenfield":  null,
-                                                               "hameldon-quarry":  {
-                                                                                       "points":  95,
-                                                                                       "counting":  true
-                                                                                   },
-                                                               "pendleton":  null
+                                                               "hameldon-quarry":  null,
+                                                               "pendleton":  {
+                                                                                 "points":  95,
+                                                                                 "counting":  true
+                                                                             }
                                                            }
                                            },
                                            {
                                                "position":  10,
                                                "name":  "G. Hester-See",
                                                "club":  "lytham",
+                                               "seriesRunnerId":  110,
                                                "total":  93,
                                                "results":  {
                                                                "mearley-clough":  null,
                                                                "edenfield":  null,
-                                                               "hameldon-quarry":  {
-                                                                                       "points":  93,
-                                                                                       "counting":  true
-                                                                                   },
-                                                               "pendleton":  null
+                                                               "hameldon-quarry":  null,
+                                                               "pendleton":  {
+                                                                                 "points":  93,
+                                                                                 "counting":  true
+                                                                             }
                                                            }
                                            }
                                        ]
