@@ -1,0 +1,120 @@
+---
+/**
+ * Hero card for the next upcoming race in a series.
+ * Renders with a filled accent background (amber = Road GP, teal = Fell).
+ *
+ * Layout: flex-col so the spacer div can push the stats/button row to the
+ * bottom of the card. Combined with the same technique in LastRaceCard, this
+ * guarantees both separators sit at the same vertical position within the
+ * shared grid row regardless of which card has more content above the separator.
+ */
+import { formatRaceDate } from '../../lib/format';
+import type { Race } from '../../lib/types';
+
+interface Props {
+  /** Colour accent: 'amber' for Road GP, 'teal' for Fell */
+  accent: 'amber' | 'teal';
+  /** Series name shown in the eyebrow label, e.g. "Road Grand Prix" */
+  seriesLabel: string;
+  /** 1-based race number within the season, or null when unknown */
+  raceNum: number | null;
+  /** Total races in the season */
+  totalRaces: number;
+  /** The upcoming race */
+  race: Race;
+  /** Days until race date (0 = today, negative = past) */
+  daysUntil: number | null;
+  /** URL for the "Race info →" button */
+  infoUrl: string;
+  /** Open infoUrl in a new tab (for external links such as fellrunner.org.uk) */
+  infoUrlExternal?: boolean;
+  /**
+   * Name text-size variant:
+   * 'large'   → Road GP (wide column): text-[30px] md:text-[36px] lg:text-[46px]
+   * 'compact' → Fell (narrow column):  text-[26px] lg:text-[30px]
+   */
+  size?: 'large' | 'compact';
+  /** Show the race's ascent stat (Fell only) */
+  showAscent?: boolean;
+  /** Append race location to the date/time subtitle (Road GP only) */
+  showLocation?: boolean;
+}
+
+const {
+  accent,
+  seriesLabel,
+  raceNum,
+  totalRaces,
+  race,
+  daysUntil,
+  infoUrl,
+  infoUrlExternal = false,
+  size = 'large',
+  showAscent = false,
+  showLocation = false,
+} = Astro.props;
+
+const bgClass    = accent === 'amber' ? 'bg-amber'   : 'bg-teal';
+const textAccent = accent === 'amber' ? 'text-amber' : 'text-teal';
+const nameClass  = size === 'large'
+  ? 'text-[30px] md:text-[36px] lg:text-[46px]'
+  : 'text-[26px] lg:text-[30px]';
+---
+
+<div class:list={[bgClass, 'text-white rounded-[14px] p-[18px_18px_16px] flex flex-col']}>
+  <!-- Eyebrow: series label + race counter + countdown pill -->
+  <div class="flex items-baseline justify-between gap-3">
+    <span class="font-head text-[10px] font-bold tracking-[0.14em] uppercase opacity-85">
+      {seriesLabel} · {raceNum != null ? `Race ${raceNum} of ${totalRaces}` : 'Next race'}
+    </span>
+    {daysUntil != null && daysUntil > 0 && (
+      <span class="font-mono text-[11px] bg-white/20 px-2 py-0.5 rounded-full whitespace-nowrap shrink-0">
+        in {daysUntil} days
+      </span>
+    )}
+  </div>
+
+  <!-- Race name -->
+  <div class:list={['font-head font-extrabold tracking-tight leading-none mt-1.5', nameClass]}>
+    {race.name}
+  </div>
+
+  <!-- Date · time · location -->
+  <div class="text-[13px] opacity-90 mt-1.5">
+    {formatRaceDate(race.date)}{race.time && ` · ${race.time}`}{showLocation && race.location && ` · ${race.location}`}
+  </div>
+
+  <!--
+    Spacer: min-h-[14px] preserves the natural gap between the date and the
+    separator on mobile (where no stretching occurs). flex-1 absorbs any extra
+    height the grid row adds when this card is shorter than its neighbour,
+    keeping the separator at exactly the same y-position as in LastRaceCard.
+  -->
+  <div class="flex-1 min-h-[14px]"></div>
+
+  <!-- Stats row + Race info button (separator provided by border-t) -->
+  <div class="flex items-end gap-[18px] pt-3 border-t border-white/25">
+    {race.distance && (
+      <div>
+        <div class="font-mono text-[14px] font-medium">{race.distance}</div>
+        <div class="font-head text-[9px] font-bold tracking-[0.14em] uppercase opacity-70">Distance</div>
+      </div>
+    )}
+    {showAscent && race.ascent && (
+      <div>
+        <div class="font-mono text-[14px] font-medium">{race.ascent}</div>
+        <div class="font-head text-[9px] font-bold tracking-[0.14em] uppercase opacity-70">Ascent</div>
+      </div>
+    )}
+    <a
+      href={infoUrl}
+      target={infoUrlExternal ? '_blank' : undefined}
+      rel={infoUrlExternal ? 'noopener noreferrer' : undefined}
+      class:list={[
+        'ml-auto shrink-0 self-center bg-white font-head text-[12px] font-bold tracking-[0.06em]',
+        'uppercase px-4 py-2 rounded-md no-underline whitespace-nowrap hover:opacity-90 transition-opacity',
+        textAccent,
+      ]}
+    >Race info →</a>
+  </div>
+</div>
