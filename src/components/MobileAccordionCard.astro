@@ -56,6 +56,9 @@ const { detailId, position, podiumAccent, class: className, ...rest } = Astro.pr
 
 <script>
   document.querySelectorAll<HTMLButtonElement>('.accordion-toggle').forEach(btn => {
+    btn.querySelectorAll<HTMLAnchorElement>('a').forEach(link => {
+      link.addEventListener('click', e => e.stopPropagation());
+    });
     btn.addEventListener('click', () => {
       const detail = document.getElementById(btn.dataset.target!)!;
       const isOpen = !detail.classList.contains('hidden');
