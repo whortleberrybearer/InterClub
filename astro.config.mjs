@@ -9,6 +9,7 @@ import robotsTxt from 'astro-robots-txt';
 export default defineConfig({
   site: 'https://whortleberrybearer.github.io',
   base: '/InterClub',
+  server: { port: process.env.PORT ? parseInt(process.env.PORT) : 4321 },
   integrations: [
     sitemap(),
     robotsTxt({

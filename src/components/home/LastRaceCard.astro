@@ -1,0 +1,79 @@
+---
+/**
+ * Card for the most recently completed race in a series.
+ * Entire card is a link.
+ *
+ * Structure mirrors NextRaceCard: eyebrow → name → date → spacer → separator → action.
+ * The shared flex-col + flex-1 spacer pattern guarantees the separator lines in
+ * both cards sit at the same vertical position within the grid row: the spacer
+ * absorbs whatever extra height the grid row stretching adds to the shorter card.
+ */
+import { formatRaceDate } from '../../lib/format';
+import type { Race } from '../../lib/types';
+
+interface Props {
+  /** Colour accent: 'amber' for Road GP, 'teal' for Fell */
+  accent: 'amber' | 'teal';
+  /** The last completed race */
+  race: Race;
+  /** Whether individual results are available */
+  hasResults: boolean;
+  /** Destination URL for the card link */
+  href: string;
+  /**
+   * Name text-size variant — must match the paired NextRaceCard so both
+   * race names render at the same visual size within the same grid row.
+   * 'large'   → Road GP (wide column): text-[30px] md:text-[36px] lg:text-[46px]
+   * 'compact' → Fell (narrow column):  text-[26px] lg:text-[30px]
+   */
+  size?: 'large' | 'compact';
+}
+
+const { accent, race, hasResults, href, size = 'large' } = Astro.props;
+
+const bgAccent   = accent === 'amber' ? 'bg-amber' : 'bg-teal';
+const nameClass  = size === 'large'
+  ? 'text-[30px] md:text-[36px] lg:text-[46px]'
+  : 'text-[26px] lg:text-[30px]';
+---
+
+<a
+  href={href}
+  class="bg-surface border border-line rounded-[14px] p-[18px_18px_16px] no-underline
+         text-content flex flex-col hover:bg-canvas transition-colors"
+>
+  <!-- Eyebrow — mirrors the series-label eyebrow in NextRaceCard -->
+  <div class="font-head text-[10px] font-bold tracking-[0.14em] uppercase text-muted">
+    ← Last out
+  </div>
+
+  <!-- Race name — same size and typographic style as the paired NextRaceCard -->
+  <div class:list={['font-head font-extrabold tracking-tight leading-none mt-1.5', nameClass]}>
+    {race.name}
+  </div>
+
+  <!-- Date (and time if set) — mirrors the subtitle line in NextRaceCard -->
+  <div class="text-[13px] text-muted mt-1.5">
+    {formatRaceDate(race.date)}{race.time && ` · ${race.time}`}
+  </div>
+
+  <!-- Spacer: same min-h as NextRaceCard so the separator aligns across the grid row -->
+  <div class="flex-1 min-h-[14px]"></div>
+
+  <!-- Separator + action row -->
+  <div class="flex items-center justify-end pt-3 border-t border-line">
+    {hasResults ? (
+      <span class:list={[
+        'font-head text-[12px] font-bold tracking-[0.06em] uppercase',
+        'text-white px-4 py-2 rounded-md whitespace-nowrap',
+        bgAccent,
+      ]}>
+        Results →
+      </span>
+    ) : (
+      /* py-2 matches the Results→ button height so the border sits at the same
+         distance from the card bottom in both states */
+      <span class="font-mono text-[11px] text-muted py-2">Awaiting results</span>
+    )}
+  </div>
+</a>
