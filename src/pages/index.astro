@@ -1,8 +1,6 @@
 ---
 // src/pages/index.astro
 import Layout from '../components/Layout.astro';
-import NextRaceCard from '../components/home/NextRaceCard.astro';
-import LastRaceCard from '../components/home/LastRaceCard.astro';
 import { getCurrentYear, getRaces } from '../lib/data';
 import { hasResults, hasIndividualStandings, hasTeamStandings } from '../lib/results';
 import { formatRaceDate } from '../lib/format';
@@ -25,24 +23,6 @@ function isPast(race: Race): boolean {
   return toLocalDate(race.date) < today;
 }
 
-function daysUntil(dateStr: string): number {
-  return Math.round((toLocalDate(dateStr).getTime() - today.getTime()) / 86400000);
-}
-
-// Road GP derived state
-const nextRoadRace = roadRaces.find(r => !isPast(r)) ?? null;
-const lastRoadRace = [...roadRaces].reverse().find(r => isPast(r)) ?? null;
-const lastRoadHasResults = lastRoadRace ? hasResults(currentYear, 'road-gp', lastRoadRace.id) : false;
-const nextRoadIdx = nextRoadRace ? roadRaces.indexOf(nextRoadRace) + 1 : null;
-const nextRoadDays = nextRoadRace ? daysUntil(nextRoadRace.date) : null;
-
-// Fell Championship derived state
-const nextFellRace = fellRaces.find(r => !isPast(r)) ?? null;
-const lastFellRace = [...fellRaces].reverse().find(r => isPast(r)) ?? null;
-const lastFellHasResults = lastFellRace ? hasResults(currentYear, 'fell', lastFellRace.id) : false;
-const nextFellIdx = nextFellRace ? fellRaces.indexOf(nextFellRace) + 1 : null;
-const nextFellDays = nextFellRace ? daysUntil(nextFellRace.date) : null;
-
 function getStandingsUrl(series: 'road-gp' | 'fell'): string | undefined {
   if (hasIndividualStandings(currentYear, series))
     return siteUrl(`/${series}/${currentYear}/individual-standings`);
@@ -53,9 +33,39 @@ function getStandingsUrl(series: 'road-gp' | 'fell'): string | undefined {
 
 const fellStandingsUrl = getStandingsUrl('fell');
 
-// Next race in each series (used to highlight in the list)
-const nextRoadId = nextRoadRace?.id ?? null;
-const nextFellId = nextFellRace?.id ?? null;
+// Serialise race data for the client-side card script.
+// hasResults is computed at build time — results only ever appear after a push
+// (which triggers a rebuild), so this stays accurate.
+const roadRaceData = roadRaces.map(r => ({
+  id: r.id,
+  name: r.name,
+  date: r.date,
+  time: r.time ?? null,
+  location: r.location ?? null,
+  distance: r.distance ?? null,
+  hasResults: hasResults(currentYear, 'road-gp', r.id),
+  resultsUrl: siteUrl(`/road-gp/${currentYear}/${r.id}/results`),
+  infoUrl: siteUrl(`/road-gp/${currentYear}/${r.id}`),
+  infoUrlExternal: false,
+}));
+
+const fellRaceData = fellRaces.map(r => ({
+  id: r.id,
+  name: r.name,
+  date: r.date,
+  time: r.time ?? null,
+  distance: r.distance ?? null,
+  ascent: r.ascent ?? null,
+  hasResults: hasResults(currentYear, 'fell', r.id),
+  resultsUrl: siteUrl(`/fell/${currentYear}/${r.id}/results`),
+  infoUrl: r.detailsUrl ?? siteUrl(`/fell/${currentYear}/${r.id}`),
+  infoUrlExternal: !!r.detailsUrl,
+}));
+
+// Build-time list highlighting (used for the static list rows; the client
+// script will correct these if the build is stale relative to today).
+const nextRoadId = roadRaces.find(r => !isPast(r))?.id ?? null;
+const nextFellId = fellRaces.find(r => !isPast(r))?.id ?? null;
 ---
 
 <Layout title="Home">
@@ -67,34 +77,13 @@ const nextFellId = nextFellRace?.id ?? null;
       <!-- Mobile: stacked. md+: cards left | race list right -->
       <div class="grid md:grid-cols-[1fr_1.3fr] lg:grid-cols-[1.3fr_1fr] gap-3 items-start">
 
-        <!-- Left: Next race card + Last race card stacked -->
+        <!-- Left: hero cards — populated entirely by the client script below -->
         <div class="space-y-3">
-          {nextRoadRace && (
-            <NextRaceCard
-              accent="amber"
-              seriesLabel="Road Grand Prix"
-              raceNum={nextRoadIdx}
-              totalRaces={roadRaces.length}
-              race={nextRoadRace}
-              daysUntil={nextRoadDays}
-              infoUrl={siteUrl(`/road-gp/${currentYear}/${nextRoadRace.id}`)}
-              size="large"
-              showLocation
-            />
-          )}
-          {lastRoadRace && (
-            <LastRaceCard
-              accent="amber"
-              race={lastRoadRace}
-              hasResults={lastRoadHasResults}
-              href={lastRoadHasResults
-                ? siteUrl(`/road-gp/${currentYear}/${lastRoadRace.id}/results`)
-                : siteUrl(`/road-gp/${currentYear}/${lastRoadRace.id}`)}
-            />
-          )}
+          <div id="road-next-card"></div>
+          <div id="road-last-card"></div>
         </div>
 
-        <!-- Right: Race list -->
+        <!-- Right: Race list (static; client script updates the Next highlight) -->
         <div class="bg-surface border border-line rounded-[14px] overflow-hidden">
           {roadRaces.map((race, i) => {
             const past = isPast(race);
@@ -106,6 +95,9 @@ const nextFellId = nextFellRace?.id ?? null;
             return (
               <a
                 href={url}
+                data-race-row
+                data-series="road-gp"
+                data-race-id={race.id}
                 class:list={[
                   'flex items-center gap-3.5 px-4 py-3 no-underline text-content',
                   i < roadRaces.length - 1 ? 'border-b border-line' : '',
@@ -114,17 +106,17 @@ const nextFellId = nextFellRace?.id ?? null;
                 ]}
               >
                 <div class="shrink-0 w-[76px]">
-                  <div class:list={['font-mono text-[12px]', next ? 'text-amber font-semibold' : 'text-muted']}>
+                  <div data-date class:list={['font-mono text-[12px]', next ? 'text-amber font-semibold' : 'text-muted']}>
                     {formatRaceDate(race.date)}
                   </div>
                   {race.time && (
-                    <div class:list={['font-mono text-[11px]', next ? 'text-amber/70' : 'text-muted/70']}>
+                    <div data-time class:list={['font-mono text-[11px]', next ? 'text-amber/70' : 'text-muted/70']}>
                       {race.time}
                     </div>
                   )}
                 </div>
                 <div class="flex-1 min-w-0">
-                  <div class:list={[
+                  <div data-name class:list={[
                     'text-[14px]',
                     next ? 'font-semibold text-content' : past ? 'font-medium text-muted' : 'font-medium text-content',
                   ]}>
@@ -135,12 +127,14 @@ const nextFellId = nextFellRace?.id ?? null;
                   )}
                 </div>
                 {next ? (
-                  <span class="font-head text-[10px] font-bold tracking-[0.08em] uppercase bg-amber text-white px-2 py-0.5 rounded shrink-0">Next</span>
+                  <span data-badge class="font-head text-[10px] font-bold tracking-[0.08em] uppercase bg-amber text-white px-2 py-0.5 rounded shrink-0">Next</span>
                 ) : rslt ? (
-                  <span class="font-head text-[10px] font-bold tracking-[0.08em] uppercase text-amber whitespace-nowrap shrink-0">Results →</span>
+                  <span data-badge class="font-head text-[10px] font-bold tracking-[0.08em] uppercase text-amber whitespace-nowrap shrink-0">Results →</span>
                 ) : !past ? (
-                  <span class="text-[13px] text-muted shrink-0">→</span>
-                ) : null}
+                  <span data-badge class="text-[13px] text-muted shrink-0">→</span>
+                ) : (
+                  <span data-badge></span>
+                )}
               </a>
             );
           })}
@@ -166,35 +160,13 @@ const nextFellId = nextFellRace?.id ?? null;
       <!-- Mobile: stacked. md+: cards left | race list right -->
       <div class="grid md:grid-cols-[1fr_1.3fr] lg:grid-cols-[1.3fr_1fr] gap-3 items-start">
 
-        <!-- Left: Next race card + Last race card stacked -->
+        <!-- Left: hero cards — populated entirely by the client script below -->
         <div class="space-y-3">
-          {nextFellRace && (
-            <NextRaceCard
-              accent="teal"
-              seriesLabel="Fell Championship"
-              raceNum={nextFellIdx}
-              totalRaces={fellRaces.length}
-              race={nextFellRace}
-              daysUntil={nextFellDays}
-              infoUrl={nextFellRace.detailsUrl ?? siteUrl(`/fell/${currentYear}/${nextFellRace.id}`)}
-              infoUrlExternal={!!nextFellRace.detailsUrl}
-              size="large"
-              showAscent
-            />
-          )}
-          {lastFellRace && (
-            <LastRaceCard
-              accent="teal"
-              race={lastFellRace}
-              hasResults={lastFellHasResults}
-              href={lastFellHasResults
-                ? siteUrl(`/fell/${currentYear}/${lastFellRace.id}/results`)
-                : siteUrl(`/fell/${currentYear}/${lastFellRace.id}`)}
-            />
-          )}
+          <div id="fell-next-card"></div>
+          <div id="fell-last-card"></div>
         </div>
 
-        <!-- Right: Race list -->
+        <!-- Right: Race list (static; client script updates the Next highlight) -->
         <div class="bg-surface border border-line rounded-[14px] overflow-hidden">
           {fellRaces.map((race, i) => {
             const past = isPast(race);
@@ -209,6 +181,9 @@ const nextFellId = nextFellRace?.id ?? null;
                 href={url}
                 target={isExternal ? '_blank' : undefined}
                 rel={isExternal ? 'noopener noreferrer' : undefined}
+                data-race-row
+                data-series="fell"
+                data-race-id={race.id}
                 class:list={[
                   'flex items-center gap-3.5 px-4 py-3 no-underline text-content',
                   i < fellRaces.length - 1 ? 'border-b border-line' : '',
@@ -217,17 +192,17 @@ const nextFellId = nextFellRace?.id ?? null;
                 ]}
               >
                 <div class="shrink-0 w-[76px]">
-                  <div class:list={['font-mono text-[12px]', next ? 'text-teal font-semibold' : 'text-muted']}>
+                  <div data-date class:list={['font-mono text-[12px]', next ? 'text-teal font-semibold' : 'text-muted']}>
                     {formatRaceDate(race.date)}
                   </div>
                   {race.time && (
-                    <div class:list={['font-mono text-[11px]', next ? 'text-teal/70' : 'text-muted/70']}>
+                    <div data-time class:list={['font-mono text-[11px]', next ? 'text-teal/70' : 'text-muted/70']}>
                       {race.time}
                     </div>
                   )}
                 </div>
                 <div class="flex-1 min-w-0">
-                  <div class:list={[
+                  <div data-name class:list={[
                     'text-[14px]',
                     next ? 'font-semibold text-content' : past ? 'font-medium text-muted' : 'font-medium text-content',
                   ]}>
@@ -240,12 +215,14 @@ const nextFellId = nextFellRace?.id ?? null;
                   )}
                 </div>
                 {next ? (
-                  <span class="font-head text-[10px] font-bold tracking-[0.08em] uppercase bg-teal text-white px-2 py-0.5 rounded shrink-0">Next</span>
+                  <span data-badge class="font-head text-[10px] font-bold tracking-[0.08em] uppercase bg-teal text-white px-2 py-0.5 rounded shrink-0">Next</span>
                 ) : rslt ? (
-                  <span class="font-head text-[10px] font-bold tracking-[0.08em] uppercase text-teal whitespace-nowrap shrink-0">Results →</span>
+                  <span data-badge class="font-head text-[10px] font-bold tracking-[0.08em] uppercase text-teal whitespace-nowrap shrink-0">Results →</span>
                 ) : !past ? (
-                  <span class="text-[13px] text-muted shrink-0">→</span>
-                ) : null}
+                  <span data-badge class="text-[13px] text-muted shrink-0">→</span>
+                ) : (
+                  <span data-badge></span>
+                )}
               </a>
             );
           })}
@@ -285,4 +262,239 @@ const nextFellId = nextFellRace?.id ?? null;
     </a>
 
   </div>
+
+  <!--
+    Client-side race card script.
+
+    Runs immediately after the page HTML is parsed. Uses the browser's real
+    current date to determine which race is "next" and which is "last", then:
+      1. Builds and injects the hero cards (NextRaceCard / LastRaceCard HTML)
+      2. Updates the "Next" highlight and badge in each series race list
+
+    This means the page stays correct even if weeks pass between builds.
+
+    Card HTML must be kept in sync with:
+      src/components/home/NextRaceCard.astro
+      src/components/home/LastRaceCard.astro
+  -->
+  <script define:vars={{ roadRaceData, fellRaceData }} is:inline>
+  (function () {
+    // ── Date helpers ────────────────────────────────────────────────────────
+
+    var DAYS   = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+    var MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+    function toDate(s) {
+      var p = s.split('-').map(Number);
+      return new Date(p[0], p[1] - 1, p[2]);
+    }
+
+    function todayMidnight() {
+      var t = new Date();
+      t.setHours(0, 0, 0, 0);
+      return t;
+    }
+
+    function isPast(dateStr) {
+      return toDate(dateStr) < todayMidnight();
+    }
+
+    function daysUntil(dateStr) {
+      return Math.round((toDate(dateStr) - todayMidnight()) / 86400000);
+    }
+
+    function fmtDate(dateStr) {
+      var p = dateStr.split('-').map(Number);
+      var dt = new Date(p[0], p[1] - 1, p[2]);
+      return DAYS[dt.getDay()] + ' ' + p[2] + ' ' + MONTHS[p[1] - 1];
+    }
+
+    // ── HTML escaping ────────────────────────────────────────────────────────
+
+    function esc(s) {
+      return String(s)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    // ── Card HTML builders ───────────────────────────────────────────────────
+    // Keep in sync with NextRaceCard.astro and LastRaceCard.astro
+
+    function buildNextCard(race, cfg, raceNum) {
+      var accent      = cfg.accent;
+      var bg          = accent === 'amber' ? 'bg-amber' : 'bg-teal';
+      var textAccent  = accent === 'amber' ? 'text-amber' : 'text-teal';
+      var days        = daysUntil(race.date);
+      var dateStr     = fmtDate(race.date)
+                        + (race.time ? ' · ' + race.time : '')
+                        + (cfg.showLocation && race.location ? ' · ' + race.location : '');
+      var extAttrs    = race.infoUrlExternal
+                        ? ' target="_blank" rel="noopener noreferrer"' : '';
+
+      var countdown   = days > 0
+        ? '<span class="font-mono text-[11px] bg-white/20 px-2 py-0.5 rounded-full whitespace-nowrap shrink-0">in ' + days + ' days</span>'
+        : '';
+
+      var distStat    = race.distance
+        ? '<div><div class="font-mono text-[14px] font-medium">' + esc(race.distance) + '</div>'
+          + '<div class="font-head text-[9px] font-bold tracking-[0.14em] uppercase opacity-70">Distance</div></div>'
+        : '';
+
+      var ascentStat  = cfg.showAscent && race.ascent
+        ? '<div><div class="font-mono text-[14px] font-medium">' + esc(race.ascent) + '</div>'
+          + '<div class="font-head text-[9px] font-bold tracking-[0.14em] uppercase opacity-70">Ascent</div></div>'
+        : '';
+
+      return '<a href="' + esc(race.infoUrl) + '"' + extAttrs
+        + ' class="' + bg + ' text-white rounded-[14px] p-[18px_18px_16px] flex flex-col no-underline hover:opacity-95 transition-opacity">'
+        + '<div class="flex items-baseline justify-between gap-3">'
+          + '<span class="font-head text-[10px] font-bold tracking-[0.14em] uppercase opacity-85">'
+            + esc(cfg.label) + ' · Race ' + raceNum + ' of ' + cfg.races.length
+          + '</span>'
+          + countdown
+        + '</div>'
+        + '<div class="font-head font-extrabold tracking-tight leading-none mt-1.5 text-[30px] md:text-[36px] lg:text-[46px]">' + esc(race.name) + '</div>'
+        + '<div class="text-[13px] opacity-90 mt-1.5">' + esc(dateStr) + '</div>'
+        + '<div class="flex-1 min-h-[14px]"></div>'
+        + '<div class="flex items-end gap-[18px] pt-3 border-t border-white/25">'
+          + distStat + ascentStat
+          + '<span class="ml-auto shrink-0 self-center bg-white font-head text-[12px] font-bold tracking-[0.06em] uppercase px-4 py-2 rounded-md whitespace-nowrap ' + textAccent + '">Race info →</span>'
+        + '</div>'
+        + '</a>';
+    }
+
+    function buildLastCard(race, cfg) {
+      var accent      = cfg.accent;
+      var textAccent  = accent === 'amber' ? 'text-amber' : 'text-teal';
+      var dateStr     = fmtDate(race.date) + (race.time ? ' · ' + race.time : '');
+
+      if (race.hasResults) {
+        return '<a href="' + esc(race.resultsUrl) + '"'
+          + ' class="bg-surface border border-line rounded-[14px] p-[14px_16px] block no-underline text-content hover:bg-canvas transition-colors">'
+          + '<div class="font-head text-[10px] font-bold tracking-[0.14em] uppercase text-muted">← Last out</div>'
+          + '<div class="flex items-start justify-between gap-3 mt-1.5">'
+            + '<div class="font-head font-extrabold tracking-tight leading-tight text-[20px]">' + esc(race.name) + '</div>'
+            + '<span class="font-head text-[11px] font-bold tracking-[0.08em] uppercase whitespace-nowrap shrink-0 mt-0.5 ' + textAccent + '">Results →</span>'
+          + '</div>'
+          + '<div class="text-[12px] text-muted mt-1">' + esc(dateStr) + '</div>'
+          + '</a>';
+      } else {
+        return '<div class="bg-surface border border-line rounded-[14px] p-[14px_16px] text-content">'
+          + '<div class="font-head text-[10px] font-bold tracking-[0.14em] uppercase text-muted">← Last out</div>'
+          + '<div class="flex items-start justify-between gap-3 mt-1.5">'
+            + '<div class="font-head font-extrabold tracking-tight leading-tight text-[20px]">' + esc(race.name) + '</div>'
+            + '<span class="font-mono text-[11px] text-muted whitespace-nowrap shrink-0 mt-0.5">Awaiting results</span>'
+          + '</div>'
+          + '<div class="text-[12px] text-muted mt-1">' + esc(dateStr) + '</div>'
+          + '</div>';
+      }
+    }
+
+    // ── List row updater ─────────────────────────────────────────────────────
+
+    function updateList(cfg, nextRace) {
+      var accent = cfg.accent;
+      var accentBg    = accent === 'amber' ? 'bg-amber-bg'  : 'bg-teal-bg';
+      var accentText  = accent === 'amber' ? 'text-amber'   : 'text-teal';
+      var accentTime  = accent === 'amber' ? 'text-amber/70': 'text-teal/70';
+      var accentBadgeBg = accent === 'amber' ? 'bg-amber'   : 'bg-teal';
+
+      var rows = document.querySelectorAll('[data-race-row][data-series="' + cfg.series + '"]');
+      rows.forEach(function (row) {
+        var raceId   = row.dataset.raceId;
+        var race     = cfg.races.find(function (r) { return r.id === raceId; });
+        if (!race) return;
+
+        var isNext   = nextRace && raceId === nextRace.id;
+        var past     = isPast(race.date);
+        var rslt     = past && race.hasResults;
+
+        // Row background
+        row.classList.toggle(accentBg, !!isNext);
+
+        // Date colour
+        var dateEl = row.querySelector('[data-date]');
+        if (dateEl) {
+          dateEl.className = 'font-mono text-[12px] ' + (isNext ? accentText + ' font-semibold' : 'text-muted');
+        }
+
+        // Time colour
+        var timeEl = row.querySelector('[data-time]');
+        if (timeEl) {
+          timeEl.className = 'font-mono text-[11px] ' + (isNext ? accentTime : 'text-muted/70');
+        }
+
+        // Name weight / colour
+        var nameEl = row.querySelector('[data-name]');
+        if (nameEl) {
+          if (isNext) {
+            nameEl.className = 'text-[14px] font-semibold text-content';
+          } else if (past) {
+            nameEl.className = 'text-[14px] font-medium text-muted';
+          } else {
+            nameEl.className = 'text-[14px] font-medium text-content';
+          }
+        }
+
+        // Badge
+        var badgeEl = row.querySelector('[data-badge]');
+        if (badgeEl) {
+          var newBadge;
+          if (isNext) {
+            newBadge = '<span data-badge class="font-head text-[10px] font-bold tracking-[0.08em] uppercase '
+              + accentBadgeBg + ' text-white px-2 py-0.5 rounded shrink-0">Next</span>';
+          } else if (rslt) {
+            newBadge = '<span data-badge class="font-head text-[10px] font-bold tracking-[0.08em] uppercase '
+              + accentText + ' whitespace-nowrap shrink-0">Results →</span>';
+          } else if (!past) {
+            newBadge = '<span data-badge class="text-[13px] text-muted shrink-0">→</span>';
+          } else {
+            newBadge = '<span data-badge></span>';
+          }
+          badgeEl.outerHTML = newBadge;
+        }
+      });
+    }
+
+    // ── Main update ──────────────────────────────────────────────────────────
+
+    function updateSeries(cfg) {
+      var next = cfg.races.find(function (r) { return !isPast(r.date); }) || null;
+      var last = cfg.races.slice().reverse().find(function (r) { return isPast(r.date); }) || null;
+
+      var nextEl = document.getElementById(cfg.nextCardId);
+      var lastEl = document.getElementById(cfg.lastCardId);
+
+      if (nextEl) nextEl.innerHTML = next ? buildNextCard(next, cfg, cfg.races.indexOf(next) + 1) : '';
+      if (lastEl) lastEl.innerHTML = last ? buildLastCard(last, cfg) : '';
+
+      updateList(cfg, next);
+    }
+
+    updateSeries({
+      races:       roadRaceData,
+      nextCardId:  'road-next-card',
+      lastCardId:  'road-last-card',
+      series:      'road-gp',
+      accent:      'amber',
+      label:       'Road Grand Prix',
+      showLocation: true,
+      showAscent:   false,
+    });
+
+    updateSeries({
+      races:       fellRaceData,
+      nextCardId:  'fell-next-card',
+      lastCardId:  'fell-last-card',
+      series:      'fell',
+      accent:      'teal',
+      label:       'Fell Championship',
+      showLocation: false,
+      showAscent:   true,
+    });
+  })();
+  </script>
+
 </Layout>
