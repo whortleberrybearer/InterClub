@@ -24,7 +24,7 @@ interface Props {
   race: Race;
   /** Days until race date (0 = today, negative = past) */
   daysUntil: number | null;
-  /** URL for the "Race info →" button */
+  /** URL the entire card links to (Road GP → internal page; Fell → detailsUrl or internal page) */
   infoUrl: string;
   /** Open infoUrl in a new tab (for external links such as fellrunner.org.uk) */
   infoUrlExternal?: boolean;
@@ -61,7 +61,12 @@ const nameClass  = size === 'large'
   : 'text-[26px] lg:text-[30px]';
 ---
 
-<div class:list={[bgClass, 'text-white rounded-[14px] p-[18px_18px_16px] flex flex-col']}>
+<a
+  href={infoUrl}
+  target={infoUrlExternal ? '_blank' : undefined}
+  rel={infoUrlExternal ? 'noopener noreferrer' : undefined}
+  class:list={[bgClass, 'text-white rounded-[14px] p-[18px_18px_16px] flex flex-col no-underline hover:opacity-95 transition-opacity']}
+>
   <!-- Eyebrow: series label + race counter + countdown pill -->
   <div class="flex items-baseline justify-between gap-3">
     <span class="font-head text-[10px] font-bold tracking-[0.14em] uppercase opacity-85">
@@ -106,15 +111,10 @@ const nameClass  = size === 'large'
         <div class="font-head text-[9px] font-bold tracking-[0.14em] uppercase opacity-70">Ascent</div>
       </div>
     )}
-    <a
-      href={infoUrl}
-      target={infoUrlExternal ? '_blank' : undefined}
-      rel={infoUrlExternal ? 'noopener noreferrer' : undefined}
-      class:list={[
-        'ml-auto shrink-0 self-center bg-white font-head text-[12px] font-bold tracking-[0.06em]',
-        'uppercase px-4 py-2 rounded-md no-underline whitespace-nowrap hover:opacity-90 transition-opacity',
-        textAccent,
-      ]}
-    >Race info →</a>
+    <span class:list={[
+      'ml-auto shrink-0 self-center bg-white font-head text-[12px] font-bold tracking-[0.06em]',
+      'uppercase px-4 py-2 rounded-md whitespace-nowrap',
+      textAccent,
+    ]}>Race info →</span>
   </div>
-</div>
+</a>

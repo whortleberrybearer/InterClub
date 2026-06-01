@@ -1,12 +1,13 @@
 ---
 /**
  * Card for the most recently completed race in a series.
- * Entire card is a link.
  *
- * Structure mirrors NextRaceCard: eyebrow → name → date → spacer → separator → action.
- * The shared flex-col + flex-1 spacer pattern guarantees the separator lines in
- * both cards sit at the same vertical position within the grid row: the spacer
- * absorbs whatever extra height the grid row stretching adds to the shorter card.
+ * Compact layout: eyebrow → title + status label (same row) → date.
+ * No divider or bottom action row — the status ("Results →" / "Awaiting results")
+ * sits inline to the right of the race name.
+ *
+ * When results are available the entire card is a link; otherwise it renders
+ * as a non-interactive div (no hover, no cursor pointer).
  */
 import { formatRaceDate } from '../../lib/format';
 import type { Race } from '../../lib/types';
@@ -18,62 +19,38 @@ interface Props {
   race: Race;
   /** Whether individual results are available */
   hasResults: boolean;
-  /** Destination URL for the card link */
+  /** Destination URL for the card link (only used when hasResults is true) */
   href: string;
-  /**
-   * Name text-size variant — must match the paired NextRaceCard so both
-   * race names render at the same visual size within the same grid row.
-   * 'large'   → Road GP (wide column): text-[30px] md:text-[36px] lg:text-[46px]
-   * 'compact' → Fell (narrow column):  text-[26px] lg:text-[30px]
-   */
-  size?: 'large' | 'compact';
 }
 
-const { accent, race, hasResults, href, size = 'large' } = Astro.props;
+const { accent, race, hasResults, href } = Astro.props;
 
-const bgAccent   = accent === 'amber' ? 'bg-amber' : 'bg-teal';
-const nameClass  = size === 'large'
-  ? 'text-[30px] md:text-[36px] lg:text-[46px]'
-  : 'text-[26px] lg:text-[30px]';
+const textAccent  = accent === 'amber' ? 'text-amber' : 'text-teal';
+const baseClass   = 'bg-surface border border-line rounded-[14px] p-[14px_16px]';
 ---
 
-<a
-  href={href}
-  class="bg-surface border border-line rounded-[14px] p-[18px_18px_16px] no-underline
-         text-content flex flex-col hover:bg-canvas transition-colors"
->
-  <!-- Eyebrow — mirrors the series-label eyebrow in NextRaceCard -->
-  <div class="font-head text-[10px] font-bold tracking-[0.14em] uppercase text-muted">
-    ← Last out
-  </div>
-
-  <!-- Race name — same size and typographic style as the paired NextRaceCard -->
-  <div class:list={['font-head font-extrabold tracking-tight leading-none mt-1.5', nameClass]}>
-    {race.name}
-  </div>
-
-  <!-- Date (and time if set) — mirrors the subtitle line in NextRaceCard -->
-  <div class="text-[13px] text-muted mt-1.5">
-    {formatRaceDate(race.date)}{race.time && ` · ${race.time}`}
-  </div>
-
-  <!-- Spacer: same min-h as NextRaceCard so the separator aligns across the grid row -->
-  <div class="flex-1 min-h-[14px]"></div>
-
-  <!-- Separator + action row -->
-  <div class="flex items-center justify-end pt-3 border-t border-line">
-    {hasResults ? (
-      <span class:list={[
-        'font-head text-[12px] font-bold tracking-[0.06em] uppercase',
-        'text-white px-4 py-2 rounded-md whitespace-nowrap',
-        bgAccent,
-      ]}>
+{hasResults ? (
+  <a href={href} class:list={[baseClass, 'block no-underline text-content hover:bg-canvas transition-colors']}>
+    <div class="font-head text-[10px] font-bold tracking-[0.14em] uppercase text-muted">← Last out</div>
+    <div class="flex items-start justify-between gap-3 mt-1.5">
+      <div class="font-head font-extrabold tracking-tight leading-tight text-[20px]">{race.name}</div>
+      <span class:list={['font-head text-[11px] font-bold tracking-[0.08em] uppercase whitespace-nowrap shrink-0 mt-0.5', textAccent]}>
         Results →
       </span>
-    ) : (
-      /* py-2 matches the Results→ button height so the border sits at the same
-         distance from the card bottom in both states */
-      <span class="font-mono text-[11px] text-muted py-2">Awaiting results</span>
-    )}
+    </div>
+    <div class="text-[12px] text-muted mt-1">
+      {formatRaceDate(race.date)}{race.time && ` · ${race.time}`}
+    </div>
+  </a>
+) : (
+  <div class:list={[baseClass, 'text-content']}>
+    <div class="font-head text-[10px] font-bold tracking-[0.14em] uppercase text-muted">← Last out</div>
+    <div class="flex items-start justify-between gap-3 mt-1.5">
+      <div class="font-head font-extrabold tracking-tight leading-tight text-[20px]">{race.name}</div>
+      <span class="font-mono text-[11px] text-muted whitespace-nowrap shrink-0 mt-0.5">Awaiting results</span>
+    </div>
+    <div class="text-[12px] text-muted mt-1">
+      {formatRaceDate(race.date)}{race.time && ` · ${race.time}`}
+    </div>
   </div>
-</a>
+)}
