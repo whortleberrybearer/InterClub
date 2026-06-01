@@ -1,0 +1,104 @@
+---
+/**
+ * A single row in the home-page race schedule list.
+ *
+ * Used for both Road GP (amber) and Fell Championship (teal).
+ * The client-side script in index.astro targets the data-* attributes to
+ * update the Next highlight and badge dynamically — keep those in sync.
+ */
+import { formatRaceDate } from '../../lib/format';
+import type { Race } from '../../lib/types';
+
+interface Props {
+  accent: 'amber' | 'teal';
+  /** Value for the data-series attribute — consumed by the client script. */
+  series: string;
+  race: Race;
+  /** Pre-computed destination URL; undefined = past race with no results (non-clickable). */
+  url: string | undefined;
+  /** Whether this is the current "next" race (controls highlighting). */
+  isNext: boolean;
+  /** Whether the race date has passed. */
+  past: boolean;
+  /** Whether results are available (only relevant when past is true). */
+  hasResults: boolean;
+  /** True when this is the last row — suppresses the bottom border. */
+  isLast: boolean;
+  /** Open url in a new tab (external links such as fellrunner.org.uk). */
+  isExternal?: boolean;
+  /**
+   * Optional subtitle shown below the race name.
+   * Road GP passes race.location; Fell passes "distance · ascent".
+   */
+  subtitle?: string;
+}
+
+const {
+  accent,
+  series,
+  race,
+  url,
+  isNext,
+  past,
+  hasResults,
+  isLast,
+  isExternal = false,
+  subtitle,
+} = Astro.props;
+
+const accentBg    = accent === 'amber' ? 'bg-amber-bg'   : 'bg-teal-bg';
+const accentText  = accent === 'amber' ? 'text-amber'    : 'text-teal';
+const accentTime  = accent === 'amber' ? 'text-amber/70' : 'text-teal/70';
+const accentBadge = accent === 'amber' ? 'bg-amber'      : 'bg-teal';
+---
+
+<a
+  href={url}
+  target={isExternal ? '_blank' : undefined}
+  rel={isExternal ? 'noopener noreferrer' : undefined}
+  data-race-row
+  data-series={series}
+  data-race-id={race.id}
+  class:list={[
+    'flex items-center gap-3.5 px-4 py-3 no-underline text-content',
+    !isLast ? 'border-b border-line' : '',
+    isNext ? accentBg : '',
+    url ? 'hover:bg-canvas transition-colors' : 'pointer-events-none',
+  ]}
+>
+  <!-- Date + time column -->
+  <div class="shrink-0 w-[76px]">
+    <div data-date class:list={['font-mono text-[12px]', isNext ? `${accentText} font-semibold` : 'text-muted']}>
+      {formatRaceDate(race.date)}
+    </div>
+    {race.time && (
+      <div data-time class:list={['font-mono text-[11px]', isNext ? accentTime : 'text-muted/70']}>
+        {race.time}
+      </div>
+    )}
+  </div>
+
+  <!-- Race name + subtitle -->
+  <div class="flex-1 min-w-0">
+    <div data-name class:list={[
+      'text-[14px]',
+      isNext ? 'font-semibold text-content' : past ? 'font-medium text-muted' : 'font-medium text-content',
+    ]}>
+      {race.name}
+    </div>
+    {subtitle && (
+      <div class="text-[11px] text-muted mt-0.5 truncate">{subtitle}</div>
+    )}
+  </div>
+
+  <!-- Badge -->
+  {isNext ? (
+    <span data-badge class:list={['font-head text-[10px] font-bold tracking-[0.08em] uppercase text-white px-2 py-0.5 rounded shrink-0', accentBadge]}>Next</span>
+  ) : hasResults ? (
+    <span data-badge class:list={['font-head text-[10px] font-bold tracking-[0.08em] uppercase whitespace-nowrap shrink-0', accentText]}>Results →</span>
+  ) : !past ? (
+    <span data-badge class="text-[13px] text-muted shrink-0">→</span>
+  ) : (
+    <span data-badge></span>
+  )}
+</a>
