@@ -1,9 +1,9 @@
 ---
 // src/pages/index.astro
 import Layout from '../components/Layout.astro';
+import RaceListRow from '../components/home/RaceListRow.astro';
 import { getCurrentYear, getRaces } from '../lib/data';
 import { hasResults, hasIndividualStandings, hasTeamStandings } from '../lib/results';
-import { formatRaceDate } from '../lib/format';
 import { siteUrl } from '../lib/url';
 import type { Race } from '../lib/types';
 
@@ -89,53 +89,21 @@ const nextFellId = fellRaces.find(r => !isPast(r))?.id ?? null;
             const past = isPast(race);
             const next = race.id === nextRoadId;
             const rslt = past ? hasResults(currentYear, 'road-gp', race.id) : false;
-            const url = past
+            const url  = past
               ? (rslt ? siteUrl(`/road-gp/${currentYear}/${race.id}/results`) : undefined)
               : siteUrl(`/road-gp/${currentYear}/${race.id}`);
             return (
-              <a
-                href={url}
-                data-race-row
-                data-series="road-gp"
-                data-race-id={race.id}
-                class:list={[
-                  'flex items-center gap-3.5 px-4 py-3 no-underline text-content',
-                  i < roadRaces.length - 1 ? 'border-b border-line' : '',
-                  next ? 'bg-amber-bg' : '',
-                  url ? 'hover:bg-canvas transition-colors' : 'pointer-events-none',
-                ]}
-              >
-                <div class="shrink-0 w-[76px]">
-                  <div data-date class:list={['font-mono text-[12px]', next ? 'text-amber font-semibold' : 'text-muted']}>
-                    {formatRaceDate(race.date)}
-                  </div>
-                  {race.time && (
-                    <div data-time class:list={['font-mono text-[11px]', next ? 'text-amber/70' : 'text-muted/70']}>
-                      {race.time}
-                    </div>
-                  )}
-                </div>
-                <div class="flex-1 min-w-0">
-                  <div data-name class:list={[
-                    'text-[14px]',
-                    next ? 'font-semibold text-content' : past ? 'font-medium text-muted' : 'font-medium text-content',
-                  ]}>
-                    {race.name}
-                  </div>
-                  {race.location && (
-                    <div class="text-[11px] text-muted mt-0.5 truncate">{race.location}</div>
-                  )}
-                </div>
-                {next ? (
-                  <span data-badge class="font-head text-[10px] font-bold tracking-[0.08em] uppercase bg-amber text-white px-2 py-0.5 rounded shrink-0">Next</span>
-                ) : rslt ? (
-                  <span data-badge class="font-head text-[10px] font-bold tracking-[0.08em] uppercase text-amber whitespace-nowrap shrink-0">Results →</span>
-                ) : !past ? (
-                  <span data-badge class="text-[13px] text-muted shrink-0">→</span>
-                ) : (
-                  <span data-badge></span>
-                )}
-              </a>
+              <RaceListRow
+                accent="amber"
+                series="road-gp"
+                race={race}
+                url={url}
+                isNext={next}
+                past={past}
+                hasResults={rslt}
+                isLast={i === roadRaces.length - 1}
+                subtitle={race.location}
+              />
             );
           })}
         </div>
@@ -169,61 +137,27 @@ const nextFellId = fellRaces.find(r => !isPast(r))?.id ?? null;
         <!-- Right: Race list (static; client script updates the Next highlight) -->
         <div class="bg-surface border border-line rounded-[14px] overflow-hidden">
           {fellRaces.map((race, i) => {
-            const past = isPast(race);
-            const next = race.id === nextFellId;
-            const rslt = past ? hasResults(currentYear, 'fell', race.id) : false;
-            const url = past
+            const past       = isPast(race);
+            const next       = race.id === nextFellId;
+            const rslt       = past ? hasResults(currentYear, 'fell', race.id) : false;
+            const url        = past
               ? (rslt ? siteUrl(`/fell/${currentYear}/${race.id}/results`) : undefined)
               : (race.detailsUrl ?? siteUrl(`/fell/${currentYear}/${race.id}`));
             const isExternal = !past && !!race.detailsUrl;
+            const subtitle   = [race.distance, race.ascent].filter(Boolean).join(' · ') || undefined;
             return (
-              <a
-                href={url}
-                target={isExternal ? '_blank' : undefined}
-                rel={isExternal ? 'noopener noreferrer' : undefined}
-                data-race-row
-                data-series="fell"
-                data-race-id={race.id}
-                class:list={[
-                  'flex items-center gap-3.5 px-4 py-3 no-underline text-content',
-                  i < fellRaces.length - 1 ? 'border-b border-line' : '',
-                  next ? 'bg-teal-bg' : '',
-                  url ? 'hover:bg-canvas transition-colors' : 'pointer-events-none',
-                ]}
-              >
-                <div class="shrink-0 w-[76px]">
-                  <div data-date class:list={['font-mono text-[12px]', next ? 'text-teal font-semibold' : 'text-muted']}>
-                    {formatRaceDate(race.date)}
-                  </div>
-                  {race.time && (
-                    <div data-time class:list={['font-mono text-[11px]', next ? 'text-teal/70' : 'text-muted/70']}>
-                      {race.time}
-                    </div>
-                  )}
-                </div>
-                <div class="flex-1 min-w-0">
-                  <div data-name class:list={[
-                    'text-[14px]',
-                    next ? 'font-semibold text-content' : past ? 'font-medium text-muted' : 'font-medium text-content',
-                  ]}>
-                    {race.name}
-                  </div>
-                  {(race.distance || race.ascent) && (
-                    <div class="text-[11px] text-muted mt-0.5">
-                      {[race.distance, race.ascent].filter(Boolean).join(' · ')}
-                    </div>
-                  )}
-                </div>
-                {next ? (
-                  <span data-badge class="font-head text-[10px] font-bold tracking-[0.08em] uppercase bg-teal text-white px-2 py-0.5 rounded shrink-0">Next</span>
-                ) : rslt ? (
-                  <span data-badge class="font-head text-[10px] font-bold tracking-[0.08em] uppercase text-teal whitespace-nowrap shrink-0">Results →</span>
-                ) : !past ? (
-                  <span data-badge class="text-[13px] text-muted shrink-0">→</span>
-                ) : (
-                  <span data-badge></span>
-                )}
-              </a>
+              <RaceListRow
+                accent="teal"
+                series="fell"
+                race={race}
+                url={url}
+                isNext={next}
+                past={past}
+                hasResults={rslt}
+                isLast={i === fellRaces.length - 1}
+                isExternal={isExternal}
+                subtitle={subtitle}
+              />
             );
           })}
         </div>
