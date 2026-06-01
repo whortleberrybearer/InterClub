@@ -271,6 +271,11 @@ const nextFellId = fellRaces.find(r => !isPast(r))?.id ?? null;
       1. Builds and injects the hero cards (NextRaceCard / LastRaceCard HTML)
       2. Updates the "Next" highlight and badge in each series race list
 
+    Results window: for RESULTS_WINDOW_DAYS days after a race, it continues to
+    occupy the hero card slot (showing "Results →" / "Awaiting results" instead
+    of "Race info →"), and the "Last out" card is hidden. After the window
+    closes the page switches forward to the next upcoming race.
+
     This means the page stays correct even if weeks pass between builds.
 
     Card HTML must be kept in sync with:
@@ -279,7 +284,11 @@ const nextFellId = fellRaces.find(r => !isPast(r))?.id ?? null;
   -->
   <script define:vars={{ roadRaceData, fellRaceData }} is:inline>
   (function () {
-    // ── Date helpers ────────────────────────────────────────────────────────
+    // ── Config ───────────────────────────────────────────────────────────────
+
+    var RESULTS_WINDOW_DAYS = 5;
+
+    // ── Date helpers ─────────────────────────────────────────────────────────
 
     var DAYS   = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
     var MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
@@ -295,12 +304,24 @@ const nextFellId = fellRaces.find(r => !isPast(r))?.id ?? null;
       return t;
     }
 
-    function isPast(dateStr) {
-      return toDate(dateStr) < todayMidnight();
+    /** Days elapsed since the race date. 0 on race day, positive after, negative before. */
+    function daysAfterRace(dateStr) {
+      return Math.round((todayMidnight() - toDate(dateStr)) / 86400000);
     }
 
+    /** Days until the race date. Positive if future, 0 on race day, negative after. */
     function daysUntil(dateStr) {
-      return Math.round((toDate(dateStr) - todayMidnight()) / 86400000);
+      return -daysAfterRace(dateStr);
+    }
+
+    /**
+     * True for races that should occupy the "next" hero slot:
+     * - future races (not yet happened), AND
+     * - races within the results window (happened 0–RESULTS_WINDOW_DAYS days ago).
+     * After the window closes the race is considered truly "past".
+     */
+    function showInNextSlot(race) {
+      return daysAfterRace(race.date) <= RESULTS_WINDOW_DAYS;
     }
 
     function fmtDate(dateStr) {
@@ -319,56 +340,89 @@ const nextFellId = fellRaces.find(r => !isPast(r))?.id ?? null;
         .replace(/"/g, '&quot;');
     }
 
-    // ── Card HTML builders ───────────────────────────────────────────────────
-    // Keep in sync with NextRaceCard.astro and LastRaceCard.astro
+    // ── Shared stats row fragment ─────────────────────────────────────────────
 
-    function buildNextCard(race, cfg, raceNum) {
-      var accent      = cfg.accent;
-      var bg          = accent === 'amber' ? 'bg-amber' : 'bg-teal';
-      var textAccent  = accent === 'amber' ? 'text-amber' : 'text-teal';
-      var days        = daysUntil(race.date);
-      var dateStr     = fmtDate(race.date)
-                        + (race.time ? ' · ' + race.time : '')
-                        + (cfg.showLocation && race.location ? ' · ' + race.location : '');
-      var extAttrs    = race.infoUrlExternal
-                        ? ' target="_blank" rel="noopener noreferrer"' : '';
-
-      var countdown   = days > 0
-        ? '<span class="font-mono text-[11px] bg-white/20 px-2 py-0.5 rounded-full whitespace-nowrap shrink-0">in ' + days + ' days</span>'
-        : '';
-
-      var distStat    = race.distance
+    function statsRow(race, cfg, actionHtml) {
+      var distStat = race.distance
         ? '<div><div class="font-mono text-[14px] font-medium">' + esc(race.distance) + '</div>'
           + '<div class="font-head text-[9px] font-bold tracking-[0.14em] uppercase opacity-70">Distance</div></div>'
         : '';
-
-      var ascentStat  = cfg.showAscent && race.ascent
+      var ascentStat = cfg.showAscent && race.ascent
         ? '<div><div class="font-mono text-[14px] font-medium">' + esc(race.ascent) + '</div>'
           + '<div class="font-head text-[9px] font-bold tracking-[0.14em] uppercase opacity-70">Ascent</div></div>'
         : '';
+      return '<div class="flex items-end gap-[18px] pt-3 border-t border-white/25">'
+        + distStat + ascentStat + actionHtml
+        + '</div>';
+    }
+
+    // ── Card HTML builders ───────────────────────────────────────────────────
+    // Keep in sync with NextRaceCard.astro and LastRaceCard.astro
+
+    /** Upcoming race: coloured card, "Race info →" button, countdown pill. */
+    function buildNextCard(race, cfg, raceNum) {
+      var accent     = cfg.accent;
+      var bg         = accent === 'amber' ? 'bg-amber' : 'bg-teal';
+      var textAccent = accent === 'amber' ? 'text-amber' : 'text-teal';
+      var days       = daysUntil(race.date);
+      var dateStr    = fmtDate(race.date)
+                       + (race.time ? ' · ' + race.time : '')
+                       + (cfg.showLocation && race.location ? ' · ' + race.location : '');
+      var extAttrs   = race.infoUrlExternal ? ' target="_blank" rel="noopener noreferrer"' : '';
+      var countdown  = days > 0
+        ? '<span class="font-mono text-[11px] bg-white/20 px-2 py-0.5 rounded-full whitespace-nowrap shrink-0">in ' + days + ' days</span>'
+        : '';
+      var action     = '<span class="ml-auto shrink-0 self-center bg-white font-head text-[12px] font-bold'
+        + ' tracking-[0.06em] uppercase px-4 py-2 rounded-md whitespace-nowrap ' + textAccent + '">Race info →</span>';
 
       return '<a href="' + esc(race.infoUrl) + '"' + extAttrs
         + ' class="' + bg + ' text-white rounded-[14px] p-[18px_18px_16px] flex flex-col no-underline hover:opacity-95 transition-opacity">'
         + '<div class="flex items-baseline justify-between gap-3">'
           + '<span class="font-head text-[10px] font-bold tracking-[0.14em] uppercase opacity-85">'
-            + esc(cfg.label) + ' · Race ' + raceNum + ' of ' + cfg.races.length
-          + '</span>'
+            + esc(cfg.label) + ' · Race ' + raceNum + ' of ' + cfg.races.length + '</span>'
           + countdown
         + '</div>'
         + '<div class="font-head font-extrabold tracking-tight leading-none mt-1.5 text-[30px] md:text-[36px] lg:text-[46px]">' + esc(race.name) + '</div>'
         + '<div class="text-[13px] opacity-90 mt-1.5">' + esc(dateStr) + '</div>'
         + '<div class="flex-1 min-h-[14px]"></div>'
-        + '<div class="flex items-end gap-[18px] pt-3 border-t border-white/25">'
-          + distStat + ascentStat
-          + '<span class="ml-auto shrink-0 self-center bg-white font-head text-[12px] font-bold tracking-[0.06em] uppercase px-4 py-2 rounded-md whitespace-nowrap ' + textAccent + '">Race info →</span>'
-        + '</div>'
+        + statsRow(race, cfg, action)
         + '</a>';
     }
 
+    /**
+     * Results-window card: same coloured background, but the action shows
+     * "Results →" (links to results) or "Awaiting results" (non-interactive).
+     * No countdown pill — the race has already happened.
+     */
+    function buildResultsWindowCard(race, cfg, raceNum) {
+      var accent     = cfg.accent;
+      var bg         = accent === 'amber' ? 'bg-amber' : 'bg-teal';
+      var textAccent = accent === 'amber' ? 'text-amber' : 'text-teal';
+      var dateStr    = fmtDate(race.date) + (race.time ? ' · ' + race.time : '');
+      var eyebrow    = '<span class="font-head text-[10px] font-bold tracking-[0.14em] uppercase opacity-85">'
+        + esc(cfg.label) + ' · Race ' + raceNum + ' of ' + cfg.races.length + '</span>';
+      var name       = '<div class="font-head font-extrabold tracking-tight leading-none mt-1.5 text-[30px] md:text-[36px] lg:text-[46px]">' + esc(race.name) + '</div>';
+      var date       = '<div class="text-[13px] opacity-90 mt-1.5">' + esc(dateStr) + '</div>';
+      var spacer     = '<div class="flex-1 min-h-[14px]"></div>';
+
+      if (race.hasResults) {
+        var action = '<a href="' + esc(race.resultsUrl) + '"'
+          + ' class="ml-auto shrink-0 self-center bg-white font-head text-[12px] font-bold'
+          + ' tracking-[0.06em] uppercase px-4 py-2 rounded-md no-underline whitespace-nowrap'
+          + ' hover:opacity-90 transition-opacity ' + textAccent + '">Results →</a>';
+        return '<div class="' + bg + ' text-white rounded-[14px] p-[18px_18px_16px] flex flex-col">'
+          + eyebrow + name + date + spacer + statsRow(race, cfg, action) + '</div>';
+      } else {
+        var action = '<span class="ml-auto font-mono text-[13px] text-white/70 whitespace-nowrap">Awaiting results</span>';
+        return '<div class="' + bg + ' text-white rounded-[14px] p-[18px_18px_16px] flex flex-col">'
+          + eyebrow + name + date + spacer + statsRow(race, cfg, action) + '</div>';
+      }
+    }
+
+    /** Last-out card: small surface card, shown only outside the results window. */
     function buildLastCard(race, cfg) {
-      var accent      = cfg.accent;
-      var textAccent  = accent === 'amber' ? 'text-amber' : 'text-teal';
-      var dateStr     = fmtDate(race.date) + (race.time ? ' · ' + race.time : '');
+      var textAccent = cfg.accent === 'amber' ? 'text-amber' : 'text-teal';
+      var dateStr    = fmtDate(race.date) + (race.time ? ' · ' + race.time : '');
 
       if (race.hasResults) {
         return '<a href="' + esc(race.resultsUrl) + '"'
@@ -394,61 +448,65 @@ const nextFellId = fellRaces.find(r => !isPast(r))?.id ?? null;
 
     // ── List row updater ─────────────────────────────────────────────────────
 
-    function updateList(cfg, nextRace) {
-      var accent = cfg.accent;
-      var accentBg    = accent === 'amber' ? 'bg-amber-bg'  : 'bg-teal-bg';
-      var accentText  = accent === 'amber' ? 'text-amber'   : 'text-teal';
-      var accentTime  = accent === 'amber' ? 'text-amber/70': 'text-teal/70';
-      var accentBadgeBg = accent === 'amber' ? 'bg-amber'   : 'bg-teal';
+    function updateList(cfg, nextRace, inResultsWindow) {
+      var accent        = cfg.accent;
+      var accentBg      = accent === 'amber' ? 'bg-amber-bg'   : 'bg-teal-bg';
+      var accentText    = accent === 'amber' ? 'text-amber'    : 'text-teal';
+      var accentTime    = accent === 'amber' ? 'text-amber/70' : 'text-teal/70';
+      var accentBadgeBg = accent === 'amber' ? 'bg-amber'      : 'bg-teal';
 
       var rows = document.querySelectorAll('[data-race-row][data-series="' + cfg.series + '"]');
       rows.forEach(function (row) {
-        var raceId   = row.dataset.raceId;
-        var race     = cfg.races.find(function (r) { return r.id === raceId; });
+        var raceId = row.dataset.raceId;
+        var race   = cfg.races.find(function (r) { return r.id === raceId; });
         if (!race) return;
 
-        var isNext   = nextRace && raceId === nextRace.id;
-        var past     = isPast(race.date);
-        var rslt     = past && race.hasResults;
+        var isNextCard = !!(nextRace && raceId === nextRace.id);
+        // A race is "truly past" once it's outside the results window
+        var trulyPast  = !showInNextSlot(race);
+        var rslt       = trulyPast && race.hasResults;
 
-        // Row background
-        row.classList.toggle(accentBg, !!isNext);
+        // Row background highlight (covers both "next" and "results window" states)
+        row.classList.toggle(accentBg, isNextCard);
 
         // Date colour
         var dateEl = row.querySelector('[data-date]');
         if (dateEl) {
-          dateEl.className = 'font-mono text-[12px] ' + (isNext ? accentText + ' font-semibold' : 'text-muted');
+          dateEl.className = 'font-mono text-[12px] ' + (isNextCard ? accentText + ' font-semibold' : 'text-muted');
         }
 
         // Time colour
         var timeEl = row.querySelector('[data-time]');
         if (timeEl) {
-          timeEl.className = 'font-mono text-[11px] ' + (isNext ? accentTime : 'text-muted/70');
+          timeEl.className = 'font-mono text-[11px] ' + (isNextCard ? accentTime : 'text-muted/70');
         }
 
         // Name weight / colour
         var nameEl = row.querySelector('[data-name]');
         if (nameEl) {
-          if (isNext) {
-            nameEl.className = 'text-[14px] font-semibold text-content';
-          } else if (past) {
-            nameEl.className = 'text-[14px] font-medium text-muted';
-          } else {
-            nameEl.className = 'text-[14px] font-medium text-content';
-          }
+          nameEl.className = 'text-[14px] '
+            + (isNextCard ? 'font-semibold text-content' : trulyPast ? 'font-medium text-muted' : 'font-medium text-content');
         }
 
-        // Badge
+        // Badge — during results window the highlighted row shows Results/Awaiting, not "Next"
         var badgeEl = row.querySelector('[data-badge]');
         if (badgeEl) {
           var newBadge;
-          if (isNext) {
+          if (isNextCard && inResultsWindow) {
+            // Race has happened but is still in the spotlight
+            if (race.hasResults) {
+              newBadge = '<span data-badge class="font-head text-[10px] font-bold tracking-[0.08em] uppercase '
+                + accentText + ' whitespace-nowrap shrink-0">Results →</span>';
+            } else {
+              newBadge = '<span data-badge class="font-mono text-[10px] text-muted whitespace-nowrap shrink-0">Awaiting results</span>';
+            }
+          } else if (isNextCard) {
             newBadge = '<span data-badge class="font-head text-[10px] font-bold tracking-[0.08em] uppercase '
               + accentBadgeBg + ' text-white px-2 py-0.5 rounded shrink-0">Next</span>';
           } else if (rslt) {
             newBadge = '<span data-badge class="font-head text-[10px] font-bold tracking-[0.08em] uppercase '
               + accentText + ' whitespace-nowrap shrink-0">Results →</span>';
-          } else if (!past) {
+          } else if (!trulyPast) {
             newBadge = '<span data-badge class="text-[13px] text-muted shrink-0">→</span>';
           } else {
             newBadge = '<span data-badge></span>';
@@ -461,36 +519,52 @@ const nextFellId = fellRaces.find(r => !isPast(r))?.id ?? null;
     // ── Main update ──────────────────────────────────────────────────────────
 
     function updateSeries(cfg) {
-      var next = cfg.races.find(function (r) { return !isPast(r.date); }) || null;
-      var last = cfg.races.slice().reverse().find(function (r) { return isPast(r.date); }) || null;
+      // "next" slot: first race within the results window or still upcoming
+      var next = cfg.races.find(function (r) { return showInNextSlot(r); }) || null;
+      // "last" slot: most recent race that has fully exited the results window
+      var last = cfg.races.slice().reverse().find(function (r) { return !showInNextSlot(r); }) || null;
+
+      // True when the "next" slot is occupied by a race that has already happened
+      var inResultsWindow = next !== null && daysAfterRace(next.date) >= 0;
 
       var nextEl = document.getElementById(cfg.nextCardId);
       var lastEl = document.getElementById(cfg.lastCardId);
 
-      if (nextEl) nextEl.innerHTML = next ? buildNextCard(next, cfg, cfg.races.indexOf(next) + 1) : '';
-      if (lastEl) lastEl.innerHTML = last ? buildLastCard(last, cfg) : '';
+      if (nextEl) {
+        nextEl.innerHTML = next
+          ? (inResultsWindow
+              ? buildResultsWindowCard(next, cfg, cfg.races.indexOf(next) + 1)
+              : buildNextCard(next, cfg, cfg.races.indexOf(next) + 1))
+          : '';
+      }
 
-      updateList(cfg, next);
+      // Hide "Last out" during the results window — the completed race already
+      // occupies the hero slot above.
+      if (lastEl) {
+        lastEl.innerHTML = (!inResultsWindow && last) ? buildLastCard(last, cfg) : '';
+      }
+
+      updateList(cfg, next, inResultsWindow);
     }
 
     updateSeries({
-      races:       roadRaceData,
-      nextCardId:  'road-next-card',
-      lastCardId:  'road-last-card',
-      series:      'road-gp',
-      accent:      'amber',
-      label:       'Road Grand Prix',
+      races:        roadRaceData,
+      nextCardId:   'road-next-card',
+      lastCardId:   'road-last-card',
+      series:       'road-gp',
+      accent:       'amber',
+      label:        'Road Grand Prix',
       showLocation: true,
       showAscent:   false,
     });
 
     updateSeries({
-      races:       fellRaceData,
-      nextCardId:  'fell-next-card',
-      lastCardId:  'fell-last-card',
-      series:      'fell',
-      accent:      'teal',
-      label:       'Fell Championship',
+      races:        fellRaceData,
+      nextCardId:   'fell-next-card',
+      lastCardId:   'fell-last-card',
+      series:       'fell',
+      accent:       'teal',
+      label:        'Fell Championship',
       showLocation: false,
       showAscent:   true,
     });
