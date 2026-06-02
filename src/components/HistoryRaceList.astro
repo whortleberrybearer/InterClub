@@ -53,6 +53,8 @@ function positionLabel(pos: number): string {
 
 // Short date: "2 Apr" (no day name) for compact schedule rows
 const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+const seriesShortLabel = series === 'road-gp' ? 'Road GP' : 'Fell';
 function shortDate(date: string): string {
   const [, month, day] = date.split('-').map(Number);
   return `${day} ${MONTHS[month - 1]}`;
@@ -184,36 +186,84 @@ const hasMF = awards && (awards.maleAwards.length > 0 || awards.femaleAwards.len
   {note && <p class="text-muted text-sm italic mt-2">{note}</p>}
 </div>
 
-<!-- ═══ Team Awards — vest per category ═══ -->
+<!-- ═══ Team Awards — compact list (mobile) / vest gallery (md+) ═══ -->
 {awards?.teamAwards && awards.teamAwards.length > 0 && (
   <div class="mb-6">
-    <div class="flex items-baseline justify-between mb-2">
-      <h2 class="font-head text-[15px] font-bold tracking-[0.04em] uppercase">Team Awards</h2>
-      <span class="font-mono text-[11px] text-muted">
-        {awards.teamAwards.length} {awards.teamAwards.length === 1 ? 'category' : 'categories'}
-      </span>
+
+    <!-- Mobile: compact list -->
+    <div class="md:hidden">
+      <div class="flex items-baseline justify-between mb-2">
+        <h2 class="font-head text-[15px] font-bold tracking-[0.04em] uppercase">Team Awards</h2>
+        <span class="font-mono text-[11px] text-muted">
+          {awards.teamAwards.length} {awards.teamAwards.length === 1 ? 'category' : 'categories'}
+        </span>
+      </div>
+      <div class="bg-surface rounded-xl border border-line px-4">
+        {awards.teamAwards.map(ta => (
+          <div class="flex items-center gap-3 py-2.5 border-b border-line last:border-b-0">
+            <span class="font-head text-[11px] font-bold tracking-[0.06em] uppercase text-muted w-[80px] shrink-0">
+              {ta.categoryName}
+            </span>
+            {ta.vest ? (
+              <img
+                src={siteUrl(`/images/vests/${ta.vest.replace('.png', '-sm.png')}`)}
+                alt={ta.clubName}
+                class="w-[34px] h-[42px] object-contain shrink-0"
+              />
+            ) : (
+              <div class="w-[34px] h-[42px] shrink-0" />
+            )}
+            <span class="font-head text-[15px] font-bold flex-1 min-w-0 truncate">
+              {ta.clubName}
+            </span>
+          </div>
+        ))}
+      </div>
     </div>
-    <div class="bg-surface rounded-xl border border-line px-4">
-      {awards.teamAwards.map(ta => (
-        <div class="flex items-center gap-3 py-2.5 border-b border-line last:border-b-0">
-          <span class="font-head text-[11px] font-bold tracking-[0.06em] uppercase text-muted w-[80px] shrink-0">
-            {ta.categoryName}
+
+    <!-- Desktop: vest gallery — each category headlined by its winning club's vest -->
+    <div class="hidden md:block">
+      <div class="flex items-center justify-between mb-1.5">
+        <div class="flex items-center gap-3">
+          <span class="font-head text-[11px] font-bold tracking-[0.16em] uppercase text-amber">
+            {year} · {seriesShortLabel}
           </span>
-          {ta.vest ? (
-            <img
-              src={siteUrl(`/images/vests/${ta.vest.replace('.png', '-sm.png')}`)}
-              alt={ta.clubName}
-              class="w-[34px] h-[42px] object-contain shrink-0"
-            />
-          ) : (
-            <div class="w-[34px] h-[42px] shrink-0" />
-          )}
-          <span class="font-head text-[15px] font-bold flex-1 min-w-0 truncate">
-            {ta.clubName}
-          </span>
+          <span class="block h-px w-7 bg-line shrink-0"></span>
         </div>
-      ))}
+        <span class="font-mono text-[12px] text-muted">
+          {awards.teamAwards.length} team title{awards.teamAwards.length !== 1 ? 's' : ''}
+        </span>
+      </div>
+      <h2 class="font-head text-[32px] font-extrabold tracking-tight leading-none mb-[22px]">
+        Team Awards
+      </h2>
+      <div
+        class="grid gap-2.5"
+        style={`grid-template-columns: repeat(${awards.teamAwards.length}, 1fr)`}
+      >
+        {awards.teamAwards.map(ta => (
+          <div class="flex flex-col items-center text-center">
+            <span class="font-head text-[11px] font-bold tracking-[0.08em] uppercase text-amber leading-none">
+              {ta.categoryName}
+            </span>
+            {ta.vest ? (
+              <img
+                src={siteUrl(`/images/vests/${ta.vest}`)}
+                alt={ta.clubName}
+                class="w-[84px] h-[100px] object-contain mt-2 mb-2.5"
+                style="filter: drop-shadow(0 6px 12px rgba(0,0,0,0.12))"
+              />
+            ) : (
+              <div class="w-[84px] h-[100px] mt-2 mb-2.5" />
+            )}
+            <div class="font-head text-[14px] font-bold tracking-tight leading-snug">
+              {ta.clubName}
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
+
   </div>
 )}
 
