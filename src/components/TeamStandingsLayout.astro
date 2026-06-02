@@ -170,7 +170,7 @@ const raceColWidth = races.length >= 7 ? '3rem'
                       </td>
                       <td class="py-2.5 px-2 align-middle max-w-0 overflow-hidden">
                         <div class="flex items-center gap-2 min-w-0">
-                          <img src={siteUrl(`/images/vests/${clubById[clubResult.club]?.vest ?? 'unknown-sm.png'}`)} alt="" class="h-6 w-auto shrink-0 object-contain" />
+                          <img src={siteUrl(`/images/vests/${(clubById[clubResult.club]?.vest ?? 'unknown.png').replace('.png', '-sm.png')}`)} alt="" class="h-6 w-auto shrink-0 object-contain" />
                           <span class="font-semibold text-[14px] truncate">{clubName}</span>
                         </div>
                       </td>
@@ -308,7 +308,7 @@ const raceColWidth = races.length >= 7 ? '3rem'
               return (
                 <MobileAccordionCard detailId={detailId} position={clubResult.position}>
                   <div class="flex items-center gap-2 min-w-0">
-                    <img src={siteUrl(`/images/vests/${clubById[clubResult.club]?.vest ?? 'unknown-sm.png'}`)} alt="" class="h-9 w-auto shrink-0 object-contain" />
+                    <img src={siteUrl(`/images/vests/${(clubById[clubResult.club]?.vest ?? 'unknown.png').replace('.png', '-sm.png')}`)} alt="" class="h-9 w-auto shrink-0 object-contain" />
                     <div class="font-head text-[16px] font-bold tracking-[-0.01em] leading-[1.15] truncate">{clubName}</div>
                   </div>
 
