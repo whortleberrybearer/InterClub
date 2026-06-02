@@ -333,13 +333,18 @@ const raceColWidth = standings.races.length >= 7 ? '3rem'
                     data-name={runner.name}
                     data-club={runner.club}
                   >
-                    <div class="font-semibold text-[15px] leading-tight truncate">
-                      {runner.seriesRunnerId != null && runnerUrlMap[runner.seriesRunnerId]
-                        ? <a href={runnerUrlMap[runner.seriesRunnerId]} class="link link-hover">{runner.name}</a>
-                        : runner.name}
-                    </div>
-                    <div class="text-xs text-muted mt-0.5 truncate">
-                      {clubName}{catLabel && <> · <span class="font-mono">{catLabel}</span></>}
+                    <div class="flex gap-2 min-w-0">
+                      {clubById[runner.club]?.vest && (
+                        <img src={siteUrl(`/images/vests/${clubById[runner.club].vest}`)} alt="" class="h-9 w-auto shrink-0 object-contain" />
+                      )}
+                      <div class="min-w-0">
+                        <div class="font-semibold text-[15px] leading-tight truncate">
+                          {runner.seriesRunnerId != null && runnerUrlMap[runner.seriesRunnerId]
+                            ? <a href={runnerUrlMap[runner.seriesRunnerId]} class="link link-hover">{runner.name}</a>
+                            : runner.name}
+                        </div>
+                        <div class="text-xs text-muted mt-0.5 truncate">{clubName}{catLabel && <> · <span class="font-mono">{catLabel}</span></>}</div>
+                      </div>
                     </div>
 
                     <div slot="score" class="text-right shrink-0">
@@ -428,12 +433,19 @@ const raceColWidth = standings.races.length >= 7 ? '3rem'
                             <span class="font-mono text-sm font-medium text-muted tabular-nums">{runner.position}</span>
                           </td>
                           <td class="py-2.5 px-2 align-middle max-w-0 overflow-hidden">
-                            <div class="font-semibold leading-tight truncate">
-                              {runner.seriesRunnerId != null && runnerUrlMap[runner.seriesRunnerId]
-                                ? <a href={runnerUrlMap[runner.seriesRunnerId]} class="link link-hover">{runner.name}</a>
-                                : runner.name}
+                            <div class="flex gap-2 min-w-0">
+                              {clubById[runner.club]?.vest && (
+                                <img src={siteUrl(`/images/vests/${clubById[runner.club].vest}`)} alt="" class="h-9 w-auto shrink-0 object-contain" />
+                              )}
+                              <div class="min-w-0">
+                                <div class="font-semibold leading-tight truncate">
+                                  {runner.seriesRunnerId != null && runnerUrlMap[runner.seriesRunnerId]
+                                    ? <a href={runnerUrlMap[runner.seriesRunnerId]} class="link link-hover">{runner.name}</a>
+                                    : runner.name}
+                                </div>
+                                <div class="text-xs text-muted mt-0.5 truncate">{clubName}</div>
+                              </div>
                             </div>
-                            <div class="text-xs text-muted mt-0.5 truncate">{clubName}</div>
                           </td>
                           <td class="py-2.5 px-2 text-content/60 text-xs tabular-nums align-middle">
                             {effectiveSex}{effectiveAge}
@@ -516,12 +528,19 @@ const raceColWidth = standings.races.length >= 7 ? '3rem'
                           <span class="font-mono text-sm font-medium text-muted tabular-nums">{runner.position}</span>
                         </td>
                         <td class="py-2.5 pl-2 pr-4 align-middle max-w-0 overflow-hidden">
-                          <div class="font-semibold leading-tight truncate">
-                            {runner.seriesRunnerId != null && runnerUrlMap[runner.seriesRunnerId]
-                              ? <a href={runnerUrlMap[runner.seriesRunnerId]} class="link link-hover">{runner.name}</a>
-                              : runner.name}
+                          <div class="flex gap-2 min-w-0">
+                            {clubById[runner.club]?.vest && (
+                              <img src={siteUrl(`/images/vests/${clubById[runner.club].vest}`)} alt="" class="h-9 w-auto shrink-0 object-contain" />
+                            )}
+                            <div class="min-w-0">
+                              <div class="font-semibold leading-tight truncate">
+                                {runner.seriesRunnerId != null && runnerUrlMap[runner.seriesRunnerId]
+                                  ? <a href={runnerUrlMap[runner.seriesRunnerId]} class="link link-hover">{runner.name}</a>
+                                  : runner.name}
+                              </div>
+                              <div class="text-xs text-muted mt-0.5 truncate">{clubName}</div>
+                            </div>
                           </div>
-                          <div class="text-xs text-muted mt-0.5 truncate">{clubName}</div>
                         </td>
                         <td class="py-2.5 pr-4 text-content/60 text-xs tabular-nums align-middle">
                           {effectiveSex}{effectiveAge}

@@ -49,6 +49,7 @@ export interface Club {
   name: string;
   shortName: string;
   logo: string;        // filename in /public/images/clubs/, may not exist yet
+  vest?: string;       // filename in /public/images/vests/, e.g. 'blackpool-sm.png'
 }
 
 export interface GlobalRunner {
