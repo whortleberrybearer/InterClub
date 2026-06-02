@@ -6,7 +6,7 @@ import PageHeader from './PageHeader.astro';
 import { getRace, getRaces } from '../lib/data';
 import { hasTeamResults } from '../lib/results';
 import { siteUrl } from '../lib/url';
-import { formatRaceDate, formatTime } from '../lib/format';
+import { formatRaceDate, formatTime, getSeriesLabel } from '../lib/format';
 import type { Club, RaceResult, Series, SeriesConfig } from '../lib/types';
 
 export interface Props {
@@ -24,7 +24,7 @@ const { series, year, raceId, results, provisional, clubs, config, runnerUrlMap 
 
 const race = getRace(year, series, raceId);
 const title = race?.name ?? raceId;
-const seriesLabel = series === 'road-gp' ? 'Road GP' : 'Fell';
+const seriesLabel = getSeriesLabel(series);
 
 const allRaces = getRaces(year, series);
 const raceIndex = allRaces.findIndex(r => r.id === raceId);
@@ -134,7 +134,7 @@ const showSexToggle = hasMale && hasFemale;
   <!-- ════ HERO ════ -->
   <PageHeader
     slot="hero"
-    eyebrow={raceNumber != null ? `Race ${raceNumber}${raceTotal > 1 ? ` of ${raceTotal}` : ''}` : undefined}
+    eyebrow={`${seriesLabel} ${year}${raceNumber != null ? ` · Race ${raceNumber}${raceTotal > 1 ? ` of ${raceTotal}` : ''}` : ''}`}
     title={title}
     subtitleParts={raceMeta}
     provisional={provisional}

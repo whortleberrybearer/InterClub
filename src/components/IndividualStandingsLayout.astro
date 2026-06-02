@@ -12,7 +12,7 @@
 // <main> and spans the full viewport width without negative-margin tricks.
 
 import Layout from './Layout.astro';
-import StandingsHeader from './StandingsHeader.astro';
+import PageHeader from './PageHeader.astro';
 import ChipBar from './ChipBar.astro';
 import MobileAccordionCard from './MobileAccordionCard.astro';
 import RaceKeyItem from './RaceKeyItem.astro';
@@ -38,7 +38,6 @@ const linkedRaceIds = new Set(Astro.props.linkedRaceIds);
 
 const seriesLabel = getSeriesLabel(series);
 const seriesLong  = getSeriesLongLabel(series);
-const backHref     = siteUrl(`/${series}/${year}`);
 const indivHref    = siteUrl(`/${series}/${year}/individual-standings`);
 const teamHref     = siteUrl(`/${series}/${year}/team-standings`);
 const resultsBase  = `/${series}/${year}`;
@@ -118,24 +117,23 @@ const raceColWidth = standings.races.length >= 7 ? '3rem'
 
 <Layout title={`${seriesLong} ${year} — Individual Standings`}>
 
-  <StandingsHeader
+  <PageHeader
     slot="hero"
-    backHref={backHref}
-    backLabel={`← ${seriesLabel} ${year}`}
-    activeTab="individual"
-    individualHref={indivHref}
-    teamHref={teamHref}
+    eyebrow={`${seriesLabel} ${year} · Season Standings`}
+    title="Individual Standings"
+    provisional={standings.provisional}
   >
-    <p class="font-head text-[10px] font-bold tracking-[0.14em] uppercase text-muted mb-1">Season Standings</p>
-    <div class="flex items-center gap-3 flex-wrap">
-      <h1 class="font-head text-[28px] lg:text-[32px] font-extrabold tracking-tight leading-none">Individual Standings</h1>
-      {standings.provisional && <span class="badge badge-warning">Provisional</span>}
+    <div class="flex">
+      <a
+        href={indivHref}
+        class="flex-1 md:flex-none font-head text-[13px] font-bold tracking-[0.06em] uppercase py-2.5 md:mr-7 border-b-2 -mb-px text-center md:text-left border-amber text-hdr-text"
+      >Individual</a>
+      <a
+        href={teamHref}
+        class="flex-1 md:flex-none font-head text-[13px] font-bold tracking-[0.06em] uppercase py-2.5 md:mr-7 border-b-2 -mb-px text-center md:text-left border-transparent text-hdr-muted hover:text-hdr-text transition-colors"
+      >Team</a>
     </div>
-    <p class="text-sm text-muted mt-2">{year} Inter Club {seriesLong}</p>
-    {standings.maxCountingRaces && (
-      <p class="text-sm text-muted mt-0.5">Best {standings.maxCountingRaces} races count</p>
-    )}
-  </StandingsHeader>
+  </PageHeader>
 
   <!-- Chip bar: full viewport width via Layout's chip-bar slot -->
   <ChipBar
