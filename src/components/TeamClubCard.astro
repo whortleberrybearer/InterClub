@@ -36,7 +36,7 @@ const isDesktop = variant === 'desktop';
     <span class="font-mono text-sm font-medium text-muted w-6 shrink-0 text-center tabular-nums">
       {position}
     </span>
-    <img src={siteUrl(`/images/vests/${vest ?? 'unknown-sm.png'}`)} alt="" class="h-9 w-auto shrink-0 object-contain" />
+    <img src={siteUrl(`/images/vests/${(vest ?? 'unknown.png').replace('.png', '-sm.png')}`)} alt="" class="h-9 w-auto shrink-0 object-contain" />
     <div class="flex-1 min-w-0">
       <div class:list={[
         'font-head font-bold tracking-[-0.01em] leading-[1.15] truncate',
