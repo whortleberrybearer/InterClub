@@ -2,6 +2,8 @@
 // src/pages/road-gp/[year]/index.astro
 import Layout from '../../../components/Layout.astro';
 import HistoryRaceList from '../../../components/HistoryRaceList.astro';
+import ArchiveHeader from '../../../components/ArchiveHeader.astro';
+import HistoryYearStrip from '../../../components/HistoryYearStrip.astro';
 import { getCurrentYear, getAvailableYears, getRaces } from '../../../lib/data';
 import { getAwards, getClubs, getSeriesConfig, hasAwards, hasIndividualStandings, hasTeamStandings, resolveIndividualCategoryName } from '../../../lib/results';
 import { siteUrl } from '../../../lib/url';
@@ -35,6 +37,8 @@ if (hasAwards(year, 'road-gp')) {
   const resolveClub = (id: string) => clubs.find(c => c.id === id)?.name ?? id;
   const resolveTeamCategoryName = (id: string) =>
     config.teamCategories?.find(c => c.id === id)?.name ?? id;
+  const resolveVest = (id: string) => clubs.find(c => c.id === id)?.vest;
+  const resolveShortName = (id: string) => clubs.find(c => c.id === id)?.shortName;
 
   const runnerUrlMap = buildRunnerUrlMap(year, 'road-gp');
 
@@ -55,6 +59,8 @@ if (hasAwards(year, 'road-gp')) {
     teamAwards: raw.teamAwards.map(ta => ({
       categoryName: resolveTeamCategoryName(ta.id),
       clubName: resolveClub(ta.club),
+      vest: resolveVest(ta.club),
+      shortName: resolveShortName(ta.club),
     })),
     overallAwards: partitioned.filter(x => !x.sex).map(x => x.resolved),
     maleAwards:    partitioned.filter(x => x.sex === 'M').map(x => x.resolved),
@@ -64,25 +70,30 @@ if (hasAwards(year, 'road-gp')) {
 ---
 
 <Layout title={`Road Grand Prix ${year}`}>
-  <div class="flex gap-2 mb-6">
-    <a href={siteUrl('/road-gp/history/teams')} class="btn btn-sm btn-outline">
-      Team Winners History
-    </a>
-    <a href={siteUrl('/road-gp/history/individuals')} class="btn btn-sm btn-outline">
-      Individual Winners History
-    </a>
-  </div>
+  <ArchiveHeader
+    slot="hero"
+    year={year}
+    seriesLabel="Road Grand Prix"
+    seriesBasePath="/road-gp"
+    currentYear={currentYear}
+    awards={awards}
+  />
+  <HistoryYearStrip
+    slot="chip-bar"
+    years={availableYears}
+    activeYear={year}
+    seriesBasePath="/road-gp"
+    currentYear={currentYear}
+  />
   <HistoryRaceList
     races={races}
     year={year}
     series="road-gp"
-    availableYears={availableYears}
-    currentYear={currentYear}
-    seriesBasePath="/road-gp"
-    seriesLabel="Road Grand Prix"
     standingsUrl={standingsUrl}
     individualStandingsUrl={individualStandingsUrl}
     awards={awards}
     note={config.note}
+    historyTeamsUrl={siteUrl('/road-gp/history/teams')}
+    historyIndividualsUrl={siteUrl('/road-gp/history/individuals')}
   />
 </Layout>

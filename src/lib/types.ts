@@ -232,6 +232,8 @@ export interface SeriesAwards {
 export interface ResolvedTeamAward {
   categoryName: string;
   clubName: string;
+  vest?: string;       // vest filename e.g. "blackpool.png" from clubs.json
+  shortName?: string;  // club abbreviation e.g. "PH"
 }
 
 export interface ResolvedIndividualAwardEntry {

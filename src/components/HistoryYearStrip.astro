@@ -1,0 +1,42 @@
+---
+// src/components/HistoryYearStrip.astro
+//
+// Horizontal scrollable year navigation strip for archive pages.
+// Place in the Layout `chip-bar` slot for full-viewport-width rendering.
+// Active year is highlighted amber; links go to the series index for
+// the current year, and to the archive page for past years.
+import { siteUrl } from '../lib/url';
+
+interface Props {
+  years: number[];
+  activeYear: number;
+  seriesBasePath: string;
+  currentYear: number;
+}
+
+const { years, activeYear, seriesBasePath, currentYear } = Astro.props;
+
+function yearUrl(year: number): string {
+  return year === currentYear
+    ? siteUrl(`${seriesBasePath}/`)
+    : siteUrl(`${seriesBasePath}/${year}/`);
+}
+---
+
+<div class="overflow-x-auto scrollbar-hide border-b border-line bg-surface">
+  <div class="flex max-w-4xl xl:max-w-5xl mx-auto">
+    {years.map(y => (
+      <a
+        href={yearUrl(y)}
+        class:list={[
+          'flex-none px-3 py-2.5 font-mono text-[12px] border-b-2 whitespace-nowrap transition-colors',
+          y === activeYear
+            ? 'text-amber bg-amber-bg font-bold border-amber'
+            : 'text-muted border-transparent hover:text-content',
+        ]}
+      >
+        {y}
+      </a>
+    ))}
+  </div>
+</div>
