@@ -1,5 +1,43 @@
 import { describe, it, expect } from 'vitest';
-import { formatRaceDate, getSeriesLabel, getSeriesLongLabel } from '../../src/lib/format';
+import { formatRaceDate, formatTime, getSeriesLabel, getSeriesLongLabel } from '../../src/lib/format';
+
+describe('formatTime', () => {
+  it('formats a sub-hour mm:ss time', () => {
+    expect(formatTime('25:10')).toBe('25:10');
+  });
+
+  it('formats a single-digit minutes mm:ss time', () => {
+    expect(formatTime('9:30')).toBe('9:30');
+  });
+
+  it('converts mm:ss where minutes >= 60 to h:mm:ss', () => {
+    expect(formatTime('89:40')).toBe('1:29:40');
+  });
+
+  it('formats a stored hh:mm:ss with leading-zero hours to h:mm:ss', () => {
+    expect(formatTime('01:29:40')).toBe('1:29:40');
+  });
+
+  it('formats a stored hh:mm:ss sub-hour to m:ss', () => {
+    expect(formatTime('00:25:10')).toBe('25:10');
+  });
+
+  it('pads minutes and seconds when hours present', () => {
+    expect(formatTime('1:05:03')).toBe('1:05:03');
+  });
+
+  it('returns dash for null', () => {
+    expect(formatTime(null)).toBe('–');
+  });
+
+  it('returns dash for undefined', () => {
+    expect(formatTime(undefined)).toBe('–');
+  });
+
+  it('returns dash for empty string', () => {
+    expect(formatTime('')).toBe('–');
+  });
+});
 
 describe('formatRaceDate', () => {
   it('formats date with time', () => {

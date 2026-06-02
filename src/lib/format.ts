@@ -13,19 +13,30 @@ export function formatRaceDate(date: string, time?: string): string {
   return time ? `${dateStr} · ${time}` : dateStr;
 }
 
-/** Normalise any stored time to hh:mm:ss (zero-padded). */
+/** Format a stored time as h:mm:ss or m:ss (no leading zeros on the first component). */
 export function formatTime(time: string | null | undefined): string {
   if (!time) return '–';
   const parts = time.trim().split(':');
+  let h = 0, m = 0, s = 0;
   if (parts.length === 2) {
-    const [mm, ss] = parts;
-    return `00:${mm.padStart(2, '0')}:${ss.padStart(2, '0')}`;
+    m = parseInt(parts[0], 10);
+    s = parseInt(parts[1], 10);
+  } else if (parts.length === 3) {
+    h = parseInt(parts[0], 10);
+    m = parseInt(parts[1], 10);
+    s = parseInt(parts[2], 10);
+  } else {
+    return time;
   }
-  if (parts.length === 3) {
-    const [hh, mm, ss] = parts;
-    return `${hh.padStart(2, '0')}:${mm.padStart(2, '0')}:${ss.padStart(2, '0')}`;
+  if (isNaN(h) || isNaN(m) || isNaN(s)) return time;
+  const total = h * 3600 + m * 60 + s;
+  const hh = Math.floor(total / 3600);
+  const mm = Math.floor((total % 3600) / 60);
+  const ss = total % 60;
+  if (hh > 0) {
+    return `${hh}:${mm.toString().padStart(2, '0')}:${ss.toString().padStart(2, '0')}`;
   }
-  return time;
+  return `${mm}:${ss.toString().padStart(2, '0')}`;
 }
 
 export function getSeriesLabel(series: Series): string {
