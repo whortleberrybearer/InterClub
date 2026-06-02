@@ -1,18 +1,20 @@
-[
-  {
-    "id": "chorley-ac",
-    "name": "Chorley AC",
-    "shortName": "CAC"
-  },
-  {
-    "id": "preston",
-    "name": "Preston Harriers",
-    "shortName": "PH",
-    "logo": "preston.svg"
-  },
-  {
-    "id": "springfields",
-    "name": "Springfields AC",
-    "shortName": "SPR"
-  }
+﻿[
+    {
+        "id":  "chorley-ac",
+        "name":  "Chorley AC",
+        "shortName":  "CAC",
+        "vest":  "chorley-ac-sm.png"
+    },
+    {
+        "id":  "preston",
+        "name":  "Preston Harriers",
+        "shortName":  "PH",
+        "logo":  "preston.svg",
+        "vest":  "preston-sm.png"
+    },
+    {
+        "id":  "springfields",
+        "name":  "Springfields AC",
+        "shortName":  "SPR"
+    }
 ]

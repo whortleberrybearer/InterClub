@@ -1,35 +1,39 @@
-[
-  {
-    "id": "chorley-ac",
-    "name": "Chorley AC",
-    "shortName": "CAC"
-  },
-  {
-    "id": "north-fylde",
-    "name": "North Fylde AC",
-    "shortName": "NFA"
-  },
-  {
-    "id": "preston",
-    "name": "Preston Harriers",
-    "shortName": "PH",
-    "logo": "preston.svg"
-  },
-  {
-    "id": "red-rose",
-    "name": "Red Rose RR",
-    "shortName": "RR",
-    "logo": "red-rose.svg"
-  },
-  {
-    "id": "springfields",
-    "name": "Springfields AC",
-    "shortName": "SPR"
-  },
-  {
-    "id": "wesham",
-    "name": "Wesham RR",
-    "shortName": "WRR",
-    "logo": "wesham.svg"
-  }
+﻿[
+    {
+        "id":  "chorley-ac",
+        "name":  "Chorley AC",
+        "shortName":  "CAC",
+        "vest":  "chorley-ac-sm.png"
+    },
+    {
+        "id":  "north-fylde",
+        "name":  "North Fylde AC",
+        "shortName":  "NFA"
+    },
+    {
+        "id":  "preston",
+        "name":  "Preston Harriers",
+        "shortName":  "PH",
+        "logo":  "preston.svg",
+        "vest":  "preston-sm.png"
+    },
+    {
+        "id":  "red-rose",
+        "name":  "Red Rose RR",
+        "shortName":  "RR",
+        "logo":  "red-rose.svg",
+        "vest":  "red-rose-sm.png"
+    },
+    {
+        "id":  "springfields",
+        "name":  "Springfields AC",
+        "shortName":  "SPR"
+    },
+    {
+        "id":  "wesham",
+        "name":  "Wesham RR",
+        "shortName":  "WRR",
+        "logo":  "wesham.svg",
+        "vest":  "wesham-sm.png"
+    }
 ]
