@@ -8,11 +8,13 @@
 //   desktop — auto-fill scorer grid, slightly larger club name font
 //   mobile  — 2/3-col scorer grid, slightly smaller club name font
 import type { TeamScorer } from '../lib/types';
+import { siteUrl } from '../lib/url';
 
 interface Props {
   detailId: string;
   position: number;
   clubName: string;
+  vest?: string;
   total: number;
   scorers: TeamScorer[];
   /** Scorer count from catConfig; when provided, drives the incomplete-team warning. */
@@ -21,7 +23,7 @@ interface Props {
   variant: 'desktop' | 'mobile';
 }
 
-const { detailId, position, clubName, total, scorers, scorerCount, runnerUrlMap, variant } = Astro.props;
+const { detailId, position, clubName, vest, total, scorers, scorerCount, runnerUrlMap, variant } = Astro.props;
 const isDesktop = variant === 'desktop';
 ---
 
@@ -34,6 +36,9 @@ const isDesktop = variant === 'desktop';
     <span class="font-mono text-sm font-medium text-muted w-6 shrink-0 text-center tabular-nums">
       {position}
     </span>
+    {vest && (
+      <img src={siteUrl(`/images/vests/${vest}`)} alt="" class="h-9 w-auto shrink-0 object-contain" />
+    )}
     <div class="flex-1 min-w-0">
       <div class:list={[
         'font-head font-bold tracking-[-0.01em] leading-[1.15] truncate',

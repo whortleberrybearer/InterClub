@@ -128,6 +128,7 @@ const categoryById = Object.fromEntries((config.teamCategories ?? []).map(c => [
                 detailId={`dt-detail-${i}-${clubResult.club}`}
                 position={clubResult.position}
                 clubName={clubById[clubResult.club]?.name ?? clubResult.club}
+                vest={clubById[clubResult.club]?.vest}
                 total={clubResult.total}
                 scorers={clubResult.scorers}
                 scorerCount={catConfig?.scorerCount}
@@ -170,6 +171,7 @@ const categoryById = Object.fromEntries((config.teamCategories ?? []).map(c => [
                 detailId={`mb-detail-${i}-${clubResult.club}`}
                 position={clubResult.position}
                 clubName={clubById[clubResult.club]?.name ?? clubResult.club}
+                vest={clubById[clubResult.club]?.vest}
                 total={clubResult.total}
                 scorers={clubResult.scorers}
                 scorerCount={catConfig?.scorerCount}
