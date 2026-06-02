@@ -374,9 +374,7 @@ const showSexToggle = hasMale && hasFemale;
                   <td class="no-col py-2.5 px-2 font-mono text-[12px] text-muted align-middle">{r.raceNumber ?? '–'}</td>
                   <td class="py-2.5 px-2 align-middle max-w-0 overflow-hidden">
                     <div class="flex gap-2 min-w-0">
-                      {r.club !== 'Guest' && clubById[r.club]?.vest && (
-                        <img src={siteUrl(`/images/vests/${clubById[r.club].vest}`)} alt="" class="h-9 w-auto shrink-0 object-contain" />
-                      )}
+                      <img src={siteUrl(`/images/vests/${r.club === 'Guest' ? 'unknown-sm.png' : (clubById[r.club]?.vest ?? 'unknown-sm.png')}`)} alt="" class="h-9 w-auto shrink-0 object-contain" />
                       <div class="min-w-0">
                         <div class="font-semibold leading-tight truncate">
                           {url
@@ -623,8 +621,8 @@ const showSexToggle = hasMale && hasFemale;
     const url      = r.seriesRunnerId != null ? runnerUrlMap[r.seriesRunnerId] : null;
     const fullName = `${esc(r.firstName ?? '')} ${esc(r.lastName ?? '')}`.trim();
     const clubName = r.club === 'Guest' ? 'Guest' : esc(clubById[r.club]?.name ?? r.club);
-    const vest     = r.club !== 'Guest' ? (clubById[r.club]?.vest ?? null) : null;
-    const vestHtml = vest ? `<img src="${BASE}/images/vests/${esc(vest)}" alt="" class="h-9 w-auto shrink-0 object-contain" />` : '';
+    const vest     = r.club !== 'Guest' ? (clubById[r.club]?.vest ?? 'unknown-sm.png') : 'unknown-sm.png';
+    const vestHtml = `<img src="${BASE}/images/vests/${esc(vest)}" alt="" class="h-9 w-auto shrink-0 object-contain" />`;
     const displayCatId = activeCategoryId ?? 'open';
     const icVal    = r.club === 'Guest' ? '–' : String(r.categoryPositions[displayCatId] ?? '–');
     const nameCell = url ? `<a href="${esc(url)}" class="link link-hover">${fullName}</a>` : fullName;

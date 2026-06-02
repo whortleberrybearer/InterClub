@@ -334,9 +334,7 @@ const raceColWidth = standings.races.length >= 7 ? '3rem'
                     data-club={runner.club}
                   >
                     <div class="flex gap-2 min-w-0">
-                      {clubById[runner.club]?.vest && (
-                        <img src={siteUrl(`/images/vests/${clubById[runner.club].vest}`)} alt="" class="h-9 w-auto shrink-0 object-contain" />
-                      )}
+                      <img src={siteUrl(`/images/vests/${clubById[runner.club]?.vest ?? 'unknown-sm.png'}`)} alt="" class="h-9 w-auto shrink-0 object-contain" />
                       <div class="min-w-0">
                         <div class="font-semibold text-[15px] leading-tight truncate">
                           {runner.seriesRunnerId != null && runnerUrlMap[runner.seriesRunnerId]
