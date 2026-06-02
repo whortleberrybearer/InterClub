@@ -7,7 +7,7 @@
 //   Tablet  (sm–lg) — table inside a white card
 //   Desktop (lg+)   — sticky sidebar + plain stacked tables
 import Layout from './Layout.astro';
-import StandingsHeader from './StandingsHeader.astro';
+import PageHeader from './PageHeader.astro';
 import ChipBar from './ChipBar.astro';
 import MobileAccordionCard from './MobileAccordionCard.astro';
 import RaceKeyItem from './RaceKeyItem.astro';
@@ -16,7 +16,7 @@ import type { RaceCell } from './RaceResultGrid.astro';
 import { getRaces } from '../lib/data';
 import type { Club, Series, SeriesConfig, TeamStandings } from '../lib/types';
 import { siteUrl } from '../lib/url';
-import { getSeriesLabel, getSeriesLongLabel } from '../lib/format';
+import { getSeriesLabel } from '../lib/format';
 
 export interface Props {
   series: Series;
@@ -31,7 +31,6 @@ const { series, year, standings, clubs, config } = Astro.props;
 const linkedRaceIds = new Set(Astro.props.linkedRaceIds);
 
 const seriesLabel = getSeriesLabel(series);
-const seriesLong  = getSeriesLongLabel(series);
 
 const races = getRaces(year, series);
 const clubById = Object.fromEntries(clubs.map(c => [c.id, c]));
@@ -44,7 +43,6 @@ const standingsRaceIdx = Object.fromEntries(standings.races.map((id, i) => [id, 
 const racesRun = standings.races.filter((_, idx) =>
   standings.categories.some(cat => cat.clubs.some(club => club.points[idx] !== null))
 ).length;
-const racesRemaining = races.length - racesRun;
 
 // Shared table header class strings
 const tabTh = 'font-head text-[10px] font-bold tracking-[0.1em] uppercase text-muted py-2.5 px-2 bg-surface border-b-2 border-content';
@@ -60,29 +58,23 @@ const raceColWidth = races.length >= 7 ? '3rem'
 
 <Layout title={`${seriesLabel} ${year} — Team Standings`}>
 
-  <StandingsHeader
+  <PageHeader
     slot="hero"
-    backHref={siteUrl(`/${series}/${year}`)}
-    backLabel={`← ${seriesLabel} ${year}`}
-    activeTab="team"
-    individualHref={siteUrl(`/${series}/${year}/individual-standings`)}
-    teamHref={siteUrl(`/${series}/${year}/team-standings`)}
+    eyebrow={`${seriesLabel} ${year} · Season Standings`}
+    title="Team Standings"
+    provisional={standings.provisional}
   >
-    <p class="font-head text-[10px] font-bold tracking-[0.14em] uppercase text-muted mb-1">Season Standings</p>
-    <div class="flex items-center gap-3 flex-wrap">
-      <h1 class="font-head text-[28px] lg:text-[32px] font-extrabold tracking-tight leading-none">Team Standings</h1>
-      {standings.provisional && (
-        <span class="badge badge-warning">Provisional</span>
-      )}
+    <div class="flex">
+      <a
+        href={siteUrl(`/${series}/${year}/individual-standings`)}
+        class="flex-1 md:flex-none font-head text-[13px] font-bold tracking-[0.06em] uppercase py-2.5 md:mr-7 border-b-2 -mb-px text-center md:text-left border-transparent text-hdr-muted hover:text-hdr-text transition-colors"
+      >Individual</a>
+      <a
+        href={siteUrl(`/${series}/${year}/team-standings`)}
+        class="flex-1 md:flex-none font-head text-[13px] font-bold tracking-[0.06em] uppercase py-2.5 md:mr-7 border-b-2 -mb-px text-center md:text-left border-amber text-hdr-text"
+      >Team</a>
     </div>
-    <p class="text-sm text-muted mt-2">{year} Inter Club {seriesLong}</p>
-    <p class="text-sm text-muted mt-0.5">
-      <span class="font-mono">{racesRun} of {races.length}</span> races run
-      {racesRemaining > 0 && (
-        <> · <span class="font-mono text-amber">{racesRemaining}</span> remaining</>
-      )}
-    </p>
-  </StandingsHeader>
+  </PageHeader>
 
   <!-- Category chip bar — mobile + tablet, in the chip-bar slot (full viewport width) -->
   <ChipBar

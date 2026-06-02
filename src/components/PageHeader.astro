@@ -1,24 +1,17 @@
 ---
 // src/components/PageHeader.astro
 //
-// Shared dark hero header for race results and runner profile pages.
+// Shared dark hero header used across all detail pages:
+//   race results, team results, individual/team standings, runner profiles.
 // Renders the full-bleed bg-hdr-dark band with:
-//   - an optional amber eyebrow line
+//   - an optional back link (e.g. "← Road GP 2026") above the eyebrow
+//   - an optional amber eyebrow line (e.g. "Road GP 2026 · Race 1 of 7")
 //   - a bold h1 (with optional Provisional badge)
 //   - an optional muted mono subtitle row (items separated by 1px lines)
 //   - an optional tab strip via the default slot (separator line is handled here)
-//
-// Usage:
-//   <PageHeader slot="hero" eyebrow="Race 1 of 7" title={title} subtitleParts={raceMeta}>
-//     <!-- tab strip (optional) -->
-//     <div class="flex">
-//       <a class="...tab-active...">Individual</a>
-//       <a class="...tab-inactive...">Team</a>
-//     </div>
-//   </PageHeader>
 
 export interface Props {
-  /** Amber label rendered above the title (e.g. "Race 1 of 7" or a club name). */
+  /** Amber label rendered above the title, e.g. "Road GP 2026 · Race 1 of 7". */
   eyebrow?: string;
   /** Main page heading. */
   title: string;
@@ -52,16 +45,14 @@ const hasTabStrip = Astro.slots.has('default');
       )}
     </div>
 
-    {subtitleParts.length > 0 && (
-      <div class="flex items-center flex-wrap gap-x-2.5 gap-y-0.5 font-mono text-[12px] text-hdr-muted mt-1">
-        {subtitleParts.map((part, i) => (
-          <>
-            {i > 0 && <span class="w-px h-[11px] bg-white/20 self-center flex-shrink-0" />}
-            <span>{part}</span>
-          </>
-        ))}
-      </div>
-    )}
+    <div class="flex items-center flex-wrap gap-x-2.5 gap-y-0.5 font-mono text-[12px] text-hdr-muted mt-1 min-h-[18px]">
+      {subtitleParts.map((part, i) => (
+        <>
+          {i > 0 && <span class="w-px h-[11px] bg-white/20 self-center flex-shrink-0" />}
+          <span>{part}</span>
+        </>
+      ))}
+    </div>
 
   </div>
 

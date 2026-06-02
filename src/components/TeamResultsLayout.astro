@@ -12,7 +12,7 @@ import PageHeader from './PageHeader.astro';
 import TeamClubCard from './TeamClubCard.astro';
 import { getRace, getRaces } from '../lib/data';
 import { siteUrl } from '../lib/url';
-import { formatRaceDate } from '../lib/format';
+import { formatRaceDate, getSeriesLabel } from '../lib/format';
 import type { Club, Series, SeriesConfig, TeamResults } from '../lib/types';
 
 export interface Props {
@@ -27,6 +27,8 @@ export interface Props {
 }
 
 const { series, year, raceId, teamResults, provisional, clubs, config, runnerUrlMap } = Astro.props;
+
+const seriesLabel = getSeriesLabel(series);
 
 const race = getRace(year, series, raceId);
 const title = race?.name ?? raceId;
@@ -50,7 +52,7 @@ const categoryById = Object.fromEntries((config.teamCategories ?? []).map(c => [
   <!-- ── Full-width race header (hero slot) ── -->
   <PageHeader
     slot="hero"
-    eyebrow={raceNumber != null ? `Race ${raceNumber}${raceTotal > 1 ? ` of ${raceTotal}` : ''}` : undefined}
+    eyebrow={`${seriesLabel} ${year}${raceNumber != null ? ` · Race ${raceNumber}${raceTotal > 1 ? ` of ${raceTotal}` : ''}` : ''}`}
     title={title}
     subtitleParts={raceMeta}
     provisional={provisional}
