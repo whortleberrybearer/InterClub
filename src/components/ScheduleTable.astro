@@ -57,7 +57,7 @@ const pastCount = raceStates.filter(s => s.past).length;
           past && showNextRace && 'opacity-70',
         ]}>
           <td class="hidden sm:table-cell py-3 px-2 text-center font-mono text-xs text-muted">{i + 1}</td>
-          <td class="py-3 pl-4 sm:pl-2 pr-2 w-[90px]">
+          <td class="py-3 pl-4 sm:pl-2 pr-2 w-[110px] whitespace-nowrap">
             <div class="font-mono text-[13px]">{formatRaceDate(race.date)}</div>
             {showNextRace && race.time && (
               <div class="font-mono text-[11px] text-muted">{race.time}</div>
