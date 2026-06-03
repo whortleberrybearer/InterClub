@@ -3,6 +3,7 @@
 import type { Club, Race, ResolvedSeriesAwards, Series } from '../lib/types';
 import { hasResults, hasTeamResults } from '../lib/results';
 import { siteUrl } from '../lib/url';
+import ArchiveYearNav from './ArchiveYearNav.astro';
 
 interface Props {
   races: Race[];
@@ -93,19 +94,8 @@ const totalRunners = sidebarRows.reduce((n, r) => n + r.count, 0);
 const maxCount = sidebarRows[0]?.count ?? 1;
 const showSidebar = sidebarRows.length > 0;
 
-// Year navigation sidebar — matches SeriesDetailLayout's archive sidebar
-const pastYears = availableYears.filter(y => y !== currentYear).sort((a, b) => b - a);
-const oldestYear = pastYears[pastYears.length - 1] ?? null;
-const decadeGroups = [
-  { label: '2020s',   years: pastYears.filter(y => y >= 2020) },
-  { label: '2010s',   years: pastYears.filter(y => y >= 2010 && y < 2020) },
-  { label: '2000s',   years: pastYears.filter(y => y >= 2000 && y < 2010) },
-  { label: '1990s',   years: pastYears.filter(y => y >= 1990 && y < 2000) },
-  { label: '1985–89', years: pastYears.filter(y => y < 1990) },
-].filter(g => g.years.length > 0);
-function yearArchiveUrl(y: number): string {
-  return y === currentYear ? siteUrl(`/${series}/`) : siteUrl(`/${series}/${y}/`);
-}
+// Past years for the archive year-nav sidebar
+const pastYears = availableYears.filter(y => y !== currentYear);
 ---
 
 <!-- ═══ Mobile champion banner (vest hero) ═══ -->
@@ -395,8 +385,12 @@ function yearArchiveUrl(y: number): string {
   <aside class="hidden lg:block sticky top-6 self-start">
     <div class="flex flex-col gap-4">
 
+      <!-- Year navigation (shared component, matches series detail page) -->
+      <ArchiveYearNav series={series} years={pastYears} activeYear={year} />
+
+      <!-- By the Numbers — participation counts for the viewed season -->
       {showSidebar && (
-        <div class="bg-surface rounded-xl border border-line p-4">
+        <div class="card p-4">
           <div class="font-head text-[14px] font-bold tracking-[0.04em] uppercase mb-3">
             By the Numbers
           </div>
@@ -421,44 +415,6 @@ function yearArchiveUrl(y: number): string {
           <div class="mt-3 pt-3 border-t border-line font-mono text-[11px] text-muted">
             {totalRunners} runners · {sidebarRows.length} club{sidebarRows.length !== 1 ? 's' : ''}
           </div>
-        </div>
-      )}
-
-      {decadeGroups.length > 0 && (
-        <div class="bg-surface rounded-xl border border-line p-5">
-          <div class="font-head text-[10px] font-bold tracking-[0.16em] uppercase text-muted mb-1">The Archive</div>
-          <div class="font-head text-[20px] font-extrabold tracking-tight mb-2">Past seasons</div>
-          <p class="text-[12px] text-muted leading-relaxed mb-4 pb-4 border-b border-line">
-            Race lists, results and standings{oldestYear ? ` since ${oldestYear}` : ''}. Select a year to browse that season.
-          </p>
-          {decadeGroups.map((group, gi) => (
-            <div class:list={[gi < decadeGroups.length - 1 && 'mb-4']}>
-              <div class="font-mono text-[10px] tracking-[0.1em] uppercase text-muted mb-1.5">
-                {group.label}
-              </div>
-              <div class="grid grid-cols-4 gap-1">
-                {group.years.map(y => (
-                  <a
-                    href={yearArchiveUrl(y)}
-                    class:list={[
-                      'text-center py-1.5 font-mono text-[11px] rounded-md transition-colors no-underline',
-                      y === year
-                        ? 'bg-amber-bg text-amber font-bold'
-                        : 'text-content bg-canvas hover:text-amber',
-                    ]}
-                  >
-                    {String(y).slice(2)}
-                  </a>
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
-      )}
-
-      {oldestYear && (
-        <div class="p-3.5 bg-canvas border border-dashed border-line rounded-xl text-[12px] text-muted leading-relaxed">
-          <strong class="text-content">Series founded {oldestYear}.</strong> {pastYears.length} season{pastYears.length !== 1 ? 's' : ''} of results.
         </div>
       )}
 
