@@ -257,6 +257,34 @@ export function isResultsProvisional(year: number, series: Series, raceId: strin
   );
 }
 
+/**
+ * Count unique runners per club across all races in a year/series.
+ * Deduplicates by seriesRunnerId when available, otherwise by club+name.
+ * Guests are excluded. Returns club id → count (only clubs with ≥1 runner).
+ */
+export function getClubParticipantCounts(year: number, series: Series): Record<string, number> {
+  const files = csvFilesForSeries(series);
+  const prefix = `../data/${year}/${series}/results/`;
+  const seen = new Set<string>();
+  const counts: Record<string, number> = {};
+
+  for (const [path, content] of Object.entries(files)) {
+    if (!path.startsWith(prefix) || !path.endsWith('.csv')) continue;
+    for (const r of parseResultsCsv(content)) {
+      if (!r.club || r.club === 'Guest') continue;
+      const key = r.seriesRunnerId != null
+        ? `id:${r.seriesRunnerId}`
+        : `name:${r.club}:${(r.firstName ?? '').trim().toLowerCase()}:${(r.lastName ?? '').trim().toLowerCase()}`;
+      if (!seen.has(key)) {
+        seen.add(key);
+        counts[r.club] = (counts[r.club] ?? 0) + 1;
+      }
+    }
+  }
+
+  return counts;
+}
+
 export function getResultsStaticPaths(series: Series) {
   const files = csvFilesForSeries(series);
   const seen = new Map<string, { year: number; raceId: string; provisional: boolean }>();

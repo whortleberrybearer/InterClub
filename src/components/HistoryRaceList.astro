@@ -1,6 +1,6 @@
 ---
 // src/components/HistoryRaceList.astro
-import type { Race, ResolvedSeriesAwards, Series } from '../lib/types';
+import type { Club, Race, ResolvedSeriesAwards, Series } from '../lib/types';
 import { hasResults, hasTeamResults } from '../lib/results';
 import { siteUrl } from '../lib/url';
 
@@ -14,12 +14,15 @@ interface Props {
   note?: string;
   historyTeamsUrl?: string;
   historyIndividualsUrl?: string;
+  clubs?: Club[];
+  participantCounts?: Record<string, number>;
 }
 
 const {
   races, year, series,
   standingsUrl, individualStandingsUrl,
   awards, note, historyTeamsUrl, historyIndividualsUrl,
+  clubs = [], participantCounts = {},
 } = Astro.props;
 
 // Compute champion club (most team titles) for the mobile banner.
@@ -66,6 +69,26 @@ const hasIndividualAwards = awards && (
   awards.femaleAwards.length > 0
 );
 const hasMF = awards && (awards.maleAwards.length > 0 || awards.femaleAwards.length > 0);
+
+// Sidebar: "By the Numbers" — runner participation per club
+// Club colours match vest branding. Chorley uses mid-grey (original near-black
+// renders invisible in dark mode). Wesham darkened slightly for bar contrast.
+const CLUB_COLORS: Record<string, string> = {
+  'blackpool': '#e85d2c',
+  'chorley':   '#6b7280',
+  'lytham':    '#3a8a3a',
+  'preston':   '#1d44a8',
+  'red-rose':  '#c0223e',
+  'thornton':  '#2a7aaa',
+  'wesham':    '#4a8ab0',
+};
+const sidebarRows = clubs
+  .map(c => ({ club: c, count: participantCounts[c.id] ?? 0 }))
+  .filter(r => r.count > 0)
+  .sort((a, b) => b.count - a.count);
+const totalRunners = sidebarRows.reduce((n, r) => n + r.count, 0);
+const maxCount = sidebarRows[0]?.count ?? 1;
+const showSidebar = sidebarRows.length > 0;
 ---
 
 <!-- ═══ Mobile champion banner (vest hero) ═══ -->
@@ -97,249 +120,292 @@ const hasMF = awards && (awards.maleAwards.length > 0 || awards.femaleAwards.len
   </div>
 )}
 
-<!-- ═══ Action buttons: Team / Individual standings ═══ -->
-{(standingsUrl || individualStandingsUrl) && (
-  <div class="flex gap-2.5 flex-wrap mb-5">
-    {standingsUrl && (
-      <a href={standingsUrl} class="btn btn-primary flex-1 sm:flex-none font-head text-[13px] font-bold tracking-[0.06em] uppercase">
-        Team Standings →
-      </a>
+<!-- ═══ Desktop 2-col layout: main content + sticky sidebar ═══ -->
+<div class="lg:grid lg:gap-7 lg:items-start" style="grid-template-columns: 1fr 280px">
+
+  <!-- ── Main column ── -->
+  <div>
+
+    <!-- Action buttons: Team / Individual standings -->
+    {(standingsUrl || individualStandingsUrl) && (
+      <div class="flex gap-2.5 flex-wrap mb-5">
+        {standingsUrl && (
+          <a href={standingsUrl} class="btn btn-primary flex-1 sm:flex-none font-head text-[13px] font-bold tracking-[0.06em] uppercase">
+            Team Standings →
+          </a>
+        )}
+        {individualStandingsUrl && (
+          <a href={individualStandingsUrl} class="btn flex-1 sm:flex-none font-head text-[13px] font-bold tracking-[0.06em] uppercase border-amber text-amber hover:bg-amber-bg">
+            Individual →
+          </a>
+        )}
+      </div>
     )}
-    {individualStandingsUrl && (
-      <a href={individualStandingsUrl} class="btn flex-1 sm:flex-none font-head text-[13px] font-bold tracking-[0.06em] uppercase border-amber text-amber hover:bg-amber-bg">
-        Individual →
-      </a>
+
+    <!-- Secondary history navigation -->
+    {(historyTeamsUrl || historyIndividualsUrl) && (
+      <div class="flex gap-2 flex-wrap mb-5">
+        {historyTeamsUrl && (
+          <a href={historyTeamsUrl} class="btn btn-sm btn-outline">Team Winners History</a>
+        )}
+        {historyIndividualsUrl && (
+          <a href={historyIndividualsUrl} class="btn btn-sm btn-outline">Individual Winners History</a>
+        )}
+      </div>
     )}
-  </div>
-)}
 
-<!-- ═══ Secondary history navigation ═══ -->
-{(historyTeamsUrl || historyIndividualsUrl) && (
-  <div class="flex gap-2 flex-wrap mb-5">
-    {historyTeamsUrl && (
-      <a href={historyTeamsUrl} class="btn btn-sm btn-outline">Team Winners History</a>
-    )}
-    {historyIndividualsUrl && (
-      <a href={historyIndividualsUrl} class="btn btn-sm btn-outline">Individual Winners History</a>
-    )}
-  </div>
-)}
-
-<!-- ═══ Schedule ═══ -->
-<!-- Vests are intentionally absent here — races aren't owned by a single club -->
-<div class="mb-6">
-  <div class="flex items-baseline justify-between mb-2">
-    <h2 class="font-head text-[15px] font-bold tracking-[0.04em] uppercase">Schedule</h2>
-    {races.length > 0 && (
-      <span class="font-mono text-[11px] text-muted">
-        {races.length} race{races.length !== 1 ? 's' : ''}
-      </span>
-    )}
-  </div>
-
-  {races.length > 0 && (
-    <div class="bg-surface rounded-xl border border-line overflow-hidden">
-      {races.map((race, i) => {
-        const resultsUrl = hasResults(year, series, race.id)
-          ? siteUrl(`/${series}/${year}/${race.id}/results/`)
-          : null;
-        const teamResultsUrl = hasTeamResults(year, series, race.id)
-          ? siteUrl(`/${series}/${year}/${race.id}/team-results/`)
-          : null;
-        return (
-          <div class="flex items-start gap-3 px-4 py-3 border-b border-line last:border-b-0">
-            <span class="font-mono text-[11px] text-muted w-4 shrink-0 pt-[3px] text-right">
-              {i + 1}
-            </span>
-            <span class="font-mono text-[12px] text-content/60 shrink-0 pt-px w-[52px]">
-              {shortDate(race.date)}
-            </span>
-            <div class="flex-1 min-w-0">
-              <div class="font-medium text-sm leading-snug">{race.name}</div>
-              {(race.location || race.distance) && (
-                <div class="font-mono text-[11px] text-muted mt-0.5">
-                  {[race.location, race.distance].filter(Boolean).join(' · ')}
-                </div>
-              )}
-            </div>
-            <div class="flex gap-3 text-[11px] shrink-0 pt-px">
-              {resultsUrl && (
-                <a href={resultsUrl} class="font-semibold text-amber hover:underline whitespace-nowrap">
-                  Results →
-                </a>
-              )}
-              {teamResultsUrl && (
-                <a href={teamResultsUrl} class="font-semibold text-amber/60 hover:underline whitespace-nowrap">
-                  Teams →
-                </a>
-              )}
-              {!resultsUrl && !teamResultsUrl && (
-                <span class="text-content/30">—</span>
-              )}
-            </div>
-          </div>
-        );
-      })}
-    </div>
-  )}
-
-  {note && <p class="text-muted text-sm italic mt-2">{note}</p>}
-</div>
-
-<!-- ═══ Team Awards — compact list (mobile) / vest gallery (md+) ═══ -->
-{awards?.teamAwards && awards.teamAwards.length > 0 && (
-  <div class="mb-6">
-
-    <!-- Mobile: compact list -->
-    <div class="md:hidden">
+    <!-- Schedule — vests intentionally absent (races aren't club-owned) -->
+    <div class="mb-6">
       <div class="flex items-baseline justify-between mb-2">
-        <h2 class="font-head text-[15px] font-bold tracking-[0.04em] uppercase">Team Awards</h2>
-        <span class="font-mono text-[11px] text-muted">
-          {awards.teamAwards.length} {awards.teamAwards.length === 1 ? 'category' : 'categories'}
-        </span>
-      </div>
-      <div class="bg-surface rounded-xl border border-line px-4">
-        {awards.teamAwards.map(ta => (
-          <div class="flex items-center gap-3 py-2.5 border-b border-line last:border-b-0">
-            <span class="font-head text-[11px] font-bold tracking-[0.06em] uppercase text-muted w-[80px] shrink-0">
-              {ta.categoryName}
-            </span>
-            {ta.vest ? (
-              <img
-                src={siteUrl(`/images/vests/${ta.vest.replace('.png', '-sm.png')}`)}
-                alt={ta.clubName}
-                class="w-[34px] h-[42px] object-contain shrink-0"
-              />
-            ) : (
-              <div class="w-[34px] h-[42px] shrink-0" />
-            )}
-            <span class="font-head text-[15px] font-bold flex-1 min-w-0 truncate">
-              {ta.clubName}
-            </span>
-          </div>
-        ))}
-      </div>
-    </div>
-
-    <!-- Desktop: vest gallery — each category headlined by its winning club's vest -->
-    <div class="hidden md:block">
-      <div class="flex items-center justify-between mb-1.5">
-        <div class="flex items-center gap-3">
-          <span class="font-head text-[11px] font-bold tracking-[0.16em] uppercase text-amber">
-            {year} · {seriesShortLabel}
+        <h2 class="font-head text-[15px] font-bold tracking-[0.04em] uppercase">Schedule</h2>
+        {races.length > 0 && (
+          <span class="font-mono text-[11px] text-muted">
+            {races.length} race{races.length !== 1 ? 's' : ''}
           </span>
-          <span class="block h-px w-7 bg-line shrink-0"></span>
+        )}
+      </div>
+
+      {races.length > 0 && (
+        <div class="bg-surface rounded-xl border border-line overflow-hidden">
+          {races.map((race, i) => {
+            const resultsUrl = hasResults(year, series, race.id)
+              ? siteUrl(`/${series}/${year}/${race.id}/results/`)
+              : null;
+            const teamResultsUrl = hasTeamResults(year, series, race.id)
+              ? siteUrl(`/${series}/${year}/${race.id}/team-results/`)
+              : null;
+            return (
+              <div class="flex items-start gap-3 px-4 py-3 border-b border-line last:border-b-0">
+                <span class="font-mono text-[11px] text-muted w-4 shrink-0 pt-[3px] text-right">
+                  {i + 1}
+                </span>
+                <span class="font-mono text-[12px] text-content/60 shrink-0 pt-px w-[52px]">
+                  {shortDate(race.date)}
+                </span>
+                <div class="flex-1 min-w-0">
+                  <div class="font-medium text-sm leading-snug">{race.name}</div>
+                  {(race.location || race.distance) && (
+                    <div class="font-mono text-[11px] text-muted mt-0.5">
+                      {[race.location, race.distance].filter(Boolean).join(' · ')}
+                    </div>
+                  )}
+                </div>
+                <div class="flex gap-3 text-[11px] shrink-0 pt-px">
+                  {resultsUrl && (
+                    <a href={resultsUrl} class="font-semibold text-amber hover:underline whitespace-nowrap">
+                      Results →
+                    </a>
+                  )}
+                  {teamResultsUrl && (
+                    <a href={teamResultsUrl} class="font-semibold text-amber/60 hover:underline whitespace-nowrap">
+                      Teams →
+                    </a>
+                  )}
+                  {!resultsUrl && !teamResultsUrl && (
+                    <span class="text-content/30">—</span>
+                  )}
+                </div>
+              </div>
+            );
+          })}
         </div>
-        <span class="font-mono text-[12px] text-muted">
-          {awards.teamAwards.length} team title{awards.teamAwards.length !== 1 ? 's' : ''}
-        </span>
-      </div>
-      <h2 class="font-head text-[32px] font-extrabold tracking-tight leading-none mb-[22px]">
-        Team Awards
-      </h2>
-      <div
-        class="grid gap-2.5"
-        style={`grid-template-columns: repeat(${awards.teamAwards.length}, 1fr)`}
-      >
-        {awards.teamAwards.map(ta => (
-          <div class="flex flex-col items-center text-center">
-            <span class="font-head text-[11px] font-bold tracking-[0.08em] uppercase text-amber leading-none">
-              {ta.categoryName}
-            </span>
-            {ta.vest ? (
-              <img
-                src={siteUrl(`/images/vests/${ta.vest}`)}
-                alt={ta.clubName}
-                class="w-[84px] h-[100px] object-contain mt-2 mb-2.5"
-                style="filter: drop-shadow(0 6px 12px rgba(0,0,0,0.12))"
-              />
-            ) : (
-              <div class="w-[84px] h-[100px] mt-2 mb-2.5" />
-            )}
-            <div class="font-head text-[14px] font-bold tracking-tight leading-snug">
-              {ta.clubName}
-            </div>
-          </div>
-        ))}
-      </div>
+      )}
+
+      {note && <p class="text-muted text-sm italic mt-2">{note}</p>}
     </div>
 
-  </div>
-)}
+    <!-- Team Awards — compact list (mobile) / vest gallery (md+) -->
+    {awards?.teamAwards && awards.teamAwards.length > 0 && (
+      <div class="mb-6">
 
-<!-- ═══ Individual Awards ═══ -->
-{hasIndividualAwards && (
-  <div class="mb-4">
-    <h2 class="font-head text-[15px] font-bold tracking-[0.04em] uppercase mb-3">
-      Individual Awards
-    </h2>
+        <!-- Mobile: compact list -->
+        <div class="md:hidden">
+          <div class="flex items-baseline justify-between mb-2">
+            <h2 class="font-head text-[15px] font-bold tracking-[0.04em] uppercase">Team Awards</h2>
+            <span class="font-mono text-[11px] text-muted">
+              {awards.teamAwards.length} {awards.teamAwards.length === 1 ? 'category' : 'categories'}
+            </span>
+          </div>
+          <div class="bg-surface rounded-xl border border-line px-4">
+            {awards.teamAwards.map(ta => (
+              <div class="flex items-center gap-3 py-2.5 border-b border-line last:border-b-0">
+                <span class="font-head text-[11px] font-bold tracking-[0.06em] uppercase text-muted w-[80px] shrink-0">
+                  {ta.categoryName}
+                </span>
+                {ta.vest ? (
+                  <img
+                    src={siteUrl(`/images/vests/${ta.vest.replace('.png', '-sm.png')}`)}
+                    alt={ta.clubName}
+                    class="w-[34px] h-[42px] object-contain shrink-0"
+                  />
+                ) : (
+                  <div class="w-[34px] h-[42px] shrink-0" />
+                )}
+                <span class="font-head text-[15px] font-bold flex-1 min-w-0 truncate">
+                  {ta.clubName}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
 
-    {awards!.overallAwards.length > 0 && (
-      <div class="flex flex-col gap-2 mb-3">
-        {awards!.overallAwards.map(cat => (
-          <div class="bg-surface rounded-xl border border-line p-4">
-            <p class="font-head text-[11px] font-bold tracking-[0.04em] uppercase text-muted mb-2">
-              {cat.categoryName}
-            </p>
-            <div class="flex flex-col gap-1.5">
-              {cat.awards.map(a => (
-                <div class="flex items-baseline gap-2 text-sm">
-                  <span class="w-7 shrink-0 text-[15px]">{positionLabel(a.position)}</span>
-                  {a.runnerUrl
-                    ? <a href={a.runnerUrl} class="font-medium link link-hover flex-1 min-w-0">{a.name}</a>
-                    : <span class="font-medium flex-1 min-w-0">{a.name}</span>}
-                  <span class="text-muted text-xs shrink-0">{a.clubName}</span>
+        <!-- Desktop: vest gallery — each category headlined by its winning club's vest -->
+        <div class="hidden md:block">
+          <div class="flex items-center justify-between mb-1.5">
+            <div class="flex items-center gap-3">
+              <span class="font-head text-[11px] font-bold tracking-[0.16em] uppercase text-amber">
+                {year} · {seriesShortLabel}
+              </span>
+              <span class="block h-px w-7 bg-line shrink-0"></span>
+            </div>
+            <span class="font-mono text-[12px] text-muted">
+              {awards.teamAwards.length} team title{awards.teamAwards.length !== 1 ? 's' : ''}
+            </span>
+          </div>
+          <h2 class="font-head text-[32px] font-extrabold tracking-tight leading-none mb-[22px]">
+            Team Awards
+          </h2>
+          <div
+            class="grid gap-2.5"
+            style={`grid-template-columns: repeat(${awards.teamAwards.length}, 1fr)`}
+          >
+            {awards.teamAwards.map(ta => (
+              <div class="flex flex-col items-center text-center">
+                <span class="font-head text-[11px] font-bold tracking-[0.08em] uppercase text-amber leading-none">
+                  {ta.categoryName}
+                </span>
+                {ta.vest ? (
+                  <img
+                    src={siteUrl(`/images/vests/${ta.vest}`)}
+                    alt={ta.clubName}
+                    class="w-[84px] h-[100px] object-contain mt-2 mb-2.5"
+                    style="filter: drop-shadow(0 6px 12px rgba(0,0,0,0.12))"
+                  />
+                ) : (
+                  <div class="w-[84px] h-[100px] mt-2 mb-2.5" />
+                )}
+                <div class="font-head text-[14px] font-bold tracking-tight leading-snug">
+                  {ta.clubName}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+      </div>
+    )}
+
+    <!-- Individual Awards -->
+    {hasIndividualAwards && (
+      <div class="mb-4">
+        <h2 class="font-head text-[15px] font-bold tracking-[0.04em] uppercase mb-3">
+          Individual Awards
+        </h2>
+
+        {awards!.overallAwards.length > 0 && (
+          <div class="flex flex-col gap-2 mb-3">
+            {awards!.overallAwards.map(cat => (
+              <div class="bg-surface rounded-xl border border-line p-4">
+                <p class="font-head text-[11px] font-bold tracking-[0.04em] uppercase text-muted mb-2">
+                  {cat.categoryName}
+                </p>
+                <div class="flex flex-col gap-1.5">
+                  {cat.awards.map(a => (
+                    <div class="flex items-baseline gap-2 text-sm">
+                      <span class="w-7 shrink-0 text-[15px]">{positionLabel(a.position)}</span>
+                      {a.runnerUrl
+                        ? <a href={a.runnerUrl} class="font-medium link link-hover flex-1 min-w-0">{a.name}</a>
+                        : <span class="font-medium flex-1 min-w-0">{a.name}</span>}
+                      <span class="text-muted text-xs shrink-0">{a.clubName}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {hasMF && (
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            <div class="flex flex-col gap-2">
+              {awards!.maleAwards.map(cat => (
+                <div class="bg-surface rounded-xl border border-line p-4">
+                  <p class="font-head text-[11px] font-bold tracking-[0.04em] uppercase text-muted mb-2">
+                    {cat.categoryName}
+                  </p>
+                  <div class="flex flex-col gap-1.5">
+                    {cat.awards.map(a => (
+                      <div class="flex items-baseline gap-2 text-sm">
+                        <span class="w-7 shrink-0 text-[15px]">{positionLabel(a.position)}</span>
+                        {a.runnerUrl
+                          ? <a href={a.runnerUrl} class="font-medium link link-hover flex-1 min-w-0">{a.name}</a>
+                          : <span class="font-medium flex-1 min-w-0">{a.name}</span>}
+                        <span class="text-muted text-xs shrink-0">{a.clubName}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+            <div class="flex flex-col gap-2">
+              {awards!.femaleAwards.map(cat => (
+                <div class="bg-surface rounded-xl border border-line p-4">
+                  <p class="font-head text-[11px] font-bold tracking-[0.04em] uppercase text-muted mb-2">
+                    {cat.categoryName}
+                  </p>
+                  <div class="flex flex-col gap-1.5">
+                    {cat.awards.map(a => (
+                      <div class="flex items-baseline gap-2 text-sm">
+                        <span class="w-7 shrink-0 text-[15px]">{positionLabel(a.position)}</span>
+                        {a.runnerUrl
+                          ? <a href={a.runnerUrl} class="font-medium link link-hover flex-1 min-w-0">{a.name}</a>
+                          : <span class="font-medium flex-1 min-w-0">{a.name}</span>}
+                        <span class="text-muted text-xs shrink-0">{a.clubName}</span>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               ))}
             </div>
           </div>
-        ))}
+        )}
       </div>
     )}
 
-    {hasMF && (
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
-        <div class="flex flex-col gap-2">
-          {awards!.maleAwards.map(cat => (
-            <div class="bg-surface rounded-xl border border-line p-4">
-              <p class="font-head text-[11px] font-bold tracking-[0.04em] uppercase text-muted mb-2">
-                {cat.categoryName}
-              </p>
-              <div class="flex flex-col gap-1.5">
-                {cat.awards.map(a => (
-                  <div class="flex items-baseline gap-2 text-sm">
-                    <span class="w-7 shrink-0 text-[15px]">{positionLabel(a.position)}</span>
-                    {a.runnerUrl
-                      ? <a href={a.runnerUrl} class="font-medium link link-hover flex-1 min-w-0">{a.name}</a>
-                      : <span class="font-medium flex-1 min-w-0">{a.name}</span>}
-                    <span class="text-muted text-xs shrink-0">{a.clubName}</span>
-                  </div>
-                ))}
+  </div><!-- end main column -->
+
+  <!-- ── Sidebar (desktop only) ── -->
+  <aside class="hidden lg:flex flex-col gap-4 sticky top-6">
+
+    {showSidebar && (
+      <div class="bg-surface rounded-xl border border-line p-4">
+        <div class="font-head text-[14px] font-bold tracking-[0.04em] uppercase mb-3">
+          By the Numbers
+        </div>
+        <div class="flex flex-col gap-2.5">
+          {sidebarRows.map(({ club, count }) => (
+            <div class="flex items-center gap-2.5">
+              <span class="font-head text-[12px] font-bold text-muted w-[38px] shrink-0">
+                {club.shortName}
+              </span>
+              <div class="flex-1 h-[6px] bg-canvas rounded-full overflow-hidden">
+                <div
+                  class="h-full rounded-full"
+                  style={`width: ${(count / maxCount * 100).toFixed(1)}%; background: ${CLUB_COLORS[club.id] ?? 'var(--color-amber)'}`}
+                />
               </div>
+              <span class="font-mono text-[12px] text-content w-[22px] text-right shrink-0">
+                {count}
+              </span>
             </div>
           ))}
         </div>
-        <div class="flex flex-col gap-2">
-          {awards!.femaleAwards.map(cat => (
-            <div class="bg-surface rounded-xl border border-line p-4">
-              <p class="font-head text-[11px] font-bold tracking-[0.04em] uppercase text-muted mb-2">
-                {cat.categoryName}
-              </p>
-              <div class="flex flex-col gap-1.5">
-                {cat.awards.map(a => (
-                  <div class="flex items-baseline gap-2 text-sm">
-                    <span class="w-7 shrink-0 text-[15px]">{positionLabel(a.position)}</span>
-                    {a.runnerUrl
-                      ? <a href={a.runnerUrl} class="font-medium link link-hover flex-1 min-w-0">{a.name}</a>
-                      : <span class="font-medium flex-1 min-w-0">{a.name}</span>}
-                    <span class="text-muted text-xs shrink-0">{a.clubName}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          ))}
+        <div class="mt-3 pt-3 border-t border-line font-mono text-[11px] text-muted">
+          {totalRunners} runners · {sidebarRows.length} club{sidebarRows.length !== 1 ? 's' : ''}
         </div>
       </div>
     )}
-  </div>
-)}
+
+  </aside>
+
+</div><!-- end 2-col grid -->

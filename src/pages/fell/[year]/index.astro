@@ -5,7 +5,7 @@ import HistoryRaceList from '../../../components/HistoryRaceList.astro';
 import ArchiveHeader from '../../../components/ArchiveHeader.astro';
 import HistoryYearStrip from '../../../components/HistoryYearStrip.astro';
 import { getCurrentYear, getAvailableYears, getRaces } from '../../../lib/data';
-import { getAwards, getClubs, getSeriesConfig, hasAwards, hasIndividualStandings, hasTeamStandings, resolveIndividualCategoryName } from '../../../lib/results';
+import { getAwards, getClubParticipantCounts, getClubs, getSeriesConfig, hasAwards, hasIndividualStandings, hasTeamStandings, resolveIndividualCategoryName } from '../../../lib/results';
 import { siteUrl } from '../../../lib/url';
 import type { ResolvedSeriesAwards } from '../../../lib/types';
 import { buildRunnerUrlMap } from '../../../lib/runners';
@@ -28,11 +28,12 @@ const individualStandingsUrl = hasIndividualStandings(year, 'fell')
   ? siteUrl(`/fell/${year}/individual-standings`)
   : undefined;
 const config = getSeriesConfig(year, 'fell');
+const clubs = getClubs(year);
+const participantCounts = getClubParticipantCounts(year, 'fell');
 
 let awards: ResolvedSeriesAwards | undefined;
 if (hasAwards(year, 'fell')) {
   const raw = getAwards(year, 'fell')!;
-  const clubs = getClubs(year);
 
   const resolveClub = (id: string) => clubs.find(c => c.id === id)?.name ?? id;
   const resolveTeamCategoryName = (id: string) =>
@@ -93,6 +94,8 @@ if (hasAwards(year, 'fell')) {
     individualStandingsUrl={individualStandingsUrl}
     awards={awards}
     note={config.note}
+    clubs={clubs}
+    participantCounts={participantCounts}
     historyTeamsUrl={siteUrl('/fell/history/teams')}
     historyIndividualsUrl={siteUrl('/fell/history/individuals')}
   />
