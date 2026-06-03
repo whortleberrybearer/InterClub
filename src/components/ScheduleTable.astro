@@ -46,7 +46,6 @@ const pastCount = raceStates.filter(s => s.past).length;
         <th class="hidden sm:table-cell w-10 text-center">#</th>
         <th>Date</th>
         <th>Race</th>
-        <th class="hidden md:table-cell">Location</th>
         <th class="text-right pr-4">Results</th>
       </tr>
     </thead>
@@ -58,12 +57,17 @@ const pastCount = raceStates.filter(s => s.past).length;
           past && showNextRace && 'opacity-70',
         ]}>
           <td class="hidden sm:table-cell py-3 px-2 text-center font-mono text-xs text-muted">{i + 1}</td>
-          <td class="py-3 pl-4 sm:pl-2 pr-2">
+          <td class="py-3 pl-4 sm:pl-2 pr-2 w-[90px]">
             <div class="font-mono text-[13px]">{formatRaceDate(race.date)}</div>
-            {race.time && <div class="font-mono text-[11px] text-muted">{race.time}</div>}
+            {showNextRace && race.time && (
+              <div class="font-mono text-[11px] text-muted">{race.time}</div>
+            )}
           </td>
           <td class="py-3 px-2">
             <div class:list={['text-[14px]', isNext ? 'font-semibold' : 'font-medium']}>{race.name}</div>
+            {race.location && (
+              <div class="text-[11px] text-muted mt-0.5">{race.location}</div>
+            )}
             {isNext && (
               <span class="badge badge-warning mt-1 text-[9px]">Next</span>
             )}
@@ -71,7 +75,6 @@ const pastCount = raceStates.filter(s => s.past).length;
               <span class="badge badge-warning mt-1 ml-1 text-[9px]">Provisional</span>
             )}
           </td>
-          <td class="hidden md:table-cell py-3 px-2 text-[13px] text-muted">{race.location ?? ''}</td>
           <td class="py-3 pr-4 pl-2 text-right">
             {past ? (
               <div class="flex flex-col gap-1 items-end sm:flex-row sm:justify-end sm:gap-3">
