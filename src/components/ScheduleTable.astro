@@ -5,6 +5,9 @@
 // and HistoryRaceList (archive pages). The only behavioural difference
 // is showNextRace: the current-season page highlights the upcoming race
 // and dims completed ones; the archive page treats all rows equally.
+//
+// When showNextRace is true, a client-side script re-evaluates the "Next"
+// highlight against the real current date so stale builds stay correct.
 import { hasResults, isResultsProvisional } from '../lib/results';
 import { siteUrl } from '../lib/url';
 import { formatRaceDate } from '../lib/format';
@@ -22,6 +25,10 @@ interface Props {
 
 const { series, year, races, showNextRace = false, note } = Astro.props;
 
+const accentBg    = series === 'fell' ? 'bg-teal-bg'  : 'bg-amber-bg';
+const accentText  = series === 'fell' ? 'text-teal'   : 'text-amber';
+const accentBadge = series === 'fell' ? 'bg-teal'     : 'bg-amber';
+
 let nextFound = false;
 const raceStates = races.map(race => {
   const past = hasResults(year, series, race.id);
@@ -31,50 +38,59 @@ const raceStates = races.map(race => {
   return { race, past, provisional, isNext };
 });
 
-const pastCount = raceStates.filter(s => s.past).length;
+// Data passed to the client-side update script (only needed when showNextRace).
+const scriptRaceData = showNextRace ? raceStates.map(({ race, past }) => ({
+  id: race.id,
+  date: race.date,
+  hasResults: past,
+  resultsUrl: siteUrl(`/${series}/${year}/${race.id}/results`),
+})) : [];
 ---
 
 <div class="card overflow-hidden">
   <div class="flex items-baseline justify-between px-4 py-3.5 border-b border-line">
     <span class="font-head text-[14px] font-bold tracking-[0.05em] uppercase">Schedule</span>
-    <span class="font-mono text-[11px] text-muted">{pastCount} of {races.length} run</span>
   </div>
   <table class="table table-fixed">
     <thead>
       <tr>
         <th class="hidden sm:table-cell py-3 px-3 w-10 text-center">#</th>
-        <th class="py-3 pl-4 sm:pl-3 pr-3 w-[76px]">Date</th>
+        <th class="py-3 pl-4 sm:pl-3 pr-3 w-[100px]">Date</th>
         <th class="py-3 px-3">Race</th>
         <th class="py-3 pl-3 pr-4 w-[90px] !text-right">Results</th>
       </tr>
     </thead>
     <tbody>
       {raceStates.map(({ race, past, provisional, isNext }, i) => (
-        <tr class:list={[
-          'border-b border-line last:border-0',
-          isNext && 'bg-amber-bg',
-          past && showNextRace && 'opacity-70',
-        ]}>
+        <tr
+          data-schedule-row
+          data-race-id={race.id}
+          class:list={[
+            'border-b border-line last:border-0',
+            isNext && accentBg,
+            past && showNextRace && 'opacity-70',
+          ]}
+        >
           <td class="hidden sm:table-cell py-3 px-3 text-center font-mono text-xs text-muted">{i + 1}</td>
           <td class="py-3 pl-4 sm:pl-3 pr-3 whitespace-nowrap">
-            <div class="font-mono text-[12px]">{formatRaceDate(race.date)}</div>
+            <div data-date class:list={['font-mono text-[12px]', isNext ? `${accentText} font-semibold` : 'text-muted']}>{formatRaceDate(race.date)}</div>
             {showNextRace && race.time && (
-              <div class="font-mono text-[11px] text-muted">{race.time}</div>
+              <div data-time class:list={['font-mono text-[11px]', isNext ? (series === 'fell' ? 'text-teal/70' : 'text-amber/70') : 'text-muted/70']}>{race.time}</div>
             )}
           </td>
           <td class="py-3 px-3 min-w-0">
-            <div class:list={['text-[14px]', isNext ? 'font-semibold' : 'font-medium']}>{race.name}</div>
+            <div data-name class:list={['text-[14px]', isNext ? 'font-semibold' : 'font-medium']}>{race.name}</div>
             {race.location && (
               <div class="text-[11px] text-muted mt-0.5 truncate">{race.location}</div>
             )}
           </td>
           <td class="py-3 pl-3 pr-4 !text-right whitespace-nowrap">
             {isNext ? (
-              <span class="font-head text-[10px] font-bold tracking-[0.08em] uppercase text-white bg-amber px-2 py-0.5 rounded">Next</span>
+              <span data-badge class:list={['font-head text-[10px] font-bold tracking-[0.08em] uppercase text-white px-2 py-0.5 rounded', accentBadge]}>Next</span>
             ) : past ? (
-              <a href={siteUrl(`/${series}/${year}/${race.id}/results`)} class="font-head text-[10px] font-bold tracking-[0.08em] uppercase text-amber no-underline hover:underline whitespace-nowrap">Results →</a>
+              <a data-badge href={siteUrl(`/${series}/${year}/${race.id}/results`)} class:list={['font-head text-[10px] font-bold tracking-[0.08em] uppercase no-underline hover:underline whitespace-nowrap', accentText]}>Results →</a>
             ) : (
-              <span class="text-[13px] text-muted/50">→</span>
+              <span data-badge class="text-[13px] text-muted/50">→</span>
             )}
           </td>
         </tr>
@@ -84,3 +100,80 @@ const pastCount = raceStates.filter(s => s.past).length;
 </div>
 
 {note && <p class="text-muted text-sm italic mt-2">{note}</p>}
+
+{showNextRace && (
+  <script define:vars={{ scriptRaceData, series }} is:inline>
+  (function () {
+    var RESULTS_WINDOW_DAYS = 5;
+
+    function toDate(s) {
+      var p = s.split('-').map(Number);
+      return new Date(p[0], p[1] - 1, p[2]);
+    }
+
+    function todayMidnight() {
+      var t = new Date();
+      t.setHours(0, 0, 0, 0);
+      return t;
+    }
+
+    function daysAfterRace(dateStr) {
+      return Math.round((todayMidnight() - toDate(dateStr)) / 86400000);
+    }
+
+    function showInNextSlot(race) {
+      return daysAfterRace(race.date) <= RESULTS_WINDOW_DAYS;
+    }
+
+    var nextRace = scriptRaceData.find(function (r) { return showInNextSlot(r); }) || null;
+
+    var accentBg    = series === 'fell' ? 'bg-teal-bg'   : 'bg-amber-bg';
+    var accentText  = series === 'fell' ? 'text-teal'    : 'text-amber';
+    var accentTime  = series === 'fell' ? 'text-teal/70' : 'text-amber/70';
+    var accentBadge = series === 'fell' ? 'bg-teal'      : 'bg-amber';
+
+    var rows = document.querySelectorAll('[data-schedule-row]');
+    rows.forEach(function (row) {
+      var raceId = row.dataset.raceId;
+      var race   = scriptRaceData.find(function (r) { return r.id === raceId; });
+      if (!race) return;
+
+      var isNext    = !!(nextRace && raceId === nextRace.id);
+      var trulyPast = !showInNextSlot(race);
+
+      row.classList.toggle(accentBg, isNext);
+      row.classList.toggle('opacity-70', trulyPast);
+
+      var dateEl = row.querySelector('[data-date]');
+      if (dateEl) {
+        dateEl.className = 'font-mono text-[12px] ' + (isNext ? accentText + ' font-semibold' : 'text-muted');
+      }
+
+      var timeEl = row.querySelector('[data-time]');
+      if (timeEl) {
+        timeEl.className = 'font-mono text-[11px] ' + (isNext ? accentTime : 'text-muted/70');
+      }
+
+      var nameEl = row.querySelector('[data-name]');
+      if (nameEl) {
+        nameEl.className = 'text-[14px] ' + (isNext ? 'font-semibold' : 'font-medium');
+      }
+
+      var badgeEl = row.querySelector('[data-badge]');
+      if (badgeEl) {
+        var newBadge;
+        if (isNext) {
+          newBadge = '<span data-badge class="font-head text-[10px] font-bold tracking-[0.08em] uppercase text-white px-2 py-0.5 rounded ' + accentBadge + '">Next</span>';
+        } else if (trulyPast && race.hasResults) {
+          newBadge = '<a data-badge href="' + race.resultsUrl + '" class="font-head text-[10px] font-bold tracking-[0.08em] uppercase no-underline hover:underline whitespace-nowrap ' + accentText + '">Results →</a>';
+        } else if (!trulyPast) {
+          newBadge = '<span data-badge class="text-[13px] text-muted/50">→</span>';
+        } else {
+          newBadge = '<span data-badge></span>';
+        }
+        badgeEl.outerHTML = newBadge;
+      }
+    });
+  })();
+  </script>
+)}

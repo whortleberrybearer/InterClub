@@ -4,6 +4,8 @@ import type { Club, Race, ResolvedSeriesAwards, Series } from '../lib/types';
 import { siteUrl } from '../lib/url';
 import ArchiveYearNav from './ArchiveYearNav.astro';
 import ScheduleTable from './ScheduleTable.astro';
+import ClubTurnout from './ClubTurnout.astro';
+import { CLUB_COLORS } from '../lib/clubColors';
 
 interface Props {
   races: Race[];
@@ -51,24 +53,12 @@ const hasIndividualAwards = awards && (
 );
 const hasMF = awards && (awards.maleAwards.length > 0 || awards.femaleAwards.length > 0);
 
-// Sidebar: "By the Numbers" — runner participation per club
-// Club colours match vest branding. Chorley uses mid-grey (original near-black
-// renders invisible in dark mode). Wesham darkened slightly for bar contrast.
-const CLUB_COLORS: Record<string, string> = {
-  'blackpool': '#e85d2c',
-  'chorley':   '#6b7280',
-  'lytham':    '#3a8a3a',
-  'preston':   '#1d44a8',
-  'red-rose':  '#c0223e',
-  'thornton':  '#2a7aaa',
-  'wesham':    '#4a8ab0',
-};
+
 const sidebarRows = clubs
   .map(c => ({ club: c, count: participantCounts[c.id] ?? 0 }))
   .filter(r => r.count > 0)
   .sort((a, b) => b.count - a.count);
 const totalRunners = sidebarRows.reduce((n, r) => n + r.count, 0);
-const maxCount = sidebarRows[0]?.count ?? 1;
 const showSidebar = sidebarRows.length > 0;
 
 // Past years for the archive year-nav sidebar
@@ -151,18 +141,7 @@ const pastYears = availableYears.filter(y => y !== currentYear);
 
         <!-- Desktop: vest gallery — each category headlined by its winning club's vest -->
         <div class="hidden md:block">
-          <div class="flex items-center justify-between mb-1.5">
-            <div class="flex items-center gap-3">
-              <span class="font-head text-[11px] font-bold tracking-[0.16em] uppercase text-amber">
-                {year} · {seriesShortLabel}
-              </span>
-              <span class="block h-px w-7 bg-line shrink-0"></span>
-            </div>
-            <span class="font-mono text-[12px] text-muted">
-              {awards.teamAwards.length} team title{awards.teamAwards.length !== 1 ? 's' : ''}
-            </span>
-          </div>
-          <h2 class="font-head text-[32px] font-extrabold tracking-tight leading-none mb-[22px]">
+          <h2 class="font-head text-[15px] font-bold tracking-[0.04em] uppercase mb-3">
             Team Awards
           </h2>
           <div
@@ -178,13 +157,13 @@ const pastYears = availableYears.filter(y => y !== currentYear);
                   <img
                     src={siteUrl(`/images/vests/${ta.vest}`)}
                     alt={ta.clubName}
-                    class="w-[84px] h-[100px] object-contain mt-2 mb-2.5"
+                    class="w-[60px] h-[72px] object-contain mt-3 mb-2"
                     style="filter: drop-shadow(0 6px 12px rgba(0,0,0,0.12))"
                   />
                 ) : (
-                  <div class="w-[84px] h-[100px] mt-2 mb-2.5" />
+                  <div class="w-[60px] h-[72px] mt-3 mb-2" />
                 )}
-                <div class="font-head text-[14px] font-bold tracking-tight leading-snug">
+                <div class="font-head text-[13px] font-bold tracking-tight leading-snug">
                   {ta.clubName}
                 </div>
               </div>
@@ -281,34 +260,16 @@ const pastYears = availableYears.filter(y => y !== currentYear);
       <!-- Year navigation (shared component, matches series detail page) -->
       <ArchiveYearNav series={series} years={pastYears} activeYear={year} />
 
-      <!-- By the Numbers — participation counts for the viewed season -->
+      <!-- Club Turnout — participation counts for the viewed season -->
       {showSidebar && (
-        <div class="card p-4">
-          <div class="font-head text-[14px] font-bold tracking-[0.04em] uppercase mb-3">
-            By the Numbers
-          </div>
-          <div class="flex flex-col gap-2.5">
-            {sidebarRows.map(({ club, count }) => (
-              <div class="flex items-center gap-2.5">
-                <span class="font-head text-[12px] font-bold text-muted w-[38px] shrink-0">
-                  {club.shortName}
-                </span>
-                <div class="flex-1 h-[6px] bg-canvas rounded-full overflow-hidden">
-                  <div
-                    class="h-full rounded-full"
-                    style={`width: ${(count / maxCount * 100).toFixed(1)}%; background: ${CLUB_COLORS[club.id] ?? 'var(--color-amber)'}`}
-                  />
-                </div>
-                <span class="font-mono text-[12px] text-content w-[22px] text-right shrink-0">
-                  {count}
-                </span>
-              </div>
-            ))}
-          </div>
-          <div class="mt-3 pt-3 border-t border-line font-mono text-[11px] text-muted">
-            {totalRunners} runners · {sidebarRows.length} club{sidebarRows.length !== 1 ? 's' : ''}
-          </div>
-        </div>
+        <ClubTurnout
+          items={sidebarRows.map(({ club, count }) => ({
+            name: club.name,
+            count,
+            color: CLUB_COLORS[club.id] ?? 'var(--color-amber)',
+          }))}
+          total={totalRunners}
+        />
       )}
 
     </div>
