@@ -53,6 +53,23 @@ const hasIndividualAwards = awards && (
 );
 const hasMF = awards && (awards.maleAwards.length > 0 || awards.femaleAwards.length > 0);
 
+// Pair male and female award categories by ageCategory for aligned row layout.
+const AGE_ORDER: Record<string, number> = {
+  JUN: 1, SEN: 2,
+  V35: 3, V40: 4, V45: 5, V50: 6, V55: 7,
+  V60: 8, V65: 9, V70: 10, V75: 11, V80: 12, V85: 13, V90: 14,
+};
+const pairedAwardRows = hasMF ? (() => {
+  const keys = [...new Set([
+    ...(awards!.maleAwards.map(c => c.ageCategory ?? '')),
+    ...(awards!.femaleAwards.map(c => c.ageCategory ?? '')),
+  ])].sort((a, b) => (AGE_ORDER[a] ?? 0) - (AGE_ORDER[b] ?? 0));
+  return keys.map(key => ({
+    male:   awards!.maleAwards.find(c => (c.ageCategory ?? '') === key),
+    female: awards!.femaleAwards.find(c => (c.ageCategory ?? '') === key),
+  }));
+})() : [];
+
 
 const sidebarRows = clubs
   .map(c => ({ club: c, count: participantCounts[c.id] ?? 0 }))
@@ -101,7 +118,7 @@ const pastYears = availableYears.filter(y => y !== currentYear);
 
     <!-- Schedule -->
     <div class="mb-6">
-      <ScheduleTable series={series} year={year} races={races} note={note} />
+      <ScheduleTable series={series} year={year} races={races} note={note} showCard={false} />
     </div>
 
     <!-- Team Awards — compact list (mobile) / vest gallery (md+) -->
@@ -110,15 +127,10 @@ const pastYears = availableYears.filter(y => y !== currentYear);
 
         <!-- Mobile: compact list -->
         <div class="md:hidden">
-          <div class="flex items-baseline justify-between mb-2">
-            <h2 class="font-head text-[15px] font-bold tracking-[0.04em] uppercase">Team Awards</h2>
-            <span class="font-mono text-[11px] text-muted">
-              {awards.teamAwards.length} {awards.teamAwards.length === 1 ? 'category' : 'categories'}
-            </span>
-          </div>
-          <div class="bg-surface rounded-xl border border-line px-4">
+          <h2 class="font-head text-[15px] font-bold tracking-[0.04em] uppercase mb-2">Team Awards</h2>
+          <div>
             {awards.teamAwards.map(ta => (
-              <div class="flex items-center gap-3 py-2.5 border-b border-line last:border-b-0">
+              <div class="flex items-center gap-3 py-2 border-b border-line last:border-b-0">
                 <span class="font-head text-[11px] font-bold tracking-[0.06em] uppercase text-muted w-[80px] shrink-0">
                   {ta.categoryName}
                 </span>
@@ -184,13 +196,14 @@ const pastYears = availableYears.filter(y => y !== currentYear);
         {awards!.overallAwards.length > 0 && (
           <div class="flex flex-col gap-2 mb-3">
             {awards!.overallAwards.map(cat => (
-              <div class="bg-surface rounded-xl border border-line p-4">
+              <div>
                 <p class="font-head text-[11px] font-bold tracking-[0.04em] uppercase text-muted mb-2.5">
                   {cat.categoryName}
                 </p>
                 <div class="flex flex-col gap-2.5">
                   {cat.awards.map(a => (
                     <div class="flex items-center gap-2.5">
+                      <span class="text-[16px] w-6 shrink-0">{positionLabel(a.position)}</span>
                       {a.vest ? (
                         <img src={siteUrl(`/images/vests/${a.vest.replace('.png', '-sm.png')}`)} alt="" class="h-9 w-[26px] object-contain shrink-0" />
                       ) : (
@@ -206,7 +219,6 @@ const pastYears = availableYears.filter(y => y !== currentYear);
                           {a.clubName}{cat.showAgeCategory && a.ageCategory && ` · ${a.ageCategory}`}
                         </div>
                       </div>
-                      <span class="text-[16px] shrink-0">{positionLabel(a.position)}</span>
                     </div>
                   ))}
                 </div>
@@ -216,69 +228,72 @@ const pastYears = availableYears.filter(y => y !== currentYear);
         )}
 
         {hasMF && (
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
-            <div class="flex flex-col gap-2">
-              {awards!.maleAwards.map(cat => (
-                <div class="bg-surface rounded-xl border border-line p-4">
-                  <p class="font-head text-[11px] font-bold tracking-[0.04em] uppercase text-muted mb-2.5">
-                    {cat.categoryName}
-                  </p>
-                  <div class="flex flex-col gap-2.5">
-                    {cat.awards.map(a => (
-                      <div class="flex items-center gap-2.5">
-                        {a.vest ? (
-                          <img src={siteUrl(`/images/vests/${a.vest.replace('.png', '-sm.png')}`)} alt="" class="h-9 w-[26px] object-contain shrink-0" />
-                        ) : (
-                          <div class="w-[26px] h-9 shrink-0" />
-                        )}
-                        <div class="flex-1 min-w-0">
-                          <div class="font-semibold text-[13px] leading-tight truncate">
-                            {a.runnerUrl
-                              ? <a href={a.runnerUrl} class="link link-hover">{a.name}</a>
-                              : a.name}
-                          </div>
-                          <div class="text-[11px] text-muted mt-0.5 truncate">
-                            {a.clubName}{cat.showAgeCategory && a.ageCategory && ` · ${a.ageCategory}`}
-                          </div>
-                        </div>
-                        <span class="text-[16px] shrink-0">{positionLabel(a.position)}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              ))}
-            </div>
-            <div class="flex flex-col gap-2">
-              {awards!.femaleAwards.map(cat => (
-                <div class="bg-surface rounded-xl border border-line p-4">
-                  <p class="font-head text-[11px] font-bold tracking-[0.04em] uppercase text-muted mb-2.5">
-                    {cat.categoryName}
-                  </p>
-                  <div class="flex flex-col gap-2.5">
-                    {cat.awards.map(a => (
-                      <div class="flex items-center gap-2.5">
-                        {a.vest ? (
-                          <img src={siteUrl(`/images/vests/${a.vest.replace('.png', '-sm.png')}`)} alt="" class="h-9 w-[26px] object-contain shrink-0" />
-                        ) : (
-                          <div class="w-[26px] h-9 shrink-0" />
-                        )}
-                        <div class="flex-1 min-w-0">
-                          <div class="font-semibold text-[13px] leading-tight truncate">
-                            {a.runnerUrl
-                              ? <a href={a.runnerUrl} class="link link-hover">{a.name}</a>
-                              : a.name}
-                          </div>
-                          <div class="text-[11px] text-muted mt-0.5 truncate">
-                            {a.clubName}{cat.showAgeCategory && a.ageCategory && ` · ${a.ageCategory}`}
+          <div class="flex flex-col gap-2">
+            {pairedAwardRows.map(({ male, female }) => (
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                {/* Male card or empty placeholder */}
+                {male ? (
+                  <div>
+                    <p class="font-head text-[11px] font-bold tracking-[0.04em] uppercase text-muted mb-2.5">
+                      {male.categoryName}
+                    </p>
+                    <div class="flex flex-col gap-2.5">
+                      {male.awards.map(a => (
+                        <div class="flex items-center gap-2.5">
+                          <span class="text-[16px] w-6 shrink-0">{positionLabel(a.position)}</span>
+                          {a.vest ? (
+                            <img src={siteUrl(`/images/vests/${a.vest.replace('.png', '-sm.png')}`)} alt="" class="h-9 w-[26px] object-contain shrink-0" />
+                          ) : (
+                            <div class="w-[26px] h-9 shrink-0" />
+                          )}
+                          <div class="flex-1 min-w-0">
+                            <div class="font-semibold text-[13px] leading-tight truncate">
+                              {a.runnerUrl
+                                ? <a href={a.runnerUrl} class="link link-hover">{a.name}</a>
+                                : a.name}
+                            </div>
+                            <div class="text-[11px] text-muted mt-0.5 truncate">
+                              {a.clubName}{male.showAgeCategory && a.ageCategory && ` · ${a.ageCategory}`}
+                            </div>
                           </div>
                         </div>
-                        <span class="text-[16px] shrink-0">{positionLabel(a.position)}</span>
-                      </div>
-                    ))}
+                      ))}
+                    </div>
                   </div>
-                </div>
-              ))}
-            </div>
+                ) : <div class="hidden sm:block" />}
+
+                {/* Female card or empty placeholder */}
+                {female ? (
+                  <div>
+                    <p class="font-head text-[11px] font-bold tracking-[0.04em] uppercase text-muted mb-2.5">
+                      {female.categoryName}
+                    </p>
+                    <div class="flex flex-col gap-2.5">
+                      {female.awards.map(a => (
+                        <div class="flex items-center gap-2.5">
+                          <span class="text-[16px] w-6 shrink-0">{positionLabel(a.position)}</span>
+                          {a.vest ? (
+                            <img src={siteUrl(`/images/vests/${a.vest.replace('.png', '-sm.png')}`)} alt="" class="h-9 w-[26px] object-contain shrink-0" />
+                          ) : (
+                            <div class="w-[26px] h-9 shrink-0" />
+                          )}
+                          <div class="flex-1 min-w-0">
+                            <div class="font-semibold text-[13px] leading-tight truncate">
+                              {a.runnerUrl
+                                ? <a href={a.runnerUrl} class="link link-hover">{a.name}</a>
+                                : a.name}
+                            </div>
+                            <div class="text-[11px] text-muted mt-0.5 truncate">
+                              {a.clubName}{female.showAgeCategory && a.ageCategory && ` · ${a.ageCategory}`}
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                ) : <div class="hidden sm:block" />}
+              </div>
+            ))}
           </div>
         )}
       </div>
