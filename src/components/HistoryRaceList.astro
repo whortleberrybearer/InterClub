@@ -1,9 +1,9 @@
 ---
 // src/components/HistoryRaceList.astro
 import type { Club, Race, ResolvedSeriesAwards, Series } from '../lib/types';
-import { hasResults, hasTeamResults } from '../lib/results';
 import { siteUrl } from '../lib/url';
 import ArchiveYearNav from './ArchiveYearNav.astro';
+import ScheduleTable from './ScheduleTable.astro';
 
 interface Props {
   races: Race[];
@@ -42,14 +42,7 @@ function positionLabel(pos: number): string {
   return `${pos}${suffix}`;
 }
 
-// Short date: "2 Apr" (no day name) for compact schedule rows
-const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-
 const seriesShortLabel = series === 'road-gp' ? 'Road GP' : 'Fell';
-function shortDate(date: string): string {
-  const [, month, day] = date.split('-').map(Number);
-  return `${day} ${MONTHS[month - 1]}`;
-}
 
 const hasIndividualAwards = awards && (
   awards.overallAwards.length > 0 ||
@@ -116,64 +109,9 @@ const pastYears = availableYears.filter(y => y !== currentYear);
       </div>
     )}
 
-    <!-- Schedule — vests intentionally absent (races aren't club-owned) -->
+    <!-- Schedule -->
     <div class="mb-6">
-      <div class="flex items-baseline justify-between mb-2">
-        <h2 class="font-head text-[15px] font-bold tracking-[0.04em] uppercase">Schedule</h2>
-        {races.length > 0 && (
-          <span class="font-mono text-[11px] text-muted">
-            {races.length} race{races.length !== 1 ? 's' : ''}
-          </span>
-        )}
-      </div>
-
-      {races.length > 0 && (
-        <div class="bg-surface rounded-xl border border-line overflow-hidden">
-          {races.map((race, i) => {
-            const resultsUrl = hasResults(year, series, race.id)
-              ? siteUrl(`/${series}/${year}/${race.id}/results/`)
-              : null;
-            const teamResultsUrl = hasTeamResults(year, series, race.id)
-              ? siteUrl(`/${series}/${year}/${race.id}/team-results/`)
-              : null;
-            return (
-              <div class="flex items-start gap-3 px-4 py-3 border-b border-line last:border-b-0">
-                <span class="font-mono text-[11px] text-muted w-4 shrink-0 pt-[3px] text-right">
-                  {i + 1}
-                </span>
-                <span class="font-mono text-[12px] text-content/60 shrink-0 pt-px w-[52px]">
-                  {shortDate(race.date)}
-                </span>
-                <div class="flex-1 min-w-0">
-                  <div class="font-medium text-sm leading-snug">{race.name}</div>
-                  {(race.location || race.distance) && (
-                    <div class="font-mono text-[11px] text-muted mt-0.5">
-                      {[race.location, race.distance].filter(Boolean).join(' · ')}
-                    </div>
-                  )}
-                </div>
-                <div class="flex gap-3 text-[11px] shrink-0 pt-px">
-                  {resultsUrl && (
-                    <a href={resultsUrl} class="font-semibold text-amber hover:underline whitespace-nowrap">
-                      Results →
-                    </a>
-                  )}
-                  {teamResultsUrl && (
-                    <a href={teamResultsUrl} class="font-semibold text-amber/60 hover:underline whitespace-nowrap">
-                      Teams →
-                    </a>
-                  )}
-                  {!resultsUrl && !teamResultsUrl && (
-                    <span class="text-content/30">—</span>
-                  )}
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      )}
-
-      {note && <p class="text-muted text-sm italic mt-2">{note}</p>}
+      <ScheduleTable series={series} year={year} races={races} note={note} />
     </div>
 
     <!-- Team Awards — compact list (mobile) / vest gallery (md+) -->
