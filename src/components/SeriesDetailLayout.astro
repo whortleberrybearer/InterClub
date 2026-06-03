@@ -1,9 +1,9 @@
 ---
 import Layout from './Layout.astro';
 import ArchiveYearNav from './ArchiveYearNav.astro';
-import { hasResults, hasTeamResults, isResultsProvisional } from '../lib/results';
+import ScheduleTable from './ScheduleTable.astro';
+import { hasResults } from '../lib/results';
 import { siteUrl } from '../lib/url';
-import { formatRaceDate } from '../lib/format';
 import type { Race, Series, SeriesConfig } from '../lib/types';
 
 export interface Props {
@@ -23,20 +23,9 @@ const {
   seriesTitle, subtitle, teamStandingsUrl, individualStandingsUrl,
 } = Astro.props;
 
-// Race states — determines past/next/upcoming highlight and result links
-let nextFound = false;
-const raceStates = races.map(race => {
-  const past = hasResults(year, series, race.id);
-  const hasTeam = hasTeamResults(year, series, race.id);
-  const provisional = past && isResultsProvisional(year, series, race.id);
-  const isNext = !past && !nextFound;
-  if (isNext) nextFound = true;
-  return { race, past, hasTeam, provisional, isNext };
-});
-
-const pastCount = raceStates.filter(s => s.past).length;
-const nextRaceIndex = raceStates.findIndex(s => s.isNext);
-const nextRaceNumber = nextRaceIndex >= 0 ? nextRaceIndex + 1 : null;
+// Only needed for the hero "Round N of M next" label
+const nextRaceIdx = races.findIndex(r => !hasResults(year, series, r.id));
+const nextRaceNumber = nextRaceIdx >= 0 ? nextRaceIdx + 1 : null;
 
 // Archive data
 const pastYears = availableYears.filter(y => y < year).sort((a, b) => b - a);
@@ -152,60 +141,7 @@ const scoringRules = [
     <div>
 
       <!-- Schedule -->
-      <div class="card overflow-hidden">
-        <div class="flex items-baseline justify-between px-4 py-3.5 border-b border-line">
-          <span class="font-head text-[14px] font-bold tracking-[0.05em] uppercase">Schedule</span>
-          <span class="font-mono text-[11px] text-muted">{pastCount} of {races.length} run</span>
-        </div>
-        <table class="table">
-          <thead>
-            <tr>
-              <th class="hidden sm:table-cell w-10 text-center">#</th>
-              <th>Date</th>
-              <th>Race</th>
-              <th class="hidden md:table-cell">Location</th>
-              <th class="text-right pr-4">Results</th>
-            </tr>
-          </thead>
-          <tbody>
-            {raceStates.map(({ race, past, hasTeam, provisional, isNext }, i) => (
-              <tr class:list={[
-                'border-b border-line last:border-0',
-                isNext && 'bg-amber-bg',
-                past && 'opacity-70',
-              ]}>
-                <td class="hidden sm:table-cell py-3 px-2 text-center font-mono text-xs text-muted">{i + 1}</td>
-                <td class="py-3 pl-4 sm:pl-2 pr-2">
-                  <div class="font-mono text-[13px]">{formatRaceDate(race.date)}</div>
-                  {race.time && <div class="font-mono text-[11px] text-muted">{race.time}</div>}
-                </td>
-                <td class="py-3 px-2">
-                  <div class:list={['text-[14px]', isNext ? 'font-semibold' : 'font-medium']}>{race.name}</div>
-                  {isNext && (
-                    <span class="badge badge-warning mt-1 text-[9px]">Next</span>
-                  )}
-                  {provisional && (
-                    <span class="badge badge-warning mt-1 ml-1 text-[9px]">Provisional</span>
-                  )}
-                </td>
-                <td class="hidden md:table-cell py-3 px-2 text-[13px] text-muted">{race.location ?? ''}</td>
-                <td class="py-3 pr-4 pl-2 text-right">
-                  {past ? (
-                    <div class="flex flex-col gap-1 items-end sm:flex-row sm:justify-end sm:gap-3">
-                      <a href={siteUrl(`/${series}/${year}/${race.id}/results`)} class="text-[12px] font-semibold text-amber hover:underline no-underline">Results →</a>
-                      {hasTeam && (
-                        <a href={siteUrl(`/${series}/${year}/${race.id}/team-results`)} class="text-[12px] text-muted hover:underline no-underline">Team →</a>
-                      )}
-                    </div>
-                  ) : (
-                    <span class="font-mono text-[12px] text-muted/50">—</span>
-                  )}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+      <ScheduleTable series={series} year={year} races={races} showNextRace={true} />
 
       <!-- 2×2 info cards -->
       <div class="grid md:grid-cols-2 gap-5 mt-5">
