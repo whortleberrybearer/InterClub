@@ -1,0 +1,72 @@
+---
+// src/components/ClubTurnout.astro
+export interface ClubTurnoutItem {
+  name: string;
+  count: number;
+  /** CSS color for the bar. Defaults to amber. */
+  color?: string;
+  /** Dims bar and text (e.g. guests). */
+  muted?: boolean;
+}
+
+interface Props {
+  items: ClubTurnoutItem[];
+  total: number;
+  /**
+   * 'card'   — standalone card with border/background (archive sidebar, default)
+   * 'inline' — borderless section matching the results page sidebar style
+   */
+  variant?: 'card' | 'inline';
+}
+
+const { items, total, variant = 'card' } = Astro.props;
+const maxCount = items.reduce((m, i) => Math.max(m, i.count), 1);
+---
+
+{variant === 'card' ? (
+  <div class="card p-4">
+    <div class="flex items-baseline justify-between mb-3">
+      <div class="font-head text-[14px] font-bold tracking-[0.04em] uppercase">Club Turnout</div>
+      <span class="font-mono text-[11px] text-muted">{total} runners</span>
+    </div>
+    <div class="flex flex-col gap-2.5">
+      {items.map(item => (
+        <div>
+          <div class="flex items-baseline justify-between mb-[3px]">
+            <span class:list={['font-head text-[11px] font-bold', item.muted ? 'text-muted/50' : 'text-muted']}>{item.name}</span>
+            <span class:list={['font-mono text-[11px]', item.muted ? 'text-muted/50' : 'text-content']}>{item.count}</span>
+          </div>
+          <div class="h-[4px] bg-canvas rounded-full overflow-hidden">
+            <div
+              class="h-full rounded-full"
+              style={`width: ${(item.count / maxCount * 100).toFixed(1)}%; background: ${item.color ?? 'var(--color-amber)'};${item.muted ? ' opacity: 0.4;' : ''}`}
+            />
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+) : (
+  <div>
+    <div class="flex items-baseline justify-between mb-2.5 px-1">
+      <p class="font-head text-[10px] font-bold tracking-[0.12em] uppercase text-muted">Club Turnout</p>
+      <span class="font-mono text-[10px] text-muted">{total} total</span>
+    </div>
+    <div class="flex flex-col gap-1.5 pl-1">
+      {items.map(item => (
+        <div>
+          <div class="flex items-baseline justify-between text-[11.5px] mb-[3px]">
+            <span class:list={['truncate overflow-hidden max-w-[130px]', item.muted ? 'text-muted' : 'text-content']}>{item.name}</span>
+            <span class:list={['font-mono text-[11px] font-medium', item.muted ? 'text-muted' : 'text-content']}>{item.count}</span>
+          </div>
+          <div class="h-[3px] rounded-[2px] bg-line overflow-hidden">
+            <div
+              class="h-full rounded-[2px]"
+              style={`width: ${(item.count / maxCount * 100).toFixed(1)}%; background: ${item.color ?? 'var(--color-amber)'};${item.muted ? ' opacity: 0.4;' : ''}`}
+            />
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+)}

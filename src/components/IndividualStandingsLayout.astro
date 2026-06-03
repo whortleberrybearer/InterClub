@@ -23,6 +23,8 @@ import { resolveIndividualCategoryName } from '../lib/results';
 import type { Club, IndividualStandings, Series } from '../lib/types';
 import { siteUrl } from '../lib/url';
 import { getSeriesLabel, getSeriesLongLabel } from '../lib/format';
+import ClubTurnout from './ClubTurnout.astro';
+import { CLUB_COLORS } from '../lib/clubColors';
 
 export interface Props {
   series: Series;
@@ -101,6 +103,28 @@ const standingsClubs = standingsClubIds
   .map(id => clubById[id])
   .filter((c): c is (typeof clubById)[string] => c != null)
   .sort((a, b) => a.name.localeCompare(b.name));
+
+// Club Turnout — unique runner count per club across all categories
+const seenRunners = new Set<string>();
+const clubCountMap = new Map<string, number>();
+for (const cat of standings.categories) {
+  for (const runner of cat.runners) {
+    if (runner.club === 'Guest') continue;
+    const key = runner.seriesRunnerId != null ? `id:${runner.seriesRunnerId}` : `name:${runner.name}:${runner.club}`;
+    if (!seenRunners.has(key)) {
+      seenRunners.add(key);
+      clubCountMap.set(runner.club, (clubCountMap.get(runner.club) ?? 0) + 1);
+    }
+  }
+}
+const clubTurnoutItems = [...clubCountMap.entries()]
+  .sort((a, b) => b[1] - a[1])
+  .map(([id, count]) => ({
+    name: clubById[id]?.name ?? id,
+    count,
+    color: CLUB_COLORS[id],
+  }));
+const standingsTotalRunners = seenRunners.size;
 
 // Shared table header classes
 const th  = 'font-head text-[10px] font-bold tracking-[0.1em] uppercase text-muted py-2.5 px-2 bg-surface border-b-2 border-content';
@@ -230,6 +254,17 @@ const raceColWidth = standings.races.length >= 7 ? '3rem'
           })}
         </div>
       </div>
+
+      <!-- Club Turnout -->
+      {clubTurnoutItems.length > 0 && (
+        <div class="mt-5 pt-5 border-t border-line">
+          <ClubTurnout
+            variant="inline"
+            items={clubTurnoutItems}
+            total={standingsTotalRunners}
+          />
+        </div>
+      )}
     </aside>
 
     <!-- ── Main content column ───────────────────────────────────────────────── -->

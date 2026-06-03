@@ -3,6 +3,8 @@
 import Layout from './Layout.astro';
 import ChipBar from './ChipBar.astro';
 import PageHeader from './PageHeader.astro';
+import ClubTurnout from './ClubTurnout.astro';
+import { CLUB_COLORS } from '../lib/clubColors';
 import { getRace, getRaces } from '../lib/data';
 import { hasTeamResults } from '../lib/results';
 import { siteUrl } from '../lib/url';
@@ -79,7 +81,6 @@ const clubTurnout = [...clubCountMap.entries()]
     isGuest: id === 'Guest',
   }))
   .sort((a, b) => b.count - a.count);
-const maxClubCount = clubTurnout.reduce((m, c) => Math.max(m, c.count), 1);
 
 const raceMeta = [
   race?.date ? formatRaceDate(race.date, race?.time) : null,
@@ -254,26 +255,16 @@ const showSexToggle = hasMale && hasFemale;
 
       {clubTurnout.length > 0 && (
         <div class="mt-6 pt-5 border-t border-line">
-          <div class="flex items-baseline justify-between mb-2.5 px-1">
-            <p class="font-head text-[10px] font-bold tracking-[0.12em] uppercase text-muted">Club Turnout</p>
-            <span class="font-mono text-[10px] text-muted">{finisherCount} total</span>
-          </div>
-          <div class="flex flex-col gap-1.5 pl-1">
-            {clubTurnout.map(({ displayName, count, isGuest }) => (
-              <div>
-                <div class="flex items-baseline justify-between text-[11.5px] mb-[3px]">
-                  <span class:list={['truncate overflow-hidden max-w-[130px]', isGuest ? 'text-muted' : 'text-content']}>{displayName}</span>
-                  <span class:list={['font-mono text-[11px] font-medium', isGuest ? 'text-muted' : 'text-content']}>{count}</span>
-                </div>
-                <div class="h-[3px] rounded-[2px] bg-line overflow-hidden">
-                  <div
-                    class:list={['h-full rounded-[2px]', isGuest ? 'bg-muted opacity-40' : 'bg-amber']}
-                    style={`width:${Math.round((count / maxClubCount) * 100)}%`}
-                  />
-                </div>
-              </div>
-            ))}
-          </div>
+          <ClubTurnout
+            variant="inline"
+            items={clubTurnout.map(({ id, displayName, count, isGuest }) => ({
+              name: displayName,
+              count,
+              color: isGuest ? undefined : CLUB_COLORS[id],
+              muted: isGuest,
+            }))}
+            total={finisherCount}
+          />
         </div>
       )}
 
