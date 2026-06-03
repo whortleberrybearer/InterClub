@@ -5,7 +5,7 @@
 // and HistoryRaceList (archive pages). The only behavioural difference
 // is showNextRace: the current-season page highlights the upcoming race
 // and dims completed ones; the archive page treats all rows equally.
-import { hasResults, hasTeamResults, isResultsProvisional } from '../lib/results';
+import { hasResults, isResultsProvisional } from '../lib/results';
 import { siteUrl } from '../lib/url';
 import { formatRaceDate } from '../lib/format';
 import type { Race, Series } from '../lib/types';
@@ -25,11 +25,10 @@ const { series, year, races, showNextRace = false, note } = Astro.props;
 let nextFound = false;
 const raceStates = races.map(race => {
   const past = hasResults(year, series, race.id);
-  const hasTeam = hasTeamResults(year, series, race.id);
   const provisional = past && isResultsProvisional(year, series, race.id);
   const isNext = showNextRace && !past && !nextFound;
   if (isNext) nextFound = true;
-  return { race, past, hasTeam, provisional, isNext };
+  return { race, past, provisional, isNext };
 });
 
 const pastCount = raceStates.filter(s => s.past).length;
@@ -43,22 +42,22 @@ const pastCount = raceStates.filter(s => s.past).length;
   <table class="table">
     <thead>
       <tr>
-        <th class="hidden sm:table-cell w-10 text-center">#</th>
-        <th>Date</th>
-        <th>Race</th>
+        <th class="hidden sm:table-cell py-3 px-2 w-10 text-center">#</th>
+        <th class="py-3 pl-4 sm:pl-2 pr-2">Date</th>
+        <th class="py-3 px-2">Race</th>
         <th class="py-3 pr-4 pl-2 text-right">Results</th>
       </tr>
     </thead>
     <tbody>
-      {raceStates.map(({ race, past, hasTeam, provisional, isNext }, i) => (
+      {raceStates.map(({ race, past, provisional, isNext }, i) => (
         <tr class:list={[
           'border-b border-line last:border-0',
           isNext && 'bg-amber-bg',
           past && showNextRace && 'opacity-70',
         ]}>
           <td class="hidden sm:table-cell py-3 px-2 text-center font-mono text-xs text-muted">{i + 1}</td>
-          <td class="py-3 pl-4 sm:pl-2 pr-2 w-[110px] whitespace-nowrap">
-            <div class="font-mono text-[13px]">{formatRaceDate(race.date)}</div>
+          <td class="py-3 pl-4 sm:pl-2 pr-2 w-[76px] whitespace-nowrap shrink-0">
+            <div class="font-mono text-[12px]">{formatRaceDate(race.date)}</div>
             {showNextRace && race.time && (
               <div class="font-mono text-[11px] text-muted">{race.time}</div>
             )}
@@ -66,21 +65,16 @@ const pastCount = raceStates.filter(s => s.past).length;
           <td class="py-3 px-2">
             <div class:list={['text-[14px]', isNext ? 'font-semibold' : 'font-medium']}>{race.name}</div>
             {race.location && (
-              <div class="text-[11px] text-muted mt-0.5">{race.location}</div>
+              <div class="text-[11px] text-muted mt-0.5 truncate">{race.location}</div>
             )}
           </td>
-          <td class="py-3 pr-4 pl-2 text-right">
+          <td class="py-3 pr-4 pl-2 text-right whitespace-nowrap">
             {isNext ? (
               <span class="font-head text-[10px] font-bold tracking-[0.08em] uppercase text-white bg-amber px-2 py-0.5 rounded">Next</span>
             ) : past ? (
-              <div class="flex flex-col gap-1 items-end sm:flex-row sm:justify-end sm:gap-3">
-                <a href={siteUrl(`/${series}/${year}/${race.id}/results`)} class="text-[12px] font-semibold text-amber hover:underline no-underline">Results →</a>
-                {hasTeam && (
-                  <a href={siteUrl(`/${series}/${year}/${race.id}/team-results`)} class="text-[12px] text-muted hover:underline no-underline">Team →</a>
-                )}
-              </div>
+              <a href={siteUrl(`/${series}/${year}/${race.id}/results`)} class="font-head text-[10px] font-bold tracking-[0.08em] uppercase text-amber no-underline hover:underline whitespace-nowrap">Results →</a>
             ) : (
-              <span class="font-mono text-[12px] text-muted/50">—</span>
+              <span class="text-[13px] text-muted/50">→</span>
             )}
           </td>
         </tr>
