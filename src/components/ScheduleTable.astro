@@ -42,10 +42,10 @@ const pastCount = raceStates.filter(s => s.past).length;
   <table class="table table-fixed">
     <thead>
       <tr>
-        <th class="hidden sm:table-cell py-3 px-2 w-10 text-center">#</th>
-        <th class="py-3 pl-4 sm:pl-2 pr-2 w-[76px]">Date</th>
-        <th class="py-3 px-2">Race</th>
-        <th class="py-3 pr-4 pl-2 text-right w-[90px]">Results</th>
+        <th class="hidden sm:table-cell py-3 px-3 w-10 text-center">#</th>
+        <th class="py-3 pl-4 sm:pl-3 pr-3 w-[76px]">Date</th>
+        <th class="py-3 px-3">Race</th>
+        <th class="py-3 pl-3 pr-4 w-[90px] !text-right">Results</th>
       </tr>
     </thead>
     <tbody>
@@ -55,20 +55,20 @@ const pastCount = raceStates.filter(s => s.past).length;
           isNext && 'bg-amber-bg',
           past && showNextRace && 'opacity-70',
         ]}>
-          <td class="hidden sm:table-cell py-3 px-2 text-center font-mono text-xs text-muted">{i + 1}</td>
-          <td class="py-3 pl-4 sm:pl-2 pr-2 whitespace-nowrap">
+          <td class="hidden sm:table-cell py-3 px-3 text-center font-mono text-xs text-muted">{i + 1}</td>
+          <td class="py-3 pl-4 sm:pl-3 pr-3 whitespace-nowrap">
             <div class="font-mono text-[12px]">{formatRaceDate(race.date)}</div>
             {showNextRace && race.time && (
               <div class="font-mono text-[11px] text-muted">{race.time}</div>
             )}
           </td>
-          <td class="py-3 px-2 min-w-0">
+          <td class="py-3 px-3 min-w-0">
             <div class:list={['text-[14px]', isNext ? 'font-semibold' : 'font-medium']}>{race.name}</div>
             {race.location && (
               <div class="text-[11px] text-muted mt-0.5 truncate">{race.location}</div>
             )}
           </td>
-          <td class="py-3 pr-4 pl-2 text-right whitespace-nowrap">
+          <td class="py-3 pl-3 pr-4 !text-right whitespace-nowrap">
             {isNext ? (
               <span class="font-head text-[10px] font-bold tracking-[0.08em] uppercase text-white bg-amber px-2 py-0.5 rounded">Next</span>
             ) : past ? (
