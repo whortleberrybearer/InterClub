@@ -240,11 +240,15 @@ export interface ResolvedIndividualAwardEntry {
   position: number;
   name: string;
   clubName: string;
+  vest?: string;        // club vest filename e.g. "blackpool.png"
+  ageCategory?: string; // runner's age category (e.g. "V40"); set when relevant to display
   runnerUrl?: string;   // resolved profile URL when seriesRunnerId is present
 }
 
 export interface ResolvedIndividualAward {
   categoryName: string;
+  /** True when the category itself has no age filter — show each runner's age category. */
+  showAgeCategory: boolean;
   awards: ResolvedIndividualAwardEntry[];
 }
 
