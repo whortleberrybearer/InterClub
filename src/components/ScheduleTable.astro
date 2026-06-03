@@ -46,7 +46,7 @@ const pastCount = raceStates.filter(s => s.past).length;
         <th class="hidden sm:table-cell w-10 text-center">#</th>
         <th>Date</th>
         <th>Race</th>
-        <th class="text-right pr-4">Results</th>
+        <th class="py-3 pr-4 pl-2 text-right">Results</th>
       </tr>
     </thead>
     <tbody>
@@ -68,15 +68,11 @@ const pastCount = raceStates.filter(s => s.past).length;
             {race.location && (
               <div class="text-[11px] text-muted mt-0.5">{race.location}</div>
             )}
-            {isNext && (
-              <span class="badge badge-warning mt-1 text-[9px]">Next</span>
-            )}
-            {provisional && (
-              <span class="badge badge-warning mt-1 ml-1 text-[9px]">Provisional</span>
-            )}
           </td>
           <td class="py-3 pr-4 pl-2 text-right">
-            {past ? (
+            {isNext ? (
+              <span class="font-head text-[10px] font-bold tracking-[0.08em] uppercase text-white bg-amber px-2 py-0.5 rounded">Next</span>
+            ) : past ? (
               <div class="flex flex-col gap-1 items-end sm:flex-row sm:justify-end sm:gap-3">
                 <a href={siteUrl(`/${series}/${year}/${race.id}/results`)} class="text-[12px] font-semibold text-amber hover:underline no-underline">Results →</a>
                 {hasTeam && (
