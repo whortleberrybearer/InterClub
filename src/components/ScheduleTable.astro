@@ -19,11 +19,13 @@ interface Props {
   races: Race[];
   /** Highlight the next upcoming race and dim completed ones. Default: false. */
   showNextRace?: boolean;
+  /** Wrap the table in a card with border/background. Default: true. */
+  showCard?: boolean;
   /** Optional note displayed below the card (e.g. suspended-season text). */
   note?: string;
 }
 
-const { series, year, races, showNextRace = false, note } = Astro.props;
+const { series, year, races, showNextRace = false, showCard = true, note } = Astro.props;
 
 const accentBg    = series === 'fell' ? 'bg-teal-bg'  : 'bg-amber-bg';
 const accentText  = series === 'fell' ? 'text-teal'   : 'text-amber';
@@ -47,8 +49,8 @@ const scriptRaceData = showNextRace ? raceStates.map(({ race, past }) => ({
 })) : [];
 ---
 
-<div class="card overflow-hidden">
-  <div class="flex items-baseline justify-between px-4 py-3.5 border-b border-line">
+<div class:list={[showCard && 'card overflow-hidden']}>
+  <div class:list={['flex items-baseline justify-between py-3.5 border-b border-line', showCard ? 'px-4' : 'px-0']}>
     <span class="font-head text-[14px] font-bold tracking-[0.05em] uppercase">Schedule</span>
   </div>
   <table class="table table-fixed">

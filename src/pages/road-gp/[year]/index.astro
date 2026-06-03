@@ -47,6 +47,7 @@ if (hasAwards(year, 'road-gp')) {
     sex: ia.sex,
     resolved: {
       categoryName: resolveIndividualCategoryName(ia.id, ia.sex, ia.ageCategory, ia.name),
+      ageCategory: ia.ageCategory,
       showAgeCategory: !ia.ageCategory,
       awards: ia.awards.map(a => ({
         position: a.position,

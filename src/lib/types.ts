@@ -247,6 +247,8 @@ export interface ResolvedIndividualAwardEntry {
 
 export interface ResolvedIndividualAward {
   categoryName: string;
+  /** Age category key used for pairing male/female rows (e.g. "SEN", "V40"). Absent for overall/no-age categories. */
+  ageCategory?: string;
   /** True when the category itself has no age filter — show each runner's age category. */
   showAgeCategory: boolean;
   awards: ResolvedIndividualAwardEntry[];
