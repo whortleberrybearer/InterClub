@@ -3,86 +3,43 @@
 //
 // Full-bleed dark editorial header for archive (past-year) pages.
 // Place in the Layout `hero` slot.
-// On desktop, shows the champion club (most team titles) with their vest on the right.
 import { siteUrl } from '../lib/url';
-import type { ResolvedSeriesAwards } from '../lib/types';
 
 interface Props {
   year: number;
   seriesLabel: string;
   seriesBasePath: string;
   currentYear: number;
-  awards?: ResolvedSeriesAwards;
 }
 
-const { year, seriesLabel, seriesBasePath, currentYear, awards } = Astro.props;
-
-// Compute champion club (club with most team titles) for desktop display
-let champion: { name: string; vest?: string; titles: number; total: number } | undefined;
-if (awards?.teamAwards && awards.teamAwards.length > 0) {
-  const counts = new Map<string, { vest?: string; count: number }>();
-  for (const ta of awards.teamAwards) {
-    const entry = counts.get(ta.clubName) ?? { vest: ta.vest, count: 0 };
-    entry.count++;
-    counts.set(ta.clubName, entry);
-  }
-  const top = [...counts.entries()].sort((a, b) => b[1].count - a[1].count)[0];
-  if (top) {
-    champion = { name: top[0], vest: top[1].vest, titles: top[1].count, total: awards.teamAwards.length };
-  }
-}
+const { year, seriesLabel, seriesBasePath, currentYear } = Astro.props;
 ---
 
 <div class="bg-hdr-dark text-hdr-text">
-  <div class="max-w-4xl xl:max-w-5xl mx-auto px-4 pt-6 pb-5 lg:py-10 lg:flex lg:items-end lg:justify-between lg:gap-8">
+  <div class="max-w-4xl xl:max-w-5xl mx-auto px-4 pt-6 pb-5 lg:py-10">
 
-    <div>
-      <div class="flex items-center justify-between mb-2 lg:mb-3">
-        <span class="font-head text-[10px] font-bold tracking-[0.16em] uppercase text-amber">
-          Archive · {seriesLabel}
-        </span>
-        <a
-          href={siteUrl(`${seriesBasePath}/`)}
-          class="font-mono text-[11px] text-hdr-muted hover:text-hdr-text transition-colors"
-        >
-          {currentYear} →
-        </a>
-      </div>
+    <div class="flex items-center justify-between mb-2 lg:mb-3">
+      <span class="font-head text-[10px] font-bold tracking-[0.16em] uppercase text-amber">
+        Archive · {seriesLabel}
+      </span>
+      <a
+        href={siteUrl(`${seriesBasePath}/`)}
+        class="font-mono text-[11px] text-hdr-muted hover:text-hdr-text transition-colors"
+      >
+        {currentYear} →
+      </a>
+    </div>
 
-      <div class="flex items-end gap-4 lg:gap-6">
-        <span class="font-head text-[64px] lg:text-[120px] font-extrabold leading-[0.82] tracking-tight">
-          {year}
-        </span>
-        <div class="pb-1 lg:pb-5">
-          <div class="font-head text-[18px] lg:text-[38px] font-extrabold leading-none tracking-tight">
-            {seriesLabel}
-          </div>
+    <div class="flex items-end gap-4 lg:gap-6">
+      <span class="font-head text-[64px] lg:text-[120px] font-extrabold leading-[0.82] tracking-tight">
+        {year}
+      </span>
+      <div class="pb-1 lg:pb-5">
+        <div class="font-head text-[18px] lg:text-[38px] font-extrabold leading-none tracking-tight">
+          {seriesLabel}
         </div>
       </div>
     </div>
-
-    {champion && champion.vest && (
-      <div class="hidden lg:flex items-end gap-4 shrink-0 pb-1">
-        <div class="text-right">
-          <div class="font-head text-[10px] font-bold tracking-[0.14em] uppercase text-amber">
-            Club of the season
-          </div>
-          <div class="font-head text-[22px] font-extrabold tracking-tight leading-tight mt-1">
-            {champion.name}
-          </div>
-          <div class="font-mono text-[11px] text-hdr-muted mt-1.5">
-            {champion.titles} of {champion.total} team title{champion.total !== 1 ? 's' : ''}
-          </div>
-        </div>
-        <div class="bg-white rounded-xl p-2 flex items-center justify-center w-[88px] h-[108px] shrink-0">
-          <img
-            src={siteUrl(`/images/vests/${champion.vest}`)}
-            alt={champion.name}
-            class="w-full h-full object-contain"
-          />
-        </div>
-      </div>
-    )}
 
   </div>
 </div>
