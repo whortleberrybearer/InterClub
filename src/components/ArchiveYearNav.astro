@@ -1,0 +1,60 @@
+---
+// src/components/ArchiveYearNav.astro
+//
+// Shared decade-grouped year navigation card for the desktop archive sidebar.
+// Used in SeriesDetailLayout (current-year series page) and HistoryRaceList
+// (archive pages). Pass activeYear to highlight the currently-viewed year.
+import { siteUrl } from '../lib/url';
+import type { Series } from '../lib/types';
+
+interface Props {
+  series: Series;
+  /** Past years to display — sorted descending internally. */
+  years: number[];
+  /** The archive year currently being viewed; that cell gets an amber highlight. */
+  activeYear?: number;
+}
+
+const { series, years, activeYear } = Astro.props;
+
+const sorted = [...years].sort((a, b) => b - a);
+const oldestYear = sorted[sorted.length - 1] ?? null;
+
+const decadeGroups = [
+  { label: '2020s',   years: sorted.filter(y => y >= 2020) },
+  { label: '2010s',   years: sorted.filter(y => y >= 2010 && y < 2020) },
+  { label: '2000s',   years: sorted.filter(y => y >= 2000 && y < 2010) },
+  { label: '1990s',   years: sorted.filter(y => y >= 1990 && y < 2000) },
+  { label: '1985–89', years: sorted.filter(y => y < 1990) },
+].filter(g => g.years.length > 0);
+---
+
+{decadeGroups.length > 0 && (
+  <div class="card p-5">
+    <div class="font-head text-[10px] font-bold tracking-[0.16em] uppercase text-muted mb-1">The Archive</div>
+    <div class="font-head text-[20px] font-extrabold tracking-tight mb-2">Past seasons</div>
+    <p class="text-[12px] text-muted leading-relaxed mb-4 pb-4 border-b border-line">
+      Race lists, results and standings{oldestYear ? ` since ${oldestYear}` : ''}. Selecting a year opens its own archive page.
+    </p>
+    {decadeGroups.map((group, gi) => (
+      <div class:list={[gi < decadeGroups.length - 1 && 'mb-4']}>
+        <div class="font-mono text-[10px] tracking-[0.1em] uppercase text-muted mb-1.5">{group.label}</div>
+        <div class="grid grid-cols-4 gap-1">
+          {group.years.map(y => (
+            <a
+              href={siteUrl(`/${series}/${y}/`)}
+              class:list={[
+                'text-center py-1.5 font-mono text-[11px] rounded-md transition-colors no-underline',
+                y === activeYear
+                  ? 'bg-amber-bg text-amber font-bold'
+                  : 'text-content bg-canvas hover:text-amber',
+              ]}
+            >
+              {String(y).slice(2)}
+            </a>
+          ))}
+        </div>
+      </div>
+    ))}
+  </div>
+)}
