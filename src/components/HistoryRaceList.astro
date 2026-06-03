@@ -32,7 +32,7 @@ const {
 } = Astro.props;
 
 function positionLabel(pos: number): string {
-  if (pos === 1) return '🥇';
+  if (pos === 1) return '🏆';
   if (pos === 2) return '🥈';
   if (pos === 3) return '🥉';
   const mod10 = pos % 10;
@@ -185,17 +185,28 @@ const pastYears = availableYears.filter(y => y !== currentYear);
           <div class="flex flex-col gap-2 mb-3">
             {awards!.overallAwards.map(cat => (
               <div class="bg-surface rounded-xl border border-line p-4">
-                <p class="font-head text-[11px] font-bold tracking-[0.04em] uppercase text-muted mb-2">
+                <p class="font-head text-[11px] font-bold tracking-[0.04em] uppercase text-muted mb-2.5">
                   {cat.categoryName}
                 </p>
-                <div class="flex flex-col gap-1.5">
+                <div class="flex flex-col gap-2.5">
                   {cat.awards.map(a => (
-                    <div class="flex items-baseline gap-2 text-sm">
-                      <span class="w-7 shrink-0 text-[15px]">{positionLabel(a.position)}</span>
-                      {a.runnerUrl
-                        ? <a href={a.runnerUrl} class="font-medium link link-hover flex-1 min-w-0">{a.name}</a>
-                        : <span class="font-medium flex-1 min-w-0">{a.name}</span>}
-                      <span class="text-muted text-xs shrink-0">{a.clubName}</span>
+                    <div class="flex items-center gap-2.5">
+                      {a.vest ? (
+                        <img src={siteUrl(`/images/vests/${a.vest.replace('.png', '-sm.png')}`)} alt="" class="h-9 w-[26px] object-contain shrink-0" />
+                      ) : (
+                        <div class="w-[26px] h-9 shrink-0" />
+                      )}
+                      <div class="flex-1 min-w-0">
+                        <div class="font-semibold text-[13px] leading-tight truncate">
+                          {a.runnerUrl
+                            ? <a href={a.runnerUrl} class="link link-hover">{a.name}</a>
+                            : a.name}
+                        </div>
+                        <div class="text-[11px] text-muted mt-0.5 truncate">
+                          {a.clubName}{cat.showAgeCategory && a.ageCategory && ` · ${a.ageCategory}`}
+                        </div>
+                      </div>
+                      <span class="text-[16px] shrink-0">{positionLabel(a.position)}</span>
                     </div>
                   ))}
                 </div>
@@ -209,17 +220,28 @@ const pastYears = availableYears.filter(y => y !== currentYear);
             <div class="flex flex-col gap-2">
               {awards!.maleAwards.map(cat => (
                 <div class="bg-surface rounded-xl border border-line p-4">
-                  <p class="font-head text-[11px] font-bold tracking-[0.04em] uppercase text-muted mb-2">
+                  <p class="font-head text-[11px] font-bold tracking-[0.04em] uppercase text-muted mb-2.5">
                     {cat.categoryName}
                   </p>
-                  <div class="flex flex-col gap-1.5">
+                  <div class="flex flex-col gap-2.5">
                     {cat.awards.map(a => (
-                      <div class="flex items-baseline gap-2 text-sm">
-                        <span class="w-7 shrink-0 text-[15px]">{positionLabel(a.position)}</span>
-                        {a.runnerUrl
-                          ? <a href={a.runnerUrl} class="font-medium link link-hover flex-1 min-w-0">{a.name}</a>
-                          : <span class="font-medium flex-1 min-w-0">{a.name}</span>}
-                        <span class="text-muted text-xs shrink-0">{a.clubName}</span>
+                      <div class="flex items-center gap-2.5">
+                        {a.vest ? (
+                          <img src={siteUrl(`/images/vests/${a.vest.replace('.png', '-sm.png')}`)} alt="" class="h-9 w-[26px] object-contain shrink-0" />
+                        ) : (
+                          <div class="w-[26px] h-9 shrink-0" />
+                        )}
+                        <div class="flex-1 min-w-0">
+                          <div class="font-semibold text-[13px] leading-tight truncate">
+                            {a.runnerUrl
+                              ? <a href={a.runnerUrl} class="link link-hover">{a.name}</a>
+                              : a.name}
+                          </div>
+                          <div class="text-[11px] text-muted mt-0.5 truncate">
+                            {a.clubName}{cat.showAgeCategory && a.ageCategory && ` · ${a.ageCategory}`}
+                          </div>
+                        </div>
+                        <span class="text-[16px] shrink-0">{positionLabel(a.position)}</span>
                       </div>
                     ))}
                   </div>
@@ -229,17 +251,28 @@ const pastYears = availableYears.filter(y => y !== currentYear);
             <div class="flex flex-col gap-2">
               {awards!.femaleAwards.map(cat => (
                 <div class="bg-surface rounded-xl border border-line p-4">
-                  <p class="font-head text-[11px] font-bold tracking-[0.04em] uppercase text-muted mb-2">
+                  <p class="font-head text-[11px] font-bold tracking-[0.04em] uppercase text-muted mb-2.5">
                     {cat.categoryName}
                   </p>
-                  <div class="flex flex-col gap-1.5">
+                  <div class="flex flex-col gap-2.5">
                     {cat.awards.map(a => (
-                      <div class="flex items-baseline gap-2 text-sm">
-                        <span class="w-7 shrink-0 text-[15px]">{positionLabel(a.position)}</span>
-                        {a.runnerUrl
-                          ? <a href={a.runnerUrl} class="font-medium link link-hover flex-1 min-w-0">{a.name}</a>
-                          : <span class="font-medium flex-1 min-w-0">{a.name}</span>}
-                        <span class="text-muted text-xs shrink-0">{a.clubName}</span>
+                      <div class="flex items-center gap-2.5">
+                        {a.vest ? (
+                          <img src={siteUrl(`/images/vests/${a.vest.replace('.png', '-sm.png')}`)} alt="" class="h-9 w-[26px] object-contain shrink-0" />
+                        ) : (
+                          <div class="w-[26px] h-9 shrink-0" />
+                        )}
+                        <div class="flex-1 min-w-0">
+                          <div class="font-semibold text-[13px] leading-tight truncate">
+                            {a.runnerUrl
+                              ? <a href={a.runnerUrl} class="link link-hover">{a.name}</a>
+                              : a.name}
+                          </div>
+                          <div class="text-[11px] text-muted mt-0.5 truncate">
+                            {a.clubName}{cat.showAgeCategory && a.ageCategory && ` · ${a.ageCategory}`}
+                          </div>
+                        </div>
+                        <span class="text-[16px] shrink-0">{positionLabel(a.position)}</span>
                       </div>
                     ))}
                   </div>
