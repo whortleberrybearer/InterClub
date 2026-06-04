@@ -31,6 +31,11 @@ const config = getSeriesConfig(year, 'road-gp');
 const clubs = getClubs(year);
 const participantCounts = getClubParticipantCounts(year, 'road-gp');
 
+const sortedYears = [...availableYears].sort((a, b) => b - a);
+const yearIndex = sortedYears.indexOf(year);
+const newerYear = yearIndex > 0 ? sortedYears[yearIndex - 1] : null;
+const olderYear = yearIndex < sortedYears.length - 1 ? sortedYears[yearIndex + 1] : null;
+
 let awards: ResolvedSeriesAwards | undefined;
 if (hasAwards(year, 'road-gp')) {
   const raw = getAwards(year, 'road-gp')!;
@@ -79,16 +84,27 @@ if (hasAwards(year, 'road-gp')) {
     slot="hero"
     year={year}
     seriesLabel="Road Grand Prix"
-    seriesBasePath="/road-gp"
-    currentYear={currentYear}
-  />
-  <HistoryYearStrip
-    slot="chip-bar"
-    years={availableYears}
-    activeYear={year}
-    seriesBasePath="/road-gp"
-    currentYear={currentYear}
-  />
+    series="road-gp"
+  >
+    {olderYear && (
+      <a href={siteUrl(`/road-gp/${olderYear}/`)} class="inline-flex items-center px-3 py-1.5 rounded-md text-[11px] font-head font-bold tracking-[0.06em] uppercase text-white/70 bg-white/10 border border-white/20 hover:bg-white/20 hover:text-white transition-colors no-underline">
+        ← {olderYear}
+      </a>
+    )}
+    {newerYear && newerYear === currentYear ? (
+      <a href={siteUrl('/road-gp/')} class="inline-flex items-center px-3 py-1.5 rounded-md text-[11px] font-head font-bold tracking-[0.06em] uppercase text-white bg-amber hover:bg-amber/80 transition-colors no-underline">
+        Current →
+      </a>
+    ) : newerYear ? (
+      <a href={siteUrl(`/road-gp/${newerYear}/`)} class="inline-flex items-center px-3 py-1.5 rounded-md text-[11px] font-head font-bold tracking-[0.06em] uppercase text-white/70 bg-white/10 border border-white/20 hover:bg-white/20 hover:text-white transition-colors no-underline">
+        {newerYear} →
+      </a>
+    ) : (
+      <a href={siteUrl('/road-gp/')} class="inline-flex items-center px-3 py-1.5 rounded-md text-[11px] font-head font-bold tracking-[0.06em] uppercase text-white bg-amber hover:bg-amber/80 transition-colors no-underline">
+        Current →
+      </a>
+    )}
+  </ArchiveHeader>
   <HistoryRaceList
     races={races}
     year={year}
