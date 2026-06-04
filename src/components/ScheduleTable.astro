@@ -54,14 +54,12 @@ const scriptRaceData = showNextRace ? raceStates.map(({ race, past }) => ({
     <span class="font-head text-[14px] font-bold tracking-[0.05em] uppercase">Schedule</span>
   </div>
   <table class="table table-fixed">
-    <thead>
-      <tr>
-        <th class="hidden sm:table-cell py-3 px-3 w-10 text-center">#</th>
-        <th class="py-3 pl-4 sm:pl-3 pr-3 w-[100px]">Date</th>
-        <th class="py-3 px-3">Race</th>
-        <th class="py-3 pl-3 pr-4 w-[90px] !text-right">Results</th>
-      </tr>
-    </thead>
+    <colgroup>
+      <col class="hidden sm:table-column w-10" />
+      <col class="w-[100px]" />
+      <col />
+      <col class="w-[90px]" />
+    </colgroup>
     <tbody>
       {raceStates.map(({ race, past, provisional, isNext }, i) => (
         <tr
@@ -92,7 +90,7 @@ const scriptRaceData = showNextRace ? raceStates.map(({ race, past }) => ({
             ) : past ? (
               <a data-badge href={siteUrl(`/${series}/${year}/${race.id}/results`)} class:list={['font-head text-[10px] font-bold tracking-[0.08em] uppercase no-underline hover:underline whitespace-nowrap', accentText]}>Results →</a>
             ) : (
-              <span data-badge class="text-[13px] text-muted/50">→</span>
+              <span data-badge></span>
             )}
           </td>
         </tr>
@@ -169,7 +167,7 @@ const scriptRaceData = showNextRace ? raceStates.map(({ race, past }) => ({
         } else if (trulyPast && race.hasResults) {
           newBadge = '<a data-badge href="' + race.resultsUrl + '" class="font-head text-[10px] font-bold tracking-[0.08em] uppercase no-underline hover:underline whitespace-nowrap ' + accentText + '">Results →</a>';
         } else if (!trulyPast) {
-          newBadge = '<span data-badge class="text-[13px] text-muted/50">→</span>';
+          newBadge = '<span data-badge></span>';
         } else {
           newBadge = '<span data-badge></span>';
         }
