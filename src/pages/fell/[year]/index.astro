@@ -31,6 +31,11 @@ const config = getSeriesConfig(year, 'fell');
 const clubs = getClubs(year);
 const participantCounts = getClubParticipantCounts(year, 'fell');
 
+const sortedYears = [...availableYears].sort((a, b) => b - a);
+const yearIndex = sortedYears.indexOf(year);
+const newerYear = yearIndex > 0 ? sortedYears[yearIndex - 1] : null;
+const olderYear = yearIndex < sortedYears.length - 1 ? sortedYears[yearIndex + 1] : null;
+
 let awards: ResolvedSeriesAwards | undefined;
 if (hasAwards(year, 'fell')) {
   const raw = getAwards(year, 'fell')!;
@@ -79,16 +84,27 @@ if (hasAwards(year, 'fell')) {
     slot="hero"
     year={year}
     seriesLabel="Fell Championship"
-    seriesBasePath="/fell"
-    currentYear={currentYear}
-  />
-  <HistoryYearStrip
-    slot="chip-bar"
-    years={availableYears}
-    activeYear={year}
-    seriesBasePath="/fell"
-    currentYear={currentYear}
-  />
+    series="fell"
+  >
+    {olderYear && (
+      <a href={siteUrl(`/fell/${olderYear}/`)} class="inline-flex items-center px-3 py-1.5 rounded-md text-[11px] font-head font-bold tracking-[0.06em] uppercase text-white/70 bg-white/10 border border-white/20 hover:bg-white/20 hover:text-white transition-colors no-underline">
+        ← {olderYear}
+      </a>
+    )}
+    {newerYear && newerYear === currentYear ? (
+      <a href={siteUrl('/fell/')} class="inline-flex items-center px-3 py-1.5 rounded-md text-[11px] font-head font-bold tracking-[0.06em] uppercase text-white bg-teal hover:bg-teal/80 transition-colors no-underline">
+        Current →
+      </a>
+    ) : newerYear ? (
+      <a href={siteUrl(`/fell/${newerYear}/`)} class="inline-flex items-center px-3 py-1.5 rounded-md text-[11px] font-head font-bold tracking-[0.06em] uppercase text-white/70 bg-white/10 border border-white/20 hover:bg-white/20 hover:text-white transition-colors no-underline">
+        {newerYear} →
+      </a>
+    ) : (
+      <a href={siteUrl('/fell/')} class="inline-flex items-center px-3 py-1.5 rounded-md text-[11px] font-head font-bold tracking-[0.06em] uppercase text-white bg-teal hover:bg-teal/80 transition-colors no-underline">
+        Current →
+      </a>
+    )}
+  </ArchiveHeader>
   <HistoryRaceList
     races={races}
     year={year}

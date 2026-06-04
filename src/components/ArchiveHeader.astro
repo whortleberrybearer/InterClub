@@ -2,44 +2,38 @@
 // src/components/ArchiveHeader.astro
 //
 // Full-bleed dark editorial header for archive (past-year) pages.
-// Place in the Layout `hero` slot.
-import { siteUrl } from '../lib/url';
+// Uses the same structure as PageHeader — eyebrow, bold title, action buttons.
+// Place in the Layout `hero` slot. Use the default slot for action buttons
+// (they render right-aligned on the same row as the title).
+import type { Series } from '../lib/types';
 
 interface Props {
   year: number;
   seriesLabel: string;
-  seriesBasePath: string;
-  currentYear: number;
+  series: Series;
 }
 
-const { year, seriesLabel, seriesBasePath, currentYear } = Astro.props;
+const { year, seriesLabel, series } = Astro.props;
+const eyebrowColor = series === 'fell' ? 'text-teal' : 'text-amber';
 ---
 
 <div class="bg-hdr-dark text-hdr-text">
-  <div class="max-w-4xl xl:max-w-5xl mx-auto px-4 pt-6 pb-5 lg:py-10">
+  <div class="max-w-4xl xl:max-w-5xl mx-auto px-4 pt-4 pb-4">
 
-    <div class="flex items-center justify-between mb-2 lg:mb-3">
-      <span class="font-head text-[10px] font-bold tracking-[0.16em] uppercase text-amber">
-        Archive · {seriesLabel}
-      </span>
-      <a
-        href={siteUrl(`${seriesBasePath}/`)}
-        class="font-mono text-[11px] text-hdr-muted hover:text-hdr-text transition-colors"
-      >
-        {currentYear} →
-      </a>
-    </div>
+    <p class:list={['font-head text-[11px] font-bold tracking-[0.14em] uppercase mb-1.5', eyebrowColor]}>
+      Archive
+    </p>
 
-    <div class="flex items-end gap-4 lg:gap-6">
-      <span class="font-head text-[64px] lg:text-[120px] font-extrabold leading-[0.82] tracking-tight">
-        {year}
-      </span>
-      <div class="pb-1 lg:pb-5">
-        <div class="font-head text-[18px] lg:text-[38px] font-extrabold leading-none tracking-tight">
-          {seriesLabel}
-        </div>
+    <div class="flex items-center justify-between gap-4">
+      <h1 class="font-head text-[28px] lg:text-[38px] font-extrabold tracking-tight leading-[1.1]">
+        {year} {seriesLabel}
+      </h1>
+      <div class="flex items-center gap-2 shrink-0">
+        <slot />
       </div>
     </div>
+
+    <div class="mt-1 min-h-[18px]"></div>
 
   </div>
 </div>
