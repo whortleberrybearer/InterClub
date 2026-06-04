@@ -14,9 +14,9 @@ const hasHero = Astro.slots.has('hero');
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const currentPath = Astro.url.pathname;
 
-const seriesAccent = currentPath.includes('/fell')
+const seriesAccent = currentPath.includes('/fell/')
   ? 'fell'
-  : currentPath.includes('/road-gp')
+  : currentPath.includes('/road-gp/')
   ? 'road-gp'
   : undefined;
 
