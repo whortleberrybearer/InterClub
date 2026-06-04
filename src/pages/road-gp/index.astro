@@ -1,19 +1,12 @@
 ---
 import SeriesDetailLayout from '../../components/SeriesDetailLayout.astro';
 import { getCurrentYear, getAvailableYears, getRaces } from '../../lib/data';
-import { hasTeamStandings, hasIndividualStandings, getSeriesConfig } from '../../lib/results';
-import { siteUrl } from '../../lib/url';
+import { getSeriesConfig } from '../../lib/results';
 
 const currentYear = getCurrentYear();
 const availableYears = getAvailableYears('road-gp');
 const races = getRaces(currentYear, 'road-gp');
 const config = getSeriesConfig(currentYear, 'road-gp');
-const teamStandingsUrl = hasTeamStandings(currentYear, 'road-gp')
-  ? siteUrl(`/road-gp/${currentYear}/team-standings`)
-  : undefined;
-const individualStandingsUrl = hasIndividualStandings(currentYear, 'road-gp')
-  ? siteUrl(`/road-gp/${currentYear}/individual-standings`)
-  : undefined;
 ---
 
 <SeriesDetailLayout
@@ -24,8 +17,6 @@ const individualStandingsUrl = hasIndividualStandings(currentYear, 'road-gp')
   availableYears={availableYears}
   seriesTitle="Road Grand Prix"
   subtitle="7 races · April – September · Lancashire"
-  teamStandingsUrl={teamStandingsUrl}
-  individualStandingsUrl={individualStandingsUrl}
 >
   <div slot="description">
     <p>
