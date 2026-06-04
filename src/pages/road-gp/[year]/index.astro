@@ -3,6 +3,7 @@
 import Layout from '../../../components/Layout.astro';
 import HistoryRaceList from '../../../components/HistoryRaceList.astro';
 import ArchiveHeader from '../../../components/ArchiveHeader.astro';
+import ArchiveYearPicker from '../../../components/ArchiveYearPicker.astro';
 import HistoryYearStrip from '../../../components/HistoryYearStrip.astro';
 import { getCurrentYear, getAvailableYears, getRaces } from '../../../lib/data';
 import { getAwards, getClubParticipantCounts, getClubs, getSeriesConfig, hasAwards, hasIndividualStandings, hasTeamStandings, resolveIndividualCategoryName } from '../../../lib/results';
@@ -104,6 +105,7 @@ if (hasAwards(year, 'road-gp')) {
         Current →
       </a>
     )}
+    <ArchiveYearPicker series="road-gp" years={availableYears} activeYear={year} />
   </ArchiveHeader>
   <HistoryRaceList
     races={races}
