@@ -123,7 +123,7 @@ body { color: var(--color-content); }
 .select:focus,
 .textarea:focus {
   border-color: var(--color-amber);
-  box-shadow: 0 0 0 3px oklch(72% 0.18 60 / 0.15);
+  box-shadow: 0 0 0 3px color-mix(in oklch, var(--color-amber) 20%, transparent);
 }
 .input-sm,
 .select-sm { padding: 0.1875rem 0.5rem; font-size: 0.8125rem; }
@@ -192,5 +192,15 @@ html[data-theme="dark"] {
   --color-teal:      oklch(70% 0.12 195);
   --color-teal-bg:   oklch(31% 0.05 195);
   --color-hdr-dark:  oklch(15% 0.014 250);
+}
+
+/* ── Series accent overrides ── */
+html[data-series="fell"] {
+  --color-amber:    oklch(58% 0.14 195);
+  --color-amber-bg: oklch(96% 0.04 195);
+}
+html[data-series="fell"][data-theme="dark"] {
+  --color-amber:    oklch(70% 0.12 195);
+  --color-amber-bg: oklch(31% 0.05 195);
 }
 
