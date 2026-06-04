@@ -1,6 +1,7 @@
 ---
 import Layout from './Layout.astro';
 import ArchiveYearNav from './ArchiveYearNav.astro';
+import AllTimeWinnersCard from './AllTimeWinnersCard.astro';
 import ScheduleTable from './ScheduleTable.astro';
 import { hasResults } from '../lib/results';
 import { siteUrl } from '../lib/url';
@@ -135,7 +136,7 @@ const scoringRules = [
   </div>
 
   <!-- Two-column on desktop: main + sticky sidebar -->
-  <div class="lg:grid lg:grid-cols-[1fr_220px] xl:grid-cols-[1fr_260px] lg:gap-8 lg:items-start">
+  <div class="lg:grid lg:grid-cols-[1fr_260px] xl:grid-cols-[1fr_280px] lg:gap-8 lg:items-start">
 
     <!-- ── Main column ── -->
     <div>
@@ -203,7 +204,10 @@ const scoringRules = [
 
     <!-- ── Desktop sidebar ── -->
     <aside class="hidden lg:block sticky top-6 self-start">
-      <ArchiveYearNav series={series} years={pastYears} />
+      <div class="flex flex-col gap-4">
+        <ArchiveYearNav series={series} years={pastYears} />
+        <AllTimeWinnersCard series={series} />
+      </div>
     </aside>
 
   </div>
