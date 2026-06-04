@@ -21,6 +21,21 @@ function positionLabel(pos: number): string {
 }
 
 const hasMF = awards.maleAwards.length > 0 || awards.femaleAwards.length > 0;
+
+// Pair male/female awards by age category, preserving order (male order first, then female-only)
+const pairedAwards = (() => {
+  const NO_AGE = '__no_age__';
+  const seen = new Set<string>();
+  const keys: string[] = [];
+  for (const a of [...awards.maleAwards, ...awards.femaleAwards]) {
+    const k = a.ageCategory ?? NO_AGE;
+    if (!seen.has(k)) { seen.add(k); keys.push(k); }
+  }
+  return keys.map(k => ({
+    male: awards.maleAwards.find(a => (a.ageCategory ?? NO_AGE) === k),
+    female: awards.femaleAwards.find(a => (a.ageCategory ?? NO_AGE) === k),
+  }));
+})();
 ---
 
 <div class="card bg-canvas mb-6">
@@ -67,43 +82,43 @@ const hasMF = awards.maleAwards.length > 0 || awards.femaleAwards.length > 0;
         )}
 
         {hasMF && (
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
-            <div class="flex flex-col gap-2">
-              {awards.maleAwards.map(cat => (
-                <div class="bg-surface rounded-lg p-3">
-                  <p class="text-xs text-content/50 mb-1">{cat.categoryName}</p>
-                  <div class="flex flex-col gap-1">
-                    {cat.awards.map(a => (
-                      <div class="flex items-baseline gap-2 text-sm">
-                        <span class="w-6 shrink-0">{positionLabel(a.position)}</span>
-                        {a.runnerUrl
-                        ? <a href={a.runnerUrl} class="font-medium link link-hover">{a.name}</a>
-                        : <span class="font-medium">{a.name}</span>}
-                        <span class="text-content/50 text-xs">{a.clubName}</span>
-                      </div>
-                    ))}
+          <div class="flex flex-col gap-2">
+            {pairedAwards.map(({ male, female }) => (
+              <div class="grid grid-cols-2 gap-2">
+                {male ? (
+                  <div class="bg-surface rounded-lg p-3">
+                    <p class="text-xs text-content/50 mb-1">{male.categoryName}</p>
+                    <div class="flex flex-col gap-1">
+                      {male.awards.map(a => (
+                        <div class="flex items-baseline gap-2 text-sm">
+                          <span class="w-6 shrink-0">{positionLabel(a.position)}</span>
+                          {a.runnerUrl
+                            ? <a href={a.runnerUrl} class="font-medium link link-hover">{a.name}</a>
+                            : <span class="font-medium">{a.name}</span>}
+                          <span class="text-content/50 text-xs">{a.clubName}</span>
+                        </div>
+                      ))}
+                    </div>
                   </div>
-                </div>
-              ))}
-            </div>
-            <div class="flex flex-col gap-2">
-              {awards.femaleAwards.map(cat => (
-                <div class="bg-surface rounded-lg p-3">
-                  <p class="text-xs text-content/50 mb-1">{cat.categoryName}</p>
-                  <div class="flex flex-col gap-1">
-                    {cat.awards.map(a => (
-                      <div class="flex items-baseline gap-2 text-sm">
-                        <span class="w-6 shrink-0">{positionLabel(a.position)}</span>
-                        {a.runnerUrl
-                        ? <a href={a.runnerUrl} class="font-medium link link-hover">{a.name}</a>
-                        : <span class="font-medium">{a.name}</span>}
-                        <span class="text-content/50 text-xs">{a.clubName}</span>
-                      </div>
-                    ))}
+                ) : <div />}
+                {female ? (
+                  <div class="bg-surface rounded-lg p-3">
+                    <p class="text-xs text-content/50 mb-1">{female.categoryName}</p>
+                    <div class="flex flex-col gap-1">
+                      {female.awards.map(a => (
+                        <div class="flex items-baseline gap-2 text-sm">
+                          <span class="w-6 shrink-0">{positionLabel(a.position)}</span>
+                          {a.runnerUrl
+                            ? <a href={a.runnerUrl} class="font-medium link link-hover">{a.name}</a>
+                            : <span class="font-medium">{a.name}</span>}
+                          <span class="text-content/50 text-xs">{a.clubName}</span>
+                        </div>
+                      ))}
+                    </div>
                   </div>
-                </div>
-              ))}
-            </div>
+                ) : <div />}
+              </div>
+            ))}
           </div>
         )}
       </div>
