@@ -3,6 +3,7 @@
 import type { Club, Race, ResolvedSeriesAwards, Series } from '../lib/types';
 import { siteUrl } from '../lib/url';
 import ArchiveYearNav from './ArchiveYearNav.astro';
+import AllTimeWinnersCard from './AllTimeWinnersCard.astro';
 import ScheduleTable from './ScheduleTable.astro';
 import ClubTurnout from './ClubTurnout.astro';
 import { CLUB_COLORS } from '../lib/clubColors';
@@ -15,8 +16,6 @@ interface Props {
   individualStandingsUrl?: string;
   awards?: ResolvedSeriesAwards;
   note?: string;
-  historyTeamsUrl?: string;
-  historyIndividualsUrl?: string;
   clubs?: Club[];
   participantCounts?: Record<string, number>;
   availableYears?: number[];
@@ -26,7 +25,7 @@ interface Props {
 const {
   races, year, series,
   standingsUrl, individualStandingsUrl,
-  awards, note, historyTeamsUrl, historyIndividualsUrl,
+  awards, note,
   clubs = [], participantCounts = {},
   availableYears = [], currentYear,
 } = Astro.props;
@@ -311,29 +310,7 @@ const lastYear  = availableYears.length > 0 ? Math.max(...availableYears) : unde
       <ArchiveYearNav series={series} years={pastYears} activeYear={year} />
 
       <!-- All-time winners links -->
-      {(historyTeamsUrl || historyIndividualsUrl) && (
-        <div class="bg-surface rounded-xl border border-line p-4">
-          <p class="font-head text-[15px] font-bold tracking-[0.04em] uppercase mb-3">All-time winners</p>
-          <div class="flex flex-col divide-y divide-line">
-            {historyTeamsUrl && (
-              <a href={historyTeamsUrl} class="flex items-center justify-between py-3 group">
-                <div class="min-w-0">
-                  <p class="font-head text-[13px] font-bold leading-tight">Team Winners</p>
-                </div>
-                <span class:list={['font-head text-[10px] font-bold tracking-[0.08em] uppercase whitespace-nowrap ml-3 ', accentText]}>→</span>
-              </a>
-            )}
-            {historyIndividualsUrl && (
-              <a href={historyIndividualsUrl} class="flex items-center justify-between py-3 group">
-                <div class="min-w-0">
-                  <p class="font-head text-[13px] font-bold leading-tight">Individual Winners</p>
-                </div>
-                <span class:list={['font-head text-[10px] font-bold tracking-[0.08em] uppercase whitespace-nowrap ml-3 ', accentText]}>→</span>
-              </a>
-            )}
-          </div>
-        </div>
-      )}
+      <AllTimeWinnersCard series={series} />
 
       <!-- Club Turnout — participation counts for the viewed season -->
       {showSidebar && (
