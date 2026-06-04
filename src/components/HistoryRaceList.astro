@@ -88,6 +88,9 @@ const showSidebar = sidebarRows.length > 0;
 
 // Past years for the archive year-nav sidebar
 const pastYears = availableYears.filter(y => y !== currentYear);
+
+const firstYear = availableYears.length > 0 ? Math.min(...availableYears) : undefined;
+const lastYear  = availableYears.length > 0 ? Math.max(...availableYears) : undefined;
 ---
 
 <!-- ═══ Desktop 2-col layout: main content + sticky sidebar ═══ -->
@@ -112,18 +115,6 @@ const pastYears = availableYears.filter(y => y !== currentYear);
       </div>
     )}
 
-    <!-- Secondary history navigation -->
-    {(historyTeamsUrl || historyIndividualsUrl) && (
-      <div class="flex gap-2 flex-wrap mb-5">
-        {historyTeamsUrl && (
-          <a href={historyTeamsUrl} class="btn btn-sm btn-outline">Team Winners History</a>
-        )}
-        {historyIndividualsUrl && (
-          <a href={historyIndividualsUrl} class="btn btn-sm btn-outline">Individual Winners History</a>
-        )}
-      </div>
-    )}
-
     <!-- Schedule -->
     <div class="mb-6">
       <ScheduleTable series={series} year={year} races={races} note={note} />
@@ -135,8 +126,10 @@ const pastYears = availableYears.filter(y => y !== currentYear);
 
         <!-- Mobile: compact list -->
         <div class="sm:hidden">
-          <h2 class="font-head text-[15px] font-bold tracking-[0.04em] uppercase mb-2">Team Awards</h2>
           <div class="bg-surface rounded-xl border border-line px-4">
+            <div class="py-3 border-b border-line">
+              <h2 class="font-head text-[15px] font-bold tracking-[0.04em] uppercase">Team Awards</h2>
+            </div>
             {awards.teamAwards.map(ta => (
               <div class="flex items-center gap-3 py-2.5 border-b border-line last:border-b-0">
                 <span class="font-head text-[11px] font-bold tracking-[0.06em] uppercase text-muted w-[80px] shrink-0">
@@ -329,6 +322,41 @@ const pastYears = availableYears.filter(y => y !== currentYear);
 
       <!-- Year navigation (shared component, matches series detail page) -->
       <ArchiveYearNav series={series} years={pastYears} activeYear={year} />
+
+      <!-- All-time winners links -->
+      {(historyTeamsUrl || historyIndividualsUrl) && (
+        <div class="bg-surface rounded-xl border border-line p-4">
+          <p class="font-head text-[10px] font-bold tracking-[0.08em] uppercase text-amber mb-1">Roll of Honour</p>
+          <h3 class="font-head text-[18px] font-extrabold leading-tight mb-1">All-time winners</h3>
+          {firstYear && lastYear && (
+            <p class="text-[12px] text-muted mb-4 leading-snug">
+              Every champion across the series, {firstYear} — {lastYear} — not just this season.
+            </p>
+          )}
+          <div class="flex flex-col divide-y divide-line">
+            {historyTeamsUrl && (
+              <a href={historyTeamsUrl} class="flex items-center gap-3 py-3 group">
+                <span class="w-2 h-2 rounded-sm bg-amber shrink-0"></span>
+                <div class="flex-1 min-w-0">
+                  <p class="font-head text-[13px] font-bold leading-tight">Team Winners</p>
+                  <p class="text-[11px] text-muted mt-0.5">Winning clubs in every category</p>
+                </div>
+                <span class="text-amber text-lg font-bold group-hover:translate-x-0.5 transition-transform">+</span>
+              </a>
+            )}
+            {historyIndividualsUrl && (
+              <a href={historyIndividualsUrl} class="flex items-center gap-3 py-3 group">
+                <span class="w-2 h-2 rounded-sm bg-amber shrink-0"></span>
+                <div class="flex-1 min-w-0">
+                  <p class="font-head text-[13px] font-bold leading-tight">Individual Winners</p>
+                  <p class="text-[11px] text-muted mt-0.5">Podiums across every age group</p>
+                </div>
+                <span class="text-amber text-lg font-bold group-hover:translate-x-0.5 transition-transform">+</span>
+              </a>
+            )}
+          </div>
+        </div>
+      )}
 
       <!-- Club Turnout — participation counts for the viewed season -->
       {showSidebar && (
