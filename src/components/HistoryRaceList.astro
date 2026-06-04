@@ -99,22 +99,6 @@ const lastYear  = availableYears.length > 0 ? Math.max(...availableYears) : unde
   <!-- ── Main column ── -->
   <div>
 
-    <!-- Action buttons: Team / Individual standings -->
-    {(standingsUrl || individualStandingsUrl) && (
-      <div class="flex gap-2.5 flex-wrap mb-5">
-        {standingsUrl && (
-          <a href={standingsUrl} class="btn btn-primary flex-1 sm:flex-none font-head text-[13px] font-bold tracking-[0.06em] uppercase">
-            Team Standings →
-          </a>
-        )}
-        {individualStandingsUrl && (
-          <a href={individualStandingsUrl} class="btn flex-1 sm:flex-none font-head text-[13px] font-bold tracking-[0.06em] uppercase border-amber text-amber hover:bg-amber-bg">
-            Individual →
-          </a>
-        )}
-      </div>
-    )}
-
     <!-- Schedule -->
     <div class="mb-6">
       <ScheduleTable series={series} year={year} races={races} note={note} />
@@ -127,8 +111,9 @@ const lastYear  = availableYears.length > 0 ? Math.max(...availableYears) : unde
         <!-- Mobile: compact list -->
         <div class="sm:hidden">
           <div class="bg-surface rounded-xl border border-line px-4">
-            <div class="py-3 border-b border-line">
+            <div class="py-3 border-b border-line flex items-baseline justify-between">
               <h2 class="font-head text-[15px] font-bold tracking-[0.04em] uppercase">Team Awards</h2>
+              {standingsUrl && <a href={standingsUrl} class:list={['btn btn-sm font-head text-[11px] font-bold tracking-[0.06em] uppercase', accentText === 'text-teal' ? 'border-teal text-teal hover:bg-teal/10' : 'border-amber text-amber hover:bg-amber-bg']}>Standings →</a>}
             </div>
             {awards.teamAwards.map(ta => (
               <div class="flex items-center gap-3 py-2.5 border-b border-line last:border-b-0">
@@ -154,16 +139,17 @@ const lastYear  = availableYears.length > 0 ? Math.max(...availableYears) : unde
 
         <!-- Desktop: vest gallery — each category headlined by its winning club's vest -->
         <div class="hidden sm:block bg-surface rounded-xl border border-line p-[22px]">
-          <h2 class="font-head text-[15px] font-bold tracking-[0.04em] uppercase mb-3">
-            Team Awards
-          </h2>
+          <div class="flex items-baseline justify-between mb-3">
+            <h2 class="font-head text-[15px] font-bold tracking-[0.04em] uppercase">Team Awards</h2>
+            {standingsUrl && <a href={standingsUrl} class:list={['btn btn-sm font-head text-[11px] font-bold tracking-[0.06em] uppercase', accentText === 'text-teal' ? 'border-teal text-teal hover:bg-teal/10' : 'border-amber text-amber hover:bg-amber-bg']}>Standings →</a>}
+          </div>
           <div
             class="grid gap-2.5"
             style={`grid-template-columns: repeat(${awards.teamAwards.length}, 1fr)`}
           >
             {awards.teamAwards.map(ta => (
               <div class="flex flex-col items-center text-center">
-                <span class="font-head text-[11px] font-bold tracking-[0.08em] uppercase text-amber leading-none">
+                <span class:list={['font-head text-[11px] font-bold tracking-[0.08em] uppercase leading-none', accentText]}>
                   {ta.categoryName}
                 </span>
                 {ta.vest ? (
@@ -192,6 +178,7 @@ const lastYear  = availableYears.length > 0 ? Math.max(...availableYears) : unde
       <div class="bg-surface rounded-xl border border-line p-[22px] mb-6">
         <div class="flex items-baseline justify-between mb-4">
           <h2 class="font-head text-[15px] font-bold tracking-[0.04em] uppercase">Individual Awards</h2>
+          {individualStandingsUrl && <a href={individualStandingsUrl} class:list={['btn btn-sm font-head text-[11px] font-bold tracking-[0.06em] uppercase', accentText === 'text-teal' ? 'border-teal text-teal hover:bg-teal/10' : 'border-amber text-amber hover:bg-amber-bg']}>Standings →</a>}
         </div>
 
         {/* Overall (non-sex) awards */}
@@ -235,12 +222,12 @@ const lastYear  = availableYears.length > 0 ? Math.max(...availableYears) : unde
 
             {/* Column headers — desktop only */}
             {awards!.maleAwards.length > 0 ? (
-              <div class:list={['hidden sm:block pb-2 mb-3 border-b-2', accentText === 'text-teal' ? 'border-teal' : 'border-amber']}>
+              <div class="hidden sm:block pb-2 mb-3 border-b-2 border-current">
                 <h3 class="font-head text-[16px] font-extrabold tracking-tight">Male</h3>
               </div>
             ) : <div class="hidden sm:block" />}
             {awards!.femaleAwards.length > 0 ? (
-              <div class:list={['hidden sm:block pb-2 mb-3 border-b-2', accentText === 'text-teal' ? 'border-teal' : 'border-amber']}>
+              <div class="hidden sm:block pb-2 mb-3 border-b-2 border-current">
                 <h3 class="font-head text-[16px] font-extrabold tracking-tight">Female</h3>
               </div>
             ) : <div class="hidden sm:block" />}
@@ -326,32 +313,22 @@ const lastYear  = availableYears.length > 0 ? Math.max(...availableYears) : unde
       <!-- All-time winners links -->
       {(historyTeamsUrl || historyIndividualsUrl) && (
         <div class="bg-surface rounded-xl border border-line p-4">
-          <p class="font-head text-[10px] font-bold tracking-[0.08em] uppercase text-amber mb-1">Roll of Honour</p>
-          <h3 class="font-head text-[18px] font-extrabold leading-tight mb-1">All-time winners</h3>
-          {firstYear && lastYear && (
-            <p class="text-[12px] text-muted mb-4 leading-snug">
-              Every champion across the series, {firstYear} — {lastYear} — not just this season.
-            </p>
-          )}
+          <p class="font-head text-[15px] font-bold tracking-[0.04em] uppercase mb-3">All-time winners</p>
           <div class="flex flex-col divide-y divide-line">
             {historyTeamsUrl && (
-              <a href={historyTeamsUrl} class="flex items-center gap-3 py-3 group">
-                <span class="w-2 h-2 rounded-sm bg-amber shrink-0"></span>
-                <div class="flex-1 min-w-0">
+              <a href={historyTeamsUrl} class="flex items-center justify-between py-3 group">
+                <div class="min-w-0">
                   <p class="font-head text-[13px] font-bold leading-tight">Team Winners</p>
-                  <p class="text-[11px] text-muted mt-0.5">Winning clubs in every category</p>
                 </div>
-                <span class="text-amber text-lg font-bold group-hover:translate-x-0.5 transition-transform">+</span>
+                <span class:list={['font-head text-[10px] font-bold tracking-[0.08em] uppercase whitespace-nowrap ml-3 group-hover:underline', accentText]}>→</span>
               </a>
             )}
             {historyIndividualsUrl && (
-              <a href={historyIndividualsUrl} class="flex items-center gap-3 py-3 group">
-                <span class="w-2 h-2 rounded-sm bg-amber shrink-0"></span>
-                <div class="flex-1 min-w-0">
+              <a href={historyIndividualsUrl} class="flex items-center justify-between py-3 group">
+                <div class="min-w-0">
                   <p class="font-head text-[13px] font-bold leading-tight">Individual Winners</p>
-                  <p class="text-[11px] text-muted mt-0.5">Podiums across every age group</p>
                 </div>
-                <span class="text-amber text-lg font-bold group-hover:translate-x-0.5 transition-transform">+</span>
+                <span class:list={['font-head text-[10px] font-bold tracking-[0.08em] uppercase whitespace-nowrap ml-3 group-hover:underline', accentText]}>→</span>
               </a>
             )}
           </div>

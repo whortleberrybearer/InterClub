@@ -31,23 +31,19 @@ const decadeGroups = [
 
 {decadeGroups.length > 0 && (
   <div class="card p-5">
-    <div class="font-head text-[10px] font-bold tracking-[0.16em] uppercase text-muted mb-1">The Archive</div>
-    <div class="font-head text-[20px] font-extrabold tracking-tight mb-2">Past seasons</div>
-    <p class="text-[12px] text-muted leading-relaxed mb-4 pb-4 border-b border-line">
-      Race lists, results and standings{oldestYear ? ` since ${oldestYear}` : ''}. Selecting a year opens its own archive page.
-    </p>
+    <p class="font-head text-[15px] font-bold tracking-[0.04em] uppercase mb-3">Past seasons</p>
     {decadeGroups.map((group, gi) => (
       <div class:list={[gi < decadeGroups.length - 1 && 'mb-4']}>
         <div class="font-mono text-[10px] tracking-[0.1em] uppercase text-muted mb-1.5">{group.label}</div>
-        <div class="grid grid-cols-4 gap-1">
+        <div class="grid grid-cols-5 gap-1">
           {group.years.map(y => (
             <a
               href={siteUrl(`/${series}/${y}/`)}
               class:list={[
                 'text-center py-1.5 font-mono text-[11px] rounded-md transition-colors no-underline',
                 y === activeYear
-                  ? 'bg-amber-bg text-amber font-bold'
-                  : 'text-content bg-canvas hover:text-amber',
+                  ? (series === 'fell' ? 'bg-teal-bg text-teal font-bold' : 'bg-amber-bg text-amber font-bold')
+                  : (series === 'fell' ? 'text-content bg-canvas hover:text-teal' : 'text-content bg-canvas hover:text-amber'),
               ]}
             >
               {String(y).slice(2)}
