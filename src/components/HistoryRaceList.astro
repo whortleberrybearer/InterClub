@@ -134,7 +134,7 @@ const pastYears = availableYears.filter(y => y !== currentYear);
       <div class="mb-6">
 
         <!-- Mobile: compact list -->
-        <div class="md:hidden">
+        <div class="sm:hidden">
           <h2 class="font-head text-[15px] font-bold tracking-[0.04em] uppercase mb-2">Team Awards</h2>
           <div class="bg-surface rounded-xl border border-line px-4">
             {awards.teamAwards.map(ta => (
@@ -160,7 +160,7 @@ const pastYears = availableYears.filter(y => y !== currentYear);
         </div>
 
         <!-- Desktop: vest gallery — each category headlined by its winning club's vest -->
-        <div class="hidden md:block bg-surface rounded-xl border border-line p-[22px]">
+        <div class="hidden sm:block bg-surface rounded-xl border border-line p-[22px]">
           <h2 class="font-head text-[15px] font-bold tracking-[0.04em] uppercase mb-3">
             Team Awards
           </h2>
@@ -213,7 +213,7 @@ const pastYears = availableYears.filter(y => y !== currentYear);
                   {cat.awards.map(a => (
                     <div class="flex items-center gap-2">
                       <span class:list={['inline-flex items-center justify-center w-[22px] h-[22px] rounded-full text-[11px] font-bold font-mono shrink-0', posBadgeClasses(a.position)]}>
-                        {a.position <= 3 ? a.position : ordinalLabel(a.position)}
+                        {a.position}
                       </span>
                       {a.vest ? (
                         <img src={siteUrl(`/images/vests/${a.vest.replace('.png', '-sm.png')}`)} alt="" class="h-9 w-[26px] object-contain shrink-0" />
@@ -238,25 +238,25 @@ const pastYears = availableYears.filter(y => y !== currentYear);
 
         {/* Male / Female aligned by age category */}
         {hasMF && (
-          <div class="grid grid-cols-2 gap-x-6">
+          <div class="sm:grid sm:grid-cols-2 sm:gap-x-6">
 
-            {/* Column headers */}
+            {/* Column headers — desktop only */}
             {awards!.maleAwards.length > 0 ? (
-              <div class:list={['pb-2 mb-3 border-b-2', accentText === 'text-teal' ? 'border-teal' : 'border-amber']}>
+              <div class:list={['hidden sm:block pb-2 mb-3 border-b-2', accentText === 'text-teal' ? 'border-teal' : 'border-amber']}>
                 <h3 class="font-head text-[16px] font-extrabold tracking-tight">Male</h3>
               </div>
-            ) : <div />}
+            ) : <div class="hidden sm:block" />}
             {awards!.femaleAwards.length > 0 ? (
-              <div class:list={['pb-2 mb-3 border-b-2', accentText === 'text-teal' ? 'border-teal' : 'border-amber']}>
+              <div class:list={['hidden sm:block pb-2 mb-3 border-b-2', accentText === 'text-teal' ? 'border-teal' : 'border-amber']}>
                 <h3 class="font-head text-[16px] font-extrabold tracking-tight">Female</h3>
               </div>
-            ) : <div />}
+            ) : <div class="hidden sm:block" />}
 
-            {/* One row per age category, male left / female right */}
+            {/* Each pair stacks on mobile, sits side-by-side on sm+ */}
             {pairedAwardRows.map(({ male, female }) => (
-              <>
+              <div class="flex flex-col gap-2 mb-2 sm:[display:contents]">
                 {male ? (
-                  <div class="rounded-lg border border-line py-2.5 px-3 mb-2">
+                  <div class="rounded-lg border border-line py-2.5 px-3 sm:mb-2">
                     <div class="mb-2">
                       <p class="font-head text-[11px] font-bold tracking-[0.04em] uppercase">{male.categoryName}</p>
                     </div>
@@ -264,7 +264,7 @@ const pastYears = availableYears.filter(y => y !== currentYear);
                       {male.awards.map(a => (
                         <div class="flex items-center gap-2">
                           <span class:list={['inline-flex items-center justify-center w-[22px] h-[22px] rounded-full text-[11px] font-bold font-mono shrink-0', posBadgeClasses(a.position)]}>
-                            {a.position <= 3 ? a.position : ordinalLabel(a.position)}
+                            {a.position}
                           </span>
                           {a.vest ? (
                             <img src={siteUrl(`/images/vests/${a.vest.replace('.png', '-sm.png')}`)} alt="" class="h-9 w-[26px] object-contain shrink-0" />
@@ -283,9 +283,9 @@ const pastYears = availableYears.filter(y => y !== currentYear);
                       ))}
                     </div>
                   </div>
-                ) : <div class="mb-2" />}
+                ) : <div class="hidden sm:block sm:mb-2" />}
                 {female ? (
-                  <div class="rounded-lg border border-line py-2.5 px-3 mb-2">
+                  <div class="rounded-lg border border-line py-2.5 px-3 sm:mb-2">
                     <div class="mb-2">
                       <p class="font-head text-[11px] font-bold tracking-[0.04em] uppercase">{female.categoryName}</p>
                     </div>
@@ -293,7 +293,7 @@ const pastYears = availableYears.filter(y => y !== currentYear);
                       {female.awards.map(a => (
                         <div class="flex items-center gap-2">
                           <span class:list={['inline-flex items-center justify-center w-[22px] h-[22px] rounded-full text-[11px] font-bold font-mono shrink-0', posBadgeClasses(a.position)]}>
-                            {a.position <= 3 ? a.position : ordinalLabel(a.position)}
+                            {a.position}
                           </span>
                           {a.vest ? (
                             <img src={siteUrl(`/images/vests/${a.vest.replace('.png', '-sm.png')}`)} alt="" class="h-9 w-[26px] object-contain shrink-0" />
@@ -312,8 +312,8 @@ const pastYears = availableYears.filter(y => y !== currentYear);
                       ))}
                     </div>
                   </div>
-                ) : <div class="mb-2" />}
-              </>
+                ) : <div class="hidden sm:block sm:mb-2" />}
+              </div>
             ))}
 
           </div>
