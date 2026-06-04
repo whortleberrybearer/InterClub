@@ -49,57 +49,64 @@ const scriptRaceData = showNextRace ? raceStates.map(({ race, past }) => ({
 })) : [];
 ---
 
-<div class:list={[showCard && 'card overflow-hidden']}>
-  <div class:list={['flex items-baseline justify-between py-3.5 border-b border-line', showCard ? 'px-4' : 'px-0']}>
-    <span class="font-head text-[14px] font-bold tracking-[0.05em] uppercase">Schedule</span>
+{races.length > 0 && (
+  <div class:list={[showCard && 'card overflow-hidden']}>
+    <div class:list={['flex items-baseline justify-between py-3.5 border-b border-line', showCard ? 'px-4' : 'px-0']}>
+      <span class="font-head text-[14px] font-bold tracking-[0.05em] uppercase">Schedule</span>
+    </div>
+    <table class="table table-fixed">
+      <colgroup>
+        <col class="hidden sm:table-column w-10" />
+        <col class="w-[100px]" />
+        <col />
+        <col class="w-[90px]" />
+      </colgroup>
+      <tbody>
+        {raceStates.map(({ race, past, provisional, isNext }, i) => (
+          <tr
+            data-schedule-row
+            data-race-id={race.id}
+            class:list={[
+              'border-b border-line last:border-0',
+              isNext && accentBg,
+              past && showNextRace && 'opacity-70',
+            ]}
+          >
+            <td class="hidden sm:table-cell py-3 px-3 text-center font-mono text-xs text-muted">{i + 1}</td>
+            <td class="py-3 pl-4 sm:pl-3 pr-3 whitespace-nowrap">
+              <div data-date class:list={['font-mono text-[12px]', isNext ? `${accentText} font-semibold` : 'text-muted']}>{formatRaceDate(race.date)}</div>
+              {showNextRace && race.time && (
+                <div data-time class:list={['font-mono text-[11px]', isNext ? (series === 'fell' ? 'text-teal/70' : 'text-amber/70') : 'text-muted/70']}>{race.time}</div>
+              )}
+            </td>
+            <td class="py-3 px-3 min-w-0">
+              <div data-name class:list={['text-[14px]', isNext ? 'font-semibold' : 'font-medium']}>{race.name}</div>
+              {race.location && (
+                <div class="text-[11px] text-muted mt-0.5 truncate">{race.location}</div>
+              )}
+            </td>
+            <td class="py-3 pl-3 pr-4 !text-right whitespace-nowrap">
+              {isNext ? (
+                <span data-badge class:list={['font-head text-[10px] font-bold tracking-[0.08em] uppercase text-white px-2 py-0.5 rounded', accentBadge]}>Next</span>
+              ) : past ? (
+                <a data-badge href={siteUrl(`/${series}/${year}/${race.id}/results`)} class:list={['font-head text-[10px] font-bold tracking-[0.08em] uppercase no-underline hover:underline whitespace-nowrap', accentText]}>Results →</a>
+              ) : (
+                <span data-badge></span>
+              )}
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
   </div>
-  <table class="table table-fixed">
-    <colgroup>
-      <col class="hidden sm:table-column w-10" />
-      <col class="w-[100px]" />
-      <col />
-      <col class="w-[90px]" />
-    </colgroup>
-    <tbody>
-      {raceStates.map(({ race, past, provisional, isNext }, i) => (
-        <tr
-          data-schedule-row
-          data-race-id={race.id}
-          class:list={[
-            'border-b border-line last:border-0',
-            isNext && accentBg,
-            past && showNextRace && 'opacity-70',
-          ]}
-        >
-          <td class="hidden sm:table-cell py-3 px-3 text-center font-mono text-xs text-muted">{i + 1}</td>
-          <td class="py-3 pl-4 sm:pl-3 pr-3 whitespace-nowrap">
-            <div data-date class:list={['font-mono text-[12px]', isNext ? `${accentText} font-semibold` : 'text-muted']}>{formatRaceDate(race.date)}</div>
-            {showNextRace && race.time && (
-              <div data-time class:list={['font-mono text-[11px]', isNext ? (series === 'fell' ? 'text-teal/70' : 'text-amber/70') : 'text-muted/70']}>{race.time}</div>
-            )}
-          </td>
-          <td class="py-3 px-3 min-w-0">
-            <div data-name class:list={['text-[14px]', isNext ? 'font-semibold' : 'font-medium']}>{race.name}</div>
-            {race.location && (
-              <div class="text-[11px] text-muted mt-0.5 truncate">{race.location}</div>
-            )}
-          </td>
-          <td class="py-3 pl-3 pr-4 !text-right whitespace-nowrap">
-            {isNext ? (
-              <span data-badge class:list={['font-head text-[10px] font-bold tracking-[0.08em] uppercase text-white px-2 py-0.5 rounded', accentBadge]}>Next</span>
-            ) : past ? (
-              <a data-badge href={siteUrl(`/${series}/${year}/${race.id}/results`)} class:list={['font-head text-[10px] font-bold tracking-[0.08em] uppercase no-underline hover:underline whitespace-nowrap', accentText]}>Results →</a>
-            ) : (
-              <span data-badge></span>
-            )}
-          </td>
-        </tr>
-      ))}
-    </tbody>
-  </table>
-</div>
+)}
 
-{note && <p class="text-muted text-sm italic mt-2">{note}</p>}
+{note && (
+  <div class="card p-4">
+    <p class="font-head text-[14px] font-bold tracking-[0.05em] uppercase mb-2">Season Note</p>
+    <p class="text-[13px] text-muted">{note}</p>
+  </div>
+)}
 
 {showNextRace && (
   <script define:vars={{ scriptRaceData, series }} is:inline>
