@@ -118,7 +118,7 @@ const pastYears = availableYears.filter(y => y !== currentYear);
 
     <!-- Schedule -->
     <div class="mb-6">
-      <ScheduleTable series={series} year={year} races={races} note={note} showCard={false} />
+      <ScheduleTable series={series} year={year} races={races} note={note} />
     </div>
 
     <!-- Team Awards — compact list (mobile) / vest gallery (md+) -->
@@ -128,9 +128,9 @@ const pastYears = availableYears.filter(y => y !== currentYear);
         <!-- Mobile: compact list -->
         <div class="md:hidden">
           <h2 class="font-head text-[15px] font-bold tracking-[0.04em] uppercase mb-2">Team Awards</h2>
-          <div>
+          <div class="bg-surface rounded-xl border border-line px-4">
             {awards.teamAwards.map(ta => (
-              <div class="flex items-center gap-3 py-2 border-b border-line last:border-b-0">
+              <div class="flex items-center gap-3 py-2.5 border-b border-line last:border-b-0">
                 <span class="font-head text-[11px] font-bold tracking-[0.06em] uppercase text-muted w-[80px] shrink-0">
                   {ta.categoryName}
                 </span>
@@ -196,7 +196,7 @@ const pastYears = availableYears.filter(y => y !== currentYear);
         {awards!.overallAwards.length > 0 && (
           <div class="flex flex-col gap-2 mb-3">
             {awards!.overallAwards.map(cat => (
-              <div>
+              <div class="rounded-lg border border-line py-2.5 px-3">
                 <p class="font-head text-[11px] font-bold tracking-[0.04em] uppercase text-muted mb-2.5">
                   {cat.categoryName}
                 </p>
@@ -233,7 +233,7 @@ const pastYears = availableYears.filter(y => y !== currentYear);
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
                 {/* Male card or empty placeholder */}
                 {male ? (
-                  <div>
+                  <div class="rounded-lg border border-line py-2.5 px-3">
                     <p class="font-head text-[11px] font-bold tracking-[0.04em] uppercase text-muted mb-2.5">
                       {male.categoryName}
                     </p>
@@ -264,7 +264,7 @@ const pastYears = availableYears.filter(y => y !== currentYear);
 
                 {/* Female card or empty placeholder */}
                 {female ? (
-                  <div>
+                  <div class="rounded-lg border border-line py-2.5 px-3">
                     <p class="font-head text-[11px] font-bold tracking-[0.04em] uppercase text-muted mb-2.5">
                       {female.categoryName}
                     </p>
