@@ -131,19 +131,18 @@ const scoringRules = [
     <!-- ── Main column ── -->
     <div>
 
+      <!-- About -->
+      <div class="card p-5 mb-5">
+        <div class="text-[13px] leading-relaxed">
+          <slot name="description" />
+        </div>
+      </div>
+
       <!-- Schedule -->
       <ScheduleTable series={series} year={year} races={races} showNextRace={true} />
 
       <!-- Info cards -->
       <div class="grid md:grid-cols-2 gap-5 mt-5">
-
-        <!-- About -->
-        <div class="card p-5 md:col-span-2">
-          <div class="font-head text-[13px] font-bold tracking-[0.05em] uppercase mb-3">About</div>
-          <div class="text-[13px] leading-relaxed">
-            <slot name="description" />
-          </div>
-        </div>
 
         <!-- Key Rules -->
         <div class="card p-5">
