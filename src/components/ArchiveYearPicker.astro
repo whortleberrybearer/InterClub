@@ -2,8 +2,11 @@
 // src/components/ArchiveYearPicker.astro
 //
 // Year navigation picker for archive headers.
-// Mobile: native <select> that triggers the OS picker on tap.
-// Desktop (sm+): custom <details> dropdown with decade-grouped year grid.
+//
+// Detection uses pointer/hover media queries rather than viewport width:
+//   - Touch devices (phones/tablets, any orientation): native <select> → OS picker
+//   - Mouse devices (desktops/laptops, any viewport): custom <details> dropdown
+//   - lg+ viewport: both hidden — the sidebar Past Seasons card handles navigation
 import type { Series } from '../lib/types';
 import { siteUrl } from '../lib/url';
 
@@ -11,9 +14,10 @@ interface Props {
   series: Series;
   years: number[];
   activeYear: number;
+  currentYear: number;
 }
 
-const { series, years, activeYear } = Astro.props;
+const { series, years, activeYear, currentYear } = Astro.props;
 
 const sorted = [...years].sort((a, b) => b - a);
 
@@ -25,34 +29,30 @@ const decadeGroups = [
   { label: '1985–89', years: sorted.filter(y => y < 1990) },
 ].filter(g => g.years.length > 0);
 
-const accentBtn = series === 'fell'
-  ? "inline-flex items-center px-3 py-1.5 rounded-md text-[11px] font-head font-bold tracking-[0.06em] uppercase text-teal bg-teal/10 border border-teal/40 transition-colors no-underline cursor-pointer"
-  : "inline-flex items-center px-3 py-1.5 rounded-md text-[11px] font-head font-bold tracking-[0.06em] uppercase text-amber bg-amber/10 border border-amber/40 transition-colors no-underline cursor-pointer";
+const selectClass = [
+  'yp-select appearance-none w-full px-3 py-1.5 rounded-md text-[11px] font-head font-bold tracking-[0.06em] uppercase border cursor-pointer focus:outline-none',
+  series === 'fell' ? 'text-teal bg-teal/10 border-teal/40' : 'text-amber bg-amber/10 border-amber/40',
+].join(' ');
+
+const summaryClass = [
+  'yp-summary inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-[11px] font-head font-bold tracking-[0.06em] uppercase border transition-colors no-underline cursor-pointer list-none select-none',
+  series === 'fell' ? 'text-teal bg-teal/10 border-teal/40' : 'text-amber bg-amber/10 border-amber/40',
+].join(' ');
 ---
 
-<!-- Mobile only: native select triggers OS year picker -->
-<div class="sm:hidden">
-  <select
-    class:list={[
-      'appearance-none w-full px-3 py-1.5 rounded-md text-[11px] font-head font-bold tracking-[0.06em] uppercase border cursor-pointer focus:outline-none',
-      series === 'fell'
-        ? 'text-teal bg-teal/10 border-teal/40'
-        : 'text-amber bg-amber/10 border-amber/40',
-    ]}
-    onchange="window.location.href = this.value"
-  >
+<!-- Touch devices: native select triggers OS year picker -->
+<div class="yp-touch">
+  <select class={selectClass} onchange="window.location.href = this.value">
     <option value="" disabled selected class="text-black bg-white">All Years</option>
     {sorted.map(y => (
-      <option value={siteUrl(`/${series}/${y}/`)} class="text-black bg-white">
-        {y}
-      </option>
+      <option value={y === currentYear ? siteUrl(`/${series}/`) : siteUrl(`/${series}/${y}/`)} class="text-black bg-white">{y}</option>
     ))}
   </select>
 </div>
 
-<!-- Tablet: custom dropdown (hidden on mobile and on lg+ where sidebar is present) -->
-<details class="hidden sm:block lg:hidden relative">
-  <summary class={`${accentBtn} list-none select-none gap-1.5`}>
+<!-- Mouse devices: custom dropdown -->
+<details class="yp-mouse relative">
+  <summary class={summaryClass}>
     All Years
     <svg class="w-3 h-3 opacity-60" viewBox="0 0 12 12" fill="none">
       <path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -65,7 +65,7 @@ const accentBtn = series === 'fell'
         <div class="grid grid-cols-5 gap-1">
           {group.years.map(y => (
             <a
-              href={siteUrl(`/${series}/${y}/`)}
+              href={y === currentYear ? siteUrl(`/${series}/`) : siteUrl(`/${series}/${y}/`)}
               class:list={[
                 'text-center py-1.5 font-mono text-[11px] rounded-md transition-colors no-underline',
                 y === activeYear
@@ -81,3 +81,25 @@ const accentBtn = series === 'fell'
     ))}
   </div>
 </details>
+
+<style>
+  /* Both hidden by default */
+  .yp-touch,
+  .yp-mouse { display: none; }
+
+  /* Touch-primary devices (phones, tablets — any orientation) */
+  @media (hover: none) and (pointer: coarse) {
+    .yp-touch { display: block; }
+  }
+
+  /* Mouse-primary devices (desktops, laptops — any viewport width) */
+  @media (hover: hover) and (pointer: fine) {
+    .yp-mouse { display: block; }
+  }
+
+  /* lg+ viewport: sidebar handles navigation — hide both */
+  @media (min-width: 1024px) {
+    .yp-touch,
+    .yp-mouse { display: none !important; }
+  }
+</style>
