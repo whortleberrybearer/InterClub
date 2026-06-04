@@ -113,7 +113,7 @@ const lastYear  = availableYears.length > 0 ? Math.max(...availableYears) : unde
           <div class="bg-surface rounded-xl border border-line px-4">
             <div class="py-3 border-b border-line flex items-baseline justify-between">
               <h2 class="font-head text-[15px] font-bold tracking-[0.04em] uppercase">Team Awards</h2>
-              {standingsUrl && <a href={standingsUrl} class:list={['btn btn-sm font-head text-[11px] font-bold tracking-[0.06em] uppercase', accentText === 'text-teal' ? 'border-teal text-teal hover:bg-teal/10' : 'border-amber text-amber hover:bg-amber-bg']}>Standings →</a>}
+              {standingsUrl && <a href={standingsUrl} class:list={['font-head text-[13px] font-bold tracking-[0.06em] uppercase no-underline', accentText === 'text-teal' ? 'text-teal' : 'text-amber']}>Standings →</a>}
             </div>
             {awards.teamAwards.map(ta => (
               <div class="flex items-center gap-3 py-2.5 border-b border-line last:border-b-0">
@@ -141,7 +141,7 @@ const lastYear  = availableYears.length > 0 ? Math.max(...availableYears) : unde
         <div class="hidden sm:block bg-surface rounded-xl border border-line p-[22px]">
           <div class="flex items-baseline justify-between mb-3">
             <h2 class="font-head text-[15px] font-bold tracking-[0.04em] uppercase">Team Awards</h2>
-            {standingsUrl && <a href={standingsUrl} class:list={['btn btn-sm font-head text-[11px] font-bold tracking-[0.06em] uppercase', accentText === 'text-teal' ? 'border-teal text-teal hover:bg-teal/10' : 'border-amber text-amber hover:bg-amber-bg']}>Standings →</a>}
+            {standingsUrl && <a href={standingsUrl} class:list={['font-head text-[13px] font-bold tracking-[0.06em] uppercase no-underline', accentText === 'text-teal' ? 'text-teal' : 'text-amber']}>Standings →</a>}
           </div>
           <div
             class="grid gap-2.5"
@@ -178,7 +178,7 @@ const lastYear  = availableYears.length > 0 ? Math.max(...availableYears) : unde
       <div class="bg-surface rounded-xl border border-line p-[22px] mb-6">
         <div class="flex items-baseline justify-between mb-4">
           <h2 class="font-head text-[15px] font-bold tracking-[0.04em] uppercase">Individual Awards</h2>
-          {individualStandingsUrl && <a href={individualStandingsUrl} class:list={['btn btn-sm font-head text-[11px] font-bold tracking-[0.06em] uppercase', accentText === 'text-teal' ? 'border-teal text-teal hover:bg-teal/10' : 'border-amber text-amber hover:bg-amber-bg']}>Standings →</a>}
+          {individualStandingsUrl && <a href={individualStandingsUrl} class:list={['font-head text-[13px] font-bold tracking-[0.06em] uppercase no-underline', accentText === 'text-teal' ? 'text-teal' : 'text-amber']}>Standings →</a>}
         </div>
 
         {/* Overall (non-sex) awards */}
@@ -320,7 +320,7 @@ const lastYear  = availableYears.length > 0 ? Math.max(...availableYears) : unde
                 <div class="min-w-0">
                   <p class="font-head text-[13px] font-bold leading-tight">Team Winners</p>
                 </div>
-                <span class:list={['font-head text-[10px] font-bold tracking-[0.08em] uppercase whitespace-nowrap ml-3 group-hover:underline', accentText]}>→</span>
+                <span class:list={['font-head text-[10px] font-bold tracking-[0.08em] uppercase whitespace-nowrap ml-3 ', accentText]}>→</span>
               </a>
             )}
             {historyIndividualsUrl && (
@@ -328,7 +328,7 @@ const lastYear  = availableYears.length > 0 ? Math.max(...availableYears) : unde
                 <div class="min-w-0">
                   <p class="font-head text-[13px] font-bold leading-tight">Individual Winners</p>
                 </div>
-                <span class:list={['font-head text-[10px] font-bold tracking-[0.08em] uppercase whitespace-nowrap ml-3 group-hover:underline', accentText]}>→</span>
+                <span class:list={['font-head text-[10px] font-bold tracking-[0.08em] uppercase whitespace-nowrap ml-3 ', accentText]}>→</span>
               </a>
             )}
           </div>

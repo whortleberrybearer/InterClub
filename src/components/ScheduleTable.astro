@@ -66,10 +66,12 @@ const scriptRaceData = showNextRace ? raceStates.map(({ race, past }) => ({
           <tr
             data-schedule-row
             data-race-id={race.id}
+            data-results-url={past ? siteUrl(`/${series}/${year}/${race.id}/results`) : undefined}
             class:list={[
-              'border-b border-line last:border-0',
+              'border-b border-line last:border-0 transition-colors',
               isNext && accentBg,
               past && showNextRace && 'opacity-70',
+              past && 'cursor-pointer hover:bg-line/30',
             ]}
           >
             <td class="hidden sm:table-cell py-3 px-3 text-center font-mono text-xs text-muted">{i + 1}</td>
@@ -89,7 +91,7 @@ const scriptRaceData = showNextRace ? raceStates.map(({ race, past }) => ({
               {isNext ? (
                 <span data-badge class:list={['font-head text-[10px] font-bold tracking-[0.08em] uppercase text-white px-2 py-0.5 rounded', accentBadge]}>Next</span>
               ) : past ? (
-                <a data-badge href={siteUrl(`/${series}/${year}/${race.id}/results`)} class:list={['font-head text-[10px] font-bold tracking-[0.08em] uppercase no-underline hover:underline whitespace-nowrap', accentText]}>Results →</a>
+                <a data-badge href={siteUrl(`/${series}/${year}/${race.id}/results`)} class:list={['font-head text-[10px] font-bold tracking-[0.08em] uppercase no-underline whitespace-nowrap', accentText]}>Results →</a>
               ) : (
                 <span data-badge></span>
               )}
@@ -107,6 +109,17 @@ const scriptRaceData = showNextRace ? raceStates.map(({ race, past }) => ({
     <p class="text-[13px] text-muted">{note}</p>
   </div>
 )}
+
+<script is:inline>
+(function () {
+  document.querySelectorAll('tr[data-results-url]').forEach(function (row) {
+    row.addEventListener('click', function (e) {
+      if (e.target.closest('a')) return; // let link handle its own click
+      window.location.href = row.dataset.resultsUrl;
+    });
+  });
+})();
+</script>
 
 {showNextRace && (
   <script define:vars={{ scriptRaceData, series }} is:inline>
