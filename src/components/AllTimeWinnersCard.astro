@@ -1,0 +1,32 @@
+---
+import { siteUrl } from '../lib/url';
+import type { Series } from '../lib/types';
+
+interface Props {
+  series: Series;
+}
+
+const { series } = Astro.props;
+const accentText = series === 'fell' ? 'text-teal' : 'text-amber';
+
+const historyTeamsUrl = siteUrl(`/${series}/history/teams`);
+const historyIndividualsUrl = siteUrl(`/${series}/history/individuals`);
+---
+
+<div class="bg-surface rounded-xl border border-line p-4">
+  <p class="font-head text-[15px] font-bold tracking-[0.04em] uppercase mb-3">All-time winners</p>
+  <div class="flex flex-col divide-y divide-line">
+    <a href={historyTeamsUrl} class="flex items-center justify-between py-3 group">
+      <div class="min-w-0">
+        <p class="font-head text-[13px] font-bold leading-tight">Team Winners</p>
+      </div>
+      <span class:list={['font-head text-[10px] font-bold tracking-[0.08em] uppercase whitespace-nowrap ml-3', accentText]}>→</span>
+    </a>
+    <a href={historyIndividualsUrl} class="flex items-center justify-between py-3 group">
+      <div class="min-w-0">
+        <p class="font-head text-[13px] font-bold leading-tight">Individual Winners</p>
+      </div>
+      <span class:list={['font-head text-[10px] font-bold tracking-[0.08em] uppercase whitespace-nowrap ml-3', accentText]}>→</span>
+    </a>
+  </div>
+</div>
