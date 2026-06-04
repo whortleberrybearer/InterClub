@@ -1,19 +1,12 @@
 ---
 import SeriesDetailLayout from '../../components/SeriesDetailLayout.astro';
 import { getCurrentYear, getAvailableYears, getRaces } from '../../lib/data';
-import { hasTeamStandings, hasIndividualStandings, getSeriesConfig } from '../../lib/results';
-import { siteUrl } from '../../lib/url';
+import { getSeriesConfig } from '../../lib/results';
 
 const currentYear = getCurrentYear();
 const availableYears = getAvailableYears('fell');
 const races = getRaces(currentYear, 'fell');
 const config = getSeriesConfig(currentYear, 'fell');
-const teamStandingsUrl = hasTeamStandings(currentYear, 'fell')
-  ? siteUrl(`/fell/${currentYear}/team-standings`)
-  : undefined;
-const individualStandingsUrl = hasIndividualStandings(currentYear, 'fell')
-  ? siteUrl(`/fell/${currentYear}/individual-standings`)
-  : undefined;
 ---
 
 <SeriesDetailLayout
@@ -24,8 +17,6 @@ const individualStandingsUrl = hasIndividualStandings(currentYear, 'fell')
   availableYears={availableYears}
   seriesTitle="Fell Championship"
   subtitle="4 races · March – September · Lancashire"
-  teamStandingsUrl={teamStandingsUrl}
-  individualStandingsUrl={individualStandingsUrl}
 >
   <p slot="description">
     The Inter Club Fell Championship is a series of four fell races held during the summer. Races
