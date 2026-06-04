@@ -2,6 +2,7 @@
 import Layout from './Layout.astro';
 import PageHeader from './PageHeader.astro';
 import ArchiveYearNav from './ArchiveYearNav.astro';
+import ArchiveYearPicker from './ArchiveYearPicker.astro';
 import AllTimeWinnersCard from './AllTimeWinnersCard.astro';
 import ScheduleTable from './ScheduleTable.astro';
 import { hasResults } from '../lib/results';
@@ -54,7 +55,16 @@ const scoringRules = [
     eyebrow={`${year} Season`}
     title={seriesTitle}
     subtitleParts={subtitleParts}
-  />
+  >
+    <ArchiveYearPicker
+      slot="actions"
+      series={series}
+      years={availableYears}
+      activeYear={year}
+      currentYear={year}
+      label="Previous Years"
+    />
+  </PageHeader>
 
   <!-- ════ MAIN ════ -->
 

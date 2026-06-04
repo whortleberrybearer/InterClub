@@ -22,6 +22,7 @@ export interface Props {
 
 const { eyebrow, title, subtitleParts = [], provisional = false } = Astro.props;
 const hasTabStrip = Astro.slots.has('default');
+const hasActions = Astro.slots.has('actions');
 ---
 
 <div class="bg-hdr-dark text-hdr-text">
@@ -33,14 +34,21 @@ const hasTabStrip = Astro.slots.has('default');
       </p>
     )}
 
-    <div class="flex items-center gap-2.5 flex-wrap mb-1">
-      <h1 class="font-head text-[28px] lg:text-[38px] font-extrabold tracking-tight leading-[1.1]">
-        {title}
-      </h1>
-      {provisional && (
-        <span class="font-head text-[10px] font-bold tracking-[0.08em] uppercase px-2 py-0.5 rounded-full" style="background: var(--color-amber-bg); color: var(--color-amber);">
-          Provisional
-        </span>
+    <div class="flex items-center justify-between gap-4 mb-1">
+      <div class="flex items-center gap-2.5 flex-wrap">
+        <h1 class="font-head text-[28px] lg:text-[38px] font-extrabold tracking-tight leading-[1.1]">
+          {title}
+        </h1>
+        {provisional && (
+          <span class="font-head text-[10px] font-bold tracking-[0.08em] uppercase px-2 py-0.5 rounded-full" style="background: var(--color-amber-bg); color: var(--color-amber);">
+            Provisional
+          </span>
+        )}
+      </div>
+      {hasActions && (
+        <div class="flex items-center gap-2 shrink-0">
+          <slot name="actions" />
+        </div>
       )}
     </div>
 
