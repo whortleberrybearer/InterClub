@@ -38,7 +38,7 @@ const hasTabStrip = Astro.slots.has('default');
         {title}
       </h1>
       {provisional && (
-        <span class="font-head text-[10px] font-bold tracking-[0.08em] uppercase bg-[oklch(88%_0.12_60)] text-[oklch(35%_0.12_60)] px-2 py-0.5 rounded-full">
+        <span class="font-head text-[10px] font-bold tracking-[0.08em] uppercase px-2 py-0.5 rounded-full" style="background: var(--color-amber-bg); color: var(--color-amber);">
           Provisional
         </span>
       )}
