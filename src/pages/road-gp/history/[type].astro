@@ -2,7 +2,7 @@
 import Layout from '../../../components/Layout.astro';
 import AwardsHistoryTeams from '../../../components/AwardsHistoryTeams.astro';
 import AwardsHistoryIndividuals from '../../../components/AwardsHistoryIndividuals.astro';
-import { getAllAwardsByYear, pivotIndividualAwardsByCategory, resolveIndividualCategoryName } from '../../../lib/results';
+import { getAllAwardsByYear, getAllSeriesConfigs, pivotIndividualAwardsByCategory, resolveIndividualCategoryName } from '../../../lib/results';
 import { buildRunnerUrlMap } from '../../../lib/runners';
 import type { TeamCategory } from '../../../lib/types';
 import type { CategoryHistoryData } from '../../../lib/results';
@@ -130,36 +130,32 @@ if (type === 'teams') {
     .filter(id => categoryMap.has(id))
     .map(id => ({ ...categoryMap.get(id)!, since: categorySince.get(id) ?? 0 }));
 
-  // Build year list descending, inserting suspended rows for gaps
-  const dataYears = allYearlyAwards.map(y => y.year).sort((a, b) => b - a);
+  // Suspended years come from config note field; data years from awards
+  const noteByYear = new Map(
+    getAllSeriesConfigs(series)
+      .filter(({ config }) => !!config.note)
+      .map(({ year, config }) => [year, config.note!])
+  );
+  const awardYearSet = new Set(allYearlyAwards.map(y => y.year));
+  const allYearsSorted = [...new Set([...awardYearSet, ...noteByYear.keys()])]
+    .sort((a, b) => b - a);
 
-  for (let i = 0; i < dataYears.length; i++) {
-    const year = dataYears[i];
-    const yearly = allYearlyAwards.find(y => y.year === year)!;
-
-    // Initialise all canonical categories to null, then populate via normalised IDs
-    const categoryWinners: Record<string, ClubInfo | null> = {};
-    allCategories.forEach(cat => { categoryWinners[cat.id] = null; });
-    yearly.awards.teamAwards.forEach(award => {
-      const id = normalizeId(award.id);
-      if (!(id in categoryWinners)) return;
-      const meta = clubMeta[award.club];
-      categoryWinners[id] = meta
-        ? { ...meta }
-        : { id: award.club, name: award.club, shortName: award.club.slice(0, 3).toUpperCase(), swatch: 'oklch(55% 0.08 250)', ink: '#fff' };
-    });
-
-    fullYearList.push({ year, categoryWinners });
-
-    // Detect gap to the next year and insert a suspended row
-    const nextYear = dataYears[i + 1];
-    if (nextYear !== undefined && year - nextYear > 1) {
-      const gapStart = nextYear + 1;
-      const gapEnd = year - 1;
-      const note = gapStart === gapEnd
-        ? `${gapStart} · Series not held`
-        : `${gapStart}–${gapEnd} · Series not held`;
-      fullYearList.push({ year: 0, suspended: note, categoryWinners: {} });
+  for (const year of allYearsSorted) {
+    if (awardYearSet.has(year)) {
+      const yearly = allYearlyAwards.find(y => y.year === year)!;
+      const categoryWinners: Record<string, ClubInfo | null> = {};
+      allCategories.forEach(cat => { categoryWinners[cat.id] = null; });
+      yearly.awards.teamAwards.forEach(award => {
+        const id = normalizeId(award.id);
+        if (!(id in categoryWinners)) return;
+        const meta = clubMeta[award.club];
+        categoryWinners[id] = meta
+          ? { ...meta }
+          : { id: award.club, name: award.club, shortName: award.club.slice(0, 3).toUpperCase(), swatch: 'oklch(55% 0.08 250)', ink: '#fff' };
+      });
+      fullYearList.push({ year, categoryWinners });
+    } else {
+      fullYearList.push({ year, suspended: noteByYear.get(year)!, categoryWinners: {} });
     }
   }
 }

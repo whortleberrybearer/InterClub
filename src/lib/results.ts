@@ -321,6 +321,17 @@ export function getSeriesConfig(year: number, series: Series): SeriesConfig {
   return files[`../data/${year}/${series}/config.json`]?.default ?? { ageCategories: [] };
 }
 
+export function getAllSeriesConfigs(series: Series): Array<{ year: number; config: SeriesConfig }> {
+  const files = series === 'road-gp' ? roadConfigFiles : fellConfigFiles;
+  return Object.entries(files)
+    .map(([path, mod]) => {
+      const match = path.match(/\/data\/(\d+)\//);
+      return match ? { year: parseInt(match[1], 10), config: mod.default } : null;
+    })
+    .filter((e): e is NonNullable<typeof e> => e !== null)
+    .sort((a, b) => a.year - b.year);
+}
+
 export function parseIndividualStandingsPath(path: string): { year: number } | null {
   const match = path.match(/\/data\/(\d+)\/[^/]+\/individual-standings\.json$/);
   if (!match) return null;
