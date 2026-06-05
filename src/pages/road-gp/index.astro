@@ -52,10 +52,20 @@ const config = getSeriesConfig(currentYear, 'road-gp');
     Race number must be worn; athletes without a number will be shown as Non-Counter in the results
   </li>
 
-  <p slot="individual-awards">
-    Individual standings are based on the lowest total positions from your best 4 of 7 races.
-    Awards are presented to the 1st, 2nd, and 3rd place finishers overall, and to the top 2 in
-    each veteran category. Awards are presented at the following season's buffet. Only one award
-    per athlete.
-  </p>
+  <li slot="individual-awards" class="relative pl-5 text-[13px] leading-relaxed mb-1.5">
+    <span class="absolute left-0 top-0.5 text-amber font-bold">·</span>
+    Standings based on lowest total positions from your best 4 of 7 races
+  </li>
+  <li slot="individual-awards" class="relative pl-5 text-[13px] leading-relaxed mb-1.5">
+    <span class="absolute left-0 top-0.5 text-amber font-bold">·</span>
+    Awards to 1st, 2nd, and 3rd overall, and to the top 2 in each veteran category
+  </li>
+  <li slot="individual-awards" class="relative pl-5 text-[13px] leading-relaxed mb-1.5">
+    <span class="absolute left-0 top-0.5 text-amber font-bold">·</span>
+    Presented at the following season's buffet
+  </li>
+  <li slot="individual-awards" class="relative pl-5 text-[13px] leading-relaxed">
+    <span class="absolute left-0 top-0.5 text-amber font-bold">·</span>
+    Only one award per athlete
+  </li>
 </SeriesDetailLayout>
