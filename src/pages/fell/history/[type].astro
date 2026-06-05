@@ -120,8 +120,7 @@ if (type === 'teams') {
 
   allCategories = CANONICAL_IDS
     .filter(id => categoryMap.has(id))
-    .map(id => ({ ...categoryMap.get(id)!, since: categorySince.get(id) ?? 0 }))
-    .sort((a, b) => a.since - b.since);
+    .map(id => ({ ...categoryMap.get(id)!, since: categorySince.get(id) ?? 0 }));
 
   const dataYears = allYearlyAwards.map(y => y.year).sort((a, b) => b - a);
 

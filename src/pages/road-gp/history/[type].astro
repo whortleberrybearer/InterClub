@@ -128,8 +128,7 @@ if (type === 'teams') {
   // Keep canonical order, sorted by introduction year
   allCategories = CANONICAL_IDS
     .filter(id => categoryMap.has(id))
-    .map(id => ({ ...categoryMap.get(id)!, since: categorySince.get(id) ?? 0 }))
-    .sort((a, b) => a.since - b.since);
+    .map(id => ({ ...categoryMap.get(id)!, since: categorySince.get(id) ?? 0 }));
 
   // Build year list descending, inserting suspended rows for gaps
   const dataYears = allYearlyAwards.map(y => y.year).sort((a, b) => b - a);
