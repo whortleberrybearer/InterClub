@@ -40,18 +40,23 @@ const raceStates = races.map(race => {
   const provisional = past && isResultsProvisional(year, series, race.id);
   const isNext = showNextRace && !past && !nextFound;
   if (isNext) nextFound = true;
+  const isExternal = !past && !showDetailLinks && !!race.detailsUrl;
   const rowUrl = past
     ? siteUrl(`/${series}/${year}/${race.id}/results`)
-    : (showDetailLinks ? siteUrl(`/${series}/${year}/${race.id}`) : undefined);
-  return { race, past, provisional, isNext, rowUrl };
+    : showDetailLinks
+    ? siteUrl(`/${series}/${year}/${race.id}`)
+    : (race.detailsUrl ?? undefined);
+  return { race, past, provisional, isNext, rowUrl, isExternal };
 });
 
 // Data passed to the client-side update script (only needed when showNextRace).
-const scriptRaceData = showNextRace ? raceStates.map(({ race, past }) => ({
+const scriptRaceData = showNextRace ? raceStates.map(({ race, past, rowUrl, isExternal }) => ({
   id: race.id,
   date: race.date,
   hasResults: past,
   resultsUrl: siteUrl(`/${series}/${year}/${race.id}/results`),
+  rowUrl,
+  isExternal,
 })) : [];
 ---
 
@@ -68,11 +73,12 @@ const scriptRaceData = showNextRace ? raceStates.map(({ race, past }) => ({
         <col class="w-[90px]" />
       </colgroup>
       <tbody>
-        {raceStates.map(({ race, past, provisional, isNext, rowUrl }, i) => (
+        {raceStates.map(({ race, past, provisional, isNext, rowUrl, isExternal }, i) => (
           <tr
             data-schedule-row
             data-race-id={race.id}
             data-results-url={rowUrl}
+            data-external={isExternal ? 'true' : undefined}
             class:list={[
               'border-b border-line last:border-0 transition-colors',
               isNext && accentBg,
@@ -98,8 +104,8 @@ const scriptRaceData = showNextRace ? raceStates.map(({ race, past }) => ({
                 <span data-badge class:list={['font-head text-[10px] font-bold tracking-[0.08em] uppercase text-white px-2 py-0.5 rounded', accentBadge]}>Next</span>
               ) : past ? (
                 <a data-badge href={siteUrl(`/${series}/${year}/${race.id}/results`)} class:list={['font-head text-[10px] font-bold tracking-[0.08em] uppercase no-underline whitespace-nowrap', accentText]}>Results →</a>
-              ) : showDetailLinks ? (
-                <a data-badge href={siteUrl(`/${series}/${year}/${race.id}`)} class="font-head text-[10px] font-bold tracking-[0.08em] uppercase no-underline whitespace-nowrap text-muted hover:text-content transition-colors">Details →</a>
+              ) : rowUrl ? (
+                <span data-badge class="text-[13px] text-muted shrink-0">→</span>
               ) : (
                 <span data-badge></span>
               )}
@@ -128,7 +134,11 @@ const scriptRaceData = showNextRace ? raceStates.map(({ race, past }) => ({
   document.querySelectorAll('tr[data-results-url]').forEach(function (row) {
     row.addEventListener('click', function (e) {
       if (e.target.closest('a')) return; // let link handle its own click
-      window.location.href = row.dataset.resultsUrl;
+      if (row.dataset.external === 'true') {
+        window.open(row.dataset.resultsUrl, '_blank', 'noopener,noreferrer');
+      } else {
+        window.location.href = row.dataset.resultsUrl;
+      }
     });
   });
 })();
@@ -199,8 +209,8 @@ const scriptRaceData = showNextRace ? raceStates.map(({ race, past }) => ({
           newBadge = '<span data-badge class="font-head text-[10px] font-bold tracking-[0.08em] uppercase text-white px-2 py-0.5 rounded ' + accentBadge + '">Next</span>';
         } else if (trulyPast && race.hasResults) {
           newBadge = '<a data-badge href="' + race.resultsUrl + '" class="font-head text-[10px] font-bold tracking-[0.08em] uppercase no-underline hover:underline whitespace-nowrap ' + accentText + '">Results →</a>';
-        } else if (!trulyPast) {
-          newBadge = '<span data-badge></span>';
+        } else if (!trulyPast && race.rowUrl) {
+          newBadge = '<span data-badge class="text-[13px] text-muted shrink-0">→</span>';
         } else {
           newBadge = '<span data-badge></span>';
         }
