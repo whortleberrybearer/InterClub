@@ -3,6 +3,7 @@ import Layout from '../../../components/Layout.astro';
 import AwardsHistoryTeams from '../../../components/AwardsHistoryTeams.astro';
 import AwardsHistoryIndividuals from '../../../components/AwardsHistoryIndividuals.astro';
 import { getAllAwardsByYear, getAllSeriesConfigs, pivotIndividualAwardsByCategory, resolveIndividualCategoryName } from '../../../lib/results';
+import { CLUB_COLORS } from '../../../lib/clubColors';
 import { buildRunnerUrlMap } from '../../../lib/runners';
 import type { TeamCategory } from '../../../lib/types';
 import type { CategoryHistoryData } from '../../../lib/results';
@@ -21,19 +22,13 @@ const allYearlyAwards = getAllAwardsByYear(series);
 
 const pageTitle = type === 'teams' ? 'Fell Championship Team Winners' : 'Fell Championship Individual Winners';
 
-// ── Club colour swatches ───────────────────────────────────────────────────
+// ── Club colour swatches — sourced from the canonical clubColors.ts ─────────
 const CLUB_SWATCHES: Record<string, { swatch: string; ink: string }> = {
-  'blackpool':       { swatch: 'oklch(62% 0.18 25)',  ink: '#fff' },
-  'blackpool-fylde': { swatch: 'oklch(62% 0.18 25)',  ink: '#fff' },
-  'chorley':         { swatch: 'oklch(48% 0.10 50)',  ink: '#fff' },
-  'chorley-ac':      { swatch: 'oklch(48% 0.10 50)',  ink: '#fff' },
-  'lytham':          { swatch: 'oklch(52% 0.16 290)', ink: '#fff' },
-  'north-fylde':     { swatch: 'oklch(58% 0.14 195)', ink: '#fff' },
-  'preston':         { swatch: 'oklch(72% 0.18 60)',  ink: '#3a2400' },
-  'red-rose':        { swatch: 'oklch(55% 0.18 350)', ink: '#fff' },
-  'springfields':    { swatch: 'oklch(58% 0.04 250)', ink: '#fff' },
-  'thornton':        { swatch: 'oklch(62% 0.15 240)', ink: '#fff' },
-  'wesham':          { swatch: 'oklch(60% 0.14 145)', ink: '#fff' },
+  ...Object.fromEntries(Object.entries(CLUB_COLORS).map(([id, color]) => [id, { swatch: color, ink: '#fff' }])),
+  'blackpool-fylde': { swatch: CLUB_COLORS['blackpool'] ?? '#e85d2c', ink: '#fff' },
+  'chorley-ac':      { swatch: CLUB_COLORS['chorley']   ?? '#6b7280', ink: '#fff' },
+  'north-fylde':     { swatch: '#2a7a7a', ink: '#fff' },
+  'springfields':    { swatch: '#6b7280', ink: '#fff' },
 };
 
 type ClubInfo = { id: string; name: string; shortName: string; swatch: string; ink: string };

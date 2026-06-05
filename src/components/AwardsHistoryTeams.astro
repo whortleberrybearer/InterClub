@@ -181,7 +181,7 @@ const seriesLabel = series === 'road-gp' ? 'Road Grand Prix' : 'Fell Championshi
     {allCategories.map((cat, i) => (
       <button
         data-cat-chip={cat.id}
-        class={`th-chip flex-shrink-0 font-head text-xs font-bold tracking-[0.06em] uppercase px-3.5 py-1.5 rounded-full border transition-colors whitespace-nowrap cursor-pointer ${i === 0 ? 'bg-amber border-amber text-white' : 'border-line text-muted'}`}
+        class={`th-chip flex-shrink-0 font-head text-xs font-bold tracking-[0.06em] uppercase px-3.5 py-1.5 rounded-full border transition-colors whitespace-nowrap cursor-pointer min-w-[4.5rem] text-center ${i === 0 ? 'bg-amber border-amber text-white' : 'border-line text-muted'}`}
       >{cat.name}</button>
     ))}
   </div>
@@ -337,7 +337,9 @@ const seriesLabel = series === 'road-gp' ? 'Road Grand Prix' : 'Fell Championshi
               </tr>
             ) : (
               <tr class="border-b border-line last:border-0">
-                <td class="py-2 px-4 font-mono font-medium text-sm border-r border-line whitespace-nowrap align-middle">{row.year}</td>
+                <td class="py-2 px-4 border-r border-line whitespace-nowrap align-middle">
+                  <a href={`${base}/${series}/${row.year}/`} class="font-mono font-medium text-sm hover:text-amber transition-colors">{row.year}</a>
+                </td>
                 {allCategories.map(cat => {
                   const winner = row.categoryWinners[cat.id];
                   const notYet = cat.since > 0 && row.year < cat.since;
