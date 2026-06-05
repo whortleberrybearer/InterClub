@@ -2,124 +2,906 @@
 import type { CategoryHistoryData } from '../lib/results';
 
 interface Props {
+  series: string;
   categories: CategoryHistoryData[];
 }
 
-const { categories } = Astro.props;
+const { series, categories } = Astro.props;
 
-const groups = [
-  { key: 'M',       label: 'Male',    cats: categories.filter(c => c.sex === 'M') },
-  { key: 'F',       label: 'Female',  cats: categories.filter(c => c.sex === 'F') },
-  { key: 'overall', label: 'Overall', cats: categories.filter(c => c.sex === null) },
-].filter(g => g.cats.length > 0);
+// ── Year range & stats ──────────────────────────────────────────────────
+const allRowYears = new Set<number>();
+for (const cat of categories) {
+  for (const row of cat.rows) allRowYears.add(row.year);
+}
+const sortedYears = [...allRowYears].sort((a, b) => a - b);
+const minYear = sortedYears[0] ?? 0;
+const maxYear = sortedYears[sortedYears.length - 1] ?? 0;
+const recordedSeasons = sortedYears.length;
+
+// ── Category sort order ─────────────────────────────────────────────────
+const CAT_ORDER = [
+  'm','f','m-jun','f-jun','m-sen','f-sen','f-v35',
+  'm-v40','f-v40','m-v45','f-v45','m-v50','f-v50',
+  'm-v55','f-v55','m-v60','f-v60','m-v65','f-v65',
+  'm-v70','f-v70','m-v75','f-v75','m-v80','m-v85',
+];
+const sortedCats = [...categories].sort((a, b) => {
+  const ai = CAT_ORDER.indexOf(a.id);
+  const bi = CAT_ORDER.indexOf(b.id);
+  return (ai === -1 ? 999 : ai) - (bi === -1 ? 999 : bi);
+});
+
+const mCats = sortedCats.filter(c => c.sex === 'M');
+const fCats = sortedCats.filter(c => c.sex === 'F');
+const hasM = mCats.length > 0;
+const hasF = fCats.length > 0;
+
+// ── Chip label (age label only, without sex) ────────────────────────────
+function chipLabel(cat: CategoryHistoryData): string {
+  const stripped = cat.name.replace(/^Male$|^Female$| Male$| Female$/, '');
+  return stripped || 'Overall';
+}
+
+// ── Hall of Fame per category ───────────────────────────────────────────
+interface HofEntry {
+  name: string;
+  clubName: string;
+  runnerUrl?: string;
+  gold: number;
+  silver: number;
+  bronze: number;
+}
+
+const hofByCat: Record<string, HofEntry[]> = {};
+for (const cat of categories) {
+  const tally: Record<string, HofEntry> = {};
+  for (const row of cat.rows) {
+    for (const pos of [1, 2, 3] as const) {
+      const entry = row.positions[pos];
+      if (!entry) continue;
+      if (!tally[entry.name]) {
+        tally[entry.name] = { name: entry.name, clubName: entry.clubName, runnerUrl: entry.runnerUrl, gold: 0, silver: 0, bronze: 0 };
+      } else if (entry.runnerUrl && !tally[entry.name].runnerUrl) {
+        tally[entry.name].runnerUrl = entry.runnerUrl;
+      }
+      if (pos === 1) tally[entry.name].gold++;
+      else if (pos === 2) tally[entry.name].silver++;
+      else tally[entry.name].bronze++;
+    }
+  }
+  hofByCat[cat.id] = Object.values(tally).sort((a, b) => {
+    if (b.gold !== a.gold) return b.gold - a.gold;
+    if (b.silver !== a.silver) return b.silver - a.silver;
+    if (b.bronze !== a.bronze) return b.bronze - a.bronze;
+    return a.name.localeCompare(b.name);
+  });
+}
+
+// ── Cross-category "The Greats" ─────────────────────────────────────────
+interface GreatsEntry extends HofEntry {
+  catLabels: string[];
+  total: number;
+}
+
+function buildGreats(cats: CategoryHistoryData[]): GreatsEntry[] {
+  const tally: Record<string, GreatsEntry> = {};
+  for (const cat of cats) {
+    for (const row of cat.rows) {
+      for (const pos of [1, 2, 3] as const) {
+        const entry = row.positions[pos];
+        if (!entry) continue;
+        if (!tally[entry.name]) {
+          tally[entry.name] = { name: entry.name, clubName: entry.clubName, runnerUrl: entry.runnerUrl, gold: 0, silver: 0, bronze: 0, catLabels: [], total: 0 };
+        } else if (entry.runnerUrl && !tally[entry.name].runnerUrl) {
+          tally[entry.name].runnerUrl = entry.runnerUrl;
+        }
+        if (pos === 1) {
+          tally[entry.name].gold++;
+          const lbl = chipLabel(cat);
+          if (!tally[entry.name].catLabels.includes(lbl)) tally[entry.name].catLabels.push(lbl);
+        } else if (pos === 2) tally[entry.name].silver++;
+        else tally[entry.name].bronze++;
+      }
+    }
+  }
+  return Object.values(tally)
+    .map(e => ({ ...e, total: e.gold + e.silver + e.bronze }))
+    .sort((a, b) => {
+      if (b.gold !== a.gold) return b.gold - a.gold;
+      if (b.total !== a.total) return b.total - a.total;
+      return a.name.localeCompare(b.name);
+    })
+    .slice(0, 12);
+}
+
+const greatsM = buildGreats(mCats);
+const greatsF = buildGreats(fCats);
+const greatsMaxTotal = Math.max(greatsM[0]?.total ?? 0, greatsF[0]?.total ?? 0, 1);
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const seriesLabel = series === 'road-gp' ? 'Road Grand Prix' : 'Fell Championship';
+
+// Medal colours (gold / silver / bronze)
+const MEDAL_BG = ['', 'oklch(82% 0.16 85)', 'oklch(82% 0.01 250)', 'oklch(64% 0.13 50)'];
+const MEDAL_FG = ['', '#3d2300', '#1f2733', '#ffffff'];
 ---
 
-{groups.length === 0 ? (
+<style>
+  .ih-panel { display: block; }
+  .ih-panel.is-hidden { display: none; }
+  .ih-greats-sex { display: block; }
+  .ih-greats-sex.is-hidden { display: none; }
+</style>
+
+<!-- ── Back link + Editorial header ─────────────────────────────────────── -->
+<div class="mb-2">
+  <a href={`${base}/${series}/`} class="inline-flex items-center gap-1 text-sm text-muted hover:text-content transition-colors font-mono mb-5">
+    ← {seriesLabel}
+  </a>
+
+  <div class="flex items-end justify-between gap-6 flex-wrap border-b border-line pb-6">
+    <div>
+      <div class="font-head text-[10px] font-bold tracking-[0.18em] uppercase text-amber mb-1.5">The Roll of Honour</div>
+      <h1 class="font-head font-black text-[clamp(2.5rem,6vw,5rem)] tracking-tight leading-none">Individual Winners</h1>
+      <div class="font-head font-black text-[clamp(2.5rem,6vw,5rem)] tracking-tight leading-none text-amber">{minYear}–{maxYear}</div>
+      <p class="text-sm text-muted mt-3 max-w-lg leading-relaxed hidden md:block">
+        First, second and third place in every individual category of the Inter Club {seriesLabel}.
+        Categories run only where awarded — earlier years often recorded team trophies but not individual podiums.
+      </p>
+    </div>
+    <div class="flex gap-6 pb-1 shrink-0">
+      <div>
+        <div class="font-mono text-3xl font-medium">{recordedSeasons}</div>
+        <div class="font-head text-[10px] font-bold tracking-[0.12em] uppercase text-muted mt-1">With data</div>
+      </div>
+      <div>
+        <div class="font-mono text-3xl font-medium">{categories.length}</div>
+        <div class="font-head text-[10px] font-bold tracking-[0.12em] uppercase text-muted mt-1">Categories</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── Tab bar ─────────────────────────────────────────────────────────── -->
+<div class="tabs tabs-border mb-6">
+  <a href={`${base}/${series}/history/teams`} class="tab font-head font-bold tracking-[0.06em] uppercase">
+    Team Winners
+  </a>
+  <a href={`${base}/${series}/history/individuals`} class="tab tab-active font-head font-bold tracking-[0.06em] uppercase">
+    Individual Winners
+  </a>
+</div>
+
+{categories.length === 0 ? (
   <p class="text-content/60">No individual awards recorded.</p>
 ) : (
-  <div>
-    <div role="tablist" class="tabs tabs-border mb-2">
-      {groups.map((group, i) => (
-        <button
-          role="tab"
-          class={`tab${i === 0 ? ' tab-active' : ''}`}
-          data-top-tab={group.key}
-        >
-          {group.label}
-        </button>
-      ))}
+  <>
+    <!-- ── Sex toggle + category chips (tablet / desktop) ─────────────── -->
+    <div class="hidden md:flex items-center gap-4 flex-wrap mb-5">
+      <!-- Sex toggle -->
+      <div class="inline-flex gap-1">
+        {hasM && (
+          <button
+            data-ih-sex="M"
+            class={`ih-sex-btn font-body text-sm font-medium px-3.5 py-1.5 rounded-full border cursor-pointer whitespace-nowrap transition-colors ${hasM ? 'border-amber bg-amber text-white' : 'border-line text-muted'}`}
+          >Men</button>
+        )}
+        {hasF && (
+          <button
+            data-ih-sex="F"
+            class={`ih-sex-btn font-body text-sm font-medium px-3.5 py-1.5 rounded-full border cursor-pointer whitespace-nowrap transition-colors ${!hasM ? 'border-amber bg-amber text-white' : 'border-line text-muted'}`}
+          >Women</button>
+        )}
+      </div>
+      <!-- Divider -->
+      {hasM && hasF && <span class="w-px h-6 bg-line shrink-0"></span>}
+      <!-- Category chips — M group -->
+      {hasM && (
+        <div data-ih-sex-chips="M" class={`ih-sex-chips-bar flex gap-1.5 flex-wrap ${hasM ? '' : 'hidden'}`}>
+          {mCats.map((cat, i) => (
+            <button
+              data-ih-chip={cat.id}
+              class={`ih-cat-chip font-head text-[11px] font-bold tracking-[0.06em] uppercase px-2.5 py-1.5 rounded-full border cursor-pointer whitespace-nowrap transition-colors ${i === 0 ? 'border-amber bg-amber text-white' : 'border-line text-muted hover:text-content'}`}
+            >{chipLabel(cat)}</button>
+          ))}
+        </div>
+      )}
+      <!-- Category chips — F group -->
+      {hasF && (
+        <div data-ih-sex-chips="F" class={`ih-sex-chips-bar flex gap-1.5 flex-wrap ${hasM ? 'hidden' : ''}`}>
+          {fCats.map((cat, i) => (
+            <button
+              data-ih-chip={cat.id}
+              class={`ih-cat-chip font-head text-[11px] font-bold tracking-[0.06em] uppercase px-2.5 py-1.5 rounded-full border cursor-pointer whitespace-nowrap transition-colors ${i === 0 && !hasM ? 'border-amber bg-amber text-white' : 'border-line text-muted hover:text-content'}`}
+            >{chipLabel(cat)}</button>
+          ))}
+        </div>
+      )}
     </div>
 
-    {groups.map((group, i) => (
-      <div data-top-panel={group.key} class={i > 0 ? 'hidden' : ''}>
-        {group.cats.length > 1 && (
-          <div role="tablist" class="tabs tabs-border mb-4">
-            {group.cats.map((cat, j) => (
-              <button
-                role="tab"
-                class={`tab${j === 0 ? ' tab-active' : ''}`}
-                data-sub-tab={cat.id}
-                data-group={group.key}
-              >
-                {cat.name}
-              </button>
-            ))}
+    <!-- ── Sex toggle + chips (mobile — full-bleed) ───────────────────── -->
+    <div class="md:hidden -mx-4 mb-2">
+      <div class="flex items-center gap-3 px-4 py-3 bg-surface border-b border-line">
+        <div class="inline-flex gap-1">
+          {hasM && (
+            <button
+              data-ih-sex="M"
+              class={`ih-sex-btn font-body text-sm font-medium px-3.5 py-1.5 rounded-full border cursor-pointer transition-colors ${hasM ? 'border-amber bg-amber text-white' : 'border-line text-muted'}`}
+            >Men</button>
+          )}
+          {hasF && (
+            <button
+              data-ih-sex="F"
+              class={`ih-sex-btn font-body text-sm font-medium px-3.5 py-1.5 rounded-full border cursor-pointer transition-colors ${!hasM ? 'border-amber bg-amber text-white' : 'border-line text-muted'}`}
+            >Women</button>
+          )}
+        </div>
+      </div>
+      <!-- Mobile chip bar — M -->
+      {hasM && (
+        <div data-ih-sex-chips="M" class={`ih-sex-chips-bar flex gap-1.5 overflow-x-auto scrollbar-hide px-4 py-2.5 bg-surface border-b border-line ${hasM ? '' : 'hidden'}`}>
+          {mCats.map((cat, i) => (
+            <button
+              data-ih-chip={cat.id}
+              class={`ih-cat-chip flex-shrink-0 font-head text-[12px] font-bold tracking-[0.06em] uppercase px-3.5 py-1.5 rounded-full border cursor-pointer whitespace-nowrap transition-colors ${i === 0 ? 'border-amber bg-amber text-white' : 'border-line text-muted'}`}
+            >{chipLabel(cat)}</button>
+          ))}
+        </div>
+      )}
+      <!-- Mobile chip bar — F -->
+      {hasF && (
+        <div data-ih-sex-chips="F" class={`ih-sex-chips-bar flex gap-1.5 overflow-x-auto scrollbar-hide px-4 py-2.5 bg-surface border-b border-line ${hasM ? 'hidden' : ''}`}>
+          {fCats.map((cat, i) => (
+            <button
+              data-ih-chip={cat.id}
+              class={`ih-cat-chip flex-shrink-0 font-head text-[12px] font-bold tracking-[0.06em] uppercase px-3.5 py-1.5 rounded-full border cursor-pointer whitespace-nowrap transition-colors ${i === 0 && !hasM ? 'border-amber bg-amber text-white' : 'border-line text-muted'}`}
+            >{chipLabel(cat)}</button>
+          ))}
+        </div>
+      )}
+    </div>
+
+    <!-- ── Category panels ─────────────────────────────────────────────── -->
+    {sortedCats.map((cat, globalIdx) => {
+      const isFirstVisible = globalIdx === 0;
+      const rows = [...cat.rows].sort((a, b) => b.year - a.year);
+      const populatedRows = rows.filter(r => r.positions[1] || r.positions[2] || r.positions[3]);
+      const hof = hofByCat[cat.id] ?? [];
+      const label = chipLabel(cat);
+      const sexLabel = cat.sex === 'M' ? 'Men' : 'Women';
+
+      return (
+        <div
+          data-ih-panel={cat.id}
+          data-ih-panel-sex={cat.sex ?? 'overall'}
+          class={`ih-panel${isFirstVisible ? '' : ' is-hidden'}`}
+        >
+          <!-- Desktop: two-column grid -->
+          <div class="lg:grid lg:grid-cols-[1fr_296px] lg:gap-6 lg:items-start">
+
+            <!-- ── Main column ───────────────────────────────────────── -->
+            <div>
+              <!-- Section header (tablet / desktop only) -->
+              <div class="hidden md:flex items-end justify-between mb-3 pb-2 border-b-2 border-content">
+                <div>
+                  <div class="font-head text-[10px] font-bold tracking-[0.14em] uppercase text-muted mb-0.5">
+                    {sexLabel} · {label}
+                  </div>
+                  <h2 class="font-head text-2xl font-black tracking-tight">The podium, year by year</h2>
+                </div>
+                <div class="font-mono text-xs text-muted pb-0.5 shrink-0 ml-4">
+                  {populatedRows.length} season{populatedRows.length !== 1 ? 's' : ''} recorded
+                </div>
+              </div>
+
+              <!-- Podium table (tablet / desktop) -->
+              <div class="hidden md:block">
+                <div class="bg-surface border border-line rounded-xl overflow-hidden">
+                  <div class="overflow-x-auto">
+                    <table class="w-full border-collapse" id={`ih-table-${cat.id}`}>
+                      <caption class="sr-only">{cat.name} award winners by year</caption>
+                      <thead>
+                        <tr class="bg-canvas">
+                          <th class="text-left py-3 pl-4 pr-3 font-head text-[10px] font-bold tracking-[0.12em] uppercase text-muted border-b-2 border-content w-16 whitespace-nowrap">Year</th>
+                          {[1, 2, 3].map(pos => (
+                            <th class="text-left py-3 px-3 font-head text-[10px] font-bold tracking-[0.12em] uppercase text-content border-b-2 border-content">
+                              <div class="flex items-center gap-1.5">
+                                <span
+                                  class="inline-flex items-center justify-center w-[18px] h-[18px] rounded-full font-mono text-[8px] font-bold shrink-0"
+                                  style={`background:${MEDAL_BG[pos]};color:${MEDAL_FG[pos]};box-shadow:inset 0 -1px 0 rgba(0,0,0,0.15)`}
+                                >{pos}</span>
+                                <span>{pos === 1 ? '1st place' : pos === 2 ? '2nd place' : '3rd place'}</span>
+                              </div>
+                            </th>
+                          ))}
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {rows.map(row => {
+                          const hasAny = row.positions[1] || row.positions[2] || row.positions[3];
+                          return (
+                            <tr class={`border-b border-line last:border-0${hasAny ? ' ih-hover-row' : ' opacity-40'}`}>
+                              <td class="py-2 pl-4 pr-3 font-mono text-sm font-medium border-r border-line whitespace-nowrap align-middle text-muted">
+                                {row.year}
+                              </td>
+                              {([1, 2, 3] as const).map(pos => {
+                                const entry = row.positions[pos];
+                                return (
+                                  <td
+                                    data-ih-name={entry?.name ?? ''}
+                                    class="py-2 px-3 align-middle transition-opacity duration-100"
+                                  >
+                                    {entry ? (
+                                      <div>
+                                        <div class="font-body text-[13px] font-semibold leading-tight text-content">
+                                          {entry.runnerUrl ? (
+                                            <a href={entry.runnerUrl} class="link link-hover hover:text-amber">{entry.name}</a>
+                                          ) : entry.name}
+                                        </div>
+                                        {entry.clubName && (
+                                          <div class="font-mono text-[10px] text-muted mt-0.5">{entry.clubName}</div>
+                                        )}
+                                      </div>
+                                    ) : (
+                                      <span class="font-mono text-xs" style="color:var(--color-line)">—</span>
+                                    )}
+                                  </td>
+                                );
+                              })}
+                            </tr>
+                          );
+                        })}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+                <p class="text-[11px] text-muted italic mt-2.5 leading-relaxed">
+                  Hover a name to highlight all their appearances · "—" means no podium place was awarded that year.
+                </p>
+              </div>
+
+              <!-- Tablet: Hall of Fame 2-col grid (md only, not lg) -->
+              {hof.length > 0 && (
+                <div class="hidden md:block lg:hidden mt-7">
+                  <div class="flex items-end justify-between mb-3 pb-2 border-b-2 border-content">
+                    <div>
+                      <div class="font-head text-[10px] font-bold tracking-[0.14em] uppercase text-muted">Hall of Fame</div>
+                      <h3 class="font-head text-xl font-black tracking-tight">Most decorated · {label}</h3>
+                    </div>
+                  </div>
+                  <div class="grid grid-cols-2 gap-2">
+                    {hof.slice(0, 8).map((w, wi) => (
+                      <div
+                        data-ih-hof-name={w.name}
+                        class="flex items-center gap-2.5 px-3 py-2.5 bg-surface border border-line rounded-lg cursor-default transition-opacity duration-100"
+                      >
+                        <span class="font-mono text-[11px] font-bold text-muted w-4 text-right shrink-0">{wi + 1}</span>
+                        <div class="flex-1 min-w-0">
+                          <div class="font-head text-[13px] font-bold tracking-tight truncate">
+                            {w.runnerUrl ? <a href={w.runnerUrl} class="link link-hover">{w.name}</a> : w.name}
+                          </div>
+                          {w.clubName && <div class="font-mono text-[9.5px] text-muted mt-0.5 truncate">{w.clubName}</div>}
+                        </div>
+                        <div class="flex gap-1 items-center shrink-0">
+                          {w.gold > 0 && (
+                            <span class="inline-flex items-center gap-0.5 font-mono text-[11px] font-semibold">
+                              <span class="inline-flex items-center justify-center w-3.5 h-3.5 rounded-full font-mono text-[7px] font-bold" style={`background:${MEDAL_BG[1]};color:${MEDAL_FG[1]}`}>1</span>
+                              {w.gold}
+                            </span>
+                          )}
+                          {w.silver > 0 && (
+                            <span class="inline-flex items-center gap-0.5 font-mono text-[11px] font-semibold">
+                              <span class="inline-flex items-center justify-center w-3.5 h-3.5 rounded-full font-mono text-[7px] font-bold" style={`background:${MEDAL_BG[2]};color:${MEDAL_FG[2]}`}>2</span>
+                              {w.silver}
+                            </span>
+                          )}
+                          {w.bronze > 0 && (
+                            <span class="inline-flex items-center gap-0.5 font-mono text-[11px] font-semibold">
+                              <span class="inline-flex items-center justify-center w-3.5 h-3.5 rounded-full font-mono text-[7px] font-bold" style={`background:${MEDAL_BG[3]};color:${MEDAL_FG[3]}`}>3</span>
+                              {w.bronze}
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              <!-- Mobile: Hall of Fame strip + year cards -->
+              <div class="md:hidden -mx-4 px-4 mt-4">
+                <!-- Mobile HoF strip -->
+                {hof.length > 0 && (
+                  <div class="mb-5">
+                    <div class="font-head text-[10px] font-bold tracking-[0.14em] uppercase text-muted mb-2">
+                      {sexLabel === 'Men' ? "Men's" : "Women's"} {label} · Hall of fame
+                    </div>
+                    <div class="flex flex-col gap-1.5">
+                      {hof.slice(0, 3).map((w, wi) => (
+                        <div class={`flex items-center gap-2.5 px-3 py-2 rounded-lg border ${wi === 0 ? 'bg-amber-bg border-amber' : 'bg-surface border-line'}`}>
+                          <span class="font-mono text-[10px] font-bold text-muted w-3.5 shrink-0">{wi + 1}</span>
+                          <div class="flex-1 min-w-0">
+                            <div class="font-head text-sm font-bold tracking-tight">
+                              {w.runnerUrl ? <a href={w.runnerUrl} class="link link-hover">{w.name}</a> : w.name}
+                            </div>
+                            {w.clubName && <div class="font-mono text-[9.5px] text-muted mt-0.5">{w.clubName}</div>}
+                          </div>
+                          <div class="flex gap-1 items-center shrink-0">
+                            {w.gold > 0 && (
+                              <span class="inline-flex items-center gap-0.5 font-mono text-[11px] font-semibold">
+                                <span class="inline-flex items-center justify-center w-4 h-4 rounded-full font-mono text-[7px] font-bold" style={`background:${MEDAL_BG[1]};color:${MEDAL_FG[1]}`}>1</span>
+                                {w.gold}
+                              </span>
+                            )}
+                            {w.silver > 0 && (
+                              <span class="inline-flex items-center gap-0.5 font-mono text-[11px] font-semibold">
+                                <span class="inline-flex items-center justify-center w-4 h-4 rounded-full font-mono text-[7px] font-bold" style={`background:${MEDAL_BG[2]};color:${MEDAL_FG[2]}`}>2</span>
+                                {w.silver}
+                              </span>
+                            )}
+                            {w.bronze > 0 && (
+                              <span class="inline-flex items-center gap-0.5 font-mono text-[11px] font-semibold">
+                                <span class="inline-flex items-center justify-center w-4 h-4 rounded-full font-mono text-[7px] font-bold" style={`background:${MEDAL_BG[3]};color:${MEDAL_FG[3]}`}>3</span>
+                                {w.bronze}
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                <!-- Year cards section header -->
+                <div class="font-head text-[10px] font-bold tracking-[0.14em] uppercase text-muted mb-2.5">
+                  Podium · by year
+                </div>
+
+                <!-- Year cards -->
+                <div class="flex flex-col gap-2.5 pb-4">
+                  {rows.map(row => {
+                    const hasAny = row.positions[1] || row.positions[2] || row.positions[3];
+                    if (!hasAny) return (
+                      <div class="flex items-center gap-3 px-3 py-2 opacity-40">
+                        <span class="font-mono text-xs font-medium text-muted w-9 shrink-0">{row.year}</span>
+                        <span class="font-mono text-[11px]" style="color:var(--color-line)">no record</span>
+                      </div>
+                    );
+                    return (
+                      <div class="bg-surface border border-line rounded-xl overflow-hidden">
+                        <div class="flex items-baseline justify-between px-3.5 py-2 border-b border-line bg-canvas">
+                          <span class="font-head text-lg font-black tracking-tight">{row.year}</span>
+                          <span class="font-head text-[9px] font-bold tracking-[0.14em] uppercase text-muted">
+                            {sexLabel} · {label}
+                          </span>
+                        </div>
+                        <div>
+                          {([1, 2, 3] as const).map(pos => {
+                            const entry = row.positions[pos];
+                            return (
+                              <div class={`flex items-center gap-3 px-3.5 py-2.5${pos < 3 ? ' border-b border-line' : ''}${!entry ? ' opacity-40' : ''}`}>
+                                <span
+                                  class="inline-flex items-center justify-center w-6 h-6 rounded-full font-mono text-[10px] font-bold shrink-0"
+                                  style={`background:${MEDAL_BG[pos]};color:${MEDAL_FG[pos]};box-shadow:inset 0 -1px 0 rgba(0,0,0,0.15)`}
+                                >{pos}</span>
+                                <div class="flex-1 min-w-0">
+                                  {entry ? (
+                                    <>
+                                      <div class="font-head text-[15px] font-bold tracking-tight leading-tight">
+                                        {entry.runnerUrl ? (
+                                          <a href={entry.runnerUrl} class="link link-hover">{entry.name}</a>
+                                        ) : entry.name}
+                                      </div>
+                                      {entry.clubName && (
+                                        <div class="font-mono text-[10px] text-muted mt-0.5">{entry.clubName}</div>
+                                      )}
+                                    </>
+                                  ) : (
+                                    <span class="font-mono text-[11px]" style="color:var(--color-line)">not awarded</span>
+                                  )}
+                                </div>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+
+            <!-- ── Desktop sidebar ───────────────────────────────────── -->
+            <aside class="hidden lg:block lg:sticky lg:top-6 mt-0">
+              <!-- HoF card -->
+              {hof.length > 0 ? (
+                <div class="bg-surface border border-line rounded-xl p-5 mb-4">
+                  <div class="font-head text-[10px] font-bold tracking-[0.16em] uppercase text-muted">The Hall of Fame</div>
+                  <h3 class="font-head text-xl font-black tracking-tight mt-0.5 mb-4">
+                    {label} · {sexLabel === 'Men' ? "men's" : "women's"}
+                  </h3>
+                  <div>
+                    {hof.slice(0, 10).map((w, wi, arr) => (
+                      <div
+                        data-ih-hof-name={w.name}
+                        class={`flex items-center gap-3 py-2.5 cursor-default transition-opacity duration-100${wi < arr.length - 1 ? ' border-b border-line' : ''}`}
+                      >
+                        <span class="font-mono text-[10px] font-bold text-muted w-3.5 text-right shrink-0">{wi + 1}</span>
+                        <div class="flex-1 min-w-0">
+                          <div class="font-head text-sm font-bold tracking-tight truncate">
+                            {w.runnerUrl ? <a href={w.runnerUrl} class="link link-hover">{w.name}</a> : w.name}
+                          </div>
+                          {w.clubName && (
+                            <div class="font-mono text-[9.5px] text-muted mt-0.5 truncate">{w.clubName}</div>
+                          )}
+                        </div>
+                        <div class="text-right shrink-0">
+                          <div class="flex gap-1 items-center justify-end">
+                            {w.gold > 0 && (
+                              <span class="inline-flex items-center gap-0.5 font-mono text-[11px] font-semibold">
+                                <span class="inline-flex items-center justify-center w-3.5 h-3.5 rounded-full font-mono text-[7px] font-bold" style={`background:${MEDAL_BG[1]};color:${MEDAL_FG[1]}`}>1</span>
+                                {w.gold}
+                              </span>
+                            )}
+                            {w.silver > 0 && (
+                              <span class="inline-flex items-center gap-0.5 font-mono text-[11px] font-semibold">
+                                <span class="inline-flex items-center justify-center w-3.5 h-3.5 rounded-full font-mono text-[7px] font-bold" style={`background:${MEDAL_BG[2]};color:${MEDAL_FG[2]}`}>2</span>
+                                {w.silver}
+                              </span>
+                            )}
+                            {w.bronze > 0 && (
+                              <span class="inline-flex items-center gap-0.5 font-mono text-[11px] font-semibold">
+                                <span class="inline-flex items-center justify-center w-3.5 h-3.5 rounded-full font-mono text-[7px] font-bold" style={`background:${MEDAL_BG[3]};color:${MEDAL_FG[3]}`}>3</span>
+                                {w.bronze}
+                              </span>
+                            )}
+                          </div>
+                          <div class="font-mono text-[10px] text-muted mt-0.5">
+                            {w.gold + w.silver + w.bronze} podium{w.gold + w.silver + w.bronze !== 1 ? 's' : ''}
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ) : (
+                <div class="bg-surface border border-line rounded-xl p-5 mb-4">
+                  <div class="font-head text-[10px] font-bold tracking-[0.16em] uppercase text-muted">The Hall of Fame</div>
+                  <h3 class="font-head text-xl font-black tracking-tight mt-0.5 mb-3">{label} · {sexLabel === 'Men' ? "men's" : "women's"}</h3>
+                  <p class="text-sm text-muted italic">No data recorded for this category.</p>
+                </div>
+              )}
+
+              <!-- Category navigation -->
+              <div class="bg-surface border border-line rounded-xl p-5">
+                <div class="font-head text-[10px] font-bold tracking-[0.16em] uppercase text-muted mb-3">
+                  Browse · {sexLabel === 'Men' ? "men's" : "women's"} categories
+                </div>
+                <div class="flex flex-col gap-0.5">
+                  {(cat.sex === 'M' ? mCats : fCats).map(navCat => {
+                    const isActive = navCat.id === cat.id;
+                    const seasons = (hofByCat[navCat.id] ?? []).length > 0
+                      ? [...navCat.rows].filter(r => r.positions[1] || r.positions[2] || r.positions[3]).length
+                      : 0;
+                    return (
+                      <button
+                        data-ih-chip={navCat.id}
+                        data-ih-nav="true"
+                        class={`flex items-center justify-between px-2 py-1.5 rounded text-left w-full cursor-pointer border-0 text-sm font-medium transition-colors ${isActive ? 'bg-amber-bg text-amber font-bold' : 'bg-transparent text-content hover:bg-canvas'}`}
+                      >
+                        <span>{chipLabel(navCat)}</span>
+                        {seasons > 0 && (
+                          <span class="font-mono text-[10px] text-muted">
+                            {seasons} <span class="opacity-50">seasons</span>
+                          </span>
+                        )}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            </aside>
+
+          </div>
+        </div>
+      );
+    })}
+
+    <!-- ── "The Greats" — cross-category leaderboard (desktop only) ─── -->
+    {(greatsM.length > 0 || greatsF.length > 0) && (
+      <div class="hidden lg:block mt-10">
+        <div class="flex items-end justify-between mb-3 pb-2 border-b-2 border-content">
+          <div>
+            <div class="font-head text-[10px] font-bold tracking-[0.14em] uppercase text-muted mb-0.5">The Greats</div>
+            <h2 class="font-head text-2xl font-black tracking-tight">
+              Most decorated, all categories
+            </h2>
+          </div>
+          <div class="font-mono text-xs text-muted pb-0.5">Aggregated across every age group</div>
+        </div>
+
+        {/* Men's greats */}
+        {greatsM.length > 0 && (
+          <div class="ih-greats-sex" data-ih-greats-sex="M">
+            <div class="bg-surface border border-line rounded-xl overflow-hidden">
+              <table class="w-full border-collapse">
+                <caption class="sr-only">Most decorated men, all categories</caption>
+                <thead>
+                  <tr class="bg-canvas">
+                    <th class="text-left py-3 pl-4 pr-2 font-head text-[10px] font-bold tracking-[0.12em] uppercase text-muted border-b-2 border-content w-10">#</th>
+                    <th class="text-left py-3 px-2 font-head text-[10px] font-bold tracking-[0.12em] uppercase text-content border-b-2 border-content">Runner</th>
+                    <th class="text-left py-3 px-2 font-head text-[10px] font-bold tracking-[0.12em] uppercase text-content border-b-2 border-content">Categories</th>
+                    <th class="text-center py-3 px-2 font-head text-[10px] font-bold tracking-[0.12em] uppercase text-content border-b-2 border-content w-16">Gold</th>
+                    <th class="text-center py-3 px-2 font-head text-[10px] font-bold tracking-[0.12em] uppercase text-content border-b-2 border-content w-16">Silver</th>
+                    <th class="text-center py-3 px-2 font-head text-[10px] font-bold tracking-[0.12em] uppercase text-content border-b-2 border-content w-16">Bronze</th>
+                    <th class="text-right py-3 pr-4 pl-2 font-head text-[10px] font-bold tracking-[0.12em] uppercase text-content border-b-2 border-content w-20">Total</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {greatsM.map((w, i) => (
+                    <tr class="border-b border-line last:border-0">
+                      <td class="py-3 pl-4 pr-2 font-mono text-sm font-medium text-muted align-middle">{i + 1}</td>
+                      <td class="py-3 px-2 align-middle">
+                        <div class="font-head text-[14px] font-bold tracking-tight">
+                          {w.runnerUrl ? <a href={w.runnerUrl} class="link link-hover">{w.name}</a> : w.name}
+                        </div>
+                        {w.clubName && <div class="font-mono text-[10px] text-muted mt-0.5">{w.clubName}</div>}
+                      </td>
+                      <td class="py-3 px-2 align-middle">
+                        <div class="flex gap-1 flex-wrap">
+                          {w.catLabels.slice(0, 4).map(lbl => (
+                            <span class="font-mono text-[9px] font-semibold text-muted bg-canvas px-1.5 py-0.5 rounded border border-line whitespace-nowrap">{lbl}</span>
+                          ))}
+                          {w.catLabels.length > 4 && (
+                            <span class="font-mono text-[9px] text-muted">+{w.catLabels.length - 4}</span>
+                          )}
+                        </div>
+                      </td>
+                      <td class="py-3 px-2 text-center align-middle">
+                        {w.gold > 0 ? (
+                          <span class="inline-flex items-center justify-center gap-1 font-mono text-sm font-semibold">
+                            <span class="inline-flex items-center justify-center w-4 h-4 rounded-full font-mono text-[7px] font-bold" style={`background:${MEDAL_BG[1]};color:${MEDAL_FG[1]}`}>1</span>
+                            {w.gold}
+                          </span>
+                        ) : <span class="font-mono text-xs" style="color:var(--color-line)">—</span>}
+                      </td>
+                      <td class="py-3 px-2 text-center align-middle">
+                        {w.silver > 0 ? (
+                          <span class="inline-flex items-center justify-center gap-1 font-mono text-sm font-semibold">
+                            <span class="inline-flex items-center justify-center w-4 h-4 rounded-full font-mono text-[7px] font-bold" style={`background:${MEDAL_BG[2]};color:${MEDAL_FG[2]}`}>2</span>
+                            {w.silver}
+                          </span>
+                        ) : <span class="font-mono text-xs" style="color:var(--color-line)">—</span>}
+                      </td>
+                      <td class="py-3 px-2 text-center align-middle">
+                        {w.bronze > 0 ? (
+                          <span class="inline-flex items-center justify-center gap-1 font-mono text-sm font-semibold">
+                            <span class="inline-flex items-center justify-center w-4 h-4 rounded-full font-mono text-[7px] font-bold" style={`background:${MEDAL_BG[3]};color:${MEDAL_FG[3]}`}>3</span>
+                            {w.bronze}
+                          </span>
+                        ) : <span class="font-mono text-xs" style="color:var(--color-line)">—</span>}
+                      </td>
+                      <td class="py-3 pr-4 pl-2 text-right align-middle">
+                        <div class="font-mono text-lg font-medium leading-none">{w.total}</div>
+                        <div class="w-14 h-0.5 bg-line rounded-full overflow-hidden ml-auto mt-1.5">
+                          <div class="h-full bg-amber rounded-full" style={`width:${(w.total / greatsMaxTotal) * 100}%`}></div>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
         )}
 
-        {group.cats.map((cat, j) => (
-          <div
-            data-sub-panel={cat.id}
-            data-group={group.key}
-            class={j > 0 ? 'hidden' : ''}
-          >
-            {cat.rows.length === 0 ? (
-              <p class="text-content/60">No awards recorded.</p>
-            ) : (
-              <div class="overflow-x-auto">
-                <table class="table table-sm w-full">
-                  <caption class="sr-only">{cat.name} award winners by year</caption>
-                  <thead>
-                    <tr>
-                      <th scope="col">Year</th>
-                      <th scope="col">1st</th>
-                      <th scope="col">2nd</th>
-                      <th scope="col">3rd</th>
+        {/* Women's greats */}
+        {greatsF.length > 0 && (
+          <div class={`ih-greats-sex${hasM ? ' is-hidden' : ''}`} data-ih-greats-sex="F">
+            <div class="bg-surface border border-line rounded-xl overflow-hidden">
+              <table class="w-full border-collapse">
+                <caption class="sr-only">Most decorated women, all categories</caption>
+                <thead>
+                  <tr class="bg-canvas">
+                    <th class="text-left py-3 pl-4 pr-2 font-head text-[10px] font-bold tracking-[0.12em] uppercase text-muted border-b-2 border-content w-10">#</th>
+                    <th class="text-left py-3 px-2 font-head text-[10px] font-bold tracking-[0.12em] uppercase text-content border-b-2 border-content">Runner</th>
+                    <th class="text-left py-3 px-2 font-head text-[10px] font-bold tracking-[0.12em] uppercase text-content border-b-2 border-content">Categories</th>
+                    <th class="text-center py-3 px-2 font-head text-[10px] font-bold tracking-[0.12em] uppercase text-content border-b-2 border-content w-16">Gold</th>
+                    <th class="text-center py-3 px-2 font-head text-[10px] font-bold tracking-[0.12em] uppercase text-content border-b-2 border-content w-16">Silver</th>
+                    <th class="text-center py-3 px-2 font-head text-[10px] font-bold tracking-[0.12em] uppercase text-content border-b-2 border-content w-16">Bronze</th>
+                    <th class="text-right py-3 pr-4 pl-2 font-head text-[10px] font-bold tracking-[0.12em] uppercase text-content border-b-2 border-content w-20">Total</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {greatsF.map((w, i) => (
+                    <tr class="border-b border-line last:border-0">
+                      <td class="py-3 pl-4 pr-2 font-mono text-sm font-medium text-muted align-middle">{i + 1}</td>
+                      <td class="py-3 px-2 align-middle">
+                        <div class="font-head text-[14px] font-bold tracking-tight">
+                          {w.runnerUrl ? <a href={w.runnerUrl} class="link link-hover">{w.name}</a> : w.name}
+                        </div>
+                        {w.clubName && <div class="font-mono text-[10px] text-muted mt-0.5">{w.clubName}</div>}
+                      </td>
+                      <td class="py-3 px-2 align-middle">
+                        <div class="flex gap-1 flex-wrap">
+                          {w.catLabels.slice(0, 4).map(lbl => (
+                            <span class="font-mono text-[9px] font-semibold text-muted bg-canvas px-1.5 py-0.5 rounded border border-line whitespace-nowrap">{lbl}</span>
+                          ))}
+                          {w.catLabels.length > 4 && (
+                            <span class="font-mono text-[9px] text-muted">+{w.catLabels.length - 4}</span>
+                          )}
+                        </div>
+                      </td>
+                      <td class="py-3 px-2 text-center align-middle">
+                        {w.gold > 0 ? (
+                          <span class="inline-flex items-center justify-center gap-1 font-mono text-sm font-semibold">
+                            <span class="inline-flex items-center justify-center w-4 h-4 rounded-full font-mono text-[7px] font-bold" style={`background:${MEDAL_BG[1]};color:${MEDAL_FG[1]}`}>1</span>
+                            {w.gold}
+                          </span>
+                        ) : <span class="font-mono text-xs" style="color:var(--color-line)">—</span>}
+                      </td>
+                      <td class="py-3 px-2 text-center align-middle">
+                        {w.silver > 0 ? (
+                          <span class="inline-flex items-center justify-center gap-1 font-mono text-sm font-semibold">
+                            <span class="inline-flex items-center justify-center w-4 h-4 rounded-full font-mono text-[7px] font-bold" style={`background:${MEDAL_BG[2]};color:${MEDAL_FG[2]}`}>2</span>
+                            {w.silver}
+                          </span>
+                        ) : <span class="font-mono text-xs" style="color:var(--color-line)">—</span>}
+                      </td>
+                      <td class="py-3 px-2 text-center align-middle">
+                        {w.bronze > 0 ? (
+                          <span class="inline-flex items-center justify-center gap-1 font-mono text-sm font-semibold">
+                            <span class="inline-flex items-center justify-center w-4 h-4 rounded-full font-mono text-[7px] font-bold" style={`background:${MEDAL_BG[3]};color:${MEDAL_FG[3]}`}>3</span>
+                            {w.bronze}
+                          </span>
+                        ) : <span class="font-mono text-xs" style="color:var(--color-line)">—</span>}
+                      </td>
+                      <td class="py-3 pr-4 pl-2 text-right align-middle">
+                        <div class="font-mono text-lg font-medium leading-none">{w.total}</div>
+                        <div class="w-14 h-0.5 bg-line rounded-full overflow-hidden ml-auto mt-1.5">
+                          <div class="h-full bg-amber rounded-full" style={`width:${(w.total / greatsMaxTotal) * 100}%`}></div>
+                        </div>
+                      </td>
                     </tr>
-                  </thead>
-                  <tbody>
-                    {cat.rows.map(row => (
-                      <tr class="hover">
-                        <td class="font-semibold">{row.year}</td>
-                        {([1, 2, 3] as const).map(pos => {
-                          const entry = row.positions[pos];
-                          return (
-                            <td class="text-sm">
-                              {entry ? (
-                                <span>
-                                  {entry.runnerUrl ? (
-                                    <a href={entry.runnerUrl} class="link link-hover font-medium">{entry.name}</a>
-                                  ) : (
-                                    <span class="font-medium">{entry.name}</span>
-                                  )}
-                                  <span class="text-content/50 ml-1">({entry.clubName})</span>
-                                </span>
-                              ) : <span>—</span>}
-                            </td>
-                          );
-                        })}
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            )}
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
-        ))}
+        )}
       </div>
-    ))}
-  </div>
+    )}
+  </>
 )}
 
 <script>
-  document.querySelectorAll<HTMLButtonElement>('[data-top-tab]').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const key = btn.dataset.topTab!;
-      document.querySelectorAll('[data-top-tab]').forEach(t => t.classList.remove('tab-active'));
-      btn.classList.add('tab-active');
-      document.querySelectorAll('[data-top-panel]').forEach(p => p.classList.add('hidden'));
-      document.querySelector(`[data-top-panel="${key}"]`)?.classList.remove('hidden');
+  // ── Sex toggle ──────────────────────────────────────────────────────
+  const sexBtns = document.querySelectorAll<HTMLElement>('[data-ih-sex]');
+  const chipBars = document.querySelectorAll<HTMLElement>('[data-ih-sex-chips]');
+  const panels = document.querySelectorAll<HTMLElement>('[data-ih-panel]');
+  const greatsSex = document.querySelectorAll<HTMLElement>('[data-ih-greats-sex]');
+
+  function selectSex(sex: string) {
+    // Update sex button styles
+    sexBtns.forEach(btn => {
+      const active = btn.dataset.ihSex === sex;
+      btn.classList.toggle('bg-amber',   active);
+      btn.classList.toggle('border-amber', active);
+      btn.classList.toggle('text-white', active);
+      btn.classList.toggle('border-line', !active);
+      btn.classList.toggle('text-muted', !active);
     });
+
+    // Toggle chip bars
+    chipBars.forEach(bar => {
+      bar.classList.toggle('hidden', bar.dataset.ihSexChips !== sex);
+    });
+
+    // Show first visible panel for this sex, hide others
+    let firstShown = false;
+    panels.forEach(panel => {
+      const panelSex = panel.dataset.ihPanelSex;
+      if (panelSex === sex) {
+        if (!firstShown) {
+          panel.classList.remove('is-hidden');
+          firstShown = true;
+        } else {
+          panel.classList.add('is-hidden');
+        }
+      } else {
+        panel.classList.add('is-hidden');
+      }
+    });
+
+    // Reset chip active states for new sex
+    document.querySelectorAll<HTMLElement>('[data-ih-chip]').forEach(chip => {
+      chip.classList.remove(
+        'bg-amber', 'border-amber', 'text-white',
+        'bg-amber-bg', 'text-amber', 'font-bold',
+      );
+      chip.classList.add('border-line', 'text-muted');
+    });
+
+    // Find first chip in active sex bar and mark it active
+    const activeBar = document.querySelector<HTMLElement>(`[data-ih-sex-chips="${sex}"]`);
+    if (activeBar) {
+      const firstChip = activeBar.querySelector<HTMLElement>('[data-ih-chip]');
+      if (firstChip) setChipActive(firstChip);
+    }
+
+    // Toggle greats sections
+    greatsSex.forEach(g => {
+      g.classList.toggle('is-hidden', g.dataset.ihGreatsSex !== sex);
+    });
+  }
+
+  // ── Category chip / nav selection ──────────────────────────────────
+  function setChipActive(activeChip: HTMLElement) {
+    const catId = activeChip.dataset.ihChip!;
+    document.querySelectorAll<HTMLElement>('[data-ih-chip]').forEach(chip => {
+      const isActive = chip.dataset.ihChip === catId;
+      if (chip.dataset.ihNav === 'true') {
+        // Nav button styles
+        chip.classList.toggle('bg-amber-bg', isActive);
+        chip.classList.toggle('text-amber',  isActive);
+        chip.classList.toggle('font-bold',   isActive);
+        chip.classList.toggle('text-content', !isActive);
+        chip.classList.remove('bg-transparent', 'border-line', 'text-muted');
+      } else {
+        chip.classList.toggle('bg-amber',    isActive);
+        chip.classList.toggle('border-amber', isActive);
+        chip.classList.toggle('text-white',  isActive);
+        chip.classList.toggle('text-muted',  !isActive);
+        chip.classList.toggle('border-line', !isActive);
+      }
+    });
+  }
+
+  function selectCategory(catId: string) {
+    // Show matching panel, hide rest
+    panels.forEach(panel => {
+      panel.classList.toggle('is-hidden', panel.dataset.ihPanel !== catId);
+    });
+
+    // Find the chip that was clicked
+    const chip = document.querySelector<HTMLElement>(`[data-ih-chip="${catId}"]:not([data-ih-nav])`);
+    if (chip) setChipActive(chip);
+  }
+
+  // ── Hover highlight (tablet / desktop table rows) ───────────────────
+  function initHover(table: HTMLElement) {
+    let current: string | null = null;
+    table.addEventListener('mouseover', e => {
+      const td = (e.target as Element).closest<HTMLElement>('[data-ih-name]');
+      const name = td?.dataset.ihName || null;
+      if (name === current) return;
+      current = name;
+      table.querySelectorAll<HTMLElement>('[data-ih-name]').forEach(el => {
+        const n = el.dataset.ihName;
+        el.style.opacity = (name && n && n !== name) ? '0.2' : '';
+      });
+      // Sync HoF sidebar
+      table.closest('[data-ih-panel]')?.querySelectorAll<HTMLElement>('[data-ih-hof-name]').forEach(el => {
+        el.style.opacity = (name && el.dataset.ihHofName !== name) ? '0.2' : '';
+      });
+    });
+    table.addEventListener('mouseleave', () => {
+      current = null;
+      table.querySelectorAll<HTMLElement>('[data-ih-name]').forEach(el => { el.style.opacity = ''; });
+      table.closest('[data-ih-panel]')?.querySelectorAll<HTMLElement>('[data-ih-hof-name]').forEach(el => { el.style.opacity = ''; });
+    });
+  }
+
+  // ── Initialise ──────────────────────────────────────────────────────
+  sexBtns.forEach(btn => {
+    btn.addEventListener('click', () => selectSex(btn.dataset.ihSex!));
   });
 
-  document.querySelectorAll<HTMLButtonElement>('[data-sub-tab]').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const catId = btn.dataset.subTab!;
-      const group = btn.dataset.group!;
-      document.querySelectorAll(`[data-sub-tab][data-group="${group}"]`).forEach(t => t.classList.remove('tab-active'));
-      btn.classList.add('tab-active');
-      document.querySelectorAll(`[data-sub-panel][data-group="${group}"]`).forEach(p => p.classList.add('hidden'));
-      document.querySelector(`[data-sub-panel="${catId}"][data-group="${group}"]`)?.classList.remove('hidden');
-    });
+  document.querySelectorAll<HTMLElement>('[data-ih-chip]').forEach(chip => {
+    chip.addEventListener('click', () => selectCategory(chip.dataset.ihChip!));
+  });
+
+  document.querySelectorAll<HTMLElement>('table[id^="ih-table-"]').forEach(table => {
+    initHover(table as HTMLElement);
   });
 </script>
