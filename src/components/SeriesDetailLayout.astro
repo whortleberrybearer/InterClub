@@ -5,6 +5,8 @@ import ArchiveYearNav from './ArchiveYearNav.astro';
 import ArchiveYearPicker from './ArchiveYearPicker.astro';
 import AllTimeWinnersCard from './AllTimeWinnersCard.astro';
 import ScheduleTable from './ScheduleTable.astro';
+import { hasTeamStandings, hasIndividualStandings } from '../lib/results';
+import { siteUrl } from '../lib/url';
 import type { Race, Series, SeriesConfig } from '../lib/types';
 
 export interface Props {
@@ -38,6 +40,13 @@ const scoringRules = [
 ];
 
 const accentClass = series === 'fell' ? 'text-teal' : 'text-amber';
+
+const teamStandingsUrl = hasTeamStandings(year, series)
+  ? siteUrl(`/${series}/${year}/team-standings`)
+  : undefined;
+const individualStandingsUrl = hasIndividualStandings(year, series)
+  ? siteUrl(`/${series}/${year}/individual-standings`)
+  : undefined;
 ---
 
 <Layout title={seriesTitle}>
@@ -73,6 +82,18 @@ const accentClass = series === 'fell' ? 'text-teal' : 'text-amber';
           <slot name="description" />
         </div>
       </div>
+
+      <!-- Standings links: mobile/tablet only (desktop gets them in sidebar) -->
+      {(teamStandingsUrl || individualStandingsUrl) && (
+        <div class="lg:hidden flex gap-2 mb-5">
+          {teamStandingsUrl && (
+            <a href={teamStandingsUrl} class:list={['btn btn-sm flex-1 justify-center', accentClass === 'text-teal' ? 'btn-outline border-teal/50 text-teal' : 'btn-primary']}>Team Standings →</a>
+          )}
+          {individualStandingsUrl && (
+            <a href={individualStandingsUrl} class:list={['btn btn-sm flex-1 justify-center btn-outline', accentClass === 'text-teal' ? 'border-teal/50 text-teal' : 'border-amber/50 text-amber']}>Individual →</a>
+          )}
+        </div>
+      )}
 
       <!-- Schedule -->
       <ScheduleTable series={series} year={year} races={races} showNextRace={true} />
@@ -138,6 +159,28 @@ const accentClass = series === 'fell' ? 'text-teal' : 'text-amber';
     <!-- ── Desktop sidebar ── -->
     <aside class="hidden lg:block sticky top-6 self-start">
       <div class="flex flex-col gap-4">
+
+        <!-- Standings (current season) -->
+        {(teamStandingsUrl || individualStandingsUrl) && (
+          <div class="card p-4">
+            <p class="font-head text-[15px] font-bold tracking-[0.04em] uppercase mb-3">Standings</p>
+            <div class="flex flex-col divide-y divide-line">
+              {teamStandingsUrl && (
+                <a href={teamStandingsUrl} class="flex items-center justify-between py-3">
+                  <p class="font-head text-[13px] font-bold leading-tight">Team</p>
+                  <span class:list={['font-head text-[10px] font-bold tracking-[0.08em] uppercase whitespace-nowrap ml-3', accentClass]}>→</span>
+                </a>
+              )}
+              {individualStandingsUrl && (
+                <a href={individualStandingsUrl} class="flex items-center justify-between py-3">
+                  <p class="font-head text-[13px] font-bold leading-tight">Individual</p>
+                  <span class:list={['font-head text-[10px] font-bold tracking-[0.08em] uppercase whitespace-nowrap ml-3', accentClass]}>→</span>
+                </a>
+              )}
+            </div>
+          </div>
+        )}
+
         <ArchiveYearNav series={series} years={pastYears} />
         <AllTimeWinnersCard series={series} />
       </div>
