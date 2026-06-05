@@ -278,22 +278,79 @@ const seriesLabel = series === 'road-gp' ? 'Road Grand Prix' : 'Fell Championshi
     );
   })}
 
-  <!-- Overall panel — all-time trophies (hidden until Overall chip selected) -->
-  <div data-cat-panel="overall" class="th-cat-panel bg-canvas border-t border-line px-5 py-4">
-    <div class="font-head text-[10px] font-bold tracking-[0.14em] uppercase text-muted mb-2.5">All-time team trophies</div>
-    <div class="space-y-2">
-      {sortedClubs.map(({ clubId, club, total, byCat }) => (
-        <div class="flex items-center gap-2.5 bg-surface border border-line rounded-lg px-2.5 py-2">
-          <span class="w-1.5 h-7 rounded-full shrink-0" style={`background: ${club.swatch};`}></span>
-          <div class="flex-1 min-w-0">
-            <div class="font-head text-sm font-bold tracking-tight truncate">{club.name}</div>
-            <div class="font-mono text-[9.5px] text-muted mt-0.5 tracking-wide">
-              {allCategories.filter(c => byCat[c.id]).map(c => `${c.shortName ?? c.name} ×${byCat[c.id]}`).join(' · ')}
+  <!-- Overall panel — all-time trophies -->
+  <div data-cat-panel="overall" class="th-cat-panel">
+
+    <!-- Tablet (sm–md): table -->
+    <div class="hidden sm:block border-t border-line">
+      <table class="w-full border-collapse bg-surface">
+        <thead>
+          <tr class="bg-canvas border-b-2 border-content">
+            <th class="font-head text-[10px] font-bold tracking-[0.1em] uppercase text-muted py-2.5 px-3 w-8 text-center">#</th>
+            <th class="font-head text-[10px] font-bold tracking-[0.1em] uppercase text-muted py-2.5 px-3 text-left">Club</th>
+            <th class="font-head text-[10px] font-bold tracking-[0.1em] uppercase text-muted py-2.5 px-3 text-left">Categories</th>
+            <th class="font-head text-[10px] font-bold tracking-[0.1em] uppercase text-muted py-2.5 px-3 text-right border-l-2 border-content">Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          {sortedClubs.map(({ clubId, club, total, byCat }, i) => (
+            <tr class="border-b border-line last:border-0">
+              <td class="py-3 px-3 font-mono text-sm text-muted text-center tabular-nums">{i + 1}</td>
+              <td class="py-3 px-3">
+                <div class="flex items-center gap-2.5">
+                  <span class="w-[3px] h-6 rounded-full shrink-0" style={`background: ${club.swatch};`}></span>
+                  <span class="font-head text-sm font-bold tracking-tight">{club.name}</span>
+                </div>
+              </td>
+              <td class="py-3 px-3">
+                <div class="flex gap-1.5 flex-wrap">
+                  {allCategories.filter(c => byCat[c.id]).map(c => (
+                    <span class="font-mono text-[9px] text-muted bg-canvas px-1.5 py-0.5 rounded border border-line">
+                      {c.shortName ?? c.name} ×{byCat[c.id]}
+                    </span>
+                  ))}
+                </div>
+              </td>
+              <td class="py-3 px-3 text-right border-l-2 border-content">
+                <span class="font-mono text-lg font-medium" style={`color: ${club.swatch};`}>{total}</span>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Mobile (below sm): accordion cards -->
+    <div class="sm:hidden px-4 pt-3 pb-2">
+      {sortedClubs.map(({ clubId, club, total, byCat }, i) => {
+        const detailId = `overall-detail-${clubId}`;
+        return (
+          <div class="bg-surface border border-line rounded-xl mb-2 overflow-hidden relative">
+            <div class="absolute left-0 inset-y-0 w-[3px]" style={`background: ${club.swatch};`}></div>
+            <button
+              class="accordion-toggle w-full flex items-center gap-3 py-3 pl-4 pr-3 text-left"
+              data-target={detailId}
+              aria-expanded="false"
+            >
+              <span class="font-mono text-sm font-medium text-muted w-5 shrink-0 text-center tabular-nums">{i + 1}</span>
+              <div class="flex-1 min-w-0">
+                <div class="font-head text-base font-bold tracking-tight truncate">{club.name}</div>
+              </div>
+              <span class="font-mono text-xl font-medium shrink-0 mr-1" style={`color: ${club.swatch};`}>{total}</span>
+              <span class="chevron text-content/30 text-xs transition-transform duration-200">▾</span>
+            </button>
+            <div id={detailId} class="hidden border-t border-dashed border-line px-4 py-3">
+              <div class="flex gap-1.5 flex-wrap">
+                {allCategories.filter(c => byCat[c.id]).map(c => (
+                  <span class="font-mono text-[10px] text-muted bg-canvas px-2 py-1 rounded-full border border-line">
+                    {c.shortName ?? c.name} ×{byCat[c.id]}
+                  </span>
+                ))}
+              </div>
             </div>
           </div>
-          <span class="font-mono text-lg font-medium shrink-0">{total}</span>
-        </div>
-      ))}
+        );
+      })}
     </div>
   </div>
 </div>
@@ -476,6 +533,16 @@ const seriesLabel = series === 'road-gp' ? 'Road Grand Prix' : 'Fell Championshi
       update(el?.getAttribute('data-club') || null);
     });
     container.addEventListener('mouseleave', () => update(null));
-
   }
+
+  // Mobile: accordion expand/collapse
+  document.querySelectorAll<HTMLButtonElement>('.accordion-toggle').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const detail = document.getElementById(btn.dataset.target!)!;
+      const isOpen = !detail.classList.contains('hidden');
+      detail.classList.toggle('hidden', isOpen);
+      btn.setAttribute('aria-expanded', isOpen ? 'false' : 'true');
+      btn.querySelector('.chevron')?.classList.toggle('rotate-180', !isOpen);
+    });
+  });
 </script>
