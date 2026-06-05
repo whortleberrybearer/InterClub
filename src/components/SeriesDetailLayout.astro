@@ -84,7 +84,7 @@ const individualStandingsUrl = hasIndividualStandings(year, series)
       </div>
 
       <!-- Schedule -->
-      <ScheduleTable series={series} year={year} races={races} showNextRace={true}>
+      <ScheduleTable series={series} year={year} races={races} showNextRace={true} showDetailLinks={series === 'road-gp'}>
         {(teamStandingsUrl || individualStandingsUrl) && (
           <div class="flex justify-end gap-4 py-3">
             {teamStandingsUrl && (
