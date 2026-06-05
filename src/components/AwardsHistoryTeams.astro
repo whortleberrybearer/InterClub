@@ -1,41 +1,608 @@
 ---
 import type { TeamCategory } from '../lib/types';
 
-interface YearlyTeamAwards {
+interface ClubInfo {
+  id: string;
+  name: string;
+  shortName: string;
+  swatch: string;
+  ink: string;
+}
+
+interface EnrichedCategory extends Omit<TeamCategory, 'shortName'> {
+  shortName?: string;
+  since: number;
+}
+
+interface YearRow {
   year: number;
-  categoryWinners: Record<string, string | null>; // categoryId → club name (string) or null
+  suspended?: string;
+  categoryWinners: Record<string, ClubInfo | null>;
 }
 
 interface Props {
-  yearlyData: YearlyTeamAwards[];
-  allCategories: TeamCategory[];
+  series: string;
+  yearlyData: YearRow[];
+  allCategories: EnrichedCategory[];
+  clubMeta: Record<string, ClubInfo>;
 }
 
-const { yearlyData, allCategories } = Astro.props;
+const { series, yearlyData, allCategories, clubMeta } = Astro.props;
+
+const fallbackClub = (id: string): ClubInfo => ({
+  id, name: id, shortName: id.slice(0, 3).toUpperCase(),
+  swatch: 'oklch(55% 0.08 250)', ink: '#fff',
+});
+
+// ── All-time win counts ───────────────────────────────────────────────────
+const allTimeCounts: Record<string, Record<string, number>> = {};
+const dataRows = yearlyData.filter(r => !r.suspended);
+for (const row of dataRows) {
+  for (const [catId, club] of Object.entries(row.categoryWinners)) {
+    if (!club) continue;
+    if (!allTimeCounts[club.id]) allTimeCounts[club.id] = {};
+    allTimeCounts[club.id][catId] = (allTimeCounts[club.id][catId] ?? 0) + 1;
+  }
+}
+
+const sortedClubs = Object.entries(allTimeCounts)
+  .map(([clubId, byCat]) => ({
+    clubId,
+    club: clubMeta[clubId] ?? fallbackClub(clubId),
+    total: Object.values(byCat).reduce((a, b) => a + b, 0),
+    byCat,
+  }))
+  .sort((a, b) => b.total - a.total);
+
+const maxTotal = sortedClubs[0]?.total ?? 1;
+
+// ── Per-category leaders ──────────────────────────────────────────────────
+const perCatLeaders = allCategories.map(cat => {
+  const wins: Record<string, number> = {};
+  for (const row of dataRows) {
+    const club = row.categoryWinners[cat.id];
+    if (!club) continue;
+    wins[club.id] = (wins[club.id] ?? 0) + 1;
+  }
+  const ranked = Object.entries(wins).sort((a, b) => b[1] - a[1]);
+  const totalWins = Object.values(wins).reduce((a, b) => a + b, 0);
+  if (!ranked.length) return null;
+  const [topId, topN] = ranked[0];
+  return { cat, leader: clubMeta[topId] ?? fallbackClub(topId), topN, total: totalWins };
+}).filter((e): e is NonNullable<typeof e> => e !== null);
+
+// ── Mobile: per-category streaks & rankings ───────────────────────────────
+interface Streak { club: ClubInfo; start: number; end: number; length: number }
+
+const ascYearlyData = [...yearlyData].reverse(); // ascending chronological order
+
+const categoryStreaks: Record<string, Streak[]> = {};
+const categoryRanked: Record<string, Array<{ club: ClubInfo; count: number }>> = {};
+
+for (const cat of allCategories) {
+  const streaks: Streak[] = [];
+  let current: Streak | null = null;
+
+  for (const row of ascYearlyData) {
+    if (row.suspended) {
+      if (current) { streaks.push({ ...current }); current = null; }
+      continue;
+    }
+    const winner = row.categoryWinners[cat.id];
+    if (!winner) continue;
+    if (current && current.club.id === winner.id) {
+      current.end = row.year;
+      current.length += 1;
+    } else {
+      if (current) streaks.push({ ...current });
+      current = { club: winner, start: row.year, end: row.year, length: 1 };
+    }
+  }
+  if (current) streaks.push({ ...current });
+
+  categoryStreaks[cat.id] = streaks.reverse(); // newest first
+
+  const wins: Record<string, number> = {};
+  for (const row of dataRows) {
+    const w = row.categoryWinners[cat.id];
+    if (w) wins[w.id] = (wins[w.id] ?? 0) + 1;
+  }
+  categoryRanked[cat.id] = Object.entries(wins)
+    .map(([id, count]) => ({ club: clubMeta[id] ?? fallbackClub(id), count }))
+    .sort((a, b) => b.count - a.count);
+}
+
+// ── Header stats ──────────────────────────────────────────────────────────
+const allYears = dataRows.map(r => r.year);
+const minYear = allYears.length ? Math.min(...allYears) : 0;
+const maxYear = allYears.length ? Math.max(...allYears) : 0;
+const seasonCount = dataRows.length;
+const clubsWon = sortedClubs.length;
+
+// ── Dynasty heatmap ───────────────────────────────────────────────────────
+const dataYearSet = new Set(allYears);
+const heatmapYears: Array<{ year: number; suspended: boolean }> = [];
+if (minYear && maxYear) {
+  for (let y = minYear; y <= maxYear; y++) {
+    heatmapYears.push({ year: y, suspended: !dataYearSet.has(y) });
+  }
+}
+
+const winsByYear: Record<number, Record<string, string[]>> = {};
+for (const row of dataRows) {
+  winsByYear[row.year] = {};
+  for (const [catId, club] of Object.entries(row.categoryWinners)) {
+    if (!club) continue;
+    if (!winsByYear[row.year][club.id]) winsByYear[row.year][club.id] = [];
+    winsByYear[row.year][club.id].push(catId);
+  }
+}
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const seriesLabel = series === 'road-gp' ? 'Road Grand Prix' : 'Fell Championship';
 ---
 
-<div class="overflow-x-auto">
-  <table class="table table-sm w-full">
-    <caption class="sr-only">Team award winners by year and category</caption>
-    <thead>
-      <tr>
-        <th class="text-base" scope="col">Year</th>
-        {allCategories.map(category => (
-          <th class="text-center text-sm" scope="col">{category.name}</th>
-        ))}
-      </tr>
-    </thead>
-    <tbody>
-      {yearlyData.map(yearly => (
-        <tr class="hover">
-          <td class="font-semibold">{yearly.year}</td>
-          {allCategories.map(category => (
-            <td class="text-center text-sm">
-              {yearly.categoryWinners[category.id] ?? '—'}
-            </td>
-          ))}
-        </tr>
-      ))}
-    </tbody>
-  </table>
+<style>
+  .th-cat-panel.is-hidden { display: none; }
+</style>
+
+<!-- ── Editorial header ─────────────────────────────────────────────────── -->
+<div class="mb-2">
+  <a href={`${base}/${series}/`} class="inline-flex items-center gap-1 text-sm text-muted hover:text-content transition-colors font-mono mb-5">
+    ← {seriesLabel}
+  </a>
+
+  <div class="flex items-end justify-between gap-6 flex-wrap border-b border-line pb-6 mb-0">
+    <div>
+      <div class="font-head text-[10px] font-bold tracking-[0.18em] uppercase text-amber mb-1.5">The Roll of Honour</div>
+      <h1 class="font-head font-black text-[clamp(2.5rem,6vw,5rem)] tracking-tight leading-none">Team Winners</h1>
+      <div class="font-head font-black text-[clamp(2.5rem,6vw,5rem)] tracking-tight leading-none text-amber">{minYear}–{maxYear}</div>
+      <p class="text-sm text-muted mt-3 max-w-lg leading-relaxed hidden md:block">
+        Every team-trophy winner across {seasonCount} seasons of the Inter Club {seriesLabel}.
+        Categories shown in order of introduction.
+      </p>
+    </div>
+    <div class="flex gap-6 pb-1 shrink-0">
+      <div>
+        <div class="font-mono text-3xl font-medium">{seasonCount}</div>
+        <div class="font-head text-[10px] font-bold tracking-[0.12em] uppercase text-muted mt-1">Seasons</div>
+      </div>
+      <div>
+        <div class="font-mono text-3xl font-medium">{allCategories.length}</div>
+        <div class="font-head text-[10px] font-bold tracking-[0.12em] uppercase text-muted mt-1">Categories</div>
+      </div>
+      <div>
+        <div class="font-mono text-3xl font-medium text-amber">{clubsWon}</div>
+        <div class="font-head text-[10px] font-bold tracking-[0.12em] uppercase text-muted mt-1">Clubs won</div>
+      </div>
+    </div>
+  </div>
 </div>
+
+<!-- ── Tab bar ───────────────────────────────────────────────────────────── -->
+<div class="tabs tabs-border mb-6">
+  <a href={`${base}/${series}/history/teams`} class="tab tab-active font-head font-bold tracking-[0.06em] uppercase">
+    Team Winners
+  </a>
+  <a href={`${base}/${series}/history/individuals`} class="tab font-head font-bold tracking-[0.06em] uppercase">
+    Individual Winners
+  </a>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════════
+     MOBILE VIEW — category chip + streak timeline  (hidden md+)
+════════════════════════════════════════════════════════════════════════ -->
+<div class="md:hidden -mx-4">
+
+  <!-- Category chip bar -->
+  <div class="flex gap-2 overflow-x-auto px-4 py-2.5 bg-surface border-b border-line scrollbar-hide">
+    {allCategories.map((cat, i) => (
+      <button
+        data-cat-chip={cat.id}
+        class={`th-chip flex-shrink-0 font-head text-xs font-bold tracking-[0.06em] uppercase px-3.5 py-1.5 rounded-full border transition-colors whitespace-nowrap cursor-pointer ${i === 0 ? 'bg-amber border-amber text-white' : 'border-line text-muted'}`}
+      >{cat.name}</button>
+    ))}
+  </div>
+
+  <!-- Per-category panels -->
+  {allCategories.map((cat, catIdx) => {
+    const streaks = categoryStreaks[cat.id] ?? [];
+    const ranked = categoryRanked[cat.id] ?? [];
+    const total = ranked.reduce((a, c) => a + c.count, 0);
+    return (
+      <div data-cat-panel={cat.id} class={`th-cat-panel${catIdx > 0 ? ' is-hidden' : ''}`}>
+
+        <!-- Category header -->
+        <div class="flex items-baseline justify-between px-5 pt-3.5 pb-1">
+          <h2 class="font-head text-2xl font-black tracking-tight">{cat.name}</h2>
+          <span class="font-mono text-xs text-muted">since {cat.since}</span>
+        </div>
+        <p class="px-5 pb-2.5 text-xs text-muted font-mono">
+          {total} {total === 1 ? 'trophy' : 'trophies'} awarded{cat.scorerCount != null ? ` · ×${cat.scorerCount} scorers` : ''}
+        </p>
+
+        <!-- Top clubs for this category -->
+        {ranked.length > 0 && (
+          <div class="flex gap-2 flex-wrap px-5 pb-4">
+            {ranked.slice(0, 4).map(({ club, count }, i) => (
+              <div
+                class="flex items-center gap-1.5 rounded-full px-2 py-1"
+                style={i === 0
+                  ? `background: ${club.swatch}; color: ${club.ink};`
+                  : 'border: 1px solid var(--color-line);'}
+              >
+                <span
+                  class="flex items-center justify-center w-5 h-5 rounded-full font-mono text-[10px] font-bold leading-none"
+                  style={i === 0
+                    ? 'background: rgba(0,0,0,0.2);'
+                    : `background: ${club.swatch}; color: ${club.ink};`}
+                >{count}</span>
+                <span class="font-mono text-[11px] font-semibold">{club.shortName}</span>
+              </div>
+            ))}
+          </div>
+        )}
+
+        <!-- Streak timeline -->
+        <div class="px-4 pb-5">
+          <div class="font-head text-[10px] font-bold tracking-[0.14em] uppercase text-muted ml-1 mb-2">Timeline · newest first</div>
+
+          {streaks.length > 0 ? (
+            <div class="relative">
+              <div class="absolute left-[13px] top-[14px] bottom-[14px] w-0.5 bg-line"></div>
+
+              {streaks.map(streak => {
+                const range = streak.start === streak.end
+                  ? `${streak.start}`
+                  : `${streak.start}–${streak.end}`;
+                return (
+                  <div class="flex items-start gap-3.5 pb-3 relative">
+                    <div
+                      class="w-7 h-7 rounded-full flex items-center justify-center font-mono font-bold text-xs shrink-0 relative z-10"
+                      style={`background: ${streak.club.swatch}; color: ${streak.club.ink}; border: 3px solid var(--color-surface); box-shadow: 0 0 0 1px var(--color-line);`}
+                    >
+                      {streak.length === 1 ? '·' : `×${streak.length}`}
+                    </div>
+                    <div class="flex-1 min-w-0 pt-0.5">
+                      <div class="font-mono text-sm font-medium">{range}</div>
+                      <div class="font-head text-base font-bold tracking-tight">{streak.club.name}</div>
+                      {streak.length >= 3 && (
+                        <div
+                          class="font-mono text-[10px] font-semibold mt-0.5 tracking-[0.04em] uppercase"
+                          style={`color: ${streak.club.swatch};`}
+                        >{streak.length}-year run</div>
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
+
+              <!-- Introduced marker -->
+              <div class="flex items-center gap-3.5 opacity-40">
+                <div class="w-7 h-7 rounded-full flex items-center justify-center text-[10px] text-muted shrink-0"
+                     style="border: 2px dashed var(--color-line); background: var(--color-canvas);">★</div>
+                <div class="text-xs text-muted italic">{cat.name} introduced in {cat.since}</div>
+              </div>
+            </div>
+          ) : (
+            <p class="text-sm text-muted italic px-1">No winners on record for this category.</p>
+          )}
+        </div>
+      </div>
+    );
+  })}
+
+  <!-- All-time totals strip -->
+  <div class="bg-canvas border-t border-line px-5 py-4">
+    <div class="font-head text-[10px] font-bold tracking-[0.14em] uppercase text-muted mb-2.5">All-time team trophies</div>
+    <div class="space-y-2">
+      {sortedClubs.map(({ clubId, club, total, byCat }) => (
+        <div class="flex items-center gap-2.5 bg-surface border border-line rounded-lg px-2.5 py-2">
+          <span class="w-1.5 h-7 rounded-full shrink-0" style={`background: ${club.swatch};`}></span>
+          <div class="flex-1 min-w-0">
+            <div class="font-head text-sm font-bold tracking-tight truncate">{club.name}</div>
+            <div class="font-mono text-[9.5px] text-muted mt-0.5 tracking-wide">
+              {allCategories.filter(c => byCat[c.id]).map(c => `${c.shortName ?? c.name} ×${byCat[c.id]}`).join(' · ')}
+            </div>
+          </div>
+          <span class="font-mono text-lg font-medium shrink-0">{total}</span>
+        </div>
+      ))}
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════════
+     TABLET / DESKTOP VIEW — matrix table + sidebar  (hidden below md)
+════════════════════════════════════════════════════════════════════════ -->
+<div id="th-container" class="hidden md:grid lg:grid-cols-[1fr_296px] gap-6 items-start">
+
+  <!-- Matrix section -->
+  <div class="min-w-0">
+    <div class="flex items-end justify-between mb-3 pb-2 border-b-2 border-content">
+      <div>
+        <div class="font-head text-[10px] font-bold tracking-[0.14em] uppercase text-muted mb-0.5">The Matrix</div>
+        <h2 class="font-head text-2xl font-black tracking-tight">Year by category</h2>
+      </div>
+      <div class="font-mono text-[11px] text-muted pb-0.5">Hover to highlight</div>
+    </div>
+
+    <div class="bg-surface border border-line rounded-xl overflow-hidden">
+      <div class="overflow-x-auto">
+        <table class="w-full border-collapse">
+          <thead>
+            <tr class="bg-canvas">
+              <th class="text-left py-3 px-4 font-head text-[10px] font-bold tracking-[0.12em] uppercase text-muted border-b-2 border-content w-16 whitespace-nowrap">Year</th>
+              {allCategories.map(cat => (
+                <th class="text-left py-3 px-2 font-head text-[10px] font-bold tracking-[0.12em] uppercase text-content border-b-2 border-content min-w-[80px]">
+                  <div>{cat.name}</div>
+                  {(cat.since > 0 || cat.scorerCount != null) && (
+                    <div class="font-mono text-[9px] font-medium text-muted normal-case tracking-normal mt-0.5 whitespace-nowrap">
+                      {cat.since > 0 && `since ${cat.since}`}{cat.since > 0 && cat.scorerCount != null && ' · '}{cat.scorerCount != null && `×${cat.scorerCount}`}
+                    </div>
+                  )}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {yearlyData.map(row => row.suspended ? (
+              <tr class="border-b border-line last:border-0 bg-canvas/60">
+                <td class="py-2 px-4 font-mono text-[11px] text-line">—</td>
+                <td colspan={allCategories.length} class="py-2 px-3 font-mono text-[11px] text-muted italic tracking-wide text-center">
+                  {row.suspended}
+                </td>
+              </tr>
+            ) : (
+              <tr class="border-b border-line last:border-0">
+                <td class="py-2 px-4 font-mono font-medium text-sm border-r border-line whitespace-nowrap align-middle">{row.year}</td>
+                {allCategories.map(cat => {
+                  const winner = row.categoryWinners[cat.id];
+                  const notYet = cat.since > 0 && row.year < cat.since;
+                  return (
+                    <td class="py-1.5 px-2 align-middle transition-opacity duration-100" data-club={winner?.id ?? ''}>
+                      {notYet ? (
+                        <span class="font-mono text-[11px] text-line">·</span>
+                      ) : winner ? (
+                        <span
+                          data-club={winner.id}
+                          class="inline-flex items-center px-2 py-1 rounded font-mono text-[11px] font-semibold tracking-wide leading-none whitespace-nowrap cursor-default transition-opacity duration-100"
+                          style={`background: ${winner.swatch}; color: ${winner.ink};`}
+                        >{winner.shortName}</span>
+                      ) : (
+                        <span class="font-mono text-[11px] text-muted">—</span>
+                      )}
+                    </td>
+                  );
+                })}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <p class="text-xs text-muted mt-3 italic leading-relaxed">
+      A dot (·) indicates the category had not yet been introduced.
+      {series === 'road-gp' && ' Blackpool &amp; Fylde AC is the predecessor to the present-day Blackpool Wyre &amp; Fylde AC.'}
+    </p>
+  </div>
+
+  <!-- Hall of Fame sidebar (desktop only - lg+) -->
+  <aside class="hidden lg:block sticky top-6 space-y-4">
+    <div class="bg-surface border border-line rounded-xl p-5">
+      <div class="font-head text-[10px] font-bold tracking-[0.16em] uppercase text-muted">The Hall of Fame</div>
+      <h3 class="font-head text-xl font-black tracking-tight mt-0.5 mb-4">All-time totals</h3>
+      <div>
+        {sortedClubs.map(({ clubId, club, total, byCat }, i) => (
+          <div
+            data-club={clubId}
+            class="flex items-center gap-3 py-2.5 border-b border-line last:border-0 cursor-default transition-opacity duration-100"
+          >
+            <div class="flex-1 min-w-0">
+              <div class="flex items-baseline gap-2">
+                <span class="font-mono text-[10px] font-bold text-muted w-3.5 text-right shrink-0">{i + 1}</span>
+                <span class="font-head text-sm font-bold tracking-tight truncate">{club.name}</span>
+              </div>
+              <div class="flex gap-1.5 mt-1 ml-5 flex-wrap">
+                {allCategories.filter(c => byCat[c.id]).map(c => (
+                  <span class="font-mono text-[9px] font-semibold text-muted bg-canvas px-1.5 py-0.5 rounded">
+                    {c.shortName ?? c.name} ×{byCat[c.id]}
+                  </span>
+                ))}
+              </div>
+            </div>
+            <div class="text-right shrink-0">
+              <div class="font-mono text-2xl font-medium leading-none" style={`color: ${club.swatch};`}>{total}</div>
+              <div class="mt-1 w-9 h-0.5 bg-line rounded-full overflow-hidden ml-auto">
+                <div class="h-full rounded-full" style={`width: ${(total / maxTotal) * 100}%; background: ${club.swatch};`}></div>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    {perCatLeaders.length > 0 && (
+      <div class="bg-surface border border-line rounded-xl p-5">
+        <div class="font-head text-[10px] font-bold tracking-[0.16em] uppercase text-muted mb-3">Most decorated · per category</div>
+        <div class="space-y-2.5">
+          {perCatLeaders.map(({ cat, leader, topN, total }) => (
+            <div class="flex items-center gap-2.5">
+              <div class="font-head text-[11px] font-bold tracking-[0.06em] uppercase w-16 text-muted shrink-0 truncate">{cat.name}</div>
+              <div class="flex-1 flex items-center gap-1.5 min-w-0">
+                <span class="w-2.5 h-2.5 rounded shrink-0" style={`background: ${leader.swatch};`}></span>
+                <span class="font-head text-[13px] font-bold tracking-tight truncate">{leader.name}</span>
+              </div>
+              <span class="font-mono text-xs whitespace-nowrap shrink-0">
+                {topN}<span class="text-muted">/{total}</span>
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
+    )}
+  </aside>
+</div>
+
+<!-- ── Dynasty heatmap (tablet + desktop) ───────────────────────────────── -->
+{heatmapYears.length > 0 && sortedClubs.length > 0 && (
+  <div class="hidden md:block mt-10 pb-8">
+    <div class="flex items-end justify-between mb-3 pb-2 border-b-2 border-content">
+      <div>
+        <div class="font-head text-[10px] font-bold tracking-[0.14em] uppercase text-muted mb-0.5">The Dynasties</div>
+        <h2 class="font-head text-2xl font-black tracking-tight">Trophies won, by club &amp; year</h2>
+      </div>
+      <div class="font-mono text-[11px] text-muted pb-0.5 hidden lg:block">One square = one team trophy</div>
+    </div>
+
+    <div class="bg-surface border border-line rounded-xl p-4 overflow-x-auto">
+      <table class="border-separate border-spacing-0" style="font-size: 12px;">
+        <thead>
+          <tr>
+            <th class="w-40 min-w-[10rem]"></th>
+            {heatmapYears.map(({ year, suspended }) => {
+              const showLabel = year % 5 === 0;
+              return (
+                <th
+                  class="w-[22px] h-7 text-center align-bottom pb-1 font-mono font-medium text-[9px]"
+                  style={showLabel ? 'color: var(--color-content);' : 'color: transparent;'}
+                >
+                  {showLabel ? `'${String(year).slice(2)}` : '·'}
+                </th>
+              );
+            })}
+            <th class="pl-3 font-head text-[10px] font-bold tracking-[0.12em] uppercase text-muted align-bottom pb-1 text-left">Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          {sortedClubs.map(({ clubId, club, total }) => (
+            <tr data-club={clubId} class="cursor-default transition-opacity duration-100">
+              <td class="py-1 pr-3 whitespace-nowrap align-middle">
+                <div class="flex items-center gap-2">
+                  <span class="w-3 h-3 rounded-sm shrink-0" style={`background: ${club.swatch};`}></span>
+                  <span class="font-head text-[13px] font-bold tracking-tight">{club.name}</span>
+                </div>
+              </td>
+              {heatmapYears.map(({ year, suspended: isSuspended }) => {
+                const trophies = winsByYear[year]?.[clubId] ?? [];
+                return (
+                  <td
+                    class="w-[22px] h-[22px] p-px align-middle text-center"
+                    style={isSuspended ? 'background: repeating-linear-gradient(135deg, transparent, transparent 3px, var(--color-line) 3px, var(--color-line) 4px); opacity: 0.4;' : undefined}
+                  >
+                    {!isSuspended && (trophies.length > 0 ? (
+                      <div
+                        class="mx-auto"
+                        style={`display: grid; grid-template-columns: ${trophies.length >= 4 ? 'repeat(3,1fr)' : trophies.length >= 2 ? 'repeat(2,1fr)' : '1fr'}; gap: 1px; width: 14px; height: 14px;`}
+                      >
+                        {trophies.map(catId => (
+                          <span
+                            class="rounded-sm"
+                            style={`background: ${club.swatch}; opacity: ${0.55 + 0.45 / trophies.length};`}
+                            title={`${allCategories.find(c => c.id === catId)?.name ?? catId} ${year}`}
+                          ></span>
+                        ))}
+                      </div>
+                    ) : (
+                      <div class="w-1 h-1 rounded-full mx-auto bg-line"></div>
+                    ))}
+                  </td>
+                );
+              })}
+              <td class="pl-3 font-mono text-sm font-medium">{total}</td>
+            </tr>
+          ))}
+          <tr>
+            <td></td>
+            {heatmapYears.map(({ year }) => (
+              <td class="font-mono text-[8px] text-line text-center pt-1">
+                {year % 10 === 0 ? year : ''}
+              </td>
+            ))}
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="flex items-center gap-4 mt-3 pl-1 text-[11px] text-muted flex-wrap">
+        <span class="flex items-center gap-1.5">
+          <span class="w-3 h-3 rounded-sm bg-content/40"></span>
+          1 trophy
+        </span>
+        <span class="flex items-center gap-1.5">
+          <span class="grid grid-cols-2 gap-px w-3 h-3">
+            <span class="rounded-sm bg-content/40"></span>
+            <span class="rounded-sm bg-content/40"></span>
+            <span class="rounded-sm bg-content/40"></span>
+            <span class="rounded-sm bg-content/40"></span>
+          </span>
+          2–4 trophies
+        </span>
+        <span class="flex items-center gap-1.5">
+          <span class="w-3 h-3 rounded-sm" style="background: repeating-linear-gradient(135deg, transparent, transparent 2px, var(--color-line) 2px, var(--color-line) 3px);"></span>
+          Not held
+        </span>
+        <span class="flex items-center gap-1.5">
+          <span class="w-1 h-1 rounded-full bg-line"></span>
+          No trophy
+        </span>
+      </div>
+    </div>
+  </div>
+)}
+
+<!-- ── Interactions ──────────────────────────────────────────────────────── -->
+<script>
+  // Mobile: category chip switcher
+  const chips = document.querySelectorAll<HTMLElement>('[data-cat-chip]');
+  const panels = document.querySelectorAll<HTMLElement>('[data-cat-panel]');
+
+  chips.forEach(chip => {
+    chip.addEventListener('click', () => {
+      const catId = chip.getAttribute('data-cat-chip');
+
+      chips.forEach(c => {
+        const active = c.getAttribute('data-cat-chip') === catId;
+        c.classList.toggle('bg-amber', active);
+        c.classList.toggle('border-amber', active);
+        c.classList.toggle('text-white', active);
+        c.classList.toggle('text-muted', !active);
+        c.classList.toggle('border-line', !active);
+      });
+
+      panels.forEach(panel => {
+        panel.classList.toggle('is-hidden', panel.getAttribute('data-cat-panel') !== catId);
+      });
+    });
+  });
+
+  // Desktop: hover highlight across matrix + sidebar + heatmap
+  const container = document.getElementById('th-container');
+  if (container) {
+    let current: string | null = null;
+
+    function update(clubId: string | null) {
+      if (clubId === current) return;
+      current = clubId;
+      document.querySelectorAll<HTMLElement>('[data-club]').forEach(el => {
+        const id = el.getAttribute('data-club');
+        el.style.opacity = (clubId && id && id !== clubId) ? '0.15' : '';
+      });
+    }
+
+    container.addEventListener('mouseover', e => {
+      const el = (e.target as Element).closest<HTMLElement>('[data-club]');
+      update(el?.getAttribute('data-club') || null);
+    });
+    container.addEventListener('mouseleave', () => update(null));
+
+    // Dynasty heatmap rows (outside #th-container)
+    document.querySelectorAll<HTMLTableRowElement>('tbody tr[data-club]').forEach(row => {
+      if (!container.contains(row)) {
+        row.addEventListener('mouseenter', () => update(row.getAttribute('data-club')));
+        row.addEventListener('mouseleave', () => update(null));
+      }
+    });
+  }
+</script>
