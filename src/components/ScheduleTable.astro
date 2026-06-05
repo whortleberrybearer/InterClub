@@ -72,7 +72,7 @@ const scriptRaceData = showNextRace ? raceStates.map(({ race, past }) => ({
               'border-b border-line last:border-0 transition-colors',
               isNext && accentBg,
               past && showNextRace && 'opacity-70',
-              past && 'cursor-pointer hover:bg-line/30',
+              past ? 'cursor-pointer hover:bg-line/30' : 'hover:bg-line/10',
             ]}
           >
             <td class="hidden sm:table-cell py-3 px-3 text-center font-mono text-xs text-muted">{i + 1}</td>
