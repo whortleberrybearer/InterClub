@@ -74,33 +74,53 @@ let allCategories: EnrichedCategory[] = [];
 let fullYearList: YearRow[] = [];
 
 if (type === 'teams') {
+  const CANONICAL_IDS = ['open', 'ladies', 'vets', 'vet50s', 'vet60s'];
+
+  const ID_ALIASES: Record<string, string> = {
+    'women':    'ladies',
+    'womens':   'ladies',
+    'v50':      'vet50s',
+    'vet50':    'vet50s',
+    'v60':      'vet60s',
+    'vet60':    'vet60s',
+    'ladyvets': 'lady-vets',
+  };
+
+  const normalizeId = (id: string): string => ID_ALIASES[id] ?? id;
+
   const ascendingYears = [...allYearlyAwards].sort((a, b) => a.year - b.year);
 
   const categorySince = new Map<string, number>();
   ascendingYears.forEach(yearly => {
     yearly.awards.teamAwards.forEach(award => {
-      if (!categorySince.has(award.id)) categorySince.set(award.id, yearly.year);
+      const id = normalizeId(award.id);
+      if (CANONICAL_IDS.includes(id) && !categorySince.has(id)) categorySince.set(id, yearly.year);
     });
     yearly.config.teamCategories?.forEach(cat => {
-      if (!categorySince.has(cat.id)) categorySince.set(cat.id, yearly.year);
+      const id = normalizeId(cat.id);
+      if (CANONICAL_IDS.includes(id) && !categorySince.has(id)) categorySince.set(id, yearly.year);
     });
   });
 
   const categoryMap = new Map<string, TeamCategory>();
   ascendingYears.forEach(yearly => {
     yearly.config.teamCategories?.forEach(cat => {
-      if (!categoryMap.has(cat.id)) categoryMap.set(cat.id, cat);
+      const id = normalizeId(cat.id);
+      if (CANONICAL_IDS.includes(id) && !categoryMap.has(id)) {
+        categoryMap.set(id, { ...cat, id });
+      }
     });
   });
-  for (const id of categorySince.keys()) {
-    if (!categoryMap.has(id)) {
+  for (const id of CANONICAL_IDS) {
+    if (!categoryMap.has(id) && categorySince.has(id)) {
       const name = id.charAt(0).toUpperCase() + id.slice(1).replace(/[-_]/g, ' ');
       categoryMap.set(id, { id, name });
     }
   }
 
-  allCategories = Array.from(categoryMap.entries())
-    .map(([id, cat]) => ({ ...cat, since: categorySince.get(id) ?? 0 }))
+  allCategories = CANONICAL_IDS
+    .filter(id => categoryMap.has(id))
+    .map(id => ({ ...categoryMap.get(id)!, since: categorySince.get(id) ?? 0 }))
     .sort((a, b) => a.since - b.since);
 
   const dataYears = allYearlyAwards.map(y => y.year).sort((a, b) => b - a);
@@ -110,16 +130,14 @@ if (type === 'teams') {
     const yearly = allYearlyAwards.find(y => y.year === year)!;
 
     const categoryWinners: Record<string, ClubInfo | null> = {};
-    allCategories.forEach(cat => {
-      const award = yearly.awards.teamAwards.find(ta => ta.id === cat.id);
-      if (award) {
-        const meta = clubMeta[award.club];
-        categoryWinners[cat.id] = meta
-          ? { ...meta }
-          : { id: award.club, name: award.club, shortName: award.club.slice(0, 3).toUpperCase(), swatch: 'oklch(55% 0.08 250)', ink: '#fff' };
-      } else {
-        categoryWinners[cat.id] = null;
-      }
+    allCategories.forEach(cat => { categoryWinners[cat.id] = null; });
+    yearly.awards.teamAwards.forEach(award => {
+      const id = normalizeId(award.id);
+      if (!(id in categoryWinners)) return;
+      const meta = clubMeta[award.club];
+      categoryWinners[id] = meta
+        ? { ...meta }
+        : { id: award.club, name: award.club, shortName: award.club.slice(0, 3).toUpperCase(), swatch: 'oklch(55% 0.08 250)', ink: '#fff' };
     });
 
     fullYearList.push({ year, categoryWinners });
