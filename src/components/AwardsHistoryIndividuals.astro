@@ -1,5 +1,6 @@
 ---
 import type { CategoryHistoryData } from '../lib/results';
+import { siteUrl } from '../lib/url';
 
 interface Props {
   series: string;
@@ -46,6 +47,7 @@ function chipLabel(cat: CategoryHistoryData): string {
 interface HofEntry {
   name: string;
   clubName: string;
+  clubVest?: string;
   runnerUrl?: string;
   gold: number;
   silver: number;
@@ -60,9 +62,10 @@ for (const cat of categories) {
       const entry = row.positions[pos];
       if (!entry) continue;
       if (!tally[entry.name]) {
-        tally[entry.name] = { name: entry.name, clubName: entry.clubName, runnerUrl: entry.runnerUrl, gold: 0, silver: 0, bronze: 0 };
-      } else if (entry.runnerUrl && !tally[entry.name].runnerUrl) {
-        tally[entry.name].runnerUrl = entry.runnerUrl;
+        tally[entry.name] = { name: entry.name, clubName: entry.clubName, clubVest: entry.clubVest, runnerUrl: entry.runnerUrl, gold: 0, silver: 0, bronze: 0 };
+      } else {
+        if (entry.runnerUrl && !tally[entry.name].runnerUrl) tally[entry.name].runnerUrl = entry.runnerUrl;
+        if (entry.clubVest && !tally[entry.name].clubVest) tally[entry.name].clubVest = entry.clubVest;
       }
       if (pos === 1) tally[entry.name].gold++;
       else if (pos === 2) tally[entry.name].silver++;
@@ -91,9 +94,10 @@ function buildGreats(cats: CategoryHistoryData[]): GreatsEntry[] {
         const entry = row.positions[pos];
         if (!entry) continue;
         if (!tally[entry.name]) {
-          tally[entry.name] = { name: entry.name, clubName: entry.clubName, runnerUrl: entry.runnerUrl, gold: 0, silver: 0, bronze: 0, catLabels: [], total: 0 };
-        } else if (entry.runnerUrl && !tally[entry.name].runnerUrl) {
-          tally[entry.name].runnerUrl = entry.runnerUrl;
+          tally[entry.name] = { name: entry.name, clubName: entry.clubName, clubVest: entry.clubVest, runnerUrl: entry.runnerUrl, gold: 0, silver: 0, bronze: 0, catLabels: [], total: 0 };
+        } else {
+          if (entry.runnerUrl && !tally[entry.name].runnerUrl) tally[entry.name].runnerUrl = entry.runnerUrl;
+          if (entry.clubVest && !tally[entry.name].clubVest) tally[entry.name].clubVest = entry.clubVest;
         }
         if (pos === 1) {
           tally[entry.name].gold++;
@@ -332,15 +336,24 @@ const MEDAL_FG = ['', '#3d2300', '#1f2733', '#ffffff'];
                                     class="py-2 px-3 align-middle transition-opacity duration-100"
                                   >
                                     {entry ? (
-                                      <div>
-                                        <div class="font-body text-[13px] font-semibold leading-tight text-content">
-                                          {entry.runnerUrl ? (
-                                            <a href={entry.runnerUrl} class="link link-hover hover:text-amber">{entry.name}</a>
-                                          ) : entry.name}
-                                        </div>
-                                        {entry.clubName && (
-                                          <div class="font-mono text-[10px] text-muted mt-0.5">{entry.clubName}</div>
+                                      <div class="flex items-center gap-2 min-w-0">
+                                        {entry.clubVest && (
+                                          <img
+                                            src={siteUrl(`/images/vests/${entry.clubVest.replace('.png', '-sm.png')}`)}
+                                            alt=""
+                                            class="h-8 w-auto shrink-0 object-contain"
+                                          />
                                         )}
+                                        <div class="min-w-0">
+                                          <div class="font-body text-[13px] font-semibold leading-tight text-content">
+                                            {entry.runnerUrl ? (
+                                              <a href={entry.runnerUrl} class="link link-hover hover:text-amber">{entry.name}</a>
+                                            ) : entry.name}
+                                          </div>
+                                          {entry.clubName && (
+                                            <div class="font-mono text-[10px] text-muted mt-0.5">{entry.clubName}</div>
+                                          )}
+                                        </div>
                                       </div>
                                     ) : (
                                       <span class="font-mono text-xs" style="color:var(--color-line)">—</span>
@@ -376,6 +389,9 @@ const MEDAL_FG = ['', '#3d2300', '#1f2733', '#ffffff'];
                         class="flex items-center gap-2.5 px-3 py-2.5 bg-surface border border-line rounded-lg cursor-default transition-opacity duration-100"
                       >
                         <span class="font-mono text-[11px] font-bold text-muted w-4 text-right shrink-0">{wi + 1}</span>
+                        {w.clubVest && (
+                          <img src={siteUrl(`/images/vests/${w.clubVest.replace('.png', '-sm.png')}`)} alt="" class="h-8 w-[22px] shrink-0 object-contain" />
+                        )}
                         <div class="flex-1 min-w-0">
                           <div class="font-head text-[13px] font-bold tracking-tight truncate">
                             {w.runnerUrl ? <a href={w.runnerUrl} class="link link-hover">{w.name}</a> : w.name}
@@ -484,6 +500,13 @@ const MEDAL_FG = ['', '#3d2300', '#1f2733', '#ffffff'];
                                   class="inline-flex items-center justify-center w-6 h-6 rounded-full font-mono text-[10px] font-bold shrink-0"
                                   style={`background:${MEDAL_BG[pos]};color:${MEDAL_FG[pos]};box-shadow:inset 0 -1px 0 rgba(0,0,0,0.15)`}
                                 >{pos}</span>
+                                {entry?.clubVest && (
+                                  <img
+                                    src={siteUrl(`/images/vests/${entry.clubVest.replace('.png', '-sm.png')}`)}
+                                    alt=""
+                                    class="h-9 w-[26px] shrink-0 object-contain"
+                                  />
+                                )}
                                 <div class="flex-1 min-w-0">
                                   {entry ? (
                                     <>
@@ -527,6 +550,9 @@ const MEDAL_FG = ['', '#3d2300', '#1f2733', '#ffffff'];
                         class={`flex items-center gap-3 py-2.5 cursor-default transition-opacity duration-100${wi < arr.length - 1 ? ' border-b border-line' : ''}`}
                       >
                         <span class="font-mono text-[10px] font-bold text-muted w-3.5 text-right shrink-0">{wi + 1}</span>
+                        {w.clubVest && (
+                          <img src={siteUrl(`/images/vests/${w.clubVest.replace('.png', '-sm.png')}`)} alt="" class="h-8 w-[22px] shrink-0 object-contain" />
+                        )}
                         <div class="flex-1 min-w-0">
                           <div class="font-head text-sm font-bold tracking-tight truncate">
                             {w.runnerUrl ? <a href={w.runnerUrl} class="link link-hover">{w.name}</a> : w.name}
@@ -642,10 +668,17 @@ const MEDAL_FG = ['', '#3d2300', '#1f2733', '#ffffff'];
                     <tr class="border-b border-line last:border-0">
                       <td class="py-3 pl-4 pr-2 font-mono text-sm font-medium text-muted align-middle">{i + 1}</td>
                       <td class="py-3 px-2 align-middle">
-                        <div class="font-head text-[14px] font-bold tracking-tight">
-                          {w.runnerUrl ? <a href={w.runnerUrl} class="link link-hover">{w.name}</a> : w.name}
+                        <div class="flex items-center gap-2">
+                          {w.clubVest && (
+                            <img src={siteUrl(`/images/vests/${w.clubVest.replace('.png', '-sm.png')}`)} alt="" class="h-8 w-auto shrink-0 object-contain" />
+                          )}
+                          <div>
+                            <div class="font-head text-[14px] font-bold tracking-tight">
+                              {w.runnerUrl ? <a href={w.runnerUrl} class="link link-hover">{w.name}</a> : w.name}
+                            </div>
+                            {w.clubName && <div class="font-mono text-[10px] text-muted mt-0.5">{w.clubName}</div>}
+                          </div>
                         </div>
-                        {w.clubName && <div class="font-mono text-[10px] text-muted mt-0.5">{w.clubName}</div>}
                       </td>
                       <td class="py-3 px-2 align-middle">
                         <div class="flex gap-1 flex-wrap">
@@ -717,10 +750,17 @@ const MEDAL_FG = ['', '#3d2300', '#1f2733', '#ffffff'];
                     <tr class="border-b border-line last:border-0">
                       <td class="py-3 pl-4 pr-2 font-mono text-sm font-medium text-muted align-middle">{i + 1}</td>
                       <td class="py-3 px-2 align-middle">
-                        <div class="font-head text-[14px] font-bold tracking-tight">
-                          {w.runnerUrl ? <a href={w.runnerUrl} class="link link-hover">{w.name}</a> : w.name}
+                        <div class="flex items-center gap-2">
+                          {w.clubVest && (
+                            <img src={siteUrl(`/images/vests/${w.clubVest.replace('.png', '-sm.png')}`)} alt="" class="h-8 w-auto shrink-0 object-contain" />
+                          )}
+                          <div>
+                            <div class="font-head text-[14px] font-bold tracking-tight">
+                              {w.runnerUrl ? <a href={w.runnerUrl} class="link link-hover">{w.name}</a> : w.name}
+                            </div>
+                            {w.clubName && <div class="font-mono text-[10px] text-muted mt-0.5">{w.clubName}</div>}
+                          </div>
                         </div>
-                        {w.clubName && <div class="font-mono text-[10px] text-muted mt-0.5">{w.clubName}</div>}
                       </td>
                       <td class="py-3 px-2 align-middle">
                         <div class="flex gap-1 flex-wrap">
