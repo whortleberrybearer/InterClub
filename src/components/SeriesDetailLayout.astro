@@ -6,7 +6,6 @@ import ArchiveYearPicker from './ArchiveYearPicker.astro';
 import AllTimeWinnersCard from './AllTimeWinnersCard.astro';
 import ScheduleTable from './ScheduleTable.astro';
 import { hasResults } from '../lib/results';
-import { siteUrl } from '../lib/url';
 import type { Race, Series, SeriesConfig } from '../lib/types';
 
 export interface Props {
@@ -29,7 +28,6 @@ const nextRaceNumber = nextRaceIdx >= 0 ? nextRaceIdx + 1 : null;
 
 // Archive data
 const pastYears = availableYears.filter(y => y < year).sort((a, b) => b - a);
-const recentYears = pastYears.slice(0, 4);
 
 const subtitleParts = [
   ...subtitle.split(' · '),
@@ -152,24 +150,5 @@ const scoringRules = [
 
   </div>
 
-  <!-- Recent seasons: mobile/tablet only -->
-  {recentYears.length > 0 && (
-    <div class="lg:hidden mt-8 pt-6 border-t border-line">
-      <div class="font-head text-[10px] font-bold tracking-[0.16em] uppercase text-muted mb-3">Recent seasons</div>
-      <div class="grid grid-cols-4 gap-2">
-        {recentYears.map((y, i) => (
-          <a
-            href={siteUrl(`/${series}/${y}/`)}
-            class="card p-3 no-underline flex flex-col justify-between min-h-[72px] hover:border-amber transition-colors"
-          >
-            <div class="font-head text-[20px] font-extrabold tracking-tight leading-none">{y}</div>
-            <div class="font-mono text-[10px] text-muted mt-2">
-              {i === 0 ? 'Last season' : `${recentYears[0] - y} yr ago`}
-            </div>
-          </a>
-        ))}
-      </div>
-    </div>
-  )}
 
 </Layout>
