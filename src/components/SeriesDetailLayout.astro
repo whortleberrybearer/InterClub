@@ -5,7 +5,6 @@ import ArchiveYearNav from './ArchiveYearNav.astro';
 import ArchiveYearPicker from './ArchiveYearPicker.astro';
 import AllTimeWinnersCard from './AllTimeWinnersCard.astro';
 import ScheduleTable from './ScheduleTable.astro';
-import { hasResults } from '../lib/results';
 import type { Race, Series, SeriesConfig } from '../lib/types';
 
 export interface Props {
@@ -23,16 +22,10 @@ const {
   seriesTitle, subtitle,
 } = Astro.props;
 
-const nextRaceIdx = races.findIndex(r => !hasResults(year, series, r.id));
-const nextRaceNumber = nextRaceIdx >= 0 ? nextRaceIdx + 1 : null;
-
 // Archive data
 const pastYears = availableYears.filter(y => y < year).sort((a, b) => b - a);
 
-const subtitleParts = [
-  ...subtitle.split(' · '),
-  ...(nextRaceNumber ? [`Round ${nextRaceNumber} of ${races.length} next`] : []),
-];
+const subtitleParts = subtitle.split(' · ');
 
 const teamCategories = config.teamCategories ?? [];
 const hasEligibility = teamCategories.some(c => c.eligibility);
