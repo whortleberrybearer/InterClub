@@ -1,5 +1,7 @@
 ---
 import type { TeamCategory } from '../lib/types';
+import MobileAccordionCard from './MobileAccordionCard.astro';
+import { siteUrl } from '../lib/url';
 
 interface ClubInfo {
   id: string;
@@ -7,6 +9,7 @@ interface ClubInfo {
   shortName: string;
   swatch: string;
   ink: string;
+  vest?: string;
 }
 
 interface EnrichedCategory extends Omit<TeamCategory, 'shortName'> {
@@ -281,74 +284,86 @@ const seriesLabel = series === 'road-gp' ? 'Road Grand Prix' : 'Fell Championshi
   <!-- Overall panel — all-time trophies -->
   <div data-cat-panel="overall" class="th-cat-panel">
 
-    <!-- Tablet (sm–md): table -->
+    <!-- Tablet (sm–md): standings-style table in a card -->
     <div class="hidden sm:block border-t border-line">
-      <table class="w-full border-collapse bg-surface">
-        <thead>
-          <tr class="bg-canvas border-b-2 border-content">
-            <th class="font-head text-[10px] font-bold tracking-[0.1em] uppercase text-muted py-2.5 px-3 w-8 text-center">#</th>
-            <th class="font-head text-[10px] font-bold tracking-[0.1em] uppercase text-muted py-2.5 px-3 text-left">Club</th>
-            <th class="font-head text-[10px] font-bold tracking-[0.1em] uppercase text-muted py-2.5 px-3 text-left">Categories</th>
-            <th class="font-head text-[10px] font-bold tracking-[0.1em] uppercase text-muted py-2.5 px-3 text-right border-l-2 border-content">Total</th>
-          </tr>
-        </thead>
-        <tbody>
-          {sortedClubs.map(({ clubId, club, total, byCat }, i) => (
-            <tr class="border-b border-line last:border-0">
-              <td class="py-3 px-3 font-mono text-sm text-muted text-center tabular-nums">{i + 1}</td>
-              <td class="py-3 px-3">
-                <div class="flex items-center gap-2.5">
-                  <span class="w-[3px] h-6 rounded-full shrink-0" style={`background: ${club.swatch};`}></span>
-                  <span class="font-head text-sm font-bold tracking-tight">{club.name}</span>
-                </div>
-              </td>
-              <td class="py-3 px-3">
-                <div class="flex gap-1.5 flex-wrap">
-                  {allCategories.filter(c => byCat[c.id]).map(c => (
-                    <span class="font-mono text-[9px] text-muted bg-canvas px-1.5 py-0.5 rounded border border-line">
-                      {c.shortName ?? c.name} ×{byCat[c.id]}
-                    </span>
-                  ))}
-                </div>
-              </td>
-              <td class="py-3 px-3 text-right border-l-2 border-content">
-                <span class="font-mono text-lg font-medium" style={`color: ${club.swatch};`}>{total}</span>
-              </td>
+      <div class="bg-surface border-b border-line overflow-hidden">
+        <table class="w-full border-collapse text-sm">
+          <colgroup>
+            <col class="w-10" />
+            <col />
+            <col />
+            <col class="w-16" />
+          </colgroup>
+          <thead>
+            <tr>
+              <th class="font-head text-[10px] font-bold tracking-[0.1em] uppercase text-muted py-2.5 px-2 bg-surface border-b-2 border-content text-center">#</th>
+              <th class="font-head text-[10px] font-bold tracking-[0.1em] uppercase text-muted py-2.5 px-2 bg-surface border-b-2 border-content text-left pl-2">Club</th>
+              <th class="font-head text-[10px] font-bold tracking-[0.1em] uppercase text-muted py-2.5 px-2 bg-surface border-b-2 border-content text-left">Categories</th>
+              <th class="font-head text-[10px] font-bold tracking-[0.1em] uppercase text-muted py-2.5 px-2 bg-surface border-b-2 border-content w-16 text-right border-l-2 border-content pr-3.5">Total</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {sortedClubs.map(({ clubId, club, total, byCat }, i) => (
+              <tr class="border-b border-line last:border-0 hover:bg-canvas/50">
+                <td class="py-3 pl-3.5 pr-2 text-center align-middle font-mono text-xs font-medium text-muted tabular-nums">{i + 1}</td>
+                <td class="py-3 pl-2 pr-2 align-middle max-w-0 overflow-hidden">
+                  <div class="flex items-center gap-2 min-w-0">
+                    <img
+                      src={siteUrl(`/images/vests/${club.vest ?? 'unknown.png'}`)}
+                      alt=""
+                      class="h-6 w-auto shrink-0 object-contain"
+                    />
+                    <span class="font-semibold text-[14px] truncate">{club.name}</span>
+                  </div>
+                </td>
+                <td class="py-3 px-2 align-middle">
+                  <div class="flex gap-1 flex-wrap">
+                    {allCategories.filter(c => byCat[c.id]).map(c => (
+                      <span class="font-mono text-[9px] text-muted bg-canvas px-1.5 py-0.5 rounded border border-line whitespace-nowrap">
+                        {c.shortName ?? c.name} ×{byCat[c.id]}
+                      </span>
+                    ))}
+                  </div>
+                </td>
+                <td class="py-3 pl-3 pr-3.5 text-right border-l-2 border-content align-middle">
+                  <div class="font-mono text-[16px] font-bold tabular-nums">{total}</div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
 
-    <!-- Mobile (below sm): accordion cards -->
-    <div class="sm:hidden px-4 pt-3 pb-2">
+    <!-- Mobile (below sm): standings-style accordion cards -->
+    <div class="sm:hidden pb-2">
       {sortedClubs.map(({ clubId, club, total, byCat }, i) => {
         const detailId = `overall-detail-${clubId}`;
         return (
-          <div class="bg-surface border border-line rounded-xl mb-2 overflow-hidden relative">
-            <div class="absolute left-0 inset-y-0 w-[3px]" style={`background: ${club.swatch};`}></div>
-            <button
-              class="accordion-toggle w-full flex items-center gap-3 py-3 pl-4 pr-3 text-left"
-              data-target={detailId}
-              aria-expanded="false"
-            >
-              <span class="font-mono text-sm font-medium text-muted w-5 shrink-0 text-center tabular-nums">{i + 1}</span>
-              <div class="flex-1 min-w-0">
-                <div class="font-head text-base font-bold tracking-tight truncate">{club.name}</div>
-              </div>
-              <span class="font-mono text-xl font-medium shrink-0 mr-1" style={`color: ${club.swatch};`}>{total}</span>
-              <span class="chevron text-content/30 text-xs transition-transform duration-200">▾</span>
-            </button>
-            <div id={detailId} class="hidden border-t border-dashed border-line px-4 py-3">
+          <MobileAccordionCard detailId={detailId} position={i + 1}>
+            <div class="flex items-center gap-2 min-w-0">
+              <img
+                src={siteUrl(`/images/vests/${(club.vest ?? 'unknown.png').replace('.png', '-sm.png')}`)}
+                alt=""
+                class="h-9 w-auto shrink-0 object-contain"
+              />
+              <div class="font-head text-[16px] font-bold tracking-[-0.01em] leading-[1.15] truncate">{club.name}</div>
+            </div>
+
+            <div slot="score" class="text-right shrink-0 flex flex-col items-end justify-center min-h-10">
+              <div class="font-mono text-[22px] font-medium leading-none tabular-nums">{total}</div>
+            </div>
+
+            <div slot="detail" class="px-4 py-3">
               <div class="flex gap-1.5 flex-wrap">
                 {allCategories.filter(c => byCat[c.id]).map(c => (
-                  <span class="font-mono text-[10px] text-muted bg-canvas px-2 py-1 rounded-full border border-line">
+                  <span class="font-mono text-[11px] text-muted bg-canvas px-2.5 py-1 rounded-full border border-line whitespace-nowrap">
                     {c.shortName ?? c.name} ×{byCat[c.id]}
                   </span>
                 ))}
               </div>
             </div>
-          </div>
+          </MobileAccordionCard>
         );
       })}
     </div>
@@ -535,14 +550,4 @@ const seriesLabel = series === 'road-gp' ? 'Road Grand Prix' : 'Fell Championshi
     container.addEventListener('mouseleave', () => update(null));
   }
 
-  // Mobile: accordion expand/collapse
-  document.querySelectorAll<HTMLButtonElement>('.accordion-toggle').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const detail = document.getElementById(btn.dataset.target!)!;
-      const isOpen = !detail.classList.contains('hidden');
-      detail.classList.toggle('hidden', isOpen);
-      btn.setAttribute('aria-expanded', isOpen ? 'false' : 'true');
-      btn.querySelector('.chevron')?.classList.toggle('rotate-180', !isOpen);
-    });
-  });
 </script>

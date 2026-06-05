@@ -30,13 +30,13 @@ const CLUB_SWATCHES: Record<string, { swatch: string; ink: string }> = {
   'springfields':    { swatch: '#6b7280', ink: '#fff' },
 };
 
-type ClubInfo = { id: string; name: string; shortName: string; swatch: string; ink: string };
+type ClubInfo = { id: string; name: string; shortName: string; swatch: string; ink: string; vest?: string };
 
 const clubMetaMap = new Map<string, ClubInfo>([
-  ['north-fylde',     { id: 'north-fylde',     name: 'North Fylde AC',        shortName: 'NFA', swatch: 'oklch(58% 0.14 195)', ink: '#fff' }],
-  ['springfields',    { id: 'springfields',    name: 'Springfields AC',        shortName: 'SAC', swatch: 'oklch(58% 0.04 250)', ink: '#fff' }],
-  ['blackpool-fylde', { id: 'blackpool-fylde', name: 'Blackpool & Fylde AC',   shortName: 'BFA', swatch: 'oklch(62% 0.18 25)',  ink: '#fff' }],
-  ['chorley-ac',      { id: 'chorley-ac',      name: 'Chorley AC',             shortName: 'CAC', swatch: 'oklch(48% 0.10 50)',  ink: '#fff' }],
+  ['north-fylde',     { id: 'north-fylde',     name: 'North Fylde AC',        shortName: 'NFA', swatch: 'var(--club-north-fylde)', ink: 'var(--club-north-fylde-ink)' }],
+  ['springfields',    { id: 'springfields',    name: 'Springfields AC',        shortName: 'SAC', swatch: '#6b7280', ink: '#fff' }],
+  ['blackpool-fylde', { id: 'blackpool-fylde', name: 'Blackpool & Fylde AC',   shortName: 'BFA', swatch: CLUB_COLORS['blackpool'] ?? '#e85d2c', ink: '#fff' }],
+  ['chorley-ac',      { id: 'chorley-ac',      name: 'Chorley AC',             shortName: 'CAC', swatch: CLUB_COLORS['chorley-ac'] ?? '#8c1c1c', ink: '#fff' }],
 ]);
 
 allYearlyAwards.forEach(yearly => {
@@ -46,6 +46,7 @@ allYearlyAwards.forEach(yearly => {
       id: club.id,
       name: club.name,
       shortName: club.shortName ?? club.id.slice(0, 3).toUpperCase(),
+      vest: club.vest,
       ...swatchData,
     });
   });
