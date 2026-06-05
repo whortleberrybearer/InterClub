@@ -16,7 +16,7 @@ import type { RaceCell } from './RaceResultGrid.astro';
 import { getRaces } from '../lib/data';
 import type { Club, Series, SeriesConfig, TeamStandings } from '../lib/types';
 import { siteUrl } from '../lib/url';
-import { getSeriesLabel } from '../lib/format';
+import { getSeriesLabel, getSeriesLongLabel } from '../lib/format';
 
 export interface Props {
   series: Series;
@@ -31,6 +31,7 @@ const { series, year, standings, clubs, config } = Astro.props;
 const linkedRaceIds = new Set(Astro.props.linkedRaceIds);
 
 const seriesLabel = getSeriesLabel(series);
+const seriesLong  = getSeriesLongLabel(series);
 
 const races = getRaces(year, series);
 const clubById = Object.fromEntries(clubs.map(c => [c.id, c]));
@@ -62,7 +63,7 @@ const raceColWidth = races.length >= 7 ? '3rem'
     slot="hero"
     eyebrow={`${seriesLabel} ${year} · Season Standings`}
     title="Team Standings"
-    titleAccent={`${seriesLabel} ${year}`}
+    titleAccent={`${seriesLong} ${year}`}
     provisional={standings.provisional}
   >
     <div class="flex">
