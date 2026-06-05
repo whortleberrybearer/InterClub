@@ -350,7 +350,7 @@ const seriesLabel = series === 'road-gp' ? 'Road Grand Prix' : 'Fell Championshi
                       ) : winner ? (
                         <span
                           data-club={winner.id}
-                          class="inline-flex items-center px-2 py-1 rounded font-mono text-[11px] font-semibold tracking-wide leading-none whitespace-nowrap cursor-default transition-opacity duration-100"
+                          class="inline-flex items-center justify-center w-9 py-1 rounded font-mono text-[11px] font-semibold tracking-wide leading-none cursor-default transition-opacity duration-100"
                           style={`background: ${winner.swatch}; color: ${winner.ink};`}
                         >{winner.shortName}</span>
                       ) : (
