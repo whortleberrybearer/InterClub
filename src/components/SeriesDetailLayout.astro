@@ -43,6 +43,8 @@ const scoringRules = [
   'Tied finisher counts use normal scoring rules',
   'Clubs with no finishers score 0 points',
 ];
+
+const accentClass = series === 'fell' ? 'text-teal' : 'text-amber';
 ---
 
 <Layout title={seriesTitle}>
@@ -119,10 +121,10 @@ const scoringRules = [
         <!-- Team Scoring -->
         <div class="card p-5">
           <div class="font-head text-[13px] font-bold tracking-[0.05em] uppercase mb-3">Team Scoring</div>
-          <ul class="space-y-1">
+          <ul class="space-y-0">
             {scoringRules.map(rule => (
-              <li class="relative pl-4 text-[13px] leading-relaxed">
-                <span class="absolute left-0 top-0.5 font-mono text-[11px] text-muted">›</span>
+              <li class="relative pl-5 text-[13px] leading-relaxed mb-1.5">
+                <span class:list={['absolute left-0 top-0.5 font-bold', accentClass]}>·</span>
                 {rule}
               </li>
             ))}
