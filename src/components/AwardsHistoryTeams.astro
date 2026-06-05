@@ -178,6 +178,10 @@ const seriesLabel = series === 'road-gp' ? 'Road Grand Prix' : 'Fell Championshi
 
   <!-- Category chip bar -->
   <div class="flex gap-2 overflow-x-auto px-4 py-2.5 bg-surface border-b border-line scrollbar-hide">
+    <button
+      data-cat-chip="overall"
+      class="th-chip flex-shrink-0 font-head text-xs font-bold tracking-[0.06em] uppercase px-3.5 py-1.5 rounded-full border transition-colors whitespace-nowrap cursor-pointer min-w-[4.5rem] text-center border-line text-muted"
+    >Overall</button>
     {allCategories.map((cat, i) => (
       <button
         data-cat-chip={cat.id}
@@ -274,8 +278,8 @@ const seriesLabel = series === 'road-gp' ? 'Road Grand Prix' : 'Fell Championshi
     );
   })}
 
-  <!-- All-time totals strip -->
-  <div class="bg-canvas border-t border-line px-5 py-4">
+  <!-- Overall panel — all-time trophies (hidden until Overall chip selected) -->
+  <div data-cat-panel="overall" class="th-cat-panel is-hidden bg-canvas border-t border-line px-5 py-4">
     <div class="font-head text-[10px] font-bold tracking-[0.14em] uppercase text-muted mb-2.5">All-time team trophies</div>
     <div class="space-y-2">
       {sortedClubs.map(({ clubId, club, total, byCat }) => (
