@@ -25,6 +25,16 @@
   --font-mono:        'DM Mono', monospace;
 }
 
+/* ── Club badge colours (some need dark-mode variants) ── */
+:root {
+  --club-north-fylde:     #1c1916;  /* dark band — readable on light bg */
+  --club-north-fylde-ink: #ffffff;
+}
+html[data-theme="dark"] {
+  --club-north-fylde:     #c8be9e;  /* cream vest body — readable on dark bg */
+  --club-north-fylde-ink: #1c1916;
+}
+
 /* ── Font families ── */
 :root {
   --ff-head: 'Barlow Condensed', sans-serif;

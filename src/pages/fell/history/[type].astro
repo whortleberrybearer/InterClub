@@ -27,7 +27,7 @@ const CLUB_SWATCHES: Record<string, { swatch: string; ink: string }> = {
   ...Object.fromEntries(Object.entries(CLUB_COLORS).map(([id, color]) => [id, { swatch: color, ink: '#fff' }])),
   'blackpool-fylde': { swatch: CLUB_COLORS['blackpool'] ?? '#e85d2c', ink: '#fff' },
   'chorley-ac':      { swatch: CLUB_COLORS['chorley']   ?? '#6b7280', ink: '#fff' },
-  'north-fylde':     { swatch: CLUB_COLORS['north-fylde'] ?? '#1c1916', ink: '#fff' },
+  'north-fylde':     { swatch: 'var(--club-north-fylde)', ink: 'var(--club-north-fylde-ink)' },
   'springfields':    { swatch: '#6b7280', ink: '#fff' },
 };
 
