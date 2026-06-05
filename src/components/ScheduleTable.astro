@@ -26,6 +26,7 @@ interface Props {
 }
 
 const { series, year, races, showNextRace = false, showCard = true, note } = Astro.props;
+const hasFooter = Astro.slots.has('default');
 
 const accentBg    = series === 'fell' ? 'bg-teal-bg'  : 'bg-amber-bg';
 const accentText  = series === 'fell' ? 'text-teal'   : 'text-amber';
@@ -100,6 +101,11 @@ const scriptRaceData = showNextRace ? raceStates.map(({ race, past }) => ({
         ))}
       </tbody>
     </table>
+    {hasFooter && (
+      <div class:list={['border-t border-line', showCard ? 'px-4' : 'px-0']}>
+        <slot />
+      </div>
+    )}
   </div>
 )}
 
