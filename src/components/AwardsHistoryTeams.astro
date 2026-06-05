@@ -330,7 +330,7 @@ const seriesLabel = series === 'road-gp' ? 'Road Grand Prix' : 'Fell Championshi
           <tbody>
             {yearlyData.map(row => row.suspended ? (
               <tr class="border-b border-line last:border-0 bg-canvas/60">
-                <td class="py-2 px-4 font-mono text-[11px] text-line">—</td>
+                <td class="py-2 px-4 font-mono text-[11px] text-muted">{row.year}</td>
                 <td colspan={allCategories.length} class="py-2 px-3 font-mono text-[11px] text-muted italic tracking-wide text-center">
                   {row.suspended}
                 </td>
