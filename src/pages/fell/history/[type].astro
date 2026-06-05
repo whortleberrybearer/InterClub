@@ -21,37 +21,122 @@ const allYearlyAwards = getAllAwardsByYear(series);
 
 const pageTitle = type === 'teams' ? 'Fell Championship Team Winners' : 'Fell Championship Individual Winners';
 
-// Prepare team data
-let allCategories: TeamCategory[] = [];
-let yearlyTeamData: Array<{ year: number; categoryWinners: Record<string, string | null> }> = [];
+// ── Club colour swatches ───────────────────────────────────────────────────
+const CLUB_SWATCHES: Record<string, { swatch: string; ink: string }> = {
+  'blackpool':       { swatch: 'oklch(62% 0.18 25)',  ink: '#fff' },
+  'blackpool-fylde': { swatch: 'oklch(62% 0.18 25)',  ink: '#fff' },
+  'chorley':         { swatch: 'oklch(48% 0.10 50)',  ink: '#fff' },
+  'chorley-ac':      { swatch: 'oklch(48% 0.10 50)',  ink: '#fff' },
+  'lytham':          { swatch: 'oklch(52% 0.16 290)', ink: '#fff' },
+  'north-fylde':     { swatch: 'oklch(58% 0.14 195)', ink: '#fff' },
+  'preston':         { swatch: 'oklch(72% 0.18 60)',  ink: '#3a2400' },
+  'red-rose':        { swatch: 'oklch(55% 0.18 350)', ink: '#fff' },
+  'springfields':    { swatch: 'oklch(58% 0.04 250)', ink: '#fff' },
+  'thornton':        { swatch: 'oklch(62% 0.15 240)', ink: '#fff' },
+  'wesham':          { swatch: 'oklch(60% 0.14 145)', ink: '#fff' },
+};
 
-if (type === 'teams') {
-  const categoryMap = new Map<string, TeamCategory>();
-  allYearlyAwards.forEach(yearly => {
-    yearly.config.teamCategories?.forEach(cat => {
-      if (!categoryMap.has(cat.id)) {
-        categoryMap.set(cat.id, cat);
-      }
+type ClubInfo = { id: string; name: string; shortName: string; swatch: string; ink: string };
+
+const clubMetaMap = new Map<string, ClubInfo>([
+  ['north-fylde',     { id: 'north-fylde',     name: 'North Fylde AC',        shortName: 'NFA', swatch: 'oklch(58% 0.14 195)', ink: '#fff' }],
+  ['springfields',    { id: 'springfields',    name: 'Springfields AC',        shortName: 'SAC', swatch: 'oklch(58% 0.04 250)', ink: '#fff' }],
+  ['blackpool-fylde', { id: 'blackpool-fylde', name: 'Blackpool & Fylde AC',   shortName: 'BFA', swatch: 'oklch(62% 0.18 25)',  ink: '#fff' }],
+  ['chorley-ac',      { id: 'chorley-ac',      name: 'Chorley AC',             shortName: 'CAC', swatch: 'oklch(48% 0.10 50)',  ink: '#fff' }],
+]);
+
+allYearlyAwards.forEach(yearly => {
+  yearly.clubs.forEach(club => {
+    const swatchData = CLUB_SWATCHES[club.id] ?? { swatch: 'oklch(55% 0.08 250)', ink: '#fff' };
+    clubMetaMap.set(club.id, {
+      id: club.id,
+      name: club.name,
+      shortName: club.shortName ?? club.id.slice(0, 3).toUpperCase(),
+      ...swatchData,
     });
   });
-  allCategories = Array.from(categoryMap.values());
+});
 
-  yearlyTeamData = allYearlyAwards.map(yearly => {
-    const categoryWinners: Record<string, string | null> = {};
+const clubMeta = Object.fromEntries(clubMetaMap);
+
+// ── Team data ─────────────────────────────────────────────────────────────
+interface EnrichedCategory extends TeamCategory {
+  since: number;
+}
+
+interface YearRow {
+  year: number;
+  suspended?: string;
+  categoryWinners: Record<string, ClubInfo | null>;
+}
+
+let allCategories: EnrichedCategory[] = [];
+let fullYearList: YearRow[] = [];
+
+if (type === 'teams') {
+  const ascendingYears = [...allYearlyAwards].sort((a, b) => a.year - b.year);
+
+  const categorySince = new Map<string, number>();
+  ascendingYears.forEach(yearly => {
+    yearly.awards.teamAwards.forEach(award => {
+      if (!categorySince.has(award.id)) categorySince.set(award.id, yearly.year);
+    });
+    yearly.config.teamCategories?.forEach(cat => {
+      if (!categorySince.has(cat.id)) categorySince.set(cat.id, yearly.year);
+    });
+  });
+
+  const categoryMap = new Map<string, TeamCategory>();
+  ascendingYears.forEach(yearly => {
+    yearly.config.teamCategories?.forEach(cat => {
+      if (!categoryMap.has(cat.id)) categoryMap.set(cat.id, cat);
+    });
+  });
+  for (const id of categorySince.keys()) {
+    if (!categoryMap.has(id)) {
+      const name = id.charAt(0).toUpperCase() + id.slice(1).replace(/[-_]/g, ' ');
+      categoryMap.set(id, { id, name });
+    }
+  }
+
+  allCategories = Array.from(categoryMap.entries())
+    .map(([id, cat]) => ({ ...cat, since: categorySince.get(id) ?? 0 }))
+    .sort((a, b) => a.since - b.since);
+
+  const dataYears = allYearlyAwards.map(y => y.year).sort((a, b) => b - a);
+
+  for (let i = 0; i < dataYears.length; i++) {
+    const year = dataYears[i];
+    const yearly = allYearlyAwards.find(y => y.year === year)!;
+
+    const categoryWinners: Record<string, ClubInfo | null> = {};
     allCategories.forEach(cat => {
       const award = yearly.awards.teamAwards.find(ta => ta.id === cat.id);
       if (award) {
-        const clubName = yearly.clubs.find(c => c.id === award.club)?.name ?? award.club;
-        categoryWinners[cat.id] = clubName;
+        const meta = clubMeta[award.club];
+        categoryWinners[cat.id] = meta
+          ? { ...meta }
+          : { id: award.club, name: award.club, shortName: award.club.slice(0, 3).toUpperCase(), swatch: 'oklch(55% 0.08 250)', ink: '#fff' };
       } else {
         categoryWinners[cat.id] = null;
       }
     });
-    return { year: yearly.year, categoryWinners };
-  });
+
+    fullYearList.push({ year, categoryWinners });
+
+    const nextYear = dataYears[i + 1];
+    if (nextYear !== undefined && year - nextYear > 1) {
+      const gapStart = nextYear + 1;
+      const gapEnd = year - 1;
+      const note = gapStart === gapEnd
+        ? `${gapStart} · Series not held`
+        : `${gapStart}–${gapEnd} · Series not held`;
+      fullYearList.push({ year: 0, suspended: note, categoryWinners: {} });
+    }
+  }
 }
 
-// Prepare individual data
+// ── Individual data ───────────────────────────────────────────────────────
 let categoryData: CategoryHistoryData[] = [];
 
 if (type === 'individuals') {
@@ -77,19 +162,20 @@ if (type === 'individuals') {
 ---
 
 <Layout title={pageTitle}>
-  <div class="container mx-auto px-4 py-6">
-    <div class="mb-6">
-      <a href="/fell" class="btn btn-sm btn-ghost">← Back</a>
-    </div>
-    <h1 class="text-3xl font-bold mb-6">{pageTitle}</h1>
-    {type === 'teams' ? (
-      <AwardsHistoryTeams
-        series={series}
-        yearlyData={yearlyTeamData}
-        allCategories={allCategories}
-      />
-    ) : (
+  {type === 'teams' ? (
+    <AwardsHistoryTeams
+      series={series}
+      yearlyData={fullYearList}
+      allCategories={allCategories}
+      clubMeta={clubMeta}
+    />
+  ) : (
+    <>
+      <div class="mb-6">
+        <a href="/fell" class="btn btn-sm btn-ghost">← Fell Championship</a>
+      </div>
+      <h1 class="text-3xl font-bold mb-6">{pageTitle}</h1>
       <AwardsHistoryIndividuals categories={categoryData} />
-    )}
-  </div>
+    </>
+  )}
 </Layout>
