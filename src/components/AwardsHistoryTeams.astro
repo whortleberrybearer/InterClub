@@ -318,9 +318,9 @@ const seriesLabel = series === 'road-gp' ? 'Road Grand Prix' : 'Fell Championshi
               {allCategories.map(cat => (
                 <th class="text-left py-3 px-2 font-head text-[10px] font-bold tracking-[0.12em] uppercase text-content border-b-2 border-content min-w-[80px]">
                   <div>{cat.name}</div>
-                  {(cat.since > 0 || cat.scorerCount != null) && (
+                  {cat.since > 0 && (
                     <div class="font-mono text-[9px] font-medium text-muted normal-case tracking-normal mt-0.5 whitespace-nowrap">
-                      {cat.since > 0 && `since ${cat.since}`}{cat.since > 0 && cat.scorerCount != null && ' · '}{cat.scorerCount != null && `×${cat.scorerCount}`}
+                      since {cat.since}
                     </div>
                   )}
                 </th>
