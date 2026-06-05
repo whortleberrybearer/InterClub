@@ -410,6 +410,7 @@ export interface YearlyResolvedIndividual {
       position: number;
       name: string;
       clubName: string;
+      clubVest?: string;
       runnerUrl?: string;
     }>;
   }>;
@@ -418,6 +419,7 @@ export interface YearlyResolvedIndividual {
 export interface CategoryHistoryEntry {
   name: string;
   clubName: string;
+  clubVest?: string;
   runnerUrl?: string;
 }
 
@@ -456,7 +458,7 @@ export function pivotIndividualAwardsByCategory(
         const cat = yearly.categories.find(c => c.id === id)!;
         const findPos = (pos: number) => cat.awards.find(a => a.position === pos);
         const mapEntry = (a: ReturnType<typeof findPos>): CategoryHistoryEntry | null =>
-          a ? { name: a.name, clubName: a.clubName, runnerUrl: a.runnerUrl } : null;
+          a ? { name: a.name, clubName: a.clubName, clubVest: a.clubVest, runnerUrl: a.runnerUrl } : null;
         return {
           year: yearly.year,
           positions: {

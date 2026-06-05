@@ -163,6 +163,7 @@ if (type === 'individuals') {
           position: a.position,
           name: a.name,
           clubName: yearly.clubs.find(c => c.id === a.club)?.name ?? a.club ?? '',
+          clubVest: yearly.clubs.find(c => c.id === a.club)?.vest,
           runnerUrl: a.seriesRunnerId != null ? runnerUrlMap[a.seriesRunnerId] : undefined,
         })),
       })),
