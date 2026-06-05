@@ -302,11 +302,17 @@ const MEDAL_FG = ['', '#3d2300', '#1f2733', '#ffffff'];
               <div class="hidden md:block">
                 <div class="bg-surface border border-line rounded-xl overflow-hidden">
                   <div class="overflow-x-auto">
-                    <table class="w-full border-collapse" id={`ih-table-${cat.id}`}>
+                    <table class="w-full border-collapse table-fixed" id={`ih-table-${cat.id}`}>
                       <caption class="sr-only">{cat.name} award winners by year</caption>
+                      <colgroup>
+                        <col class="w-16" />
+                        <col />
+                        <col />
+                        <col />
+                      </colgroup>
                       <thead>
                         <tr class="bg-canvas">
-                          <th class="text-left py-3 pl-4 pr-3 font-head text-[10px] font-bold tracking-[0.12em] uppercase text-muted border-b-2 border-content w-16 whitespace-nowrap">Year</th>
+                          <th class="text-left py-3 pl-4 pr-3 font-head text-[10px] font-bold tracking-[0.12em] uppercase text-muted border-b-2 border-content whitespace-nowrap">Year</th>
                           {[1, 2, 3].map(pos => (
                             <th class="text-left py-3 px-3 font-head text-[10px] font-bold tracking-[0.12em] uppercase text-content border-b-2 border-content">
                               <div class="flex items-center gap-1.5">
@@ -344,14 +350,14 @@ const MEDAL_FG = ['', '#3d2300', '#1f2733', '#ffffff'];
                                             class="h-8 w-auto shrink-0 object-contain"
                                           />
                                         )}
-                                        <div class="min-w-0">
-                                          <div class="font-body text-[13px] font-semibold leading-tight text-content">
+                                        <div class="min-w-0 overflow-hidden">
+                                          <div class="text-[13px] font-semibold leading-tight truncate">
                                             {entry.runnerUrl ? (
                                               <a href={entry.runnerUrl} class="link link-hover hover:text-amber">{entry.name}</a>
                                             ) : entry.name}
                                           </div>
                                           {entry.clubName && (
-                                            <div class="font-mono text-[10px] text-muted mt-0.5">{entry.clubName}</div>
+                                            <div class="text-xs text-muted mt-0.5 truncate">{entry.clubName}</div>
                                           )}
                                         </div>
                                       </div>
@@ -396,7 +402,7 @@ const MEDAL_FG = ['', '#3d2300', '#1f2733', '#ffffff'];
                           <div class="font-head text-[13px] font-bold tracking-tight truncate">
                             {w.runnerUrl ? <a href={w.runnerUrl} class="link link-hover">{w.name}</a> : w.name}
                           </div>
-                          {w.clubName && <div class="font-mono text-[9.5px] text-muted mt-0.5 truncate">{w.clubName}</div>}
+                          {w.clubName && <div class="text-xs text-muted mt-0.5 truncate">{w.clubName}</div>}
                         </div>
                         <div class="flex gap-1 items-center shrink-0">
                           {w.gold > 0 && (
@@ -440,7 +446,7 @@ const MEDAL_FG = ['', '#3d2300', '#1f2733', '#ffffff'];
                             <div class="font-head text-sm font-bold tracking-tight">
                               {w.runnerUrl ? <a href={w.runnerUrl} class="link link-hover">{w.name}</a> : w.name}
                             </div>
-                            {w.clubName && <div class="font-mono text-[9.5px] text-muted mt-0.5">{w.clubName}</div>}
+                            {w.clubName && <div class="text-xs text-muted mt-0.5">{w.clubName}</div>}
                           </div>
                           <div class="flex gap-1 items-center shrink-0">
                             {w.gold > 0 && (
@@ -510,13 +516,13 @@ const MEDAL_FG = ['', '#3d2300', '#1f2733', '#ffffff'];
                                 <div class="flex-1 min-w-0">
                                   {entry ? (
                                     <>
-                                      <div class="font-head text-[15px] font-bold tracking-tight leading-tight">
+                                      <div class="font-head text-[15px] font-bold tracking-tight leading-tight truncate">
                                         {entry.runnerUrl ? (
                                           <a href={entry.runnerUrl} class="link link-hover">{entry.name}</a>
                                         ) : entry.name}
                                       </div>
                                       {entry.clubName && (
-                                        <div class="font-mono text-[10px] text-muted mt-0.5">{entry.clubName}</div>
+                                        <div class="text-xs text-muted mt-0.5 truncate">{entry.clubName}</div>
                                       )}
                                     </>
                                   ) : (
@@ -558,7 +564,7 @@ const MEDAL_FG = ['', '#3d2300', '#1f2733', '#ffffff'];
                             {w.runnerUrl ? <a href={w.runnerUrl} class="link link-hover">{w.name}</a> : w.name}
                           </div>
                           {w.clubName && (
-                            <div class="font-mono text-[9.5px] text-muted mt-0.5 truncate">{w.clubName}</div>
+                            <div class="text-xs text-muted mt-0.5 truncate">{w.clubName}</div>
                           )}
                         </div>
                         <div class="text-right shrink-0">
@@ -582,7 +588,7 @@ const MEDAL_FG = ['', '#3d2300', '#1f2733', '#ffffff'];
                               </span>
                             )}
                           </div>
-                          <div class="font-mono text-[10px] text-muted mt-0.5">
+                          <div class="text-xs text-muted mt-0.5">
                             {w.gold + w.silver + w.bronze} podium{w.gold + w.silver + w.bronze !== 1 ? 's' : ''}
                           </div>
                         </div>
@@ -676,7 +682,7 @@ const MEDAL_FG = ['', '#3d2300', '#1f2733', '#ffffff'];
                             <div class="font-head text-[14px] font-bold tracking-tight">
                               {w.runnerUrl ? <a href={w.runnerUrl} class="link link-hover">{w.name}</a> : w.name}
                             </div>
-                            {w.clubName && <div class="font-mono text-[10px] text-muted mt-0.5">{w.clubName}</div>}
+                            {w.clubName && <div class="text-xs text-muted mt-0.5">{w.clubName}</div>}
                           </div>
                         </div>
                       </td>
@@ -758,7 +764,7 @@ const MEDAL_FG = ['', '#3d2300', '#1f2733', '#ffffff'];
                             <div class="font-head text-[14px] font-bold tracking-tight">
                               {w.runnerUrl ? <a href={w.runnerUrl} class="link link-hover">{w.name}</a> : w.name}
                             </div>
-                            {w.clubName && <div class="font-mono text-[10px] text-muted mt-0.5">{w.clubName}</div>}
+                            {w.clubName && <div class="text-xs text-muted mt-0.5">{w.clubName}</div>}
                           </div>
                         </div>
                       </td>
