@@ -96,12 +96,12 @@ const scoringRules = [
         </div>
 
         <!-- Team Categories -->
-        <div class="card overflow-hidden">
-          <div class="font-head text-[13px] font-bold tracking-[0.05em] uppercase px-5 py-3.5 border-b border-line">Team Categories</div>
+        <div class="card p-5">
+          <div class="font-head text-[13px] font-bold tracking-[0.05em] uppercase mb-3">Team Categories</div>
           <table class="table table-sm">
             <thead>
               <tr>
-                <th>Category</th>
+                <th class="pl-0">Category</th>
                 <th class="w-16">Scorers</th>
                 {hasEligibility && <th>Eligibility</th>}
               </tr>
@@ -109,7 +109,7 @@ const scoringRules = [
             <tbody>
               {teamCategories.map(cat => (
                 <tr>
-                  <td class="font-medium">{cat.name}</td>
+                  <td class="pl-0 font-medium">{cat.name}</td>
                   <td class="font-mono">{cat.scorerCount}</td>
                   {hasEligibility && <td class="text-muted text-xs">{cat.eligibility ?? '—'}</td>}
                 </tr>
