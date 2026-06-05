@@ -86,16 +86,13 @@ const individualStandingsUrl = hasIndividualStandings(year, series)
       <!-- Schedule -->
       <ScheduleTable series={series} year={year} races={races} showNextRace={true}>
         {(teamStandingsUrl || individualStandingsUrl) && (
-          <div class="flex items-center justify-between py-3">
-            <span class="font-head text-[11px] text-muted tracking-[0.08em] uppercase">Standings</span>
-            <div class="flex gap-4">
-              {teamStandingsUrl && (
-                <a href={teamStandingsUrl} class:list={['font-head text-[11px] font-bold tracking-[0.08em] uppercase no-underline', accentClass]}>Teams →</a>
-              )}
-              {individualStandingsUrl && (
-                <a href={individualStandingsUrl} class:list={['font-head text-[11px] font-bold tracking-[0.08em] uppercase no-underline', accentClass]}>Individuals →</a>
-              )}
-            </div>
+          <div class="flex justify-end gap-4 py-3">
+            {teamStandingsUrl && (
+              <a href={teamStandingsUrl} class:list={['font-head text-[11px] font-bold tracking-[0.08em] uppercase no-underline', accentClass]}>Team Standings →</a>
+            )}
+            {individualStandingsUrl && (
+              <a href={individualStandingsUrl} class:list={['font-head text-[11px] font-bold tracking-[0.08em] uppercase no-underline', accentClass]}>Individuals →</a>
+            )}
           </div>
         )}
       </ScheduleTable>
