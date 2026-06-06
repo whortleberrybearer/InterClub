@@ -120,18 +120,12 @@ function getRacesForRunner(year: number, series: Series, seriesLocalId: number):
     if (!match) continue;
     const race = raceById[raceId];
     if (!race) continue;
-    const openPositions = raceResults
-      .map(r => r.categoryPositions['open'])
-      .filter((p): p is number => p != null);
-    const totalOpen = openPositions.length > 0 ? Math.max(...openPositions) : null;
     results.push({
       date: race.date,
       raceName: race.name,
       raceId,
       time: match.time,
       hasResults: hasResults(year, series, raceId),
-      position: match.position ?? null,
-      totalOpen,
     });
   }
   return results.sort((a, b) => a.date.localeCompare(b.date));
