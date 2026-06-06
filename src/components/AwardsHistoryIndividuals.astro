@@ -117,7 +117,7 @@ function buildGreats(cats: CategoryHistoryData[]): GreatsEntry[] {
       if (b.total !== a.total) return b.total - a.total;
       return a.name.localeCompare(b.name);
     })
-    .slice(0, 12);
+    .slice(0, 10);
 }
 
 const greatsM = buildGreats(mCats);
@@ -405,7 +405,7 @@ const MEDAL_FG = ['', '#3d2300', '#1f2733', '#ffffff'];
                           </tr>
                         </thead>
                         <tbody>
-                          {hof.map((w, wi) => {
+                          {hof.slice(0, 10).map((w, wi) => {
                             const years = [
                               [...w.goldYears].sort((a, b) => b - a),
                               [...w.silverYears].sort((a, b) => b - a),
