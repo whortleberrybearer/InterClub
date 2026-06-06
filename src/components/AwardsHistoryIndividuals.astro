@@ -379,11 +379,19 @@ const MEDAL_FG = ['', '#3d2300', '#1f2733', '#ffffff'];
                   </div>
                   <div class="bg-surface border border-line rounded-xl overflow-hidden">
                     <div class="overflow-x-auto">
-                      <table class="w-full border-collapse">
+                      <table class="w-full border-collapse table-fixed">
                         <caption class="sr-only">{cat.name} Hall of Fame</caption>
+                        <colgroup>
+                          <col class="w-8" />
+                          <col />
+                          <col class="w-[22%]" />
+                          <col class="w-[22%]" />
+                          <col class="w-[22%]" />
+                          <col class="w-14" />
+                        </colgroup>
                         <thead>
                           <tr class="bg-canvas">
-                            <th class="text-left py-3 pl-4 pr-2 font-head text-[10px] font-bold tracking-[0.12em] uppercase text-muted border-b-2 border-content w-8">#</th>
+                            <th class="text-left py-3 pl-4 pr-2 font-head text-[10px] font-bold tracking-[0.12em] uppercase text-muted border-b-2 border-content">#</th>
                             <th class="text-left py-3 px-2 font-head text-[10px] font-bold tracking-[0.12em] uppercase text-content border-b-2 border-content">Runner</th>
                             {[1, 2, 3].map(pos => (
                               <th class="text-left py-3 px-3 font-head text-[10px] font-bold tracking-[0.12em] uppercase text-content border-b-2 border-content">
@@ -393,6 +401,7 @@ const MEDAL_FG = ['', '#3d2300', '#1f2733', '#ffffff'];
                                 </div>
                               </th>
                             ))}
+                            <th class="text-right py-3 pr-4 pl-2 font-head text-[10px] font-bold tracking-[0.12em] uppercase text-content border-b-2 border-content">Total</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -402,6 +411,7 @@ const MEDAL_FG = ['', '#3d2300', '#1f2733', '#ffffff'];
                               [...w.silverYears].sort((a, b) => b - a),
                               [...w.bronzeYears].sort((a, b) => b - a),
                             ];
+                            const total = w.gold + w.silver + w.bronze;
                             return (
                               <tr class="border-b border-line last:border-0">
                                 <td class="py-2.5 pl-4 pr-2 font-mono text-xs font-medium text-muted align-top pt-3.5">{wi + 1}</td>
@@ -435,6 +445,9 @@ const MEDAL_FG = ['', '#3d2300', '#1f2733', '#ffffff'];
                                     )}
                                   </td>
                                 ))}
+                                <td class="py-2.5 pr-4 pl-2 align-top text-right">
+                                  <div class="font-mono text-lg font-medium leading-none">{total}</div>
+                                </td>
                               </tr>
                             );
                           })}
