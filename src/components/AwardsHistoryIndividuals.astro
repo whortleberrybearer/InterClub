@@ -566,34 +566,6 @@ const MEDAL_FG = ['', '#3d2300', '#1f2733', '#ffffff'];
                 </div>
               )}
 
-              <!-- Category navigation -->
-              <div class="bg-surface border border-line rounded-xl p-5">
-                <div class="font-head text-[10px] font-bold tracking-[0.16em] uppercase text-muted mb-3">
-                  Browse · {sexLabel === 'Men' ? "men's" : "women's"} categories
-                </div>
-                <div class="flex flex-col gap-0.5">
-                  {(cat.sex === 'M' ? mCats : fCats).map(navCat => {
-                    const isActive = navCat.id === cat.id;
-                    const seasons = (hofByCat[navCat.id] ?? []).length > 0
-                      ? [...navCat.rows].filter(r => r.positions[1] || r.positions[2] || r.positions[3]).length
-                      : 0;
-                    return (
-                      <button
-                        data-ih-chip={navCat.id}
-                        data-ih-nav="true"
-                        class={`flex items-center justify-between px-2 py-1.5 rounded text-left w-full cursor-pointer border-0 text-sm font-medium transition-colors ${isActive ? 'bg-amber-bg text-amber font-bold' : 'bg-transparent text-content'}`}
-                      >
-                        <span>{chipLabel(navCat)}</span>
-                        {seasons > 0 && (
-                          <span class="font-mono text-[10px] text-muted">
-                            {seasons} <span class="opacity-50">seasons</span>
-                          </span>
-                        )}
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
             </aside>
 
           </div>
@@ -848,20 +820,11 @@ const MEDAL_FG = ['', '#3d2300', '#1f2733', '#ffffff'];
     const catId = activeChip.dataset.ihChip!;
     document.querySelectorAll<HTMLElement>('[data-ih-chip]').forEach(chip => {
       const isActive = chip.dataset.ihChip === catId;
-      if (chip.dataset.ihNav === 'true') {
-        // Nav button styles
-        chip.classList.toggle('bg-amber-bg', isActive);
-        chip.classList.toggle('text-amber',  isActive);
-        chip.classList.toggle('font-bold',   isActive);
-        chip.classList.toggle('text-content', !isActive);
-        chip.classList.remove('bg-transparent', 'border-line', 'text-muted');
-      } else {
-        chip.classList.toggle('bg-amber',    isActive);
-        chip.classList.toggle('border-amber', isActive);
-        chip.classList.toggle('text-white',  isActive);
-        chip.classList.toggle('text-muted',  !isActive);
-        chip.classList.toggle('border-line', !isActive);
-      }
+      chip.classList.toggle('bg-amber',    isActive);
+      chip.classList.toggle('border-amber', isActive);
+      chip.classList.toggle('text-white',  isActive);
+      chip.classList.toggle('text-muted',  !isActive);
+      chip.classList.toggle('border-line', !isActive);
     });
   }
 
@@ -872,7 +835,7 @@ const MEDAL_FG = ['', '#3d2300', '#1f2733', '#ffffff'];
     });
 
     // Find the chip that was clicked
-    const chip = document.querySelector<HTMLElement>(`[data-ih-chip="${catId}"]:not([data-ih-nav])`);
+    const chip = document.querySelector<HTMLElement>(`[data-ih-chip="${catId}"]`);
     if (chip) setChipActive(chip);
   }
 
