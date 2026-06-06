@@ -403,11 +403,62 @@ const MEDAL_FG = ['', '#3d2300', '#1f2733', '#ffffff'];
                 </div>
               )}
 
-              <!-- Mobile: Hall of Fame strip + year cards -->
+              <!-- Mobile: year cards then Hall of Fame -->
               <div class="md:hidden -mx-4 px-4 mt-4">
-                <!-- Mobile HoF strip -->
+                <!-- Year cards section header -->
+                <div class="font-head text-[10px] font-bold tracking-[0.14em] uppercase text-muted mb-2.5">
+                  Podium · by year
+                </div>
+
+                <!-- Year cards -->
+                <div class="flex flex-col gap-2.5 pb-2">
+                  {rows.map(row => {
+                    const hasAny = row.positions[1] || row.positions[2] || row.positions[3];
+                    if (!hasAny) return null;
+                    return (
+                      <div class="bg-surface border border-line rounded-xl overflow-hidden">
+                        <div class="flex items-baseline px-3.5 py-2 border-b border-line bg-canvas">
+                          <span class="font-head text-lg font-black tracking-tight">{row.year}</span>
+                        </div>
+                        <div>
+                          {([1, 2, 3] as const).map(pos => {
+                            const entry = row.positions[pos];
+                            if (!entry) return null;
+                            return (
+                              <div class={`flex items-center gap-3 px-3.5 py-2.5${pos < 3 && row.positions[pos + 1 as 2|3] ? ' border-b border-line' : ''}`}>
+                                <span
+                                  class="inline-flex items-center justify-center w-6 h-6 rounded-full font-mono text-[10px] font-bold shrink-0"
+                                  style={`background:${MEDAL_BG[pos]};color:${MEDAL_FG[pos]};box-shadow:inset 0 -1px 0 rgba(0,0,0,0.15)`}
+                                >{pos}</span>
+                                {entry?.clubVest && (
+                                  <img
+                                    src={siteUrl(`/images/vests/${entry.clubVest.replace('.png', '-sm.png')}`)}
+                                    alt=""
+                                    class="h-9 w-[26px] shrink-0 object-contain"
+                                  />
+                                )}
+                                <div class="flex-1 min-w-0">
+                                  <div class="font-head text-[15px] font-bold tracking-tight leading-tight truncate">
+                                    {entry.runnerUrl ? (
+                                      <a href={entry.runnerUrl} class="link link-hover">{entry.name}</a>
+                                    ) : entry.name}
+                                  </div>
+                                  {entry.clubName && (
+                                    <div class="text-xs text-muted mt-0.5 truncate">{entry.clubName}</div>
+                                  )}
+                                </div>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+
+                <!-- Mobile HoF strip (below year cards) -->
                 {hof.length > 0 && (
-                  <div class="mb-5">
+                  <div class="mt-6 pb-4">
                     <div class="font-head text-[10px] font-bold tracking-[0.14em] uppercase text-muted mb-2">
                       {sexLabel === 'Men' ? "Men's" : "Women's"} {label} · Hall of fame
                     </div>
@@ -415,11 +466,14 @@ const MEDAL_FG = ['', '#3d2300', '#1f2733', '#ffffff'];
                       {hof.slice(0, 3).map((w, wi) => (
                         <div class={`flex items-center gap-2.5 px-3 py-2 rounded-lg border ${wi === 0 ? 'bg-amber-bg border-amber' : 'bg-surface border-line'}`}>
                           <span class="font-mono text-[10px] font-bold text-muted w-3.5 shrink-0">{wi + 1}</span>
+                          {w.clubVest && (
+                            <img src={siteUrl(`/images/vests/${w.clubVest.replace('.png', '-sm.png')}`)} alt="" class="h-8 w-[22px] shrink-0 object-contain" />
+                          )}
                           <div class="flex-1 min-w-0">
-                            <div class="font-head text-sm font-bold tracking-tight">
+                            <div class="font-head text-sm font-bold tracking-tight truncate">
                               {w.runnerUrl ? <a href={w.runnerUrl} class="link link-hover">{w.name}</a> : w.name}
                             </div>
-                            {w.clubName && <div class="text-xs text-muted mt-0.5">{w.clubName}</div>}
+                            {w.clubName && <div class="text-xs text-muted mt-0.5 truncate">{w.clubName}</div>}
                           </div>
                           <div class="flex gap-1 items-center shrink-0">
                             {w.gold > 0 && (
@@ -446,67 +500,6 @@ const MEDAL_FG = ['', '#3d2300', '#1f2733', '#ffffff'];
                     </div>
                   </div>
                 )}
-
-                <!-- Year cards section header -->
-                <div class="font-head text-[10px] font-bold tracking-[0.14em] uppercase text-muted mb-2.5">
-                  Podium · by year
-                </div>
-
-                <!-- Year cards -->
-                <div class="flex flex-col gap-2.5 pb-4">
-                  {rows.map(row => {
-                    const hasAny = row.positions[1] || row.positions[2] || row.positions[3];
-                    if (!hasAny) return (
-                      <div class="flex items-center gap-3 px-3 py-2 opacity-40">
-                        <span class="font-mono text-xs font-medium text-muted w-9 shrink-0">{row.year}</span>
-                        <span class="font-mono text-[11px]" style="color:var(--color-line)">no record</span>
-                      </div>
-                    );
-                    return (
-                      <div class="bg-surface border border-line rounded-xl overflow-hidden">
-                        <div class="flex items-baseline justify-between px-3.5 py-2 border-b border-line bg-canvas">
-                          <span class="font-head text-lg font-black tracking-tight">{row.year}</span>
-                        </div>
-                        <div>
-                          {([1, 2, 3] as const).map(pos => {
-                            const entry = row.positions[pos];
-                            return (
-                              <div class={`flex items-center gap-3 px-3.5 py-2.5${pos < 3 ? ' border-b border-line' : ''}${!entry ? ' opacity-40' : ''}`}>
-                                <span
-                                  class="inline-flex items-center justify-center w-6 h-6 rounded-full font-mono text-[10px] font-bold shrink-0"
-                                  style={`background:${MEDAL_BG[pos]};color:${MEDAL_FG[pos]};box-shadow:inset 0 -1px 0 rgba(0,0,0,0.15)`}
-                                >{pos}</span>
-                                {entry?.clubVest && (
-                                  <img
-                                    src={siteUrl(`/images/vests/${entry.clubVest.replace('.png', '-sm.png')}`)}
-                                    alt=""
-                                    class="h-9 w-[26px] shrink-0 object-contain"
-                                  />
-                                )}
-                                <div class="flex-1 min-w-0">
-                                  {entry ? (
-                                    <>
-                                      <div class="font-head text-[15px] font-bold tracking-tight leading-tight truncate">
-                                        {entry.runnerUrl ? (
-                                          <a href={entry.runnerUrl} class="link link-hover">{entry.name}</a>
-                                        ) : entry.name}
-                                      </div>
-                                      {entry.clubName && (
-                                        <div class="text-xs text-muted mt-0.5 truncate">{entry.clubName}</div>
-                                      )}
-                                    </>
-                                  ) : (
-                                    <span class="font-mono text-[11px]" style="color:var(--color-line)">not awarded</span>
-                                  )}
-                                </div>
-                              </div>
-                            );
-                          })}
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
               </div>
             </div>
 
