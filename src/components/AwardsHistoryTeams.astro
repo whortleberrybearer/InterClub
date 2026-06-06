@@ -1,6 +1,8 @@
 ---
 import type { TeamCategory } from '../lib/types';
 import MobileAccordionCard from './MobileAccordionCard.astro';
+import RaceResultGrid from './RaceResultGrid.astro';
+import type { RaceCell } from './RaceResultGrid.astro';
 import { siteUrl } from '../lib/url';
 
 interface ClubInfo {
@@ -206,25 +208,15 @@ const seriesLabel = series === 'road-gp' ? 'Road Grand Prix' : 'Fell Championshi
           <h2 class="font-head text-2xl font-black tracking-tight">{cat.name}</h2>
           <span class="font-mono text-xs text-muted">since {cat.since}</span>
         </div>
-        <p class="px-5 pb-2.5 text-xs text-muted font-mono">
-          {total} {total === 1 ? 'trophy' : 'trophies'} awarded{cat.scorerCount != null ? ` · ×${cat.scorerCount} scorers` : ''}
-        </p>
 
         <!-- Top clubs for this category -->
         {ranked.length > 0 && (
           <div class="flex gap-2 flex-wrap px-5 pb-4">
-            {ranked.slice(0, 4).map(({ club, count }, i) => (
-              <div
-                class="flex items-center gap-1.5 rounded-full px-2 py-1"
-                style={i === 0
-                  ? `background: ${club.swatch}; color: ${club.ink};`
-                  : 'border: 1px solid var(--color-line);'}
-              >
+            {ranked.slice(0, 4).map(({ club, count }) => (
+              <div class="flex items-center gap-1.5 rounded-full px-2 py-1 border border-line w-20">
                 <span
                   class="flex items-center justify-center w-5 h-5 rounded-full font-mono text-[10px] font-bold leading-none"
-                  style={i === 0
-                    ? 'background: rgba(0,0,0,0.2);'
-                    : `background: ${club.swatch}; color: ${club.ink};`}
+                  style={`background: ${club.swatch}; color: ${club.ink};`}
                 >{count}</span>
                 <span class="font-mono text-[11px] font-semibold">{club.shortName}</span>
               </div>
@@ -254,13 +246,10 @@ const seriesLabel = series === 'road-gp' ? 'Road Grand Prix' : 'Fell Championshi
                     </div>
                     <div class="flex-1 min-w-0 pt-0.5">
                       <div class="font-mono text-sm font-medium">{range}</div>
-                      <div class="font-head text-base font-bold tracking-tight">{streak.club.name}</div>
-                      {streak.length >= 3 && (
-                        <div
-                          class="font-mono text-[10px] font-semibold mt-0.5 tracking-[0.04em] uppercase"
-                          style={`color: ${streak.club.swatch};`}
-                        >{streak.length}-year run</div>
-                      )}
+                      <div class="flex items-center gap-2">
+                        <img src={siteUrl(`/images/vests/${(streak.club.vest ?? 'unknown.png').replace('.png', '-sm.png')}`)} alt="" class="h-9 w-auto shrink-0 object-contain" />
+                        <div class="font-head text-base font-bold tracking-tight">{streak.club.name}</div>
+                      </div>
                     </div>
                   </div>
                 );
@@ -284,47 +273,50 @@ const seriesLabel = series === 'road-gp' ? 'Road Grand Prix' : 'Fell Championshi
   <!-- Overall panel — all-time trophies -->
   <div data-cat-panel="overall" class="th-cat-panel">
 
-    <!-- Tablet (sm–md): standings-style table in a card -->
+    <!-- Tablet (sm–md): per-category columns, matching desktop Hall of Fame table -->
     <div class="hidden sm:block border-t border-line">
-      <div class="bg-surface border-b border-line overflow-hidden">
+      <div class="bg-surface border-b border-line overflow-hidden overflow-x-auto">
         <table class="w-full border-collapse text-sm">
           <colgroup>
             <col class="w-10" />
-            <col />
-            <col />
+            <col class="w-56" />
+            {allCategories.map(() => <col />)}
             <col class="w-16" />
           </colgroup>
           <thead>
             <tr>
               <th class="font-head text-[10px] font-bold tracking-[0.1em] uppercase text-muted py-2.5 px-2 bg-surface border-b-2 border-content text-center">#</th>
               <th class="font-head text-[10px] font-bold tracking-[0.1em] uppercase text-muted py-2.5 px-2 bg-surface border-b-2 border-content text-left pl-2">Club</th>
-              <th class="font-head text-[10px] font-bold tracking-[0.1em] uppercase text-muted py-2.5 px-2 bg-surface border-b-2 border-content text-left">Categories</th>
-              <th class="font-head text-[10px] font-bold tracking-[0.1em] uppercase text-muted py-2.5 px-2 bg-surface border-b-2 border-content w-16 text-right border-l-2 border-content pr-3.5">Total</th>
+              {allCategories.map(cat => (
+                <th class="font-head text-[10px] font-bold tracking-[0.1em] uppercase text-muted py-2.5 px-2 bg-surface border-b-2 border-content text-center whitespace-nowrap">
+                  {cat.shortName ?? cat.name}
+                </th>
+              ))}
+              <th class="font-head text-[10px] font-bold tracking-[0.1em] uppercase text-muted py-2.5 px-2 bg-surface border-b-2 border-content text-right border-l-2 border-content pr-3.5">Total</th>
             </tr>
           </thead>
           <tbody>
             {sortedClubs.map(({ clubId, club, total, byCat }, i) => (
-              <tr class="border-b border-line last:border-0 hover:bg-canvas/50">
+              <tr class="border-b border-line last:border-0">
                 <td class="py-3 pl-3.5 pr-2 text-center align-middle font-mono text-xs font-medium text-muted tabular-nums">{i + 1}</td>
-                <td class="py-3 pl-2 pr-2 align-middle max-w-0 overflow-hidden">
-                  <div class="flex items-center gap-2 min-w-0">
+                <td class="py-3 pl-2 pr-4 align-middle">
+                  <div class="flex items-center gap-2">
                     <img
                       src={siteUrl(`/images/vests/${club.vest ?? 'unknown.png'}`)}
                       alt=""
                       class="h-6 w-auto shrink-0 object-contain"
                     />
-                    <span class="font-semibold text-[14px] truncate">{club.name}</span>
+                    <span class="font-semibold text-[14px]">{club.name}</span>
                   </div>
                 </td>
-                <td class="py-3 px-2 align-middle">
-                  <div class="flex gap-1 flex-wrap">
-                    {allCategories.filter(c => byCat[c.id]).map(c => (
-                      <span class="font-mono text-[9px] text-muted bg-canvas px-1.5 py-0.5 rounded border border-line whitespace-nowrap">
-                        {c.shortName ?? c.name} ×{byCat[c.id]}
-                      </span>
-                    ))}
-                  </div>
-                </td>
+                {allCategories.map(cat => (
+                  <td class="py-3 px-2 text-center align-middle font-mono text-[13px] tabular-nums">
+                    {byCat[cat.id]
+                      ? <span class="font-medium">×{byCat[cat.id]}</span>
+                      : <span class="text-content/20">—</span>
+                    }
+                  </td>
+                ))}
                 <td class="py-3 pl-3 pr-3.5 text-right border-l-2 border-content align-middle">
                   <div class="font-mono text-[16px] font-bold tabular-nums">{total}</div>
                 </td>
@@ -354,15 +346,14 @@ const seriesLabel = series === 'road-gp' ? 'Road Grand Prix' : 'Fell Championshi
               <div class="font-mono text-[22px] font-medium leading-none tabular-nums">{total}</div>
             </div>
 
-            <div slot="detail" class="px-4 py-3">
-              <div class="flex gap-1.5 flex-wrap">
-                {allCategories.filter(c => byCat[c.id]).map(c => (
-                  <span class="font-mono text-[11px] text-muted bg-canvas px-2.5 py-1 rounded-full border border-line whitespace-nowrap">
-                    {c.shortName ?? c.name} ×{byCat[c.id]}
-                  </span>
-                ))}
-              </div>
-            </div>
+            <RaceResultGrid
+              slot="detail"
+              cells={allCategories.map(cat => ({
+                label:    cat.shortName ?? cat.name,
+                score:    byCat[cat.id] ?? null,
+                counting: byCat[cat.id] ? true : undefined,
+              } satisfies RaceCell))}
+            />
           </MobileAccordionCard>
         );
       })}
@@ -371,18 +362,14 @@ const seriesLabel = series === 'road-gp' ? 'Road Grand Prix' : 'Fell Championshi
 </div>
 
 <!-- ══════════════════════════════════════════════════════════════════════
-     TABLET / DESKTOP VIEW — matrix table + sidebar  (hidden below md)
+     TABLET / DESKTOP VIEW — matrix table + summary tables  (hidden below md)
 ════════════════════════════════════════════════════════════════════════ -->
-<div id="th-container" class="hidden md:grid lg:grid-cols-[1fr_296px] gap-6 items-start">
+<div id="th-container" class="hidden md:block">
 
   <!-- Matrix section -->
   <div class="min-w-0">
-    <div class="flex items-end justify-between mb-3 pb-2 border-b-2 border-content">
-      <div>
-        <div class="font-head text-[10px] font-bold tracking-[0.14em] uppercase text-muted mb-0.5">The Matrix</div>
-        <h2 class="font-head text-2xl font-black tracking-tight">Year by category</h2>
-      </div>
-      <div class="font-mono text-[11px] text-muted pb-0.5">Hover to highlight</div>
+    <div class="mb-3 pb-2 border-b-2 border-content">
+      <h2 class="font-head text-2xl font-black tracking-tight">Year by category</h2>
     </div>
 
     <div class="bg-surface border border-line rounded-xl overflow-hidden">
@@ -441,66 +428,68 @@ const seriesLabel = series === 'road-gp' ? 'Road Grand Prix' : 'Fell Championshi
         </table>
       </div>
     </div>
-
   </div>
 
-  <!-- Hall of Fame — side-by-side on tablet, sticky sidebar on desktop -->
-  <aside class="hidden md:block lg:sticky lg:top-6">
-    <div class="grid md:grid-cols-[3fr_2fr] lg:grid-cols-1 gap-4 items-start">
-    <div class="bg-surface border border-line rounded-xl p-5">
-      <div class="font-head text-[10px] font-bold tracking-[0.16em] uppercase text-muted">The Hall of Fame</div>
-      <h3 class="font-head text-xl font-black tracking-tight mt-0.5 mb-4">All-time totals</h3>
-      <div>
-        {sortedClubs.map(({ clubId, club, total, byCat }, i) => (
-          <div
-            data-club={clubId}
-            class="flex items-center gap-3 py-2.5 border-b border-line last:border-0 cursor-default transition-opacity duration-100"
-          >
-            <div class="flex-1 min-w-0">
-              <div class="flex items-baseline gap-2">
-                <span class="font-mono text-[10px] font-bold text-muted w-3.5 text-right shrink-0">{i + 1}</span>
-                <span class="font-head text-sm font-bold tracking-tight truncate">{club.name}</span>
-              </div>
-              <div class="flex gap-1.5 mt-1 ml-5 flex-wrap">
-                {allCategories.filter(c => byCat[c.id]).map(c => (
-                  <span class="font-mono text-[9px] font-semibold text-muted bg-canvas px-1.5 py-0.5 rounded">
-                    {c.shortName ?? c.name} ×{byCat[c.id]}
-                  </span>
+  <!-- Hall of Fame table -->
+  <div class="mt-8">
+    <div class="pb-2 mb-3 border-b-2 border-content">
+      <div class="font-head text-[10px] font-bold tracking-[0.14em] uppercase text-muted mb-0.5">The Hall of Fame</div>
+      <h2 class="font-head text-2xl font-black tracking-tight">All-time totals</h2>
+    </div>
+    <div class="bg-surface border border-line rounded-xl overflow-hidden">
+      <div class="overflow-x-auto">
+        <table class="w-full border-collapse text-sm">
+          <colgroup>
+            <col class="w-10" />
+            <col class="w-56" />
+            {allCategories.map(() => <col />)}
+            <col class="w-16" />
+          </colgroup>
+          <thead>
+            <tr>
+              <th class="font-head text-[10px] font-bold tracking-[0.1em] uppercase text-muted py-2.5 px-2 bg-surface border-b-2 border-content text-center">#</th>
+              <th class="font-head text-[10px] font-bold tracking-[0.1em] uppercase text-muted py-2.5 px-2 bg-surface border-b-2 border-content text-left pl-2">Club</th>
+              {allCategories.map(cat => (
+                <th class="font-head text-[10px] font-bold tracking-[0.1em] uppercase text-muted py-2.5 px-2 bg-surface border-b-2 border-content text-center whitespace-nowrap">
+                  {cat.shortName ?? cat.name}
+                </th>
+              ))}
+              <th class="font-head text-[10px] font-bold tracking-[0.1em] uppercase text-muted py-2.5 px-2 bg-surface border-b-2 border-content text-right border-l-2 border-content pr-3.5">Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            {sortedClubs.map(({ clubId, club, total, byCat }, i) => (
+              <tr data-club={clubId} class="border-b border-line last:border-0">
+                <td class="py-3 pl-3.5 pr-2 text-center align-middle font-mono text-xs font-medium text-muted tabular-nums">{i + 1}</td>
+                <td class="py-3 pl-2 pr-4 align-middle">
+                  <div class="flex items-center gap-2">
+                    <img
+                      src={siteUrl(`/images/vests/${club.vest ?? 'unknown.png'}`)}
+                      alt=""
+                      class="h-6 w-auto shrink-0 object-contain"
+                    />
+                    <span class="font-semibold text-[14px]">{club.name}</span>
+                  </div>
+                </td>
+                {allCategories.map(cat => (
+                  <td class="py-3 px-2 text-center align-middle font-mono text-[13px] tabular-nums">
+                    {byCat[cat.id]
+                      ? <span class="font-medium">×{byCat[cat.id]}</span>
+                      : <span class="text-content/20">—</span>
+                    }
+                  </td>
                 ))}
-              </div>
-            </div>
-            <div class="text-right shrink-0">
-              <div class="font-mono text-2xl font-medium leading-none" style={`color: ${club.swatch};`}>{total}</div>
-              <div class="mt-1 w-9 h-0.5 bg-line rounded-full overflow-hidden ml-auto">
-                <div class="h-full rounded-full" style={`width: ${(total / maxTotal) * 100}%; background: ${club.swatch};`}></div>
-              </div>
-            </div>
-          </div>
-        ))}
+                <td class="py-3 pl-3 pr-3.5 text-right border-l-2 border-content align-middle">
+                  <div class="font-mono text-[17px] font-bold tabular-nums">{total}</div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
     </div>
+  </div>
 
-    {perCatLeaders.length > 0 && (
-      <div class="bg-surface border border-line rounded-xl p-5">
-        <div class="font-head text-[10px] font-bold tracking-[0.16em] uppercase text-muted mb-3">Most decorated · per category</div>
-        <div class="space-y-2.5">
-          {perCatLeaders.map(({ cat, leader, topN, total }) => (
-            <div class="flex items-center gap-2.5">
-              <div class="font-head text-[11px] font-bold tracking-[0.06em] uppercase w-16 text-muted shrink-0 truncate">{cat.name}</div>
-              <div class="flex-1 flex items-center gap-1.5 min-w-0">
-                <span class="w-2.5 h-2.5 rounded shrink-0" style={`background: ${leader.swatch};`}></span>
-                <span class="font-head text-[13px] font-bold tracking-tight truncate">{leader.name}</span>
-              </div>
-              <span class="font-mono text-xs whitespace-nowrap shrink-0">
-                {topN}<span class="text-muted">/{total}</span>
-              </span>
-            </div>
-          ))}
-        </div>
-      </div>
-    )}
-    </div><!-- end grid -->
-  </aside>
 </div>
 
 
@@ -529,25 +518,5 @@ const seriesLabel = series === 'road-gp' ? 'Road Grand Prix' : 'Fell Championshi
     });
   });
 
-  // Desktop: hover highlight across matrix + sidebar + heatmap
-  const container = document.getElementById('th-container');
-  if (container) {
-    let current: string | null = null;
-
-    function update(clubId: string | null) {
-      if (clubId === current) return;
-      current = clubId;
-      document.querySelectorAll<HTMLElement>('[data-club]').forEach(el => {
-        const id = el.getAttribute('data-club');
-        el.style.opacity = (clubId && id && id !== clubId) ? '0.15' : '';
-      });
-    }
-
-    container.addEventListener('mouseover', e => {
-      const el = (e.target as Element).closest<HTMLElement>('[data-club]');
-      update(el?.getAttribute('data-club') || null);
-    });
-    container.addEventListener('mouseleave', () => update(null));
-  }
 
 </script>
