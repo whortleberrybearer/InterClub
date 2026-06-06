@@ -3,6 +3,7 @@ import Layout from '../../../components/Layout.astro';
 import AwardsHistoryTeams from '../../../components/AwardsHistoryTeams.astro';
 import AwardsHistoryIndividuals from '../../../components/AwardsHistoryIndividuals.astro';
 import { getAllAwardsByYear, getAllSeriesConfigs, pivotIndividualAwardsByCategory, resolveIndividualCategoryName } from '../../../lib/results';
+import { getAvailableYears } from '../../../lib/data';
 import { CLUB_COLORS } from '../../../lib/clubColors';
 import { buildRunnerUrlMap } from '../../../lib/runners';
 import type { TeamCategory } from '../../../lib/types';
@@ -178,6 +179,7 @@ if (type === 'individuals') {
       yearlyData={fullYearList}
       allCategories={allCategories}
       clubMeta={clubMeta}
+      linkedYears={new Set(getAvailableYears(series))}
     />
   ) : (
     <>
