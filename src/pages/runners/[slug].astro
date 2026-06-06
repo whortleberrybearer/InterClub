@@ -188,30 +188,10 @@ function positionLabel(pos: number): string {
             <div data-year={String(block.year)} class="mb-8">
 
               <!-- Year heading -->
-              <div class="flex items-baseline gap-2 flex-wrap border-b-2 border-content pb-1.5 mb-4">
+              <div class="flex items-baseline gap-2 border-b-2 border-content pb-1.5 mb-4">
                 <span class="font-head font-extrabold text-2xl tracking-tight leading-none">
                   {block.year}
                 </span>
-                {blockAwardsRoad.map(a => (
-                  <span class="inline-flex items-center gap-1 bg-amber text-white font-head font-bold uppercase tracking-wider text-xs px-2.5 py-0.5 rounded-full">
-                    <svg width="10" height="10" viewBox="0 0 12 12" fill="none" aria-hidden="true">
-                      <path d="M3 1.5h6v3a3 3 0 0 1-6 0v-3Z" fill="currentColor"/>
-                      <path d="M4.5 8h3v1h-3z" fill="currentColor"/>
-                      <path d="M3.5 10h5v0.6h-5z" fill="currentColor"/>
-                    </svg>
-                    Road GP · {a.categoryName} · {positionLabel(a.position)}
-                  </span>
-                ))}
-                {blockAwardsFell.map(a => (
-                  <span class="inline-flex items-center gap-1 bg-teal text-white font-head font-bold uppercase tracking-wider text-xs px-2.5 py-0.5 rounded-full">
-                    <svg width="10" height="10" viewBox="0 0 12 12" fill="none" aria-hidden="true">
-                      <path d="M3 1.5h6v3a3 3 0 0 1-6 0v-3Z" fill="currentColor"/>
-                      <path d="M4.5 8h3v1h-3z" fill="currentColor"/>
-                      <path d="M3.5 10h5v0.6h-5z" fill="currentColor"/>
-                    </svg>
-                    Fell · {a.categoryName} · {positionLabel(a.position)}
-                  </span>
-                ))}
                 <span class="flex-1"></span>
                 <span class="font-mono text-xs text-muted">
                   {blockRaces} race{blockRaces !== 1 ? 's' : ''}
@@ -221,11 +201,18 @@ function positionLabel(pos: number): string {
               <!-- Road GP races -->
               {block.roadGp && (
                 <div data-series="road-gp" class="mb-5">
-                  <h3 class="font-head font-bold text-xs uppercase tracking-widest text-amber mb-2">
+                  <h3 class="flex items-center gap-2 flex-wrap font-head font-bold text-xs uppercase tracking-widest text-amber mb-2">
                     Road GP
-                    <span class="font-mono normal-case tracking-normal font-normal text-muted ml-1.5">
-                      {block.roadGp.races.length} race{block.roadGp.races.length !== 1 ? 's' : ''}
-                    </span>
+                    {blockAwardsRoad.map(a => (
+                      <span class="inline-flex items-center gap-1 bg-amber text-white font-bold uppercase tracking-wider text-xs px-2 py-0.5 rounded-full normal-case">
+                        <svg width="9" height="9" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+                          <path d="M3 1.5h6v3a3 3 0 0 1-6 0v-3Z" fill="currentColor"/>
+                          <path d="M4.5 8h3v1h-3z" fill="currentColor"/>
+                          <path d="M3.5 10h5v0.6h-5z" fill="currentColor"/>
+                        </svg>
+                        {a.categoryName} · {positionLabel(a.position)}
+                      </span>
+                    ))}
                   </h3>
                   <table class="w-full text-sm border-collapse">
                     <tbody>
@@ -259,11 +246,18 @@ function positionLabel(pos: number): string {
               <!-- Fell races -->
               {block.fell && (
                 <div data-series="fell" class="mb-5">
-                  <h3 class="font-head font-bold text-xs uppercase tracking-widest text-teal mb-2">
+                  <h3 class="flex items-center gap-2 flex-wrap font-head font-bold text-xs uppercase tracking-widest text-teal mb-2">
                     Fell
-                    <span class="font-mono normal-case tracking-normal font-normal text-muted ml-1.5">
-                      {block.fell.races.length} race{block.fell.races.length !== 1 ? 's' : ''}
-                    </span>
+                    {blockAwardsFell.map(a => (
+                      <span class="inline-flex items-center gap-1 bg-teal text-white font-bold uppercase tracking-wider text-xs px-2 py-0.5 rounded-full normal-case">
+                        <svg width="9" height="9" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+                          <path d="M3 1.5h6v3a3 3 0 0 1-6 0v-3Z" fill="currentColor"/>
+                          <path d="M4.5 8h3v1h-3z" fill="currentColor"/>
+                          <path d="M3.5 10h5v0.6h-5z" fill="currentColor"/>
+                        </svg>
+                        {a.categoryName} · {positionLabel(a.position)}
+                      </span>
+                    ))}
                   </h3>
                   <table class="w-full text-sm border-collapse">
                     <tbody>
