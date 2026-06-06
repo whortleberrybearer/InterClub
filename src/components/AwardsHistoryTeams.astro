@@ -30,9 +30,10 @@ interface Props {
   yearlyData: YearRow[];
   allCategories: EnrichedCategory[];
   clubMeta: Record<string, ClubInfo>;
+  linkedYears: Set<number>;
 }
 
-const { series, yearlyData, allCategories, clubMeta } = Astro.props;
+const { series, yearlyData, allCategories, clubMeta, linkedYears } = Astro.props;
 
 const fallbackClub = (id: string): ClubInfo => ({
   id, name: id, shortName: id.slice(0, 3).toUpperCase(),
@@ -144,10 +145,6 @@ const seriesLabel = series === 'road-gp' ? 'Road Grand Prix' : 'Fell Championshi
       <div class="font-head text-[10px] font-bold tracking-[0.18em] uppercase text-amber mb-1.5">The Roll of Honour</div>
       <h1 class="font-head font-black text-[clamp(2.5rem,6vw,5rem)] tracking-tight leading-none">Team Winners</h1>
       <div class="font-head font-black text-[clamp(2.5rem,6vw,5rem)] tracking-tight leading-none text-amber">{minYear}–{maxYear}</div>
-      <p class="text-sm text-muted mt-3 max-w-lg leading-relaxed hidden md:block">
-        Every team-trophy winner across {seasonCount} seasons of the Inter Club {seriesLabel}.
-        Categories shown in order of introduction.
-      </p>
     </div>
   </div>
 </div>
@@ -192,7 +189,6 @@ const seriesLabel = series === 'road-gp' ? 'Road Grand Prix' : 'Fell Championshi
         <!-- Category header -->
         <div class="flex items-baseline justify-between px-5 pt-3.5 pb-1">
           <h2 class="font-head text-2xl font-black tracking-tight">{cat.name}</h2>
-          <span class="font-mono text-xs text-muted">since {cat.since}</span>
         </div>
 
         <!-- Top clubs for this category -->
@@ -260,8 +256,8 @@ const seriesLabel = series === 'road-gp' ? 'Road Grand Prix' : 'Fell Championshi
   <div data-cat-panel="overall" class="th-cat-panel">
 
     <!-- Tablet (sm–md): per-category columns, matching desktop Hall of Fame table -->
-    <div class="hidden sm:block border-t border-line">
-      <div class="bg-surface border-b border-line overflow-hidden overflow-x-auto">
+    <div class="hidden sm:block px-4 pt-4 overflow-x-auto">
+      <div class="bg-surface border border-line rounded-xl overflow-hidden">
         <table class="w-full border-collapse text-sm">
           <colgroup>
             <col class="w-10" />
@@ -275,7 +271,7 @@ const seriesLabel = series === 'road-gp' ? 'Road Grand Prix' : 'Fell Championshi
               <th class="font-head text-[10px] font-bold tracking-[0.1em] uppercase text-muted py-2.5 px-2 bg-surface border-b-2 border-content text-left pl-2">Club</th>
               {allCategories.map(cat => (
                 <th class="font-head text-[10px] font-bold tracking-[0.1em] uppercase text-muted py-2.5 px-2 bg-surface border-b-2 border-content text-center whitespace-nowrap">
-                  {cat.shortName ?? cat.name}
+                  {cat.name}
                 </th>
               ))}
               <th class="font-head text-[10px] font-bold tracking-[0.1em] uppercase text-muted py-2.5 px-2 bg-surface border-b-2 border-content text-right border-l-2 border-content pr-3.5">Total</th>
@@ -314,7 +310,7 @@ const seriesLabel = series === 'road-gp' ? 'Road Grand Prix' : 'Fell Championshi
     </div>
 
     <!-- Mobile (below sm): standings-style accordion cards -->
-    <div class="sm:hidden pb-2">
+    <div class="sm:hidden px-4 pt-4 pb-2">
       {sortedClubs.map(({ clubId, club, total, byCat }, i) => {
         const detailId = `overall-detail-${clubId}`;
         return (
@@ -335,7 +331,7 @@ const seriesLabel = series === 'road-gp' ? 'Road Grand Prix' : 'Fell Championshi
             <RaceResultGrid
               slot="detail"
               cells={allCategories.map(cat => ({
-                label:    cat.shortName ?? cat.name,
+                label:    cat.name,
                 score:    byCat[cat.id] ?? null,
                 counting: byCat[cat.id] ? true : undefined,
               } satisfies RaceCell))}
@@ -387,7 +383,10 @@ const seriesLabel = series === 'road-gp' ? 'Road Grand Prix' : 'Fell Championshi
             ) : (
               <tr class="border-b border-line last:border-0">
                 <td class="py-2 px-4 border-r border-line whitespace-nowrap align-middle">
-                  <a href={`${base}/${series}/${row.year}/`} class="font-mono font-medium text-sm hover:text-amber transition-colors">{row.year}</a>
+                  {linkedYears.has(row.year)
+                    ? <a href={`${base}/${series}/${row.year}/`} class="font-mono font-medium text-sm hover:text-amber transition-colors">{row.year}</a>
+                    : <span class="font-mono font-medium text-sm text-muted">{row.year}</span>
+                  }
                 </td>
                 {allCategories.map(cat => {
                   const winner = row.categoryWinners[cat.id];
@@ -437,7 +436,7 @@ const seriesLabel = series === 'road-gp' ? 'Road Grand Prix' : 'Fell Championshi
               <th class="font-head text-[10px] font-bold tracking-[0.1em] uppercase text-muted py-2.5 px-2 bg-surface border-b-2 border-content text-left pl-2">Club</th>
               {allCategories.map(cat => (
                 <th class="font-head text-[10px] font-bold tracking-[0.1em] uppercase text-muted py-2.5 px-2 bg-surface border-b-2 border-content text-center whitespace-nowrap">
-                  {cat.shortName ?? cat.name}
+                  {cat.name}
                 </th>
               ))}
               <th class="font-head text-[10px] font-bold tracking-[0.1em] uppercase text-muted py-2.5 px-2 bg-surface border-b-2 border-content text-right border-l-2 border-content pr-3.5">Total</th>
