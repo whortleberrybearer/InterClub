@@ -414,8 +414,8 @@ const MEDAL_FG = ['', '#3d2300', '#1f2733', '#ffffff'];
                             const total = w.gold + w.silver + w.bronze;
                             return (
                               <tr class="border-b border-line last:border-0">
-                                <td class="py-2.5 pl-4 pr-2 font-mono text-xs font-medium text-muted align-top pt-3.5">{wi + 1}</td>
-                                <td class="py-2.5 px-2 align-top">
+                                <td class="py-3 pl-4 pr-2 font-mono text-xs font-medium text-muted align-middle">{wi + 1}</td>
+                                <td class="py-3 px-2 align-middle">
                                   <div class="flex items-center gap-2 min-w-0">
                                     {w.clubVest && (
                                       <img src={siteUrl(`/images/vests/${w.clubVest.replace('.png', '-sm.png')}`)} alt="" class="h-8 w-auto shrink-0 object-contain" />
@@ -429,7 +429,7 @@ const MEDAL_FG = ['', '#3d2300', '#1f2733', '#ffffff'];
                                   </div>
                                 </td>
                                 {years.map((yrs, pi) => (
-                                  <td class="py-2.5 px-3 align-top">
+                                  <td class="py-3 px-3 align-middle">
                                     {yrs.length > 0 ? (
                                       <div>
                                         <div class="inline-flex items-center gap-1 font-mono text-sm font-semibold">
@@ -445,7 +445,7 @@ const MEDAL_FG = ['', '#3d2300', '#1f2733', '#ffffff'];
                                     )}
                                   </td>
                                 ))}
-                                <td class="py-2.5 pr-4 pl-2 align-top text-right">
+                                <td class="py-3 pr-4 pl-2 align-middle text-right">
                                   <div class="font-mono text-lg font-medium leading-none">{total}</div>
                                 </td>
                               </tr>
