@@ -19,10 +19,9 @@ interface Props {
 
 const { runner, clubHistory, awardSummary, yearBlocks } = Astro.props;
 const title = `${runner.firstName} ${runner.lastName}`;
-const sexLabel = runner.sex === 'M' ? 'Men' : 'Women';
 const currentClubName = resolveClubName(runner.club);
+const categoryLabel = `${runner.sex}${runner.ageCategory}`;
 
-const allYears = yearBlocks.map(b => b.year);
 const hasRoadGpAwards = awardSummary.roadGp.length > 0;
 const hasFellAwards = awardSummary.fell.length > 0;
 
@@ -46,9 +45,9 @@ function positionLabel(pos: number): string {
   <!-- ── Dark hero ── -->
   <PageHeader
     slot="hero"
-    eyebrow={currentClubName}
+    eyebrow="Runner"
     title={title}
-    subtitleParts={[sexLabel, runner.ageCategory]}
+    subtitleParts={[currentClubName, categoryLabel]}
   />
 
   <!-- ── Body: sidebar + main ── -->
@@ -169,10 +168,6 @@ function positionLabel(pos: number): string {
           <button class="btn btn-sm btn-ghost" data-series-filter="road-gp">Road GP</button>
           <button class="btn btn-sm btn-ghost" data-series-filter="fell">Fell</button>
         </div>
-        <select id="filter-year" class="select select-sm">
-          <option value="">All Years</option>
-          {allYears.map(y => <option value={String(y)}>{y}</option>)}
-        </select>
         <select id="filter-race" class="select select-sm">
           <option value="">All Races</option>
         </select>
@@ -373,7 +368,6 @@ function positionLabel(pos: number): string {
 </Layout>
 
 <script>
-  const yearSelect = document.getElementById('filter-year') as HTMLSelectElement;
   const raceSelect = document.getElementById('filter-race') as HTMLSelectElement;
   const profileContent = document.getElementById('profile-content') as HTMLElement;
   const raceCompact = document.getElementById('race-compact') as HTMLElement;
@@ -396,13 +390,12 @@ function positionLabel(pos: number): string {
       : `${mm}:${String(ss).padStart(2,'0')}`;
   }
 
-  function buildCompactView(activeRace: string, activeYear: string) {
+  function buildCompactView(activeRace: string) {
     const rows = Array.from(document.querySelectorAll<HTMLElement>('tr[data-race-id]'))
       .filter(row => {
         const seriesDiv = row.closest<HTMLElement>('[data-series]');
         const seriesMatch = activeSeries === 'all' || seriesDiv?.dataset.series === activeSeries;
-        const yearMatch = activeYear === '' || row.dataset.year === activeYear;
-        return row.dataset.raceId === activeRace && seriesMatch && yearMatch;
+        return row.dataset.raceId === activeRace && seriesMatch;
       })
       .sort((a, b) => Number(b.dataset.year) - Number(a.dataset.year));
 
@@ -422,14 +415,13 @@ function positionLabel(pos: number): string {
   }
 
   function applyFilters() {
-    const activeYear = yearSelect.value;
     const activeRace = raceSelect.value;
 
     if (activeRace !== '') {
       // Switch to compact view
       profileContent.classList.add('hidden');
       raceCompact.classList.remove('hidden');
-      buildCompactView(activeRace, activeYear);
+      buildCompactView(activeRace);
       return;
     }
 
@@ -442,30 +434,21 @@ function positionLabel(pos: number): string {
       div.classList.toggle('hidden', activeSeries !== 'all' && div.dataset.series !== activeSeries);
     });
 
-    // Show/hide race rows
-    document.querySelectorAll<HTMLElement>('tr[data-race-id]').forEach(row => {
-      row.classList.remove('hidden');
-    });
-
     // Show/hide year blocks
-    document.querySelectorAll<HTMLElement>('[data-year]').forEach(block => {
-      const yearMatch = activeYear === '' || block.dataset.year === activeYear;
+    document.querySelectorAll<HTMLElement>('div[data-year]').forEach(block => {
       const hasVisibleSeries = block.querySelector('[data-series]:not(.hidden)') !== null;
-      block.classList.toggle('hidden', !yearMatch || !hasVisibleSeries);
+      block.classList.toggle('hidden', !hasVisibleSeries);
     });
   }
 
   function updateRaceDropdown() {
-    const activeYear = yearSelect.value;
     const seen = new Set<string>();
     const options: Array<{ id: string; name: string }> = [];
 
     document.querySelectorAll<HTMLElement>('tr[data-race-id]').forEach(row => {
-      const yearBlock = row.closest<HTMLElement>('[data-year]');
       const seriesDiv = row.closest<HTMLElement>('[data-series]');
-      const yearMatch = activeYear === '' || yearBlock?.dataset.year === activeYear;
       const seriesMatch = activeSeries === 'all' || seriesDiv?.dataset.series === activeSeries;
-      if (yearMatch && seriesMatch) {
+      if (seriesMatch) {
         const id = row.dataset.raceId!;
         if (!seen.has(id)) {
           seen.add(id);
@@ -473,6 +456,8 @@ function positionLabel(pos: number): string {
         }
       }
     });
+
+    options.sort((a, b) => a.name.localeCompare(b.name));
 
     const current = raceSelect.value;
     raceSelect.innerHTML = '<option value="">All Races</option>' +
@@ -493,7 +478,6 @@ function positionLabel(pos: number): string {
     });
   });
 
-  yearSelect.addEventListener('change', () => { applyFilters(); updateRaceDropdown(); });
   raceSelect.addEventListener('change', applyFilters);
 
   // Initialise race dropdown on page load
