@@ -62,16 +62,18 @@ for (const cat of categories) {
   for (const row of cat.rows) {
     for (const pos of [1, 2, 3] as const) {
       const entry = row.positions[pos];
-      if (!entry) continue;
-      if (!tally[entry.name]) {
-        tally[entry.name] = { name: entry.name, clubName: entry.clubName, clubVest: entry.clubVest, runnerUrl: entry.runnerUrl, gold: 0, silver: 0, bronze: 0, goldYears: [], silverYears: [], bronzeYears: [] };
+      if (!entry || !entry.runnerUrl) continue; // skip entries with no runner ID
+      const key = entry.runnerUrl;
+      if (!tally[key]) {
+        tally[key] = { name: entry.name, clubName: entry.clubName, clubVest: entry.clubVest, runnerUrl: entry.runnerUrl, gold: 0, silver: 0, bronze: 0, goldYears: [], silverYears: [], bronzeYears: [] };
       } else {
-        if (entry.runnerUrl && !tally[entry.name].runnerUrl) tally[entry.name].runnerUrl = entry.runnerUrl;
-        if (entry.clubVest && !tally[entry.name].clubVest) tally[entry.name].clubVest = entry.clubVest;
+        // Prefer the more complete name (longer = less abbreviated)
+        if (entry.name.length > tally[key].name.length) tally[key].name = entry.name;
+        if (entry.clubVest && !tally[key].clubVest) tally[key].clubVest = entry.clubVest;
       }
-      if (pos === 1) { tally[entry.name].gold++; tally[entry.name].goldYears.push(row.year); }
-      else if (pos === 2) { tally[entry.name].silver++; tally[entry.name].silverYears.push(row.year); }
-      else { tally[entry.name].bronze++; tally[entry.name].bronzeYears.push(row.year); }
+      if (pos === 1) { tally[key].gold++; tally[key].goldYears.push(row.year); }
+      else if (pos === 2) { tally[key].silver++; tally[key].silverYears.push(row.year); }
+      else { tally[key].bronze++; tally[key].bronzeYears.push(row.year); }
     }
   }
   hofByCat[cat.id] = Object.values(tally).sort((a, b) => {
@@ -94,19 +96,20 @@ function buildGreats(cats: CategoryHistoryData[]): GreatsEntry[] {
     for (const row of cat.rows) {
       for (const pos of [1, 2, 3] as const) {
         const entry = row.positions[pos];
-        if (!entry) continue;
-        if (!tally[entry.name]) {
-          tally[entry.name] = { name: entry.name, clubName: entry.clubName, clubVest: entry.clubVest, runnerUrl: entry.runnerUrl, gold: 0, silver: 0, bronze: 0, catLabels: [], total: 0 };
+        if (!entry || !entry.runnerUrl) continue; // skip entries with no runner ID
+        const key = entry.runnerUrl;
+        if (!tally[key]) {
+          tally[key] = { name: entry.name, clubName: entry.clubName, clubVest: entry.clubVest, runnerUrl: entry.runnerUrl, gold: 0, silver: 0, bronze: 0, catLabels: [], total: 0 };
         } else {
-          if (entry.runnerUrl && !tally[entry.name].runnerUrl) tally[entry.name].runnerUrl = entry.runnerUrl;
-          if (entry.clubVest && !tally[entry.name].clubVest) tally[entry.name].clubVest = entry.clubVest;
+          if (entry.name.length > tally[key].name.length) tally[key].name = entry.name;
+          if (entry.clubVest && !tally[key].clubVest) tally[key].clubVest = entry.clubVest;
         }
         if (pos === 1) {
-          tally[entry.name].gold++;
+          tally[key].gold++;
           const lbl = chipLabel(cat);
-          if (!tally[entry.name].catLabels.includes(lbl)) tally[entry.name].catLabels.push(lbl);
-        } else if (pos === 2) tally[entry.name].silver++;
-        else tally[entry.name].bronze++;
+          if (!tally[key].catLabels.includes(lbl)) tally[key].catLabels.push(lbl);
+        } else if (pos === 2) tally[key].silver++;
+        else tally[key].bronze++;
       }
     }
   }
