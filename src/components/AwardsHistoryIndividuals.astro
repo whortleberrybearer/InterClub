@@ -205,7 +205,7 @@ const MEDAL_FG = ['', '#3d2300', '#1f2733', '#ffffff'];
           {mCats.map((cat, i) => (
             <button
               data-ih-chip={cat.id}
-              class={`ih-cat-chip font-head text-[11px] font-bold tracking-[0.06em] uppercase px-2.5 py-1.5 rounded-full border cursor-pointer whitespace-nowrap transition-colors ${i === 0 ? 'border-amber bg-amber text-white' : 'border-line text-muted hover:text-content'}`}
+              class={`ih-cat-chip font-head text-[11px] font-bold tracking-[0.06em] uppercase px-2.5 py-1.5 rounded-full border cursor-pointer whitespace-nowrap transition-colors ${i === 0 ? 'border-amber bg-amber text-white' : 'border-line text-muted'}`}
             >{chipLabel(cat)}</button>
           ))}
         </div>
@@ -216,7 +216,7 @@ const MEDAL_FG = ['', '#3d2300', '#1f2733', '#ffffff'];
           {fCats.map((cat, i) => (
             <button
               data-ih-chip={cat.id}
-              class={`ih-cat-chip font-head text-[11px] font-bold tracking-[0.06em] uppercase px-2.5 py-1.5 rounded-full border cursor-pointer whitespace-nowrap transition-colors ${i === 0 && !hasM ? 'border-amber bg-amber text-white' : 'border-line text-muted hover:text-content'}`}
+              class={`ih-cat-chip font-head text-[11px] font-bold tracking-[0.06em] uppercase px-2.5 py-1.5 rounded-full border cursor-pointer whitespace-nowrap transition-colors ${i === 0 && !hasM ? 'border-amber bg-amber text-white' : 'border-line text-muted'}`}
             >{chipLabel(cat)}</button>
           ))}
         </div>
@@ -330,17 +330,14 @@ const MEDAL_FG = ['', '#3d2300', '#1f2733', '#ffffff'];
                         {rows.map(row => {
                           const hasAny = row.positions[1] || row.positions[2] || row.positions[3];
                           return (
-                            <tr class={`border-b border-line last:border-0${hasAny ? ' ih-hover-row' : ' opacity-40'}`}>
+                            <tr class={`border-b border-line last:border-0${!hasAny ? ' opacity-40' : ''}`}>
                               <td class="py-2 pl-4 pr-3 font-mono text-sm font-medium border-r border-line whitespace-nowrap align-middle text-muted">
                                 {row.year}
                               </td>
                               {([1, 2, 3] as const).map(pos => {
                                 const entry = row.positions[pos];
                                 return (
-                                  <td
-                                    data-ih-name={entry?.name ?? ''}
-                                    class="py-2 px-3 align-middle transition-opacity duration-100"
-                                  >
+                                  <td class="py-2 px-3 align-middle">
                                     {entry ? (
                                       <div class="flex items-center gap-2 min-w-0">
                                         {entry.clubVest && (
@@ -353,7 +350,7 @@ const MEDAL_FG = ['', '#3d2300', '#1f2733', '#ffffff'];
                                         <div class="min-w-0 overflow-hidden">
                                           <div class="text-[13px] font-semibold leading-tight truncate">
                                             {entry.runnerUrl ? (
-                                              <a href={entry.runnerUrl} class="link link-hover hover:text-amber">{entry.name}</a>
+                                              <a href={entry.runnerUrl} class="link link-hover">{entry.name}</a>
                                             ) : entry.name}
                                           </div>
                                           {entry.clubName && (
@@ -375,7 +372,7 @@ const MEDAL_FG = ['', '#3d2300', '#1f2733', '#ffffff'];
                   </div>
                 </div>
                 <p class="text-[11px] text-muted italic mt-2.5 leading-relaxed">
-                  Hover a name to highlight all their appearances · "—" means no podium place was awarded that year.
+                  "—" means no podium place was awarded that year.
                 </p>
               </div>
 
@@ -391,8 +388,7 @@ const MEDAL_FG = ['', '#3d2300', '#1f2733', '#ffffff'];
                   <div class="grid grid-cols-2 gap-2">
                     {hof.slice(0, 8).map((w, wi) => (
                       <div
-                        data-ih-hof-name={w.name}
-                        class="flex items-center gap-2.5 px-3 py-2.5 bg-surface border border-line rounded-lg cursor-default transition-opacity duration-100"
+                                                class="flex items-center gap-2.5 px-3 py-2.5 bg-surface border border-line rounded-lg"
                       >
                         <span class="font-mono text-[11px] font-bold text-muted w-4 text-right shrink-0">{wi + 1}</span>
                         {w.clubVest && (
@@ -552,8 +548,7 @@ const MEDAL_FG = ['', '#3d2300', '#1f2733', '#ffffff'];
                   <div>
                     {hof.slice(0, 10).map((w, wi, arr) => (
                       <div
-                        data-ih-hof-name={w.name}
-                        class={`flex items-center gap-3 py-2.5 cursor-default transition-opacity duration-100${wi < arr.length - 1 ? ' border-b border-line' : ''}`}
+                                                class={`flex items-center gap-3 py-2.5${wi < arr.length - 1 ? ' border-b border-line' : ''}`}
                       >
                         <span class="font-mono text-[10px] font-bold text-muted w-3.5 text-right shrink-0">{wi + 1}</span>
                         {w.clubVest && (
@@ -619,7 +614,7 @@ const MEDAL_FG = ['', '#3d2300', '#1f2733', '#ffffff'];
                       <button
                         data-ih-chip={navCat.id}
                         data-ih-nav="true"
-                        class={`flex items-center justify-between px-2 py-1.5 rounded text-left w-full cursor-pointer border-0 text-sm font-medium transition-colors ${isActive ? 'bg-amber-bg text-amber font-bold' : 'bg-transparent text-content hover:bg-canvas'}`}
+                        class={`flex items-center justify-between px-2 py-1.5 rounded text-left w-full cursor-pointer border-0 text-sm font-medium transition-colors ${isActive ? 'bg-amber-bg text-amber font-bold' : 'bg-transparent text-content'}`}
                       >
                         <span>{chipLabel(navCat)}</span>
                         {seasons > 0 && (
@@ -914,30 +909,6 @@ const MEDAL_FG = ['', '#3d2300', '#1f2733', '#ffffff'];
     if (chip) setChipActive(chip);
   }
 
-  // ── Hover highlight (tablet / desktop table rows) ───────────────────
-  function initHover(table: HTMLElement) {
-    let current: string | null = null;
-    table.addEventListener('mouseover', e => {
-      const td = (e.target as Element).closest<HTMLElement>('[data-ih-name]');
-      const name = td?.dataset.ihName || null;
-      if (name === current) return;
-      current = name;
-      table.querySelectorAll<HTMLElement>('[data-ih-name]').forEach(el => {
-        const n = el.dataset.ihName;
-        el.style.opacity = (name && n && n !== name) ? '0.2' : '';
-      });
-      // Sync HoF sidebar
-      table.closest('[data-ih-panel]')?.querySelectorAll<HTMLElement>('[data-ih-hof-name]').forEach(el => {
-        el.style.opacity = (name && el.dataset.ihHofName !== name) ? '0.2' : '';
-      });
-    });
-    table.addEventListener('mouseleave', () => {
-      current = null;
-      table.querySelectorAll<HTMLElement>('[data-ih-name]').forEach(el => { el.style.opacity = ''; });
-      table.closest('[data-ih-panel]')?.querySelectorAll<HTMLElement>('[data-ih-hof-name]').forEach(el => { el.style.opacity = ''; });
-    });
-  }
-
   // ── Initialise ──────────────────────────────────────────────────────
   sexBtns.forEach(btn => {
     btn.addEventListener('click', () => selectSex(btn.dataset.ihSex!));
@@ -945,9 +916,5 @@ const MEDAL_FG = ['', '#3d2300', '#1f2733', '#ffffff'];
 
   document.querySelectorAll<HTMLElement>('[data-ih-chip]').forEach(chip => {
     chip.addEventListener('click', () => selectCategory(chip.dataset.ihChip!));
-  });
-
-  document.querySelectorAll<HTMLElement>('table[id^="ih-table-"]').forEach(table => {
-    initHover(table as HTMLElement);
   });
 </script>
