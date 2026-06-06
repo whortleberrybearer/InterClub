@@ -17,7 +17,6 @@ for (const cat of categories) {
 const sortedYears = [...allRowYears].sort((a, b) => a - b);
 const minYear = sortedYears[0] ?? 0;
 const maxYear = sortedYears[sortedYears.length - 1] ?? 0;
-const recordedSeasons = sortedYears.length;
 
 // ── Category sort order ─────────────────────────────────────────────────
 const CAT_ORDER = [
@@ -143,26 +142,10 @@ const MEDAL_FG = ['', '#3d2300', '#1f2733', '#ffffff'];
     ← {seriesLabel}
   </a>
 
-  <div class="flex items-end justify-between gap-6 flex-wrap border-b border-line pb-6">
-    <div>
-      <div class="font-head text-[10px] font-bold tracking-[0.18em] uppercase text-amber mb-1.5">The Roll of Honour</div>
-      <h1 class="font-head font-black text-[clamp(2.5rem,6vw,5rem)] tracking-tight leading-none">Individual Winners</h1>
-      <div class="font-head font-black text-[clamp(2.5rem,6vw,5rem)] tracking-tight leading-none text-amber">{minYear}–{maxYear}</div>
-      <p class="text-sm text-muted mt-3 max-w-lg leading-relaxed hidden md:block">
-        First, second and third place in every individual category of the Inter Club {seriesLabel}.
-        Categories run only where awarded — earlier years often recorded team trophies but not individual podiums.
-      </p>
-    </div>
-    <div class="flex gap-6 pb-1 shrink-0">
-      <div>
-        <div class="font-mono text-3xl font-medium">{recordedSeasons}</div>
-        <div class="font-head text-[10px] font-bold tracking-[0.12em] uppercase text-muted mt-1">With data</div>
-      </div>
-      <div>
-        <div class="font-mono text-3xl font-medium">{categories.length}</div>
-        <div class="font-head text-[10px] font-bold tracking-[0.12em] uppercase text-muted mt-1">Categories</div>
-      </div>
-    </div>
+  <div class="border-b border-line pb-6">
+    <div class="font-head text-[10px] font-bold tracking-[0.18em] uppercase text-amber mb-1.5">The Roll of Honour</div>
+    <h1 class="font-head font-black text-[clamp(2.5rem,6vw,5rem)] tracking-tight leading-none">Individual Winners</h1>
+    <div class="font-head font-black text-[clamp(2.5rem,6vw,5rem)] tracking-tight leading-none text-amber">{minYear}–{maxYear}</div>
   </div>
 </div>
 
