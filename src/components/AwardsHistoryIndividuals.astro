@@ -511,47 +511,87 @@ const MEDAL_FG = ['', '#3d2300', '#1f2733', '#ffffff'];
                   })}
                 </div>
 
-                <!-- Mobile HoF strip (below year cards) -->
+                <!-- Mobile HoF accordion (below year cards) -->
                 {hof.length > 0 && (
                   <div class="mt-6 pb-4">
                     <div class="font-head text-[10px] font-bold tracking-[0.14em] uppercase text-muted mb-2">
                       {sexLabel === 'Men' ? "Men's" : "Women's"} {label} · Hall of fame
                     </div>
                     <div class="flex flex-col gap-1.5">
-                      {hof.slice(0, 10).map((w, wi) => (
-                        <div class="flex items-center gap-2.5 px-3 py-2 rounded-lg border bg-surface border-line">
-                          <span class="font-mono text-[10px] font-bold text-muted w-3.5 shrink-0">{wi + 1}</span>
-                          {w.clubVest && (
-                            <img src={siteUrl(`/images/vests/${w.clubVest.replace('.png', '-sm.png')}`)} alt="" class="h-8 w-[22px] shrink-0 object-contain" />
-                          )}
-                          <div class="flex-1 min-w-0">
-                            <div class="font-head text-sm font-bold tracking-tight truncate">
-                              {w.runnerUrl ? <a href={w.runnerUrl} class="link link-hover">{w.name}</a> : w.name}
+                      {hof.slice(0, 10).map((w, wi) => {
+                        const total = w.gold + w.silver + w.bronze;
+                        const goldYrs   = [...w.goldYears].sort((a, b) => b - a);
+                        const silverYrs = [...w.silverYears].sort((a, b) => b - a);
+                        const bronzeYrs = [...w.bronzeYears].sort((a, b) => b - a);
+                        return (
+                          <div class="rounded-lg border bg-surface border-line overflow-hidden ih-hof-accordion">
+                            <!-- Accordion header / toggle -->
+                            <button class="ih-hof-toggle w-full flex items-center gap-2.5 px-3 py-2 text-left cursor-pointer bg-transparent border-0">
+                              <span class="font-mono text-[10px] font-bold text-muted w-3.5 shrink-0">{wi + 1}</span>
+                              {w.clubVest && (
+                                <img src={siteUrl(`/images/vests/${w.clubVest.replace('.png', '-sm.png')}`)} alt="" class="h-8 w-[22px] shrink-0 object-contain" />
+                              )}
+                              <div class="flex-1 min-w-0">
+                                <div class="font-head text-sm font-bold tracking-tight truncate">
+                                  {w.runnerUrl ? <a href={w.runnerUrl} class="link link-hover" onclick="event.stopPropagation()">{w.name}</a> : w.name}
+                                </div>
+                                {w.clubName && <div class="text-xs text-muted mt-0.5 truncate">{w.clubName}</div>}
+                              </div>
+                              <div class="flex gap-1.5 items-center shrink-0">
+                                {w.gold > 0 && (
+                                  <span class="inline-flex items-center gap-0.5 font-mono text-[11px] font-semibold">
+                                    <span class="inline-flex items-center justify-center w-4 h-4 rounded-full font-mono text-[7px] font-bold" style={`background:${MEDAL_BG[1]};color:${MEDAL_FG[1]}`}>1</span>
+                                    {w.gold}
+                                  </span>
+                                )}
+                                {w.silver > 0 && (
+                                  <span class="inline-flex items-center gap-0.5 font-mono text-[11px] font-semibold">
+                                    <span class="inline-flex items-center justify-center w-4 h-4 rounded-full font-mono text-[7px] font-bold" style={`background:${MEDAL_BG[2]};color:${MEDAL_FG[2]}`}>2</span>
+                                    {w.silver}
+                                  </span>
+                                )}
+                                {w.bronze > 0 && (
+                                  <span class="inline-flex items-center gap-0.5 font-mono text-[11px] font-semibold">
+                                    <span class="inline-flex items-center justify-center w-4 h-4 rounded-full font-mono text-[7px] font-bold" style={`background:${MEDAL_BG[3]};color:${MEDAL_FG[3]}`}>3</span>
+                                    {w.bronze}
+                                  </span>
+                                )}
+                                <svg class="ih-hof-chevron w-3.5 h-3.5 text-muted shrink-0 transition-transform duration-150 ml-0.5" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+                                  <path d="M2 4l4 4 4-4"/>
+                                </svg>
+                              </div>
+                            </button>
+                            <!-- Accordion detail (hidden by default) -->
+                            <div class="ih-hof-detail hidden border-t border-line px-3 pb-3 pt-2.5">
+                              <div class="flex flex-col gap-2">
+                                {goldYrs.length > 0 && (
+                                  <div class="flex gap-2">
+                                    <span class="inline-flex items-center justify-center w-4 h-4 rounded-full font-mono text-[7px] font-bold shrink-0 mt-0.5" style={`background:${MEDAL_BG[1]};color:${MEDAL_FG[1]}`}>1</span>
+                                    <span class="font-mono text-[11px] text-muted leading-relaxed">{goldYrs.join(' · ')}</span>
+                                  </div>
+                                )}
+                                {silverYrs.length > 0 && (
+                                  <div class="flex gap-2">
+                                    <span class="inline-flex items-center justify-center w-4 h-4 rounded-full font-mono text-[7px] font-bold shrink-0 mt-0.5" style={`background:${MEDAL_BG[2]};color:${MEDAL_FG[2]}`}>2</span>
+                                    <span class="font-mono text-[11px] text-muted leading-relaxed">{silverYrs.join(' · ')}</span>
+                                  </div>
+                                )}
+                                {bronzeYrs.length > 0 && (
+                                  <div class="flex gap-2">
+                                    <span class="inline-flex items-center justify-center w-4 h-4 rounded-full font-mono text-[7px] font-bold shrink-0 mt-0.5" style={`background:${MEDAL_BG[3]};color:${MEDAL_FG[3]}`}>3</span>
+                                    <span class="font-mono text-[11px] text-muted leading-relaxed">{bronzeYrs.join(' · ')}</span>
+                                  </div>
+                                )}
+                                <div class="pt-1 border-t border-line">
+                                  <span class="font-mono text-[11px] text-muted">Total: </span>
+                                  <span class="font-mono text-[13px] font-semibold">{total}</span>
+                                  <span class="font-mono text-[11px] text-muted ml-1">podium{total !== 1 ? 's' : ''}</span>
+                                </div>
+                              </div>
                             </div>
-                            {w.clubName && <div class="text-xs text-muted mt-0.5 truncate">{w.clubName}</div>}
                           </div>
-                          <div class="flex gap-1 items-center shrink-0">
-                            {w.gold > 0 && (
-                              <span class="inline-flex items-center gap-0.5 font-mono text-[11px] font-semibold">
-                                <span class="inline-flex items-center justify-center w-4 h-4 rounded-full font-mono text-[7px] font-bold" style={`background:${MEDAL_BG[1]};color:${MEDAL_FG[1]}`}>1</span>
-                                {w.gold}
-                              </span>
-                            )}
-                            {w.silver > 0 && (
-                              <span class="inline-flex items-center gap-0.5 font-mono text-[11px] font-semibold">
-                                <span class="inline-flex items-center justify-center w-4 h-4 rounded-full font-mono text-[7px] font-bold" style={`background:${MEDAL_BG[2]};color:${MEDAL_FG[2]}`}>2</span>
-                                {w.silver}
-                              </span>
-                            )}
-                            {w.bronze > 0 && (
-                              <span class="inline-flex items-center gap-0.5 font-mono text-[11px] font-semibold">
-                                <span class="inline-flex items-center justify-center w-4 h-4 rounded-full font-mono text-[7px] font-bold" style={`background:${MEDAL_BG[3]};color:${MEDAL_FG[3]}`}>3</span>
-                                {w.bronze}
-                              </span>
-                            )}
-                          </div>
-                        </div>
-                      ))}
+                        );
+                      })}
                     </div>
                   </div>
                 )}
@@ -838,5 +878,17 @@ const MEDAL_FG = ['', '#3d2300', '#1f2733', '#ffffff'];
 
   document.querySelectorAll<HTMLElement>('[data-ih-chip]').forEach(chip => {
     chip.addEventListener('click', () => selectCategory(chip.dataset.ihChip!));
+  });
+
+  // ── Mobile HoF accordions ────────────────────────────────────────────
+  document.querySelectorAll<HTMLElement>('.ih-hof-toggle').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const card    = btn.closest('.ih-hof-accordion')!;
+      const detail  = card.querySelector<HTMLElement>('.ih-hof-detail')!;
+      const chevron = btn.querySelector<HTMLElement>('.ih-hof-chevron')!;
+      const open = !detail.classList.contains('hidden');
+      detail.classList.toggle('hidden', open);
+      chevron.style.transform = open ? '' : 'rotate(180deg)';
+    });
   });
 </script>
