@@ -13,6 +13,11 @@ export function formatRaceDate(date: string, time?: string): string {
   return time ? `${dateStr} · ${time}` : dateStr;
 }
 
+export function formatRaceDateShort(date: string): string {
+  const [, month, day] = date.split('-').map(Number);
+  return `${String(day).padStart(2, '0')}/${String(month).padStart(2, '0')}`;
+}
+
 /** Format a stored time as h:mm:ss or m:ss (no leading zeros on the first component). */
 export function formatTime(time: string | null | undefined): string {
   if (!time) return '–';
