@@ -155,6 +155,14 @@ export function resolveClubName(clubId: string): string {
   return clubId;
 }
 
+function resolveClubVest(clubId: string): string | undefined {
+  for (const clubs of Object.values(allClubFiles)) {
+    const club = clubs.default.find(c => c.id === clubId);
+    if (club?.vest) return club.vest;
+  }
+  return undefined;
+}
+
 function buildClubHistory(entries: Array<{ year: number; club: string }>): RunnerClubHistory[] {
   const clubYears = new Map<string, Set<number>>();
   for (const { year, club } of entries) {
@@ -164,10 +172,10 @@ function buildClubHistory(entries: Array<{ year: number; club: string }>): Runne
   return [...clubYears.entries()]
     .map(([clubId, yearsSet]) => {
       const years = [...yearsSet].sort((a, b) => a - b);
-      return { clubId, clubName: resolveClubName(clubId), yearRanges: formatYearRanges(years), firstYear: years[0] };
+      return { clubId, clubName: resolveClubName(clubId), yearRanges: formatYearRanges(years), vest: resolveClubVest(clubId), firstYear: years[0] };
     })
     .sort((a, b) => a.firstYear - b.firstYear)
-    .map(({ clubId, clubName, yearRanges }) => ({ clubId, clubName, yearRanges }));
+    .map(({ clubId, clubName, yearRanges, vest }) => ({ clubId, clubName, yearRanges, vest }));
 }
 
 function buildAwardSummary(yearBlocks: RunnerYearBlock[]): RunnerAwardSummary {

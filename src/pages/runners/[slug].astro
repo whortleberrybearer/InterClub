@@ -3,6 +3,7 @@ import Layout from '../../components/Layout.astro';
 import PageHeader from '../../components/PageHeader.astro';
 import { getRunnerProfileStaticPaths, resolveClubName } from '../../lib/runners';
 import { siteUrl } from '../../lib/url';
+import { formatTime } from '../../lib/format';
 import type { GlobalRunner, RunnerYearBlock, RunnerClubHistory, RunnerAwardSummary } from '../../lib/types';
 
 export async function getStaticPaths() {
@@ -51,21 +52,30 @@ function positionLabel(pos: number): string {
   />
 
   <!-- ── Body: sidebar + main ── -->
-  <div class="md:grid md:grid-cols-[220px_1fr] md:gap-7 lg:grid-cols-[260px_1fr]">
+  <div class="lg:grid lg:grid-cols-[260px_1fr] lg:gap-7 xl:grid-cols-[280px_1fr]">
 
-    <!-- Sidebar -->
-    <aside class="mb-6 md:mb-0 space-y-4">
+    <!-- Sidebar (lg+) -->
+    <aside class="hidden lg:block space-y-4">
 
       <!-- Competed for -->
       <div class="bg-surface border border-line rounded-xl p-4">
         <h2 class="font-head font-bold text-xs uppercase tracking-widest text-muted mb-3">
           Competed for
         </h2>
-        <div class="space-y-2">
+        <div class="space-y-3">
           {clubHistory.map(ch => (
-            <div class="flex justify-between items-baseline gap-3 text-sm">
-              <span class="font-semibold">{ch.clubName}</span>
-              <span class="font-mono text-xs text-muted shrink-0">{ch.yearRanges}</span>
+            <div class="flex items-center gap-3 text-sm">
+              {ch.vest && (
+                <img
+                  src={siteUrl(`/images/vests/${ch.vest}`)}
+                  alt=""
+                  class="h-10 w-auto shrink-0 object-contain"
+                />
+              )}
+              <div class="min-w-0">
+                <div class="font-semibold">{ch.clubName}</div>
+                <div class="font-mono text-xs text-muted">{ch.yearRanges}</div>
+              </div>
             </div>
           ))}
         </div>
@@ -80,7 +90,6 @@ function positionLabel(pos: number): string {
           <div class="space-y-1.5">
             {awardSummary.roadGp.map(a => (
               <div class="flex items-center gap-2 text-sm">
-                <!-- Trophy icon -->
                 <svg width="12" height="12" viewBox="0 0 12 12" fill="none" class="shrink-0 text-amber" aria-hidden="true">
                   <path d="M3 1.5h6v3a3 3 0 0 1-6 0v-3Z" fill="currentColor"/>
                   <path d="M2 2.5H1v1a1.5 1.5 0 0 0 1.5 1.5" stroke="currentColor" stroke-width="0.8"/>
@@ -128,6 +137,30 @@ function positionLabel(pos: number): string {
 
     <!-- Main content -->
     <div>
+
+      <!-- Competed for (mobile/tablet, < lg) -->
+      <div class="lg:hidden mb-6 bg-surface border border-line rounded-xl p-4">
+        <h2 class="font-head font-bold text-xs uppercase tracking-widest text-muted mb-3">
+          Competed for
+        </h2>
+        <div class="flex flex-col xs:flex-row xs:flex-wrap gap-x-6 gap-y-3">
+          {clubHistory.map(ch => (
+            <div class="flex items-center gap-3 text-sm">
+              {ch.vest && (
+                <img
+                  src={siteUrl(`/images/vests/${ch.vest}`)}
+                  alt=""
+                  class="h-10 w-auto shrink-0 object-contain"
+                />
+              )}
+              <div class="min-w-0">
+                <div class="font-semibold">{ch.clubName}</div>
+                <div class="font-mono text-xs text-muted">{ch.yearRanges}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
 
       <!-- Filter bar -->
       <div class="bg-surface border border-line rounded-xl p-3 mb-6 flex flex-wrap gap-2 items-center">
@@ -212,9 +245,9 @@ function positionLabel(pos: number): string {
                           </td>
                           <td class:list={[
                             'py-2 text-right font-mono text-sm tabular-nums align-middle',
-                            !race.time ? 'text-muted' : '',
+                            !race.time ? 'text-muted' : 'text-content',
                           ]}>
-                            {race.time || '–'}
+                            {formatTime(race.time)}
                           </td>
                         </tr>
                       ))}
@@ -250,9 +283,9 @@ function positionLabel(pos: number): string {
                           </td>
                           <td class:list={[
                             'py-2 text-right font-mono text-sm tabular-nums align-middle',
-                            !race.time ? 'text-muted' : '',
+                            !race.time ? 'text-muted' : 'text-content',
                           ]}>
-                            {race.time || '–'}
+                            {formatTime(race.time)}
                           </td>
                         </tr>
                       ))}
@@ -267,6 +300,61 @@ function positionLabel(pos: number): string {
       </div>
 
     </div>
+
+    <!-- Mobile-only award panels (below results) -->
+    {(hasRoadGpAwards || hasFellAwards) && (
+      <div class="lg:hidden mt-6 space-y-4">
+        {hasRoadGpAwards && (
+          <div class="bg-surface border border-line rounded-xl p-4">
+            <h2 class="font-head font-bold text-xs uppercase tracking-widest text-amber mb-3">
+              Road GP Awards
+            </h2>
+            <div class="space-y-1.5">
+              {awardSummary.roadGp.map(a => (
+                <div class="flex items-center gap-2 text-sm">
+                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none" class="shrink-0 text-amber" aria-hidden="true">
+                    <path d="M3 1.5h6v3a3 3 0 0 1-6 0v-3Z" fill="currentColor"/>
+                    <path d="M2 2.5H1v1a1.5 1.5 0 0 0 1.5 1.5" stroke="currentColor" stroke-width="0.8"/>
+                    <path d="M10 2.5h1v1a1.5 1.5 0 0 1-1.5 1.5" stroke="currentColor" stroke-width="0.8"/>
+                    <path d="M4.5 8h3v1h-3z" fill="currentColor"/>
+                    <path d="M3.5 10h5v0.6h-5z" fill="currentColor"/>
+                  </svg>
+                  <span class="font-medium flex-1 text-content">{a.categoryName}</span>
+                  <span class="font-mono text-xs text-muted">
+                    {positionLabel(a.position)}{a.count > 1 ? ` ×${a.count}` : ''}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+        {hasFellAwards && (
+          <div class="bg-surface border border-line rounded-xl p-4">
+            <h2 class="font-head font-bold text-xs uppercase tracking-widest text-teal mb-3">
+              Fell Awards
+            </h2>
+            <div class="space-y-1.5">
+              {awardSummary.fell.map(a => (
+                <div class="flex items-center gap-2 text-sm">
+                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none" class="shrink-0 text-teal" aria-hidden="true">
+                    <path d="M3 1.5h6v3a3 3 0 0 1-6 0v-3Z" fill="currentColor"/>
+                    <path d="M2 2.5H1v1a1.5 1.5 0 0 0 1.5 1.5" stroke="currentColor" stroke-width="0.8"/>
+                    <path d="M10 2.5h1v1a1.5 1.5 0 0 1-1.5 1.5" stroke="currentColor" stroke-width="0.8"/>
+                    <path d="M4.5 8h3v1h-3z" fill="currentColor"/>
+                    <path d="M3.5 10h5v0.6h-5z" fill="currentColor"/>
+                  </svg>
+                  <span class="font-medium flex-1 text-content">{a.categoryName}</span>
+                  <span class="font-mono text-xs text-muted">
+                    {positionLabel(a.position)}{a.count > 1 ? ` ×${a.count}` : ''}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+    )}
+
   </div>
 
 </Layout>
