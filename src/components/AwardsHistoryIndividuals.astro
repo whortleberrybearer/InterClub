@@ -463,8 +463,8 @@ const MEDAL_FG = ['', '#3d2300', '#1f2733', '#ffffff'];
                       {sexLabel === 'Men' ? "Men's" : "Women's"} {label} · Hall of fame
                     </div>
                     <div class="flex flex-col gap-1.5">
-                      {hof.slice(0, 3).map((w, wi) => (
-                        <div class={`flex items-center gap-2.5 px-3 py-2 rounded-lg border ${wi === 0 ? 'bg-amber-bg border-amber' : 'bg-surface border-line'}`}>
+                      {hof.slice(0, 5).map((w, wi) => (
+                        <div class="flex items-center gap-2.5 px-3 py-2 rounded-lg border bg-surface border-line">
                           <span class="font-mono text-[10px] font-bold text-muted w-3.5 shrink-0">{wi + 1}</span>
                           {w.clubVest && (
                             <img src={siteUrl(`/images/vests/${w.clubVest.replace('.png', '-sm.png')}`)} alt="" class="h-8 w-[22px] shrink-0 object-contain" />
