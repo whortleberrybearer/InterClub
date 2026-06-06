@@ -161,14 +161,23 @@ function positionLabel(pos: number): string {
         </div>
       </div>
 
-      <!-- Filter bar -->
-      <div class="bg-surface border border-line rounded-xl p-3 mb-6 flex flex-wrap gap-2 items-center">
-        <div class="flex gap-1">
-          <button class="btn btn-sm btn-active" data-series-filter="all">All</button>
-          <button class="btn btn-sm btn-ghost" data-series-filter="road-gp">Road GP</button>
-          <button class="btn btn-sm btn-ghost" data-series-filter="fell">Fell</button>
+      <!-- Filter bar — matches chip-bar / results-page filter style -->
+      <div class="bg-surface lg:bg-transparent border-b border-line lg:border-b-0 -mx-4 lg:mx-0 px-4 lg:px-0 py-3 lg:py-0 mb-6 flex flex-wrap gap-x-3 gap-y-2.5 items-center justify-center">
+        <div class="flex gap-1.5 shrink-0">
+          <button
+            class="font-head text-xs font-bold tracking-[0.06em] uppercase px-3.5 py-[7px] rounded-full border transition-colors bg-amber border-amber text-white"
+            data-series-filter="all"
+          >All</button>
+          <button
+            class="font-head text-xs font-bold tracking-[0.06em] uppercase px-3.5 py-[7px] rounded-full border transition-colors bg-surface border-line text-muted hover:text-content"
+            data-series-filter="road-gp"
+          >Road GP</button>
+          <button
+            class="font-head text-xs font-bold tracking-[0.06em] uppercase px-3.5 py-[7px] rounded-full border transition-colors bg-surface border-line text-muted hover:text-content"
+            data-series-filter="fell"
+          >Fell</button>
         </div>
-        <select id="filter-race" class="select select-sm">
+        <select id="filter-race" class="w-full sm:w-auto sm:min-w-[180px] sm:max-w-xs bg-surface border border-line rounded-lg px-3 py-[7px] font-body text-[13px] text-muted outline-none">
           <option value="">All Races</option>
         </select>
       </div>
@@ -468,10 +477,14 @@ function positionLabel(pos: number): string {
   document.querySelectorAll<HTMLButtonElement>('[data-series-filter]').forEach(btn => {
     btn.addEventListener('click', () => {
       activeSeries = btn.dataset.seriesFilter!;
-      document.querySelectorAll('[data-series-filter]').forEach(b => {
+      document.querySelectorAll<HTMLButtonElement>('[data-series-filter]').forEach(b => {
         const active = b === btn;
-        b.classList.toggle('btn-active', active);
-        b.classList.toggle('btn-ghost', !active);
+        b.classList.toggle('bg-amber',     active);
+        b.classList.toggle('border-amber', active);
+        b.classList.toggle('text-white',   active);
+        b.classList.toggle('bg-surface',   !active);
+        b.classList.toggle('border-line',  !active);
+        b.classList.toggle('text-muted',   !active);
       });
       applyFilters();
       updateRaceDropdown();
