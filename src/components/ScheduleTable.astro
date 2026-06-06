@@ -10,7 +10,7 @@
 // highlight against the real current date so stale builds stay correct.
 import { hasResults, isResultsProvisional } from '../lib/results';
 import { siteUrl } from '../lib/url';
-import { formatRaceDate } from '../lib/format';
+import { formatRaceDate, formatRaceDateShort } from '../lib/format';
 import type { Race, Series } from '../lib/types';
 
 interface Props {
@@ -68,7 +68,7 @@ const scriptRaceData = showNextRace ? raceStates.map(({ race, past, rowUrl, isEx
     <table class="table table-fixed">
       <colgroup>
         <col class="hidden sm:table-column w-10" />
-        <col class="w-[100px]" />
+        <col class="w-[56px] sm:w-[100px]" />
         <col />
         <col class="w-[90px]" />
       </colgroup>
@@ -88,7 +88,10 @@ const scriptRaceData = showNextRace ? raceStates.map(({ race, past, rowUrl, isEx
           >
             <td class="hidden sm:table-cell py-3 px-3 text-center font-mono text-xs text-muted">{i + 1}</td>
             <td class="py-3 pl-4 sm:pl-3 pr-3 whitespace-nowrap">
-              <div data-date class:list={['font-mono text-[12px]', isNext ? `${accentText} font-semibold` : 'text-muted']}>{formatRaceDate(race.date)}</div>
+              <div data-date class:list={['font-mono text-[12px]', isNext ? `${accentText} font-semibold` : 'text-muted']}>
+                <span class="sm:hidden">{formatRaceDateShort(race.date)}</span>
+                <span class="hidden sm:inline">{formatRaceDate(race.date)}</span>
+              </div>
               {showNextRace && race.time && (
                 <div data-time class:list={['font-mono text-[11px]', isNext ? (series === 'fell' ? 'text-teal/70' : 'text-amber/70') : 'text-muted/70']}>{race.time}</div>
               )}
