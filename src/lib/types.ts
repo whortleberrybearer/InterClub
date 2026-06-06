@@ -79,6 +79,8 @@ export interface RunnerProfileRace {
   raceId: string;
   time: string;
   hasResults: boolean;
+  position: number | null;   // runner's overall finish position
+  totalOpen: number | null;  // total finishers in the open category (null if not available)
 }
 
 export interface RunnerProfileAward {

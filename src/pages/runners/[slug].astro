@@ -220,6 +220,11 @@ function positionLabel(pos: number): string {
                         <tr
                           data-race-id={race.raceId}
                           data-race-name={race.raceName}
+                          data-year={String(block.year)}
+                          data-time={race.time ?? ''}
+                          data-position={race.position != null ? String(race.position) : ''}
+                          data-total={race.totalOpen != null ? String(race.totalOpen) : ''}
+                          data-results-url={race.hasResults ? siteUrl(`/road-gp/${block.year}/${race.raceId}/results`) : ''}
                           class="border-b border-line last:border-b-0"
                         >
                           <td class="py-2 pr-3 font-mono text-xs text-muted w-10 tabular-nums align-middle">
@@ -229,6 +234,11 @@ function positionLabel(pos: number): string {
                             {race.hasResults
                               ? <a href={siteUrl(`/road-gp/${block.year}/${race.raceId}/results`)} class="link link-hover">{race.raceName}</a>
                               : <span class="text-muted">{race.raceName}</span>}
+                          </td>
+                          <td class="py-2 text-right font-mono text-xs text-muted tabular-nums align-middle whitespace-nowrap">
+                            {race.position != null && race.totalOpen != null
+                              ? `${race.position}/${race.totalOpen}`
+                              : race.position != null ? String(race.position) : ''}
                           </td>
                           <td class:list={[
                             'py-2 text-right font-mono text-sm tabular-nums align-middle',
@@ -265,6 +275,11 @@ function positionLabel(pos: number): string {
                         <tr
                           data-race-id={race.raceId}
                           data-race-name={race.raceName}
+                          data-year={String(block.year)}
+                          data-time={race.time ?? ''}
+                          data-position={race.position != null ? String(race.position) : ''}
+                          data-total={race.totalOpen != null ? String(race.totalOpen) : ''}
+                          data-results-url={race.hasResults ? siteUrl(`/fell/${block.year}/${race.raceId}/results`) : ''}
                           class="border-b border-line last:border-b-0"
                         >
                           <td class="py-2 pr-3 font-mono text-xs text-muted w-10 tabular-nums align-middle">
@@ -274,6 +289,11 @@ function positionLabel(pos: number): string {
                             {race.hasResults
                               ? <a href={siteUrl(`/fell/${block.year}/${race.raceId}/results`)} class="link link-hover">{race.raceName}</a>
                               : <span class="text-muted">{race.raceName}</span>}
+                          </td>
+                          <td class="py-2 text-right font-mono text-xs text-muted tabular-nums align-middle whitespace-nowrap">
+                            {race.position != null && race.totalOpen != null
+                              ? `${race.position}/${race.totalOpen}`
+                              : race.position != null ? String(race.position) : ''}
                           </td>
                           <td class:list={[
                             'py-2 text-right font-mono text-sm tabular-nums align-middle',
@@ -291,6 +311,20 @@ function positionLabel(pos: number): string {
             </div>
           );
         })}
+      </div>
+
+      <!-- Compact race-selected view -->
+      <div id="race-compact" class="hidden">
+        <table class="w-full text-sm border-collapse">
+          <thead>
+            <tr class="border-b-2 border-content">
+              <th class="pb-1.5 text-left font-head font-bold text-xs uppercase tracking-widest text-muted w-16">Year</th>
+              <th class="pb-1.5 text-right font-head font-bold text-xs uppercase tracking-widest text-muted pr-4">Pos</th>
+              <th class="pb-1.5 text-right font-head font-bold text-xs uppercase tracking-widest text-muted">Time</th>
+            </tr>
+          </thead>
+          <tbody id="race-compact-body"></tbody>
+        </table>
       </div>
 
     </div>
@@ -356,29 +390,81 @@ function positionLabel(pos: number): string {
 <script>
   const yearSelect = document.getElementById('filter-year') as HTMLSelectElement;
   const raceSelect = document.getElementById('filter-race') as HTMLSelectElement;
+  const profileContent = document.getElementById('profile-content') as HTMLElement;
+  const raceCompact = document.getElementById('race-compact') as HTMLElement;
+  const raceCompactBody = document.getElementById('race-compact-body') as HTMLElement;
   let activeSeries = 'all';
+
+  function formatTime(raw: string): string {
+    if (!raw) return '–';
+    const parts = raw.trim().split(':');
+    let h = 0, m = 0, s = 0;
+    if (parts.length === 2) { m = +parts[0]; s = +parts[1]; }
+    else if (parts.length === 3) { h = +parts[0]; m = +parts[1]; s = +parts[2]; }
+    else return raw;
+    const total = h * 3600 + m * 60 + s;
+    const hh = Math.floor(total / 3600);
+    const mm = Math.floor((total % 3600) / 60);
+    const ss = total % 60;
+    return hh > 0
+      ? `${hh}:${String(mm).padStart(2,'0')}:${String(ss).padStart(2,'0')}`
+      : `${mm}:${String(ss).padStart(2,'0')}`;
+  }
+
+  function buildCompactView(activeRace: string, activeYear: string) {
+    const rows = Array.from(document.querySelectorAll<HTMLElement>('tr[data-race-id]'))
+      .filter(row => {
+        const seriesDiv = row.closest<HTMLElement>('[data-series]');
+        const seriesMatch = activeSeries === 'all' || seriesDiv?.dataset.series === activeSeries;
+        const yearMatch = activeYear === '' || row.dataset.year === activeYear;
+        return row.dataset.raceId === activeRace && seriesMatch && yearMatch;
+      })
+      .sort((a, b) => Number(b.dataset.year) - Number(a.dataset.year));
+
+    raceCompactBody.innerHTML = rows.map(row => {
+      const year = row.dataset.year!;
+      const time = formatTime(row.dataset.time ?? '');
+      const url = row.dataset.resultsUrl ?? '';
+      const pos = row.dataset.position ?? '';
+      const total = row.dataset.total ?? '';
+      const posLabel = pos && total ? `${pos}/${total}` : pos || '–';
+      const yearCell = url
+        ? `<a href="${url}" class="link link-hover font-mono tabular-nums">${year}</a>`
+        : `<span class="font-mono tabular-nums text-muted">${year}</span>`;
+      const timeClass = row.dataset.time ? 'text-content' : 'text-muted';
+      return `<tr class="border-b border-line last:border-b-0">
+        <td class="py-2 pr-3 align-middle">${yearCell}</td>
+        <td class="py-2 pr-4 text-right font-mono text-xs tabular-nums align-middle text-muted">${posLabel}</td>
+        <td class="py-2 text-right font-mono tabular-nums align-middle ${timeClass}">${time}</td>
+      </tr>`;
+    }).join('');
+  }
 
   function applyFilters() {
     const activeYear = yearSelect.value;
     const activeRace = raceSelect.value;
+
+    if (activeRace !== '') {
+      // Switch to compact view
+      profileContent.classList.add('hidden');
+      raceCompact.classList.remove('hidden');
+      buildCompactView(activeRace, activeYear);
+      return;
+    }
+
+    // Normal year-block view
+    profileContent.classList.remove('hidden');
+    raceCompact.classList.add('hidden');
 
     // Show/hide series sections
     document.querySelectorAll<HTMLElement>('[data-series]').forEach(div => {
       div.classList.toggle('hidden', activeSeries !== 'all' && div.dataset.series !== activeSeries);
     });
 
-    // Show/hide race rows
+    // Show/hide race rows (no active race, so all rows visible)
     document.querySelectorAll<HTMLElement>('tr[data-race-id]').forEach(row => {
-      row.classList.toggle('hidden', activeRace !== '' && row.dataset.raceId !== activeRace);
+      row.classList.remove('hidden');
     });
-
-    // Hide series sections whose race rows are all hidden (only when race filter active)
-    if (activeRace !== '') {
-      document.querySelectorAll<HTMLElement>('[data-series]:not(.hidden)').forEach(div => {
-        const visibleRows = div.querySelectorAll('tr[data-race-id]:not(.hidden)');
-        if (visibleRows.length === 0) div.classList.add('hidden');
-      });
-    }
 
     // Show/hide year blocks
     document.querySelectorAll<HTMLElement>('[data-year]').forEach(block => {
@@ -428,4 +514,7 @@ function positionLabel(pos: number): string {
 
   yearSelect.addEventListener('change', () => { applyFilters(); updateRaceDropdown(); });
   raceSelect.addEventListener('change', applyFilters);
+
+  // Initialise race dropdown on page load
+  updateRaceDropdown();
 </script>
