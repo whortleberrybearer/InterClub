@@ -51,6 +51,9 @@ interface HofEntry {
   gold: number;
   silver: number;
   bronze: number;
+  goldYears: number[];
+  silverYears: number[];
+  bronzeYears: number[];
 }
 
 const hofByCat: Record<string, HofEntry[]> = {};
@@ -61,14 +64,14 @@ for (const cat of categories) {
       const entry = row.positions[pos];
       if (!entry) continue;
       if (!tally[entry.name]) {
-        tally[entry.name] = { name: entry.name, clubName: entry.clubName, clubVest: entry.clubVest, runnerUrl: entry.runnerUrl, gold: 0, silver: 0, bronze: 0 };
+        tally[entry.name] = { name: entry.name, clubName: entry.clubName, clubVest: entry.clubVest, runnerUrl: entry.runnerUrl, gold: 0, silver: 0, bronze: 0, goldYears: [], silverYears: [], bronzeYears: [] };
       } else {
         if (entry.runnerUrl && !tally[entry.name].runnerUrl) tally[entry.name].runnerUrl = entry.runnerUrl;
         if (entry.clubVest && !tally[entry.name].clubVest) tally[entry.name].clubVest = entry.clubVest;
       }
-      if (pos === 1) tally[entry.name].gold++;
-      else if (pos === 2) tally[entry.name].silver++;
-      else tally[entry.name].bronze++;
+      if (pos === 1) { tally[entry.name].gold++; tally[entry.name].goldYears.push(row.year); }
+      else if (pos === 2) { tally[entry.name].silver++; tally[entry.name].silverYears.push(row.year); }
+      else { tally[entry.name].bronze++; tally[entry.name].bronzeYears.push(row.year); }
     }
   }
   hofByCat[cat.id] = Object.values(tally).sort((a, b) => {
@@ -374,43 +377,70 @@ const MEDAL_FG = ['', '#3d2300', '#1f2733', '#ffffff'];
                       <h3 class="font-head text-xl font-black tracking-tight">Most decorated · {label}</h3>
                     </div>
                   </div>
-                  <div class="grid grid-cols-2 lg:grid-cols-3 gap-2">
-                    {hof.slice(0, 12).map((w, wi) => (
-                      <div
-                                                class="flex items-center gap-2.5 px-3 py-2.5 bg-surface border border-line rounded-lg"
-                      >
-                        <span class="font-mono text-[11px] font-bold text-muted w-4 text-right shrink-0">{wi + 1}</span>
-                        {w.clubVest && (
-                          <img src={siteUrl(`/images/vests/${w.clubVest.replace('.png', '-sm.png')}`)} alt="" class="h-8 w-[22px] shrink-0 object-contain" />
-                        )}
-                        <div class="flex-1 min-w-0">
-                          <div class="font-head text-[13px] font-bold tracking-tight truncate">
-                            {w.runnerUrl ? <a href={w.runnerUrl} class="link link-hover">{w.name}</a> : w.name}
-                          </div>
-                          {w.clubName && <div class="text-xs text-muted mt-0.5 truncate">{w.clubName}</div>}
-                        </div>
-                        <div class="flex gap-1 items-center shrink-0">
-                          {w.gold > 0 && (
-                            <span class="inline-flex items-center gap-0.5 font-mono text-[11px] font-semibold">
-                              <span class="inline-flex items-center justify-center w-3.5 h-3.5 rounded-full font-mono text-[7px] font-bold" style={`background:${MEDAL_BG[1]};color:${MEDAL_FG[1]}`}>1</span>
-                              {w.gold}
-                            </span>
-                          )}
-                          {w.silver > 0 && (
-                            <span class="inline-flex items-center gap-0.5 font-mono text-[11px] font-semibold">
-                              <span class="inline-flex items-center justify-center w-3.5 h-3.5 rounded-full font-mono text-[7px] font-bold" style={`background:${MEDAL_BG[2]};color:${MEDAL_FG[2]}`}>2</span>
-                              {w.silver}
-                            </span>
-                          )}
-                          {w.bronze > 0 && (
-                            <span class="inline-flex items-center gap-0.5 font-mono text-[11px] font-semibold">
-                              <span class="inline-flex items-center justify-center w-3.5 h-3.5 rounded-full font-mono text-[7px] font-bold" style={`background:${MEDAL_BG[3]};color:${MEDAL_FG[3]}`}>3</span>
-                              {w.bronze}
-                            </span>
-                          )}
-                        </div>
-                      </div>
-                    ))}
+                  <div class="bg-surface border border-line rounded-xl overflow-hidden">
+                    <div class="overflow-x-auto">
+                      <table class="w-full border-collapse">
+                        <caption class="sr-only">{cat.name} Hall of Fame</caption>
+                        <thead>
+                          <tr class="bg-canvas">
+                            <th class="text-left py-3 pl-4 pr-2 font-head text-[10px] font-bold tracking-[0.12em] uppercase text-muted border-b-2 border-content w-8">#</th>
+                            <th class="text-left py-3 px-2 font-head text-[10px] font-bold tracking-[0.12em] uppercase text-content border-b-2 border-content">Runner</th>
+                            {[1, 2, 3].map(pos => (
+                              <th class="text-left py-3 px-3 font-head text-[10px] font-bold tracking-[0.12em] uppercase text-content border-b-2 border-content">
+                                <div class="flex items-center gap-1.5">
+                                  <span class="inline-flex items-center justify-center w-[16px] h-[16px] rounded-full font-mono text-[7px] font-bold shrink-0" style={`background:${MEDAL_BG[pos]};color:${MEDAL_FG[pos]}`}>{pos}</span>
+                                  <span>{pos === 1 ? '1st' : pos === 2 ? '2nd' : '3rd'}</span>
+                                </div>
+                              </th>
+                            ))}
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {hof.map((w, wi) => {
+                            const years = [
+                              [...w.goldYears].sort((a, b) => b - a),
+                              [...w.silverYears].sort((a, b) => b - a),
+                              [...w.bronzeYears].sort((a, b) => b - a),
+                            ];
+                            return (
+                              <tr class="border-b border-line last:border-0">
+                                <td class="py-2.5 pl-4 pr-2 font-mono text-xs font-medium text-muted align-top pt-3.5">{wi + 1}</td>
+                                <td class="py-2.5 px-2 align-top">
+                                  <div class="flex items-center gap-2 min-w-0">
+                                    {w.clubVest && (
+                                      <img src={siteUrl(`/images/vests/${w.clubVest.replace('.png', '-sm.png')}`)} alt="" class="h-8 w-auto shrink-0 object-contain" />
+                                    )}
+                                    <div class="min-w-0">
+                                      <div class="text-[13px] font-semibold leading-tight truncate">
+                                        {w.runnerUrl ? <a href={w.runnerUrl} class="link link-hover">{w.name}</a> : w.name}
+                                      </div>
+                                      {w.clubName && <div class="text-xs text-muted mt-0.5 truncate">{w.clubName}</div>}
+                                    </div>
+                                  </div>
+                                </td>
+                                {years.map((yrs, pi) => (
+                                  <td class="py-2.5 px-3 align-top">
+                                    {yrs.length > 0 ? (
+                                      <div>
+                                        <div class="inline-flex items-center gap-1 font-mono text-sm font-semibold">
+                                          <span class="inline-flex items-center justify-center w-[16px] h-[16px] rounded-full font-mono text-[7px] font-bold" style={`background:${MEDAL_BG[pi + 1]};color:${MEDAL_FG[pi + 1]}`}>{pi + 1}</span>
+                                          {yrs.length}
+                                        </div>
+                                        <div class="font-mono text-[10px] text-muted mt-1 leading-relaxed">
+                                          {yrs.join(' · ')}
+                                        </div>
+                                      </div>
+                                    ) : (
+                                      <span class="font-mono text-xs" style="color:var(--color-line)">—</span>
+                                    )}
+                                  </td>
+                                ))}
+                              </tr>
+                            );
+                          })}
+                        </tbody>
+                      </table>
+                    </div>
                   </div>
                 </div>
               )}
