@@ -25,6 +25,10 @@ const categoryLabel = `${runner.sex}${runner.ageCategory}`;
 const hasRoadGpAwards = awardSummary.roadGp.length > 0;
 const hasFellAwards = awardSummary.fell.length > 0;
 
+const totalRoadGp = yearBlocks.reduce((n, b) => n + (b.roadGp?.races.length ?? 0), 0);
+const totalFell   = yearBlocks.reduce((n, b) => n + (b.fell?.races.length ?? 0), 0);
+const totalRaces  = totalRoadGp + totalFell;
+
 function formatDateShort(isoDate: string): string {
   const d = new Date(isoDate);
   return `${d.getUTCDate()}/${d.getUTCMonth() + 1}`;
@@ -77,6 +81,31 @@ function positionLabel(pos: number): string {
               </div>
             </div>
           ))}
+        </div>
+      </div>
+
+      <!-- Race stats -->
+      <div class="bg-surface border border-line rounded-xl p-4">
+        <h2 class="font-head font-bold text-xs uppercase tracking-widest text-muted mb-3">
+          Races
+        </h2>
+        <div class="space-y-1.5">
+          <div class="flex items-center justify-between text-sm">
+            <span class="text-content font-medium">Total</span>
+            <span class="font-mono tabular-nums text-muted">{totalRaces}</span>
+          </div>
+          {totalRoadGp > 0 && (
+            <div class="flex items-center justify-between text-sm">
+              <span class="text-amber font-medium">Road GP</span>
+              <span class="font-mono tabular-nums text-muted">{totalRoadGp}</span>
+            </div>
+          )}
+          {totalFell > 0 && (
+            <div class="flex items-center justify-between text-sm">
+              <span class="text-teal font-medium">Fell</span>
+              <span class="font-mono tabular-nums text-muted">{totalFell}</span>
+            </div>
+          )}
         </div>
       </div>
 
@@ -137,28 +166,58 @@ function positionLabel(pos: number): string {
     <!-- Main content -->
     <div>
 
-      <!-- Competed for (mobile/tablet, < lg) -->
-      <div class="lg:hidden mb-6 bg-surface border border-line rounded-xl p-4">
-        <h2 class="font-head font-bold text-xs uppercase tracking-widest text-muted mb-3">
-          Competed for
-        </h2>
-        <div class="flex flex-col xs:flex-row xs:flex-wrap gap-x-6 gap-y-3">
-          {clubHistory.map(ch => (
-            <div class="flex items-center gap-3 text-sm">
-              {ch.vest && (
-                <img
-                  src={siteUrl(`/images/vests/${ch.vest}`)}
-                  alt=""
-                  class="h-10 w-auto shrink-0 object-contain"
-                />
-              )}
-              <div class="min-w-0">
-                <div class="font-semibold">{ch.clubName}</div>
-                <div class="font-mono text-xs text-muted">{ch.yearRanges}</div>
+      <!-- Competed for + Race stats row (mobile/tablet, < lg) -->
+      <div class="lg:hidden mb-6 flex flex-col xs:flex-row xs:items-stretch gap-4">
+
+        <!-- Competed for -->
+        <div class="bg-surface border border-line rounded-xl p-4 flex-1 min-w-0">
+          <h2 class="font-head font-bold text-xs uppercase tracking-widest text-muted mb-3">
+            Competed for
+          </h2>
+          <div class="flex flex-col xs:flex-row xs:flex-wrap gap-x-6 gap-y-3">
+            {clubHistory.map(ch => (
+              <div class="flex items-center gap-3 text-sm">
+                {ch.vest && (
+                  <img
+                    src={siteUrl(`/images/vests/${ch.vest}`)}
+                    alt=""
+                    class="h-10 w-auto shrink-0 object-contain"
+                  />
+                )}
+                <div class="min-w-0">
+                  <div class="font-semibold">{ch.clubName}</div>
+                  <div class="font-mono text-xs text-muted">{ch.yearRanges}</div>
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
+
+        <!-- Race stats — narrow card at xs+, full-width below xs -->
+        <div class="bg-surface border border-line rounded-xl p-4 xs:w-36 shrink-0">
+          <h2 class="font-head font-bold text-xs uppercase tracking-widest text-muted mb-3">
+            Races
+          </h2>
+          <div class="space-y-1.5">
+            <div class="flex items-center justify-between text-sm">
+              <span class="text-content font-medium">Total</span>
+              <span class="font-mono tabular-nums text-muted">{totalRaces}</span>
+            </div>
+            {totalRoadGp > 0 && (
+              <div class="flex items-center justify-between text-sm">
+                <span class="text-amber font-medium">Road GP</span>
+                <span class="font-mono tabular-nums text-muted">{totalRoadGp}</span>
+              </div>
+            )}
+            {totalFell > 0 && (
+              <div class="flex items-center justify-between text-sm">
+                <span class="text-teal font-medium">Fell</span>
+                <span class="font-mono tabular-nums text-muted">{totalFell}</span>
+              </div>
+            )}
+          </div>
+        </div>
+
       </div>
 
       <!-- Filter bar — matches chip-bar / results-page filter style -->
