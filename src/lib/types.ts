@@ -79,6 +79,7 @@ export interface RunnerProfileRace {
   raceId: string;
   time: string;
   hasResults: boolean;
+  distance?: string;  // e.g. "5.2 miles" from races.json
 }
 
 export interface RunnerProfileAward {

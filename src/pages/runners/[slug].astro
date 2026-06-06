@@ -51,7 +51,7 @@ function positionLabel(pos: number): string {
   />
 
   <!-- ── Body: sidebar + main ── -->
-  <div class="lg:grid lg:grid-cols-[260px_1fr] lg:gap-7 xl:grid-cols-[280px_1fr]">
+  <div class="lg:grid lg:grid-cols-[220px_1fr] xl:grid-cols-[260px_1fr] lg:gap-8 lg:items-start">
 
     <!-- Sidebar (lg+) -->
     <aside class="hidden lg:block space-y-4">
@@ -218,7 +218,7 @@ function positionLabel(pos: number): string {
                       </span>
                     ))}
                   </h3>
-                  <table class="w-full text-sm border-collapse">
+                  <table class="w-full text-sm border-collapse table-fixed">
                     <tbody>
                       {block.roadGp.races.map(race => (
                         <tr
@@ -227,18 +227,23 @@ function positionLabel(pos: number): string {
                           data-year={String(block.year)}
                           data-time={race.time ?? ''}
                           data-results-url={race.hasResults ? siteUrl(`/road-gp/${block.year}/${race.raceId}/results`) : ''}
+                          data-distance={race.distance ?? ''}
                           class="border-b border-line last:border-b-0"
                         >
-                          <td class="py-2 pr-3 font-mono text-xs text-muted w-10 tabular-nums align-middle">
+                          <td class="py-2 pr-3 font-mono text-xs text-muted w-10 shrink-0 tabular-nums align-middle">
                             {formatDateShort(race.date)}
                           </td>
-                          <td class="py-2 font-medium align-middle">
+                          <td class="py-2 font-medium align-middle truncate">
                             {race.hasResults
                               ? <a href={siteUrl(`/road-gp/${block.year}/${race.raceId}/results`)} class="link link-hover">{race.raceName}</a>
                               : <span class="text-muted">{race.raceName}</span>}
+                            {race.distance && <div class="sm:hidden font-mono text-xs text-muted mt-0.5">{race.distance}</div>}
+                          </td>
+                          <td class="hidden sm:table-cell py-2 px-3 font-mono text-xs text-muted text-left align-middle w-32">
+                            {race.distance ?? ''}
                           </td>
                           <td class:list={[
-                            'py-2 text-right font-mono text-sm tabular-nums align-middle',
+                            'py-2 text-right font-mono text-sm tabular-nums align-middle w-16',
                             !race.time ? 'text-muted' : 'text-content',
                           ]}>
                             {formatTime(race.time)}
@@ -266,7 +271,7 @@ function positionLabel(pos: number): string {
                       </span>
                     ))}
                   </h3>
-                  <table class="w-full text-sm border-collapse">
+                  <table class="w-full text-sm border-collapse table-fixed">
                     <tbody>
                       {block.fell.races.map(race => (
                         <tr
@@ -277,16 +282,19 @@ function positionLabel(pos: number): string {
                           data-results-url={race.hasResults ? siteUrl(`/fell/${block.year}/${race.raceId}/results`) : ''}
                           class="border-b border-line last:border-b-0"
                         >
-                          <td class="py-2 pr-3 font-mono text-xs text-muted w-10 tabular-nums align-middle">
+                          <td class="py-2 pr-3 font-mono text-xs text-muted w-10 shrink-0 tabular-nums align-middle">
                             {formatDateShort(race.date)}
                           </td>
-                          <td class="py-2 font-medium align-middle">
+                          <td class="py-2 font-medium align-middle truncate">
                             {race.hasResults
                               ? <a href={siteUrl(`/fell/${block.year}/${race.raceId}/results`)} class="link link-hover">{race.raceName}</a>
                               : <span class="text-muted">{race.raceName}</span>}
                           </td>
+                          <td class="py-2 px-3 font-mono text-xs text-muted text-left align-middle w-32">
+                            {race.distance ?? ''}
+                          </td>
                           <td class:list={[
-                            'py-2 text-right font-mono text-sm tabular-nums align-middle',
+                            'py-2 text-right font-mono text-sm tabular-nums align-middle w-16',
                             !race.time ? 'text-muted' : 'text-content',
                           ]}>
                             {formatTime(race.time)}
@@ -305,11 +313,12 @@ function positionLabel(pos: number): string {
 
       <!-- Compact race-selected view -->
       <div id="race-compact" class="hidden">
-        <table class="w-full text-sm border-collapse">
+        <table class="w-full text-sm border-collapse table-fixed">
           <thead>
             <tr class="border-b-2 border-content">
               <th class="pb-1.5 text-left font-head font-bold text-xs uppercase tracking-widest text-muted w-16">Year</th>
-              <th class="pb-1.5 text-right font-head font-bold text-xs uppercase tracking-widest text-muted">Time</th>
+              <th class="pb-1.5 px-3 text-left font-head font-bold text-xs uppercase tracking-widest text-muted w-32">Distance</th>
+              <th class="pb-1.5 text-right font-head font-bold text-xs uppercase tracking-widest text-muted w-16">Time</th>
             </tr>
           </thead>
           <tbody id="race-compact-body"></tbody>
@@ -415,9 +424,11 @@ function positionLabel(pos: number): string {
       const yearCell = url
         ? `<a href="${url}" class="link link-hover font-mono tabular-nums">${year}</a>`
         : `<span class="font-mono tabular-nums text-muted">${year}</span>`;
+      const distance = row.dataset.distance ?? '';
       const timeClass = row.dataset.time ? 'text-content' : 'text-muted';
       return `<tr class="border-b border-line last:border-b-0">
         <td class="py-2 pr-3 align-middle">${yearCell}</td>
+        <td class="py-2 px-3 text-left font-mono text-xs text-muted align-middle whitespace-nowrap">${distance}</td>
         <td class="py-2 text-right font-mono tabular-nums align-middle ${timeClass}">${time}</td>
       </tr>`;
     }).join('');

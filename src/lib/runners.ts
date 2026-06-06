@@ -126,6 +126,7 @@ function getRacesForRunner(year: number, series: Series, seriesLocalId: number):
       raceId,
       time: match.time,
       hasResults: hasResults(year, series, raceId),
+      distance: race.distance,
     });
   }
   return results.sort((a, b) => a.date.localeCompare(b.date));
