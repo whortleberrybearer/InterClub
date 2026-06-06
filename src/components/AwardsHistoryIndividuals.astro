@@ -276,7 +276,7 @@ const MEDAL_FG = ['', '#3d2300', '#1f2733', '#ffffff'];
           class={`ih-panel${isFirstVisible ? '' : ' is-hidden'}`}
         >
           <!-- Desktop: two-column grid -->
-          <div class="lg:grid lg:grid-cols-[1fr_296px] lg:gap-6 lg:items-start">
+          <div>
 
             <!-- ── Main column ───────────────────────────────────────── -->
             <div>
@@ -367,15 +367,15 @@ const MEDAL_FG = ['', '#3d2300', '#1f2733', '#ffffff'];
 
               <!-- Tablet: Hall of Fame 2-col grid (md only, not lg) -->
               {hof.length > 0 && (
-                <div class="hidden md:block lg:hidden mt-7">
+                <div class="hidden md:block mt-7">
                   <div class="flex items-end justify-between mb-3 pb-2 border-b-2 border-content">
                     <div>
                       <div class="font-head text-[10px] font-bold tracking-[0.14em] uppercase text-muted">Hall of Fame</div>
                       <h3 class="font-head text-xl font-black tracking-tight">Most decorated · {label}</h3>
                     </div>
                   </div>
-                  <div class="grid grid-cols-2 gap-2">
-                    {hof.slice(0, 8).map((w, wi) => (
+                  <div class="grid grid-cols-2 lg:grid-cols-3 gap-2">
+                    {hof.slice(0, 12).map((w, wi) => (
                       <div
                                                 class="flex items-center gap-2.5 px-3 py-2.5 bg-surface border border-line rounded-lg"
                       >
@@ -514,71 +514,6 @@ const MEDAL_FG = ['', '#3d2300', '#1f2733', '#ffffff'];
                 )}
               </div>
             </div>
-
-            <!-- ── Desktop sidebar ───────────────────────────────────── -->
-            <aside class="hidden lg:block lg:sticky lg:top-6 mt-0">
-              <!-- HoF card -->
-              {hof.length > 0 ? (
-                <div class="bg-surface border border-line rounded-xl p-5 mb-4">
-                  <div class="font-head text-[10px] font-bold tracking-[0.16em] uppercase text-muted">The Hall of Fame</div>
-                  <h3 class="font-head text-xl font-black tracking-tight mt-0.5 mb-4">
-                    {label} · {sexLabel === 'Men' ? "men's" : "women's"}
-                  </h3>
-                  <div>
-                    {hof.slice(0, 10).map((w, wi, arr) => (
-                      <div
-                                                class={`flex items-center gap-3 py-2.5${wi < arr.length - 1 ? ' border-b border-line' : ''}`}
-                      >
-                        <span class="font-mono text-[10px] font-bold text-muted w-3.5 text-right shrink-0">{wi + 1}</span>
-                        {w.clubVest && (
-                          <img src={siteUrl(`/images/vests/${w.clubVest.replace('.png', '-sm.png')}`)} alt="" class="h-8 w-[22px] shrink-0 object-contain" />
-                        )}
-                        <div class="flex-1 min-w-0">
-                          <div class="font-head text-sm font-bold tracking-tight truncate">
-                            {w.runnerUrl ? <a href={w.runnerUrl} class="link link-hover">{w.name}</a> : w.name}
-                          </div>
-                          {w.clubName && (
-                            <div class="text-xs text-muted mt-0.5 truncate">{w.clubName}</div>
-                          )}
-                        </div>
-                        <div class="text-right shrink-0">
-                          <div class="flex gap-1 items-center justify-end">
-                            {w.gold > 0 && (
-                              <span class="inline-flex items-center gap-0.5 font-mono text-[11px] font-semibold">
-                                <span class="inline-flex items-center justify-center w-3.5 h-3.5 rounded-full font-mono text-[7px] font-bold" style={`background:${MEDAL_BG[1]};color:${MEDAL_FG[1]}`}>1</span>
-                                {w.gold}
-                              </span>
-                            )}
-                            {w.silver > 0 && (
-                              <span class="inline-flex items-center gap-0.5 font-mono text-[11px] font-semibold">
-                                <span class="inline-flex items-center justify-center w-3.5 h-3.5 rounded-full font-mono text-[7px] font-bold" style={`background:${MEDAL_BG[2]};color:${MEDAL_FG[2]}`}>2</span>
-                                {w.silver}
-                              </span>
-                            )}
-                            {w.bronze > 0 && (
-                              <span class="inline-flex items-center gap-0.5 font-mono text-[11px] font-semibold">
-                                <span class="inline-flex items-center justify-center w-3.5 h-3.5 rounded-full font-mono text-[7px] font-bold" style={`background:${MEDAL_BG[3]};color:${MEDAL_FG[3]}`}>3</span>
-                                {w.bronze}
-                              </span>
-                            )}
-                          </div>
-                          <div class="text-xs text-muted mt-0.5">
-                            {w.gold + w.silver + w.bronze} podium{w.gold + w.silver + w.bronze !== 1 ? 's' : ''}
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              ) : (
-                <div class="bg-surface border border-line rounded-xl p-5 mb-4">
-                  <div class="font-head text-[10px] font-bold tracking-[0.16em] uppercase text-muted">The Hall of Fame</div>
-                  <h3 class="font-head text-xl font-black tracking-tight mt-0.5 mb-3">{label} · {sexLabel === 'Men' ? "men's" : "women's"}</h3>
-                  <p class="text-sm text-muted italic">No data recorded for this category.</p>
-                </div>
-              )}
-
-            </aside>
 
           </div>
         </div>
