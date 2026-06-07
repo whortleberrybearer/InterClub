@@ -5,8 +5,13 @@ import PageHeader from '../../../components/PageHeader.astro';
 import { getAvailableYears, getRaces, getCurrentYear } from '../../../lib/data';
 import { formatRaceDate } from '../../../lib/format';
 import { hasResults } from '../../../lib/results';
+import { getGlobalRunners, runnerSlug } from '../../../lib/runners';
 import { siteUrl } from '../../../lib/url';
 import type { Race } from '../../../lib/types';
+
+const globalRunnerUrlMap = Object.fromEntries(
+  getGlobalRunners().map(r => [r.id, siteUrl(`/runners/${runnerSlug(r)}/`)])
+);
 
 export async function getStaticPaths() {
   const currentYear = getCurrentYear();
@@ -36,7 +41,7 @@ interface Props {
 const { race, year, pastResults, raceIndex, totalRaces } = Astro.props;
 const {
   name, date, time, location, distance, ascent,
-  detailsUrl, image, startAddress, mapEmbedUrl,
+  image, startAddress, mapEmbedUrl,
   parking, routeImage, routeDescription, courseRecords,
   postRaceVenue,
 } = race;
@@ -50,6 +55,24 @@ const raceMeta = [
   distance     || null,
   ascent       ? `↑ ${ascent}` : null,
 ].filter(Boolean) as string[];
+
+// "At a glance" facts for the sidebar
+const glanceFacts = [
+  distance      ? { k: 'Distance', v: distance + (ascent ? ` · ↑ ${ascent}` : '') } : null,
+  formattedDate ? { k: 'Date',     v: formattedDate } : null,
+  location      ? { k: 'Location', v: location }      : null,
+  { k: 'Series', v: `Road GP · Race ${raceIndex} of ${totalRaces}` },
+].filter(Boolean) as { k: string; v: string }[];
+
+// Decade-grouped past results for the sidebar archive
+const decadeGroups = [
+  { label: '2020s',   years: pastResults.filter(r => r.year >= 2020) },
+  { label: '2010s',   years: pastResults.filter(r => r.year >= 2010 && r.year < 2020) },
+  { label: '2000s',   years: pastResults.filter(r => r.year >= 2000 && r.year < 2010) },
+  { label: '1990s',   years: pastResults.filter(r => r.year >= 1990 && r.year < 2000) },
+].filter(g => g.years.length > 0);
+
+const oldestYear = pastResults.length > 0 ? pastResults[pastResults.length - 1].year : null;
 ---
 
 <Layout title={name}>
@@ -69,15 +92,20 @@ const raceMeta = [
     />
   )}
 
-  <div class="flex flex-col gap-5">
+  <!-- Two-column on desktop: main content + sticky sidebar -->
+  <div class="lg:grid lg:grid-cols-[1fr_300px] lg:gap-8 lg:items-start">
 
-    <!-- Getting Here -->
-    {hasGettingHere && (
-      <div class="card shadow-sm">
-        <div class="card-body gap-4">
-          <h2 class="font-head text-base font-bold tracking-wide uppercase">Getting Here</h2>
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <dl class="flex flex-col gap-4 order-2 sm:order-1">
+    <!-- ── Main column ── -->
+    <div class="flex flex-col gap-5">
+
+      <!-- Getting Here -->
+      {hasGettingHere && (
+        <div class="card shadow-sm">
+          <div class="card-body gap-4">
+            <h2 class="font-head text-base font-bold tracking-wide uppercase">Getting Here</h2>
+
+            <!-- Start location → Map → Parking (all breakpoints) -->
+            <dl class="flex flex-col gap-4">
               {startAddress && (
                 <div>
                   <dt class="text-[10px] font-bold tracking-[0.12em] uppercase text-muted mb-1">
@@ -85,6 +113,14 @@ const raceMeta = [
                   </dt>
                   <dd class="font-medium text-sm leading-snug">{startAddress}</dd>
                 </div>
+              )}
+              {mapEmbedUrl && (
+                <iframe
+                  src={mapEmbedUrl}
+                  class="w-full h-52 lg:h-64 rounded-lg border-0"
+                  loading="lazy"
+                  referrerpolicy="no-referrer-when-downgrade"
+                ></iframe>
               )}
               {parking && (
                 <div>
@@ -95,95 +131,185 @@ const raceMeta = [
                 </div>
               )}
             </dl>
-            {mapEmbedUrl && (
-              <div class="order-1 sm:order-2">
-                <iframe
-                  src={mapEmbedUrl}
-                  class="w-full h-52 sm:h-full min-h-44 rounded-lg border-0"
-                  loading="lazy"
-                  referrerpolicy="no-referrer-when-downgrade"
-                ></iframe>
-              </div>
-            )}
+
           </div>
         </div>
-      </div>
-    )}
+      )}
 
-    <!-- The Course -->
-    {hasCourse && (
-      <div class="card shadow-sm">
-        <div class="card-body gap-4">
-          <h2 class="font-head text-base font-bold tracking-wide uppercase">The Course</h2>
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div class="flex flex-col gap-4">
+      <!-- The Course -->
+      {hasCourse && (
+        <div class="card shadow-sm">
+          <div class="card-body gap-4">
+            <h2 class="font-head text-base font-bold tracking-wide uppercase">The Course</h2>
+
+            <!-- Desktop: description left, image right; course records full-width below -->
+            <div class="hidden lg:contents">
+              <div class="grid grid-cols-2 gap-7 items-start">
+                {routeDescription && (
+                  <p class:list={['text-sm text-content/80 leading-relaxed whitespace-pre-line', !routeImage && 'col-span-2']}>{routeDescription}</p>
+                )}
+                {routeImage && (
+                  <img
+                    src={siteUrl(`/images/${routeImage}`)}
+                    alt={`${name} route`}
+                    class="w-full rounded-lg object-cover"
+                    loading="lazy"
+                  />
+                )}
+              </div>
+              {courseRecords && courseRecords.length > 0 && (
+                <div>
+                  <p class="text-[10px] font-bold tracking-[0.12em] uppercase text-muted mb-3">
+                    Course Records
+                  </p>
+                  <div class="grid grid-cols-1 xl:grid-cols-2 gap-4">
+                    {(['M', 'F'] as const).map(sex => {
+                      const rec = courseRecords!.find(r => r.sex === sex);
+                      if (!rec) return null;
+                      return (
+                        <div>
+                          <p class="text-[10px] font-bold tracking-[0.12em] uppercase text-muted mb-2">
+                            {sex === 'M' ? 'Male' : 'Female'}
+                          </p>
+                          <div class="flex items-center gap-3 p-3 rounded-lg bg-canvas">
+                            <span class="font-mono text-sm font-semibold min-w-[3rem]">{rec.time}</span>
+                            {rec.vest && (
+                              <img
+                                src={siteUrl(`/images/vests/${rec.vest}`)}
+                                alt=""
+                                class="h-9 w-auto shrink-0 object-contain"
+                              />
+                            )}
+                            <div class="flex-1 min-w-0">
+                              <div class="text-sm font-semibold leading-tight truncate">{rec.name}</div>
+                              {rec.club && <div class="text-xs text-muted mt-0.5 truncate">{rec.club}</div>}
+                            </div>
+                            <span class="font-mono text-xs text-muted shrink-0">{rec.year}</span>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+            </div>
+
+            <!-- Mobile/tablet: description, image, then records below -->
+            <div class="flex flex-col gap-4 lg:hidden">
               {routeDescription && (
                 <p class="text-sm text-content/80 leading-relaxed whitespace-pre-line">{routeDescription}</p>
+              )}
+              {routeImage && (
+                <img
+                  src={siteUrl(`/images/${routeImage}`)}
+                  alt={`${name} route`}
+                  class="w-full rounded-lg object-cover min-h-40"
+                  loading="lazy"
+                />
               )}
               {courseRecords && courseRecords.length > 0 && (
                 <div>
                   <p class="text-[10px] font-bold tracking-[0.12em] uppercase text-muted mb-2">
                     Course Records
                   </p>
-                  <div class="flex flex-col divide-y divide-line">
+                  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     {courseRecords.map(rec => (
-                      <div class="flex items-center gap-3 py-2">
-                        <span class={`badge badge-sm w-14 justify-center shrink-0 ${rec.sex === 'M' ? 'badge-info' : 'badge-secondary'}`}>
-                          {rec.sex === 'M' ? 'Men' : 'Women'}
-                        </span>
-                        <span class="font-mono text-sm font-semibold min-w-[3rem]">{rec.time}</span>
-                        <span class="text-sm flex-1">{rec.name}</span>
-                        <span class="font-mono text-xs text-muted">{rec.year}</span>
+                      <div>
+                        <p class="text-[10px] font-bold tracking-[0.12em] uppercase text-muted mb-2">
+                          {rec.sex === 'M' ? 'Male' : 'Female'}
+                        </p>
+                        <div class="flex items-center gap-3 p-3 rounded-lg bg-canvas">
+                          <span class="font-mono text-sm font-semibold min-w-[3rem]">{rec.time}</span>
+                          {rec.vest && (
+                            <img
+                              src={siteUrl(`/images/vests/${rec.vest}`)}
+                              alt=""
+                              class="h-9 w-auto shrink-0 object-contain"
+                            />
+                          )}
+                          <div class="flex-1 min-w-0">
+                            <div class="text-sm font-semibold leading-tight truncate">
+                              {rec.runnerId && globalRunnerUrlMap[rec.runnerId]
+                                ? <a href={globalRunnerUrlMap[rec.runnerId]} class="link link-hover">{rec.name}</a>
+                                : rec.name}
+                            </div>
+                            {rec.club && <div class="text-xs text-muted mt-0.5 truncate">{rec.club}</div>}
+                          </div>
+                          <span class="font-mono text-xs text-muted shrink-0">{rec.year}</span>
+                        </div>
                       </div>
                     ))}
                   </div>
                 </div>
               )}
             </div>
-            {routeImage && (
-              <img
-                src={siteUrl(`/images/${routeImage}`)}
-                alt={`${name} route`}
-                class="w-full rounded-lg object-cover min-h-40"
-                loading="lazy"
-              />
-            )}
+
           </div>
         </div>
-      </div>
-    )}
+      )}
 
-    <!-- After the Race -->
-    {postRaceVenue && (
-      <div class="card shadow-sm">
-        <div class="card-body gap-2">
-          <h2 class="font-head text-base font-bold tracking-wide uppercase">After the Race</h2>
-          <p class="text-sm text-content/80">{postRaceVenue}</p>
-        </div>
-      </div>
-    )}
-
-    <!-- Past Results -->
-    {pastResults.length > 0 && (
-      <div class="card shadow-sm">
-        <div class="card-body gap-3">
-          <div class="flex items-baseline justify-between">
-            <h2 class="font-head text-base font-bold tracking-wide uppercase">Past Results</h2>
-            <span class="font-mono text-xs text-muted">{pastResults.length} seasons</span>
+      <!-- After the Race — all breakpoints -->
+      {postRaceVenue && (
+        <div class="card shadow-sm">
+          <div class="card-body gap-2">
+            <h2 class="font-head text-base font-bold tracking-wide uppercase">After the Race</h2>
+            <p class="text-sm text-content/80">{postRaceVenue}</p>
           </div>
-          <div class="flex flex-wrap gap-2">
-            {pastResults.map(r => (
-              <a
-                href={r.url}
-                class="font-mono text-xs font-medium px-3 py-1 rounded-full border border-line text-content hover:bg-canvas transition-colors"
-              >
-                {r.year}
-              </a>
+        </div>
+      )}
+
+      <!-- Past Results — mobile/tablet only (desktop shows in sidebar) -->
+      {pastResults.length > 0 && (
+        <div class="card shadow-sm lg:hidden">
+          <div class="card-body gap-3">
+            <div class="font-head text-xl font-extrabold tracking-tight">Past results</div>
+            {decadeGroups.map((group, gi) => (
+              <div class:list={[gi < decadeGroups.length - 1 && 'mb-1']}>
+                <div class="font-mono text-[10px] tracking-[0.1em] uppercase text-muted mb-1.5">{group.label}</div>
+                <div class="grid grid-cols-5 sm:grid-cols-10 gap-1">
+                  {group.years.map(r => (
+                    <a
+                      href={r.url}
+                      class="text-center py-1.5 font-mono text-[11px] text-content bg-canvas rounded-md no-underline hover:text-amber transition-colors"
+                    >
+                      {String(r.year).slice(2)}
+                    </a>
+                  ))}
+                </div>
+              </div>
             ))}
           </div>
         </div>
-      </div>
-    )}
+      )}
+
+    </div>
+
+    <!-- ── Desktop sidebar ── -->
+    <aside class="hidden lg:flex flex-col gap-4 sticky top-6 self-start">
+
+      <!-- The Archive — past results -->
+      {pastResults.length > 0 && (
+        <div class="card p-4">
+          <div class="font-head text-xl font-extrabold tracking-tight mb-2">Past results</div>
+          {decadeGroups.map((group, gi) => (
+            <div class:list={[gi < decadeGroups.length - 1 && 'mb-3']}>
+              <div class="font-mono text-[10px] tracking-[0.1em] uppercase text-muted mb-1.5">{group.label}</div>
+              <div class="grid grid-cols-5 gap-1">
+                {group.years.map(r => (
+                  <a
+                    href={r.url}
+                    class="text-center py-1.5 font-mono text-[11px] text-content bg-canvas rounded-md no-underline hover:text-amber transition-colors"
+                  >
+                    {String(r.year).slice(2)}
+                  </a>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
+    </aside>
 
   </div>
 </Layout>
