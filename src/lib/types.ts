@@ -26,9 +26,12 @@ export interface Race {
 
 export interface CourseRecord {
   sex: 'M' | 'F';
-  time: string;   // "MM:SS", e.g. "24:15"
-  name: string;   // e.g. "J. Smith"
+  time: string;    // "MM:SS", e.g. "24:15"
+  name: string;    // e.g. "J. Smith"
   year: number;
+  club?: string;   // display name of the club, e.g. "Preston Harriers"
+  vest?: string;   // optional vest image filename relative to /public/images/vests/
+  runnerId?: number; // global runner id from runners.json; enables a link to the runner profile page
 }
 
 export interface RaceResult {
