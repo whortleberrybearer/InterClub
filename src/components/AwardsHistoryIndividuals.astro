@@ -393,7 +393,7 @@ const MEDAL_FG = ['', '#3d2300', '#1f2733', '#ffffff'];
                         </colgroup>
                         <thead>
                           <tr class="bg-canvas">
-                            <th class="text-left py-3 pl-4 pr-2 font-head text-[10px] font-bold tracking-[0.12em] uppercase text-muted border-b-2 border-content">#</th>
+                            <th class="hidden sm:table-cell text-left py-3 pl-4 pr-2 font-head text-[10px] font-bold tracking-[0.12em] uppercase text-muted border-b-2 border-content">#</th>
                             <th class="text-left py-3 px-2 font-head text-[10px] font-bold tracking-[0.12em] uppercase text-content border-b-2 border-content">Runner</th>
                             {[1, 2, 3].map(pos => (
                               <th class="text-left py-3 px-3 font-head text-[10px] font-bold tracking-[0.12em] uppercase text-content border-b-2 border-content">
@@ -620,17 +620,17 @@ const MEDAL_FG = ['', '#3d2300', '#1f2733', '#ffffff'];
               <table class="w-full border-collapse table-fixed">
                 <caption class="sr-only">Most decorated, all categories</caption>
                 <colgroup>
-                  <col class="w-8" />
+                  <col class="hidden sm:table-column w-8" />
                   <col />
                   <col class="hidden sm:table-column w-[28%]" />
-                  <col class="w-12" />
-                  <col class="w-12" />
-                  <col class="w-12" />
-                  <col class="w-14" />
+                  <col class="w-9 sm:w-11" />
+                  <col class="w-9 sm:w-11" />
+                  <col class="w-9 sm:w-11" />
+                  <col class="w-10 sm:w-14" />
                 </colgroup>
                 <thead>
                   <tr class="bg-canvas">
-                    <th class="text-left py-3 pl-4 pr-2 font-head text-[10px] font-bold tracking-[0.12em] uppercase text-muted border-b-2 border-content">#</th>
+                    <th class="hidden sm:table-cell text-left py-3 pl-4 pr-2 font-head text-[10px] font-bold tracking-[0.12em] uppercase text-muted border-b-2 border-content">#</th>
                     <th class="text-left py-3 px-2 font-head text-[10px] font-bold tracking-[0.12em] uppercase text-content border-b-2 border-content">Runner</th>
                     <th class="hidden sm:table-cell text-left py-3 px-2 font-head text-[10px] font-bold tracking-[0.12em] uppercase text-content border-b-2 border-content">Categories</th>
                     <th class="text-center py-3 px-1 font-head text-[10px] font-bold tracking-[0.12em] uppercase text-content border-b-2 border-content">
@@ -648,8 +648,8 @@ const MEDAL_FG = ['', '#3d2300', '#1f2733', '#ffffff'];
                 <tbody>
                   {greatsM.map((w, i) => (
                     <tr class="border-b border-line last:border-0">
-                      <td class="py-3 pl-4 pr-1 font-mono text-xs font-medium text-muted align-middle">{i + 1}</td>
-                      <td class="py-3 px-2 align-middle max-w-0 overflow-hidden">
+                      <td class="hidden sm:table-cell py-3 pl-4 pr-1 font-mono text-xs font-medium text-muted align-middle">{i + 1}</td>
+                      <td class="py-3 pl-4 sm:pl-2 pr-2 align-middle max-w-0 overflow-hidden">
                         <div class="flex items-center gap-2 min-w-0">
                           {w.clubVest && (
                             <img src={siteUrl(`/images/vests/${w.clubVest.replace('.png', '-sm.png')}`)} alt="" class="h-7 w-auto shrink-0 object-contain" />
