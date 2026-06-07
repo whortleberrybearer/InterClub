@@ -125,8 +125,7 @@ function buildGreats(cats: CategoryHistoryData[]): GreatsEntry[] {
 
 const greatsM = buildGreats(mCats);
 const greatsF = buildGreats(fCats);
-const greatsMMax = Math.max(greatsM[0]?.total ?? 0, 1);
-const greatsFMax = Math.max(greatsF[0]?.total ?? 0, 1);
+
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const seriesLabel = series === 'road-gp' ? 'Road Grand Prix' : 'Fell Championship';
@@ -618,37 +617,52 @@ const MEDAL_FG = ['', '#3d2300', '#1f2733', '#ffffff'];
             <div class="md:hidden font-head text-[10px] font-bold tracking-[0.14em] uppercase text-muted mb-2.5 mt-4">Men · Most decorated, all categories</div>
             <div class="overflow-x-auto">
             <div class="bg-surface border border-line rounded-xl overflow-hidden">
-              <table class="w-full border-collapse">
-                <caption class="sr-only">Most decorated men, all categories</caption>
+              <table class="w-full border-collapse table-fixed">
+                <caption class="sr-only">Most decorated, all categories</caption>
+                <colgroup>
+                  <col class="w-8" />
+                  <col />
+                  <col class="hidden sm:table-column w-[28%]" />
+                  <col class="w-12" />
+                  <col class="w-12" />
+                  <col class="w-12" />
+                  <col class="w-14" />
+                </colgroup>
                 <thead>
                   <tr class="bg-canvas">
-                    <th class="text-left py-3 pl-4 pr-2 font-head text-[10px] font-bold tracking-[0.12em] uppercase text-muted border-b-2 border-content w-10">#</th>
+                    <th class="text-left py-3 pl-4 pr-2 font-head text-[10px] font-bold tracking-[0.12em] uppercase text-muted border-b-2 border-content">#</th>
                     <th class="text-left py-3 px-2 font-head text-[10px] font-bold tracking-[0.12em] uppercase text-content border-b-2 border-content">Runner</th>
-                    <th class="text-left py-3 px-2 font-head text-[10px] font-bold tracking-[0.12em] uppercase text-content border-b-2 border-content">Categories</th>
-                    <th class="text-center py-3 px-2 font-head text-[10px] font-bold tracking-[0.12em] uppercase text-content border-b-2 border-content w-16">Gold</th>
-                    <th class="text-center py-3 px-2 font-head text-[10px] font-bold tracking-[0.12em] uppercase text-content border-b-2 border-content w-16">Silver</th>
-                    <th class="text-center py-3 px-2 font-head text-[10px] font-bold tracking-[0.12em] uppercase text-content border-b-2 border-content w-16">Bronze</th>
-                    <th class="text-right py-3 pr-4 pl-2 font-head text-[10px] font-bold tracking-[0.12em] uppercase text-content border-b-2 border-content w-20">Total</th>
+                    <th class="hidden sm:table-cell text-left py-3 px-2 font-head text-[10px] font-bold tracking-[0.12em] uppercase text-content border-b-2 border-content">Categories</th>
+                    <th class="text-center py-3 px-1 font-head text-[10px] font-bold tracking-[0.12em] uppercase text-content border-b-2 border-content">
+                      <span class="inline-flex items-center justify-center w-[16px] h-[16px] rounded-full font-mono text-[7px] font-bold" style={`background:${MEDAL_BG[1]};color:${MEDAL_FG[1]}`}>1</span>
+                    </th>
+                    <th class="text-center py-3 px-1 font-head text-[10px] font-bold tracking-[0.12em] uppercase text-content border-b-2 border-content">
+                      <span class="inline-flex items-center justify-center w-[16px] h-[16px] rounded-full font-mono text-[7px] font-bold" style={`background:${MEDAL_BG[2]};color:${MEDAL_FG[2]}`}>2</span>
+                    </th>
+                    <th class="text-center py-3 px-1 font-head text-[10px] font-bold tracking-[0.12em] uppercase text-content border-b-2 border-content">
+                      <span class="inline-flex items-center justify-center w-[16px] h-[16px] rounded-full font-mono text-[7px] font-bold" style={`background:${MEDAL_BG[3]};color:${MEDAL_FG[3]}`}>3</span>
+                    </th>
+                    <th class="text-right py-3 pr-3 pl-1 font-head text-[10px] font-bold tracking-[0.12em] uppercase text-content border-b-2 border-content">Tot.</th>
                   </tr>
                 </thead>
                 <tbody>
                   {greatsM.map((w, i) => (
                     <tr class="border-b border-line last:border-0">
-                      <td class="py-3 pl-4 pr-2 font-mono text-sm font-medium text-muted align-middle">{i + 1}</td>
-                      <td class="py-3 px-2 align-middle">
-                        <div class="flex items-center gap-2">
+                      <td class="py-3 pl-4 pr-1 font-mono text-xs font-medium text-muted align-middle">{i + 1}</td>
+                      <td class="py-3 px-2 align-middle max-w-0 overflow-hidden">
+                        <div class="flex items-center gap-2 min-w-0">
                           {w.clubVest && (
-                            <img src={siteUrl(`/images/vests/${w.clubVest.replace('.png', '-sm.png')}`)} alt="" class="h-8 w-auto shrink-0 object-contain" />
+                            <img src={siteUrl(`/images/vests/${w.clubVest.replace('.png', '-sm.png')}`)} alt="" class="h-7 w-auto shrink-0 object-contain" />
                           )}
-                          <div>
-                            <div class="font-head text-[14px] font-bold tracking-tight">
+                          <div class="min-w-0">
+                            <div class="text-[13px] font-semibold leading-tight truncate">
                               {w.runnerUrl ? <a href={w.runnerUrl} class="link link-hover">{w.name}</a> : w.name}
                             </div>
-                            {w.clubName && <div class="text-xs text-muted mt-0.5">{w.clubName}</div>}
+                            {w.clubName && <div class="text-xs text-muted mt-0.5 truncate">{w.clubName}</div>}
                           </div>
                         </div>
                       </td>
-                      <td class="py-3 px-2 align-middle">
+                      <td class="hidden sm:table-cell py-3 px-2 align-middle">
                         <div class="flex gap-1 flex-wrap">
                           {w.catLabels.slice(0, 4).map(lbl => (
                             <span class="font-mono text-[9px] font-semibold text-muted bg-canvas px-1.5 py-0.5 rounded border border-line whitespace-nowrap">{lbl}</span>
@@ -658,35 +672,20 @@ const MEDAL_FG = ['', '#3d2300', '#1f2733', '#ffffff'];
                           )}
                         </div>
                       </td>
-                      <td class="py-3 px-2 text-center align-middle">
-                        {w.gold > 0 ? (
-                          <span class="inline-flex items-center justify-center gap-1 font-mono text-sm font-semibold">
-                            <span class="inline-flex items-center justify-center w-4 h-4 rounded-full font-mono text-[7px] font-bold" style={`background:${MEDAL_BG[1]};color:${MEDAL_FG[1]}`}>1</span>
-                            {w.gold}
-                          </span>
-                        ) : <span class="font-mono text-xs" style="color:var(--color-line)">—</span>}
+                      <td class="py-3 px-1 text-center align-middle">
+                        {w.gold > 0 ? <span class="font-mono text-sm font-semibold">{w.gold}</span>
+                          : <span class="font-mono text-xs" style="color:var(--color-line)">—</span>}
                       </td>
-                      <td class="py-3 px-2 text-center align-middle">
-                        {w.silver > 0 ? (
-                          <span class="inline-flex items-center justify-center gap-1 font-mono text-sm font-semibold">
-                            <span class="inline-flex items-center justify-center w-4 h-4 rounded-full font-mono text-[7px] font-bold" style={`background:${MEDAL_BG[2]};color:${MEDAL_FG[2]}`}>2</span>
-                            {w.silver}
-                          </span>
-                        ) : <span class="font-mono text-xs" style="color:var(--color-line)">—</span>}
+                      <td class="py-3 px-1 text-center align-middle">
+                        {w.silver > 0 ? <span class="font-mono text-sm font-semibold">{w.silver}</span>
+                          : <span class="font-mono text-xs" style="color:var(--color-line)">—</span>}
                       </td>
-                      <td class="py-3 px-2 text-center align-middle">
-                        {w.bronze > 0 ? (
-                          <span class="inline-flex items-center justify-center gap-1 font-mono text-sm font-semibold">
-                            <span class="inline-flex items-center justify-center w-4 h-4 rounded-full font-mono text-[7px] font-bold" style={`background:${MEDAL_BG[3]};color:${MEDAL_FG[3]}`}>3</span>
-                            {w.bronze}
-                          </span>
-                        ) : <span class="font-mono text-xs" style="color:var(--color-line)">—</span>}
+                      <td class="py-3 px-1 text-center align-middle">
+                        {w.bronze > 0 ? <span class="font-mono text-sm font-semibold">{w.bronze}</span>
+                          : <span class="font-mono text-xs" style="color:var(--color-line)">—</span>}
                       </td>
-                      <td class="py-3 pr-4 pl-2 text-right align-middle">
-                        <div class="font-mono text-lg font-medium leading-none">{w.total}</div>
-                        <div class="w-14 h-0.5 bg-line rounded-full overflow-hidden ml-auto mt-1.5">
-                          <div class="h-full bg-amber rounded-full" style={`width:${(w.total / greatsMMax) * 100}%`}></div>
-                        </div>
+                      <td class="py-3 pr-3 pl-1 text-right align-middle">
+                        <div class="font-mono text-base font-semibold leading-none">{w.total}</div>
                       </td>
                     </tr>
                   ))}
@@ -773,11 +772,8 @@ const MEDAL_FG = ['', '#3d2300', '#1f2733', '#ffffff'];
                           </span>
                         ) : <span class="font-mono text-xs" style="color:var(--color-line)">—</span>}
                       </td>
-                      <td class="py-3 pr-4 pl-2 text-right align-middle">
-                        <div class="font-mono text-lg font-medium leading-none">{w.total}</div>
-                        <div class="w-14 h-0.5 bg-line rounded-full overflow-hidden ml-auto mt-1.5">
-                          <div class="h-full bg-amber rounded-full" style={`width:${(w.total / greatsFMax) * 100}%`}></div>
-                        </div>
+                      <td class="py-3 pr-3 pl-1 text-right align-middle">
+                        <div class="font-mono text-base font-semibold leading-none">{w.total}</div>
                       </td>
                     </tr>
                   ))}
