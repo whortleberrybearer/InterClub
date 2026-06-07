@@ -6,7 +6,7 @@
  * The client-side script in index.astro targets the data-* attributes to
  * update the Next highlight and badge dynamically — keep those in sync.
  */
-import { formatRaceDate } from '../../lib/format';
+import { formatRaceDate, formatRaceDateShort } from '../../lib/format';
 import type { Race } from '../../lib/types';
 
 interface Props {
@@ -67,9 +67,10 @@ const accentBadge = accent === 'amber' ? 'bg-amber'      : 'bg-teal';
   ]}
 >
   <!-- Date + time column -->
-  <div class="shrink-0 w-[76px]">
+  <div class="shrink-0 w-[44px] sm:w-[76px]">
     <div data-date class:list={['font-mono text-[12px]', isNext ? `${accentText} font-semibold` : 'text-muted']}>
-      {formatRaceDate(race.date)}
+      <span class="sm:hidden">{formatRaceDateShort(race.date)}</span>
+      <span class="hidden sm:inline">{formatRaceDate(race.date)}</span>
     </div>
     {race.time && (
       <div data-time class:list={['font-mono text-[11px]', isNext ? accentTime : 'text-muted/70']}>
