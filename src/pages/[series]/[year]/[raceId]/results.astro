@@ -1,18 +1,22 @@
 ---
-// src/pages/road-gp/[year]/[raceId]/results.astro
 import IndividualResultsLayout from '../../../../components/IndividualResultsLayout.astro';
 import { getResultsStaticPaths } from '../../../../lib/results';
 import { buildRunnerUrlMap } from '../../../../lib/runners';
-import type { Club, RaceResult, SeriesConfig } from '../../../../lib/types';
+import type { Club, RaceResult, Series, SeriesConfig } from '../../../../lib/types';
 
 export async function getStaticPaths() {
-  return getResultsStaticPaths('road-gp').map(p => ({
-    ...p,
-    props: { ...p.props, runnerUrlMap: buildRunnerUrlMap(p.props.year, 'road-gp') },
-  }));
+  const series: Series[] = ['road-gp', 'fell'];
+  return series.flatMap(s =>
+    getResultsStaticPaths(s).map(p => ({
+      ...p,
+      params: { ...p.params, series: s },
+      props: { ...p.props, series: s, runnerUrlMap: buildRunnerUrlMap(p.props.year, s) },
+    }))
+  );
 }
 
 interface Props {
+  series: Series;
   year: number;
   raceId: string;
   results: RaceResult[];
@@ -22,11 +26,11 @@ interface Props {
   runnerUrlMap: Record<number, string>;
 }
 
-const { year, raceId, results, provisional, clubs, config, runnerUrlMap } = Astro.props;
+const { series, year, raceId, results, provisional, clubs, config, runnerUrlMap } = Astro.props;
 ---
 
 <IndividualResultsLayout
-  series="road-gp"
+  series={series}
   year={year}
   raceId={raceId}
   results={results}
