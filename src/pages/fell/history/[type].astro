@@ -1,5 +1,6 @@
 ---
 import Layout from '../../../components/Layout.astro';
+import PageHeader from '../../../components/PageHeader.astro';
 import AwardsHistoryTeams from '../../../components/AwardsHistoryTeams.astro';
 import AwardsHistoryIndividuals from '../../../components/AwardsHistoryIndividuals.astro';
 import { getAllAwardsByYear, getAllSeriesConfigs, pivotIndividualAwardsByCategory, resolveIndividualCategoryName } from '../../../lib/results';
@@ -171,9 +172,35 @@ if (type === 'individuals') {
   });
   categoryData = pivotIndividualAwardsByCategory(yearlyResolved);
 }
+const historyBase = import.meta.env.BASE_URL.replace(/\/$/, '');
+const historySeriesLabel = series === 'road-gp' ? 'Road Grand Prix' : 'Fell Championship';
+const historyYears = type === 'individuals'
+  ? categoryData.flatMap(c => c.rows.map(r => r.year))
+  : fullYearList.map(y => y.year);
+const historyMin = historyYears.length ? Math.min(...historyYears) : 0;
+const historyMax = historyYears.length ? Math.max(...historyYears) : 0;
+const historyYearRange = historyMin && historyMax ? `${historyMin}–${historyMax}` : '';
 ---
 
 <Layout title={pageTitle}>
+  <PageHeader
+    slot="hero"
+    eyebrow="The Roll of Honour"
+    title={type === 'teams' ? 'Team Winners' : 'Individual Winners'}
+    subtitleParts={historyYearRange ? [historySeriesLabel, historyYearRange] : [historySeriesLabel]}
+  >
+    <div class="flex">
+      <a
+        href={`${historyBase}/${series}/history/teams`}
+        class={`flex-1 md:flex-none font-head text-[13px] font-bold tracking-[0.06em] uppercase py-2.5 md:mr-7 border-b-2 -mb-px text-center md:text-left transition-colors ${type === 'teams' ? 'border-amber text-hdr-text' : 'border-transparent text-hdr-muted hover:text-hdr-text'}`}
+      >Team Winners</a>
+      <a
+        href={`${historyBase}/${series}/history/individuals`}
+        class={`flex-1 md:flex-none font-head text-[13px] font-bold tracking-[0.06em] uppercase py-2.5 md:mr-7 border-b-2 -mb-px text-center md:text-left transition-colors ${type === 'individuals' ? 'border-amber text-hdr-text' : 'border-transparent text-hdr-muted hover:text-hdr-text'}`}
+      >Individual Winners</a>
+    </div>
+  </PageHeader>
+
   {type === 'teams' ? (
     <AwardsHistoryTeams
       series={series}

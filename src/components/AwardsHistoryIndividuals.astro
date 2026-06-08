@@ -15,8 +15,6 @@ for (const cat of categories) {
   for (const row of cat.rows) allRowYears.add(row.year);
 }
 const sortedYears = [...allRowYears].sort((a, b) => a - b);
-const minYear = sortedYears[0] ?? 0;
-const maxYear = sortedYears[sortedYears.length - 1] ?? 0;
 
 // ── Category sort order ─────────────────────────────────────────────────
 const CAT_ORDER = [
@@ -133,8 +131,7 @@ const greatsM = buildGreats(mCats);
 const greatsF = buildGreats(fCats);
 
 
-const base = import.meta.env.BASE_URL.replace(/\/$/, '');
-const seriesLabel = series === 'road-gp' ? 'Road Grand Prix' : 'Fell Championship';
+
 
 // Medal colours (gold / silver / bronze)
 const MEDAL_BG = ['', 'oklch(82% 0.16 85)', 'oklch(82% 0.01 250)', 'oklch(64% 0.13 50)'];
@@ -147,28 +144,6 @@ const MEDAL_FG = ['', '#3d2300', '#1f2733', '#ffffff'];
 
 </style>
 
-<!-- ── Back link + Editorial header ─────────────────────────────────────── -->
-<div class="mb-2">
-  <a href={`${base}/${series}/`} class="inline-flex items-center gap-1 text-sm text-muted hover:text-content transition-colors font-mono mb-5">
-    ← {seriesLabel}
-  </a>
-
-  <div class="border-b border-line pb-6">
-    <div class="font-head text-[10px] font-bold tracking-[0.18em] uppercase text-amber mb-1.5">The Roll of Honour</div>
-    <h1 class="font-head font-black text-[clamp(2.5rem,6vw,5rem)] tracking-tight leading-none">Individual Winners</h1>
-    <div class="font-head font-black text-[clamp(2.5rem,6vw,5rem)] tracking-tight leading-none text-amber">{minYear}–{maxYear}</div>
-  </div>
-</div>
-
-<!-- ── Tab bar ─────────────────────────────────────────────────────────── -->
-<div class="tabs tabs-border mb-6">
-  <a href={`${base}/${series}/history/teams`} class="tab font-head font-bold tracking-[0.06em] uppercase">
-    Team Winners
-  </a>
-  <a href={`${base}/${series}/history/individuals`} class="tab tab-active font-head font-bold tracking-[0.06em] uppercase">
-    Individual Winners
-  </a>
-</div>
 
 {categories.length === 0 ? (
   <p class="text-content/60">No individual awards recorded.</p>
@@ -225,7 +200,7 @@ const MEDAL_FG = ['', '#3d2300', '#1f2733', '#ffffff'];
 
     <!-- ── Sex toggle + chips (mobile — full-bleed) ───────────────────── -->
     <div class="sm:hidden -mx-4 mb-2">
-      <div class="flex items-center gap-3 px-4 py-3 bg-surface border-b border-line">
+      <div class="flex items-center justify-center gap-3 px-4 py-3 bg-surface border-b border-line">
         <div class="inline-flex gap-1">
           {hasM && (
             <button
