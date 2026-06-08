@@ -21,12 +21,12 @@ describe('parseResultsCsv', () => {
 
   it('parses cat_open into categoryPositions.open', () => {
     const [first] = parseResultsCsv(sample);
-    expect(first.categoryPositions['open']).toBe(1);
+    expect(first.categoryPositions.open).toBe(1);
   });
 
   it('parses empty cat_open as null', () => {
     const results = parseResultsCsv(sample);
-    expect(results[2].categoryPositions['open']).toBeNull();
+    expect(results[2].categoryPositions.open).toBeNull();
   });
 
   it('parses position as null when empty', () => {
@@ -99,12 +99,12 @@ describe('parseResultsCsv', () => {
       '24,14,1,4,Emily,Simm,blackpool,V35,F,35:42',
     ].join('\n');
     const [john, emily] = parseResultsCsv(csv);
-    expect(john.categoryPositions['open']).toBe(5);
-    expect(john.categoryPositions['ladies']).toBeNull();
-    expect(john.categoryPositions['vets']).toBe(2);
-    expect(emily.categoryPositions['open']).toBe(14);
-    expect(emily.categoryPositions['ladies']).toBe(1);
-    expect(emily.categoryPositions['vets']).toBe(4);
+    expect(john.categoryPositions.open).toBe(5);
+    expect(john.categoryPositions.ladies).toBeNull();
+    expect(john.categoryPositions.vets).toBe(2);
+    expect(emily.categoryPositions.open).toBe(14);
+    expect(emily.categoryPositions.ladies).toBe(1);
+    expect(emily.categoryPositions.vets).toBe(4);
   });
 
   it('returns empty categoryPositions when no cat_* columns exist', () => {

@@ -58,7 +58,7 @@ export function formatTime(time: string | null | undefined): string {
   } else {
     return time;
   }
-  if (isNaN(h) || isNaN(m) || isNaN(s)) return time;
+  if (Number.isNaN(h) || Number.isNaN(m) || Number.isNaN(s)) return time;
   const total = h * 3600 + m * 60 + s;
   const hh = Math.floor(total / 3600);
   const mm = Math.floor((total % 3600) / 60);

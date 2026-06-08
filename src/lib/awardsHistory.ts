@@ -30,7 +30,7 @@ export interface TeamHistoryRow {
 
 const CLUB_SWATCHES: Record<string, { swatch: string; ink: string }> = {
   ...Object.fromEntries(Object.entries(CLUB_COLORS).map(([id, color]) => [id, { swatch: color, ink: '#fff' }])),
-  'blackpool-fylde': { swatch: CLUB_COLORS['blackpool'] ?? '#e85d2c',  ink: '#fff' },
+  'blackpool-fylde': { swatch: CLUB_COLORS.blackpool ?? '#e85d2c',  ink: '#fff' },
   'north-fylde':     { swatch: 'var(--club-north-fylde)',              ink: 'var(--club-north-fylde-ink)' },
   'springfields':    { swatch: '#6b7280',                              ink: '#fff' },
 };
@@ -38,7 +38,7 @@ const CLUB_SWATCHES: Record<string, { swatch: string; ink: string }> = {
 const HISTORICAL_CLUBS: [string, ClubInfo][] = [
   ['north-fylde',     { id: 'north-fylde',     name: 'North Fylde AC',      shortName: 'NFA', swatch: 'var(--club-north-fylde)',              ink: 'var(--club-north-fylde-ink)' }],
   ['springfields',    { id: 'springfields',    name: 'Springfields AC',      shortName: 'SAC', swatch: '#6b7280',                             ink: '#fff' }],
-  ['blackpool-fylde', { id: 'blackpool-fylde', name: 'Blackpool & Fylde AC', shortName: 'BFA', swatch: CLUB_COLORS['blackpool'] ?? '#e85d2c', ink: '#fff' }],
+  ['blackpool-fylde', { id: 'blackpool-fylde', name: 'Blackpool & Fylde AC', shortName: 'BFA', swatch: CLUB_COLORS.blackpool ?? '#e85d2c', ink: '#fff' }],
   ['chorley-ac',      { id: 'chorley-ac',      name: 'Chorley AC',           shortName: 'CAC', swatch: CLUB_COLORS['chorley-ac'] ?? '#8c1c1c', ink: '#fff' }],
 ];
 
