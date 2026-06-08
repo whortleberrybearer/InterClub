@@ -1,0 +1,28 @@
+---
+import TeamStandingsLayout from '../../../components/TeamStandingsLayout.astro';
+import { getTeamStandingsStaticPaths } from '../../../lib/results';
+import type { Club, Series, SeriesConfig, TeamStandings } from '../../../lib/types';
+
+export async function getStaticPaths() {
+  const series: Series[] = ['road-gp', 'fell'];
+  return series.flatMap(s =>
+    getTeamStandingsStaticPaths(s).map(p => ({
+      ...p,
+      params: { ...p.params, series: s },
+      props: { ...p.props, series: s },
+    }))
+  );
+}
+
+interface Props {
+  series: Series;
+  year: number;
+  standings: TeamStandings;
+  clubs: Club[];
+  config: SeriesConfig;
+  linkedRaceIds: string[];
+}
+
+const { series } = Astro.props;
+---
+<TeamStandingsLayout series={series} {...Astro.props} />
