@@ -1,5 +1,30 @@
 import type { Series } from './types';
 
+export interface SeriesAccent {
+  text:       string; // 'text-amber'                          | 'text-teal'
+  bg:         string; // 'bg-amber-bg'                         | 'bg-teal-bg'
+  badge:      string; // 'bg-amber'                            | 'bg-teal'
+  border:     string; // 'border-amber'                        | 'border-teal'
+  borderLeft: string; // 'border-l-amber'                      | 'border-l-teal'
+  time:       string; // 'text-amber/70'                       | 'text-teal/70'
+  hoverText:  string; // 'hover:text-amber'                    | 'hover:text-teal'
+  soft:       string; // 'text-amber bg-amber/10 border-amber/40' | 'text-teal bg-teal/10 border-teal/40'
+}
+
+export function seriesAccent(series: Series): SeriesAccent {
+  const fell = series === 'fell';
+  return {
+    text:       fell ? 'text-teal'                            : 'text-amber',
+    bg:         fell ? 'bg-teal-bg'                           : 'bg-amber-bg',
+    badge:      fell ? 'bg-teal'                              : 'bg-amber',
+    border:     fell ? 'border-teal'                          : 'border-amber',
+    borderLeft: fell ? 'border-l-teal'                        : 'border-l-amber',
+    time:       fell ? 'text-teal/70'                         : 'text-amber/70',
+    hoverText:  fell ? 'hover:text-teal'                      : 'hover:text-amber',
+    soft:       fell ? 'text-teal bg-teal/10 border-teal/40'  : 'text-amber bg-amber/10 border-amber/40',
+  };
+}
+
 const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 

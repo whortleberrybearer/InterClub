@@ -6,6 +6,7 @@
 // Place in the Layout `hero` slot. Use the default slot for action buttons
 // (they render right-aligned on the same row as the title).
 import type { Series } from '../lib/types';
+import { seriesAccent } from '../lib/format';
 
 interface Props {
   year: number;
@@ -14,7 +15,7 @@ interface Props {
 }
 
 const { year, seriesLabel, series } = Astro.props;
-const eyebrowColor = series === 'fell' ? 'text-teal' : 'text-amber';
+const eyebrowColor = seriesAccent(series).text;
 ---
 
 <div class="bg-hdr-dark text-hdr-text">

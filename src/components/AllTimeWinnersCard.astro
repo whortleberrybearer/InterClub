@@ -1,13 +1,14 @@
 ---
 import { siteUrl } from '../lib/url';
 import type { Series } from '../lib/types';
+import { seriesAccent } from '../lib/format';
 
 interface Props {
   series: Series;
 }
 
 const { series } = Astro.props;
-const accentText = series === 'fell' ? 'text-teal' : 'text-amber';
+const accentText = seriesAccent(series).text;
 
 const historyTeamsUrl = siteUrl(`/${series}/history/teams`);
 const historyIndividualsUrl = siteUrl(`/${series}/history/individuals`);

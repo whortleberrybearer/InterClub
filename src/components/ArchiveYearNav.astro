@@ -6,6 +6,7 @@
 // (archive pages). Pass activeYear to highlight the currently-viewed year.
 import { siteUrl } from '../lib/url';
 import type { Series } from '../lib/types';
+import { seriesAccent } from '../lib/format';
 
 interface Props {
   series: Series;
@@ -16,6 +17,7 @@ interface Props {
 }
 
 const { series, years, activeYear } = Astro.props;
+const accent = seriesAccent(series);
 
 const sorted = [...years].sort((a, b) => b - a);
 const oldestYear = sorted[sorted.length - 1] ?? null;
@@ -42,8 +44,8 @@ const decadeGroups = [
               class:list={[
                 'text-center py-1.5 font-mono text-[11px] rounded-md transition-colors no-underline',
                 y === activeYear
-                  ? (series === 'fell' ? 'bg-teal-bg text-teal font-bold' : 'bg-amber-bg text-amber font-bold')
-                  : (series === 'fell' ? 'text-content bg-canvas hover:text-teal' : 'text-content bg-canvas hover:text-amber'),
+                  ? `${accent.bg} ${accent.text} font-bold`
+                  : `text-content bg-canvas ${accent.hoverText}`,
               ]}
             >
               {String(y).slice(2)}

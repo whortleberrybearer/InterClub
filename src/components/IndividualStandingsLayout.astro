@@ -22,7 +22,7 @@ import { getRaces } from '../lib/data';
 import { resolveIndividualCategoryName } from '../lib/results';
 import type { Club, IndividualStandings, Series } from '../lib/types';
 import { siteUrl } from '../lib/url';
-import { getSeriesLabel, getSeriesLongLabel } from '../lib/format';
+import { getSeriesLabel, getSeriesLongLabel, seriesAccent } from '../lib/format';
 import ClubTurnout from './ClubTurnout.astro';
 import { CLUB_COLORS } from '../lib/clubColors';
 
@@ -37,6 +37,7 @@ export interface Props {
 
 const { series, year, standings, clubs, runnerUrlMap } = Astro.props;
 const linkedRaceIds = new Set(Astro.props.linkedRaceIds);
+const accent = seriesAccent(series);
 
 const seriesLabel = getSeriesLabel(series);
 const seriesLong  = getSeriesLongLabel(series);
@@ -150,7 +151,7 @@ const raceColWidth = standings.races.length >= 7 ? '3rem'
     <div class="flex">
       <a
         href={indivHref}
-        class="flex-1 md:flex-none font-head text-[13px] font-bold tracking-[0.06em] uppercase py-2.5 md:mr-7 border-b-2 -mb-px text-center md:text-left border-amber text-hdr-text"
+        class:list={['flex-1 md:flex-none font-head text-[13px] font-bold tracking-[0.06em] uppercase py-2.5 md:mr-7 border-b-2 -mb-px text-center md:text-left text-hdr-text', accent.border]}
       >Individual</a>
       <a
         href={teamHref}
@@ -227,7 +228,7 @@ const raceColWidth = standings.races.length >= 7 ? '3rem'
             <button
               class:list={[
                 'sidebar-cat-btn w-full flex items-center justify-between py-2 px-3 rounded-lg border-l-2 text-left transition-colors font-head text-[13px] font-bold tracking-[0.04em] uppercase',
-                active  ? 'border-l-amber bg-amber-bg text-amber'
+                active  ? `${accent.borderLeft} ${accent.bg} ${accent.text}`
                         : 'border-l-transparent hover:bg-canvas text-content',
                 hidden  && 'hidden',
               ]}
@@ -235,7 +236,7 @@ const raceColWidth = standings.races.length >= 7 ? '3rem'
               data-sex={cat.sex ?? ''}
             >
               <span>{label}</span>
-              <span class:list={['sidebar-cat-count font-mono text-xs', active ? 'text-amber' : 'text-muted']}>
+              <span class:list={['sidebar-cat-count font-mono text-xs', active ? accent.text : 'text-muted']}>
                 {cat.runners.length}
               </span>
             </button>
@@ -440,7 +441,7 @@ const raceColWidth = standings.races.length >= 7 ? '3rem'
                         return (
                           <th class={`${th} text-center whitespace-nowrap`}>
                             {href
-                              ? <a href={href} class="text-amber hover:underline">{rlabel}</a>
+                              ? <a href={href} class:list={[accent.text, 'hover:underline']}>{rlabel}</a>
                               : <span class="text-content/20">{rlabel}</span>
                             }
                           </th>
@@ -535,7 +536,7 @@ const raceColWidth = standings.races.length >= 7 ? '3rem'
                       return (
                         <th class={`${dth} text-center whitespace-nowrap`}>
                           {href
-                            ? <a href={href} class="text-amber hover:underline">{rlabel}</a>
+                            ? <a href={href} class:list={[accent.text, 'hover:underline']}>{rlabel}</a>
                             : <span class="text-content/20">{rlabel}</span>
                           }
                         </th>
@@ -605,10 +606,13 @@ const raceColWidth = standings.races.length >= 7 ? '3rem'
 
     </div>
   </div>
+  <script type="application/json" id="accent-data" set:html={JSON.stringify({text: accent.text, bg: accent.bg, badge: accent.badge, border: accent.border, borderLeft: accent.borderLeft})}></script>
 </Layout>
 
 <script>
   // ── Category panel activation ────────────────────────────────────────────────
+  type Accent = { text: string; bg: string; badge: string; border: string; borderLeft: string };
+  const accent: Accent = JSON.parse(document.getElementById('accent-data')!.textContent!);
   const catChips       = document.querySelectorAll<HTMLButtonElement>('.chip-btn[data-target]');
   const sidebarCatBtns = document.querySelectorAll<HTMLButtonElement>('.sidebar-cat-btn');
 
@@ -617,27 +621,27 @@ const raceColWidth = standings.races.length >= 7 ? '3rem'
     catChips.forEach(c => {
       if (!c.classList.contains('filter-club') && !c.classList.contains('filter-age')) {
         const active = c.dataset.target === target;
-        c.classList.toggle('bg-amber',     active);
-        c.classList.toggle('border-amber', active);
-        c.classList.toggle('text-white',   active);
-        c.classList.toggle('bg-surface',   !active);
-        c.classList.toggle('border-line',  !active);
-        c.classList.toggle('text-muted',   !active);
+        c.classList.toggle(accent.badge,  active);
+        c.classList.toggle(accent.border, active);
+        c.classList.toggle('text-white',  active);
+        c.classList.toggle('bg-surface',  !active);
+        c.classList.toggle('border-line', !active);
+        c.classList.toggle('text-muted',  !active);
         c.setAttribute('aria-selected', active ? 'true' : 'false');
       }
     });
     // Sync sidebar
     sidebarCatBtns.forEach(b => {
       const active = b.dataset.target === target;
-      b.classList.toggle('border-l-amber',       active);
-      b.classList.toggle('bg-amber-bg',          active);
-      b.classList.toggle('text-amber',           active);
+      b.classList.toggle(accent.borderLeft,      active);
+      b.classList.toggle(accent.bg,              active);
+      b.classList.toggle(accent.text,            active);
       b.classList.toggle('border-l-transparent', !active);
       b.classList.toggle('hover:bg-canvas',      !active);
       b.classList.toggle('text-content',         !active);
       const countEl = b.querySelector<HTMLElement>('.sidebar-cat-count');
       if (countEl) {
-        countEl.classList.toggle('text-amber', active);
+        countEl.classList.toggle(accent.text, active);
         countEl.classList.toggle('text-muted', !active);
       }
     });
@@ -670,12 +674,12 @@ const raceColWidth = standings.races.length >= 7 ? '3rem'
     });
     chipSexBtns.forEach(b => {
       const active = b.dataset.sex === sex;
-      b.classList.toggle('bg-amber',     active);
-      b.classList.toggle('border-amber', active);
-      b.classList.toggle('text-white',   active);
-      b.classList.toggle('bg-surface',   !active);
-      b.classList.toggle('border-line',  !active);
-      b.classList.toggle('text-muted',   !active);
+      b.classList.toggle(accent.badge,  active);
+      b.classList.toggle(accent.border, active);
+      b.classList.toggle('text-white',  active);
+      b.classList.toggle('bg-surface',  !active);
+      b.classList.toggle('border-line', !active);
+      b.classList.toggle('text-muted',  !active);
     });
     // Show only chips for the active sex (or sex-agnostic chips)
     document.querySelectorAll<HTMLButtonElement>('.chip-btn[data-target]').forEach(chip => {
@@ -742,12 +746,12 @@ const raceColWidth = standings.races.length >= 7 ? '3rem'
       const panel = btn.closest<HTMLElement>('[data-panel]')!;
       btn.classList.toggle('active-filter');
       const on = btn.classList.contains('active-filter');
-      btn.classList.toggle('bg-amber',     on);
-      btn.classList.toggle('border-amber', on);
-      btn.classList.toggle('text-white',   on);
-      btn.classList.toggle('bg-surface',   !on);
-      btn.classList.toggle('border-line',  !on);
-      btn.classList.toggle('text-muted',   !on);
+      btn.classList.toggle(accent.badge,  on);
+      btn.classList.toggle(accent.border, on);
+      btn.classList.toggle('text-white',  on);
+      btn.classList.toggle('bg-surface',  !on);
+      btn.classList.toggle('border-line', !on);
+      btn.classList.toggle('text-muted',  !on);
       filterPanel(panel);
     });
   });
