@@ -12,16 +12,16 @@ describe('CANONICAL_IDS', () => {
 
   it('road-gp includes lady-vets; fell does not', () => {
     expect(CANONICAL_IDS['road-gp']).toContain('lady-vets');
-    expect(CANONICAL_IDS['fell']).not.toContain('lady-vets');
+    expect(CANONICAL_IDS.fell).not.toContain('lady-vets');
   });
 });
 
 describe('ID_ALIASES', () => {
   it('maps women to ladies', () => {
-    expect(ID_ALIASES['women']).toBe('ladies');
+    expect(ID_ALIASES.women).toBe('ladies');
   });
 
   it('maps v50 to vet50s', () => {
-    expect(ID_ALIASES['v50']).toBe('vet50s');
+    expect(ID_ALIASES.v50).toBe('vet50s');
   });
 });
