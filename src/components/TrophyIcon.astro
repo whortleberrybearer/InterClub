@@ -1,0 +1,21 @@
+---
+interface Props {
+  /** 'sm' omits the handle prongs; 'md' (default) includes them */
+  size?: 'sm' | 'md';
+  class?: string;
+}
+const { size = 'md', class: cls } = Astro.props;
+const dim = size === 'sm' ? 9 : 12;
+---
+
+<svg width={dim} height={dim} viewBox="0 0 12 12" fill="none" class={cls} aria-hidden="true">
+  <path d="M3 1.5h6v3a3 3 0 0 1-6 0v-3Z" fill="currentColor"/>
+  {size === 'md' && (
+    <>
+      <path d="M2 2.5H1v1a1.5 1.5 0 0 0 1.5 1.5" stroke="currentColor" stroke-width="0.8"/>
+      <path d="M10 2.5h1v1a1.5 1.5 0 0 1-1.5 1.5" stroke="currentColor" stroke-width="0.8"/>
+    </>
+  )}
+  <path d="M4.5 8h3v1h-3z" fill="currentColor"/>
+  <path d="M3.5 10h5v0.6h-5z" fill="currentColor"/>
+</svg>

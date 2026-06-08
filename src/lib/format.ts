@@ -44,6 +44,15 @@ export function formatTime(time: string | null | undefined): string {
   return `${mm}:${ss.toString().padStart(2, '0')}`;
 }
 
+export function positionLabel(pos: number): string {
+  const mod10 = pos % 10, mod100 = pos % 100;
+  const suffix =
+    mod10 === 1 && mod100 !== 11 ? 'st' :
+    mod10 === 2 && mod100 !== 12 ? 'nd' :
+    mod10 === 3 && mod100 !== 13 ? 'rd' : 'th';
+  return `${pos}${suffix}`;
+}
+
 export function getSeriesLabel(series: Series): string {
   return series === 'road-gp' ? 'Road GP' : 'Fell Championship';
 }
