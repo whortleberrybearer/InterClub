@@ -2,6 +2,7 @@
 // src/pages/road-gp/[year]/[raceId].astro
 import Layout from '../../../components/Layout.astro';
 import PageHeader from '../../../components/PageHeader.astro';
+import DecadeGrid from '../../../components/DecadeGrid.astro';
 import { getAvailableYears, getRaces, getCurrentYear } from '../../../lib/data';
 import { formatRaceDate } from '../../../lib/format';
 import { hasResults } from '../../../lib/results';
@@ -263,21 +264,7 @@ const oldestYear = pastResults.length > 0 ? pastResults[pastResults.length - 1].
         <div class="card shadow-sm lg:hidden">
           <div class="card-body gap-3">
             <div class="font-head text-xl font-extrabold tracking-tight">Past results</div>
-            {decadeGroups.map((group, gi) => (
-              <div class:list={[gi < decadeGroups.length - 1 && 'mb-1']}>
-                <div class="font-mono text-[10px] tracking-[0.1em] uppercase text-muted mb-1.5">{group.label}</div>
-                <div class="grid grid-cols-5 sm:grid-cols-10 gap-1">
-                  {group.years.map(r => (
-                    <a
-                      href={r.url}
-                      class="text-center py-1.5 font-mono text-[11px] text-content bg-canvas rounded-md no-underline hover:text-amber transition-colors"
-                    >
-                      {String(r.year).slice(2)}
-                    </a>
-                  ))}
-                </div>
-              </div>
-            ))}
+            <DecadeGrid groups={decadeGroups} colsClass="grid-cols-5 sm:grid-cols-10" groupSpacing="mb-1" />
           </div>
         </div>
       )}
@@ -291,21 +278,7 @@ const oldestYear = pastResults.length > 0 ? pastResults[pastResults.length - 1].
       {pastResults.length > 0 && (
         <div class="card p-4">
           <div class="font-head text-xl font-extrabold tracking-tight mb-2">Past results</div>
-          {decadeGroups.map((group, gi) => (
-            <div class:list={[gi < decadeGroups.length - 1 && 'mb-3']}>
-              <div class="font-mono text-[10px] tracking-[0.1em] uppercase text-muted mb-1.5">{group.label}</div>
-              <div class="grid grid-cols-5 gap-1">
-                {group.years.map(r => (
-                  <a
-                    href={r.url}
-                    class="text-center py-1.5 font-mono text-[11px] text-content bg-canvas rounded-md no-underline hover:text-amber transition-colors"
-                  >
-                    {String(r.year).slice(2)}
-                  </a>
-                ))}
-              </div>
-            </div>
-          ))}
+          <DecadeGrid groups={decadeGroups} />
         </div>
       )}
 

@@ -1,0 +1,30 @@
+---
+interface Group {
+  label: string;
+  years: { year: number; url: string }[];
+}
+
+interface Props {
+  groups: Group[];
+  colsClass?: string;
+  groupSpacing?: string;
+}
+
+const { groups, colsClass = 'grid-cols-5', groupSpacing = 'mb-3' } = Astro.props;
+---
+
+{groups.map((group, gi) => (
+  <div class:list={[gi < groups.length - 1 && groupSpacing]}>
+    <div class="font-mono text-[10px] tracking-[0.1em] uppercase text-muted mb-1.5">{group.label}</div>
+    <div class:list={['grid gap-1', colsClass]}>
+      {group.years.map(r => (
+        <a
+          href={r.url}
+          class="text-center py-1.5 font-mono text-[11px] text-content bg-canvas rounded-md no-underline hover:text-amber transition-colors"
+        >
+          {String(r.year).slice(2)}
+        </a>
+      ))}
+    </div>
+  </div>
+))}

@@ -1,9 +1,10 @@
 ---
 import Layout from '../../components/Layout.astro';
 import PageHeader from '../../components/PageHeader.astro';
+import TrophyIcon from '../../components/TrophyIcon.astro';
 import { getRunnerProfileStaticPaths, resolveClubName } from '../../lib/runners';
 import { siteUrl } from '../../lib/url';
-import { formatTime } from '../../lib/format';
+import { formatTime, positionLabel } from '../../lib/format';
 import type { GlobalRunner, RunnerYearBlock, RunnerClubHistory, RunnerAwardSummary } from '../../lib/types';
 
 export async function getStaticPaths() {
@@ -32,15 +33,6 @@ const totalRaces  = totalRoadGp + totalFell;
 function formatDateShort(isoDate: string): string {
   const d = new Date(isoDate);
   return `${d.getUTCDate()}/${d.getUTCMonth() + 1}`;
-}
-
-function positionLabel(pos: number): string {
-  const mod10 = pos % 10, mod100 = pos % 100;
-  const suffix =
-    mod10 === 1 && mod100 !== 11 ? 'st' :
-    mod10 === 2 && mod100 !== 12 ? 'nd' :
-    mod10 === 3 && mod100 !== 13 ? 'rd' : 'th';
-  return `${pos}${suffix}`;
 }
 ---
 
@@ -118,13 +110,7 @@ function positionLabel(pos: number): string {
           <div class="space-y-1.5">
             {awardSummary.roadGp.map(a => (
               <div class="flex items-center gap-2 text-sm">
-                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" class="shrink-0 text-amber" aria-hidden="true">
-                  <path d="M3 1.5h6v3a3 3 0 0 1-6 0v-3Z" fill="currentColor"/>
-                  <path d="M2 2.5H1v1a1.5 1.5 0 0 0 1.5 1.5" stroke="currentColor" stroke-width="0.8"/>
-                  <path d="M10 2.5h1v1a1.5 1.5 0 0 1-1.5 1.5" stroke="currentColor" stroke-width="0.8"/>
-                  <path d="M4.5 8h3v1h-3z" fill="currentColor"/>
-                  <path d="M3.5 10h5v0.6h-5z" fill="currentColor"/>
-                </svg>
+                <TrophyIcon class="shrink-0 text-amber" />
                 <span class="font-medium flex-1 text-content">{a.categoryName}</span>
                 <span class="font-mono text-xs text-muted">
                   {positionLabel(a.position)}{a.count > 1 ? ` ×${a.count}` : ''}
@@ -144,13 +130,7 @@ function positionLabel(pos: number): string {
           <div class="space-y-1.5">
             {awardSummary.fell.map(a => (
               <div class="flex items-center gap-2 text-sm">
-                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" class="shrink-0 text-teal" aria-hidden="true">
-                  <path d="M3 1.5h6v3a3 3 0 0 1-6 0v-3Z" fill="currentColor"/>
-                  <path d="M2 2.5H1v1a1.5 1.5 0 0 0 1.5 1.5" stroke="currentColor" stroke-width="0.8"/>
-                  <path d="M10 2.5h1v1a1.5 1.5 0 0 1-1.5 1.5" stroke="currentColor" stroke-width="0.8"/>
-                  <path d="M4.5 8h3v1h-3z" fill="currentColor"/>
-                  <path d="M3.5 10h5v0.6h-5z" fill="currentColor"/>
-                </svg>
+                <TrophyIcon class="shrink-0 text-teal" />
                 <span class="font-medium flex-1 text-content">{a.categoryName}</span>
                 <span class="font-mono text-xs text-muted">
                   {positionLabel(a.position)}{a.count > 1 ? ` ×${a.count}` : ''}
@@ -268,11 +248,7 @@ function positionLabel(pos: number): string {
                     Road GP
                     {blockAwardsRoad.map(a => (
                       <span class="inline-flex items-center gap-1 bg-amber text-white font-bold uppercase tracking-wider text-xs px-2 py-0.5 rounded-full normal-case">
-                        <svg width="9" height="9" viewBox="0 0 12 12" fill="none" aria-hidden="true">
-                          <path d="M3 1.5h6v3a3 3 0 0 1-6 0v-3Z" fill="currentColor"/>
-                          <path d="M4.5 8h3v1h-3z" fill="currentColor"/>
-                          <path d="M3.5 10h5v0.6h-5z" fill="currentColor"/>
-                        </svg>
+                        <TrophyIcon size="sm" />
                         {a.categoryName} · {positionLabel(a.position)}
                       </span>
                     ))}
@@ -321,11 +297,7 @@ function positionLabel(pos: number): string {
                     Fell
                     {blockAwardsFell.map(a => (
                       <span class="inline-flex items-center gap-1 bg-teal text-white font-bold uppercase tracking-wider text-xs px-2 py-0.5 rounded-full normal-case">
-                        <svg width="9" height="9" viewBox="0 0 12 12" fill="none" aria-hidden="true">
-                          <path d="M3 1.5h6v3a3 3 0 0 1-6 0v-3Z" fill="currentColor"/>
-                          <path d="M4.5 8h3v1h-3z" fill="currentColor"/>
-                          <path d="M3.5 10h5v0.6h-5z" fill="currentColor"/>
-                        </svg>
+                        <TrophyIcon size="sm" />
                         {a.categoryName} · {positionLabel(a.position)}
                       </span>
                     ))}
@@ -397,13 +369,7 @@ function positionLabel(pos: number): string {
             <div class="space-y-1.5">
               {awardSummary.roadGp.map(a => (
                 <div class="flex items-center gap-2 text-sm">
-                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none" class="shrink-0 text-amber" aria-hidden="true">
-                    <path d="M3 1.5h6v3a3 3 0 0 1-6 0v-3Z" fill="currentColor"/>
-                    <path d="M2 2.5H1v1a1.5 1.5 0 0 0 1.5 1.5" stroke="currentColor" stroke-width="0.8"/>
-                    <path d="M10 2.5h1v1a1.5 1.5 0 0 1-1.5 1.5" stroke="currentColor" stroke-width="0.8"/>
-                    <path d="M4.5 8h3v1h-3z" fill="currentColor"/>
-                    <path d="M3.5 10h5v0.6h-5z" fill="currentColor"/>
-                  </svg>
+                  <TrophyIcon class="shrink-0 text-amber" />
                   <span class="font-medium flex-1 text-content">{a.categoryName}</span>
                   <span class="font-mono text-xs text-muted">
                     {positionLabel(a.position)}{a.count > 1 ? ` ×${a.count}` : ''}
@@ -421,13 +387,7 @@ function positionLabel(pos: number): string {
             <div class="space-y-1.5">
               {awardSummary.fell.map(a => (
                 <div class="flex items-center gap-2 text-sm">
-                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none" class="shrink-0 text-teal" aria-hidden="true">
-                    <path d="M3 1.5h6v3a3 3 0 0 1-6 0v-3Z" fill="currentColor"/>
-                    <path d="M2 2.5H1v1a1.5 1.5 0 0 0 1.5 1.5" stroke="currentColor" stroke-width="0.8"/>
-                    <path d="M10 2.5h1v1a1.5 1.5 0 0 1-1.5 1.5" stroke="currentColor" stroke-width="0.8"/>
-                    <path d="M4.5 8h3v1h-3z" fill="currentColor"/>
-                    <path d="M3.5 10h5v0.6h-5z" fill="currentColor"/>
-                  </svg>
+                  <TrophyIcon class="shrink-0 text-teal" />
                   <span class="font-medium flex-1 text-content">{a.categoryName}</span>
                   <span class="font-mono text-xs text-muted">
                     {positionLabel(a.position)}{a.count > 1 ? ` ×${a.count}` : ''}
@@ -445,27 +405,13 @@ function positionLabel(pos: number): string {
 </Layout>
 
 <script>
+  import { formatTime } from '../../lib/format';
+
   const raceSelect = document.getElementById('filter-race') as HTMLSelectElement;
   const profileContent = document.getElementById('profile-content') as HTMLElement;
   const raceCompact = document.getElementById('race-compact') as HTMLElement;
   const raceCompactBody = document.getElementById('race-compact-body') as HTMLElement;
   let activeSeries = 'all';
-
-  function fmtTime(raw: string): string {
-    if (!raw) return '–';
-    const parts = raw.trim().split(':');
-    let h = 0, m = 0, s = 0;
-    if (parts.length === 2) { m = +parts[0]; s = +parts[1]; }
-    else if (parts.length === 3) { h = +parts[0]; m = +parts[1]; s = +parts[2]; }
-    else return raw;
-    const total = h * 3600 + m * 60 + s;
-    const hh = Math.floor(total / 3600);
-    const mm = Math.floor((total % 3600) / 60);
-    const ss = total % 60;
-    return hh > 0
-      ? `${hh}:${String(mm).padStart(2,'0')}:${String(ss).padStart(2,'0')}`
-      : `${mm}:${String(ss).padStart(2,'0')}`;
-  }
 
   function buildCompactView(activeRace: string) {
     const rows = Array.from(document.querySelectorAll<HTMLElement>('tr[data-race-id]'))
@@ -478,7 +424,7 @@ function positionLabel(pos: number): string {
 
     raceCompactBody.innerHTML = rows.map(row => {
       const year = row.dataset.year!;
-      const time = fmtTime(row.dataset.time ?? '');
+      const time = formatTime(row.dataset.time);
       const url = row.dataset.resultsUrl ?? '';
       const yearCell = url
         ? `<a href="${url}" class="link link-hover font-mono tabular-nums">${year}</a>`

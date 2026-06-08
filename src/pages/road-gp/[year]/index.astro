@@ -4,9 +4,8 @@ import Layout from '../../../components/Layout.astro';
 import HistoryRaceList from '../../../components/HistoryRaceList.astro';
 import ArchiveHeader from '../../../components/ArchiveHeader.astro';
 import ArchiveYearPicker from '../../../components/ArchiveYearPicker.astro';
-import HistoryYearStrip from '../../../components/HistoryYearStrip.astro';
 import { getCurrentYear, getAvailableYears, getRaces } from '../../../lib/data';
-import { getAwards, getClubParticipantCounts, getClubs, getSeriesConfig, hasAwards, hasIndividualStandings, hasTeamStandings, resolveIndividualCategoryName } from '../../../lib/results';
+import { getAwards, getClubParticipantCounts, getClubs, getSeriesConfig, hasAwards, hasIndividualStandings, hasTeamStandings, resolveSeriesAwards } from '../../../lib/results';
 import { siteUrl } from '../../../lib/url';
 import type { ResolvedSeriesAwards } from '../../../lib/types';
 import { buildRunnerUrlMap } from '../../../lib/runners';
@@ -39,44 +38,8 @@ const olderYear = yearIndex < sortedYears.length - 1 ? sortedYears[yearIndex + 1
 
 let awards: ResolvedSeriesAwards | undefined;
 if (hasAwards(year, 'road-gp')) {
-  const raw = getAwards(year, 'road-gp')!;
-
-  const resolveClub = (id: string) => clubs.find(c => c.id === id)?.name ?? id;
-  const resolveTeamCategoryName = (id: string) =>
-    config.teamCategories?.find(c => c.id === id)?.name ?? id;
-  const resolveVest = (id: string) => clubs.find(c => c.id === id)?.vest;
-  const resolveShortName = (id: string) => clubs.find(c => c.id === id)?.shortName;
-
   const runnerUrlMap = buildRunnerUrlMap(year, 'road-gp');
-
-  const partitioned = raw.individualAwards.map(ia => ({
-    sex: ia.sex,
-    resolved: {
-      categoryName: resolveIndividualCategoryName(ia.id, ia.sex, ia.ageCategory, ia.name),
-      ageCategory: ia.ageCategory,
-      showAgeCategory: !ia.ageCategory,
-      awards: ia.awards.map(a => ({
-        position: a.position,
-        name: a.name,
-        clubName: resolveClub(a.club),
-        vest: resolveVest(a.club),
-        ageCategory: a.ageCategory,
-        runnerUrl: a.seriesRunnerId != null ? runnerUrlMap[a.seriesRunnerId] : undefined,
-      })),
-    },
-  }));
-
-  awards = {
-    teamAwards: raw.teamAwards.map(ta => ({
-      categoryName: resolveTeamCategoryName(ta.id),
-      clubName: resolveClub(ta.club),
-      vest: resolveVest(ta.club),
-      shortName: resolveShortName(ta.club),
-    })),
-    overallAwards: partitioned.filter(x => !x.sex).map(x => x.resolved),
-    maleAwards:    partitioned.filter(x => x.sex === 'M').map(x => x.resolved),
-    femaleAwards:  partitioned.filter(x => x.sex === 'F').map(x => x.resolved),
-  };
+  awards = resolveSeriesAwards(getAwards(year, 'road-gp')!, clubs, config, runnerUrlMap);
 }
 ---
 

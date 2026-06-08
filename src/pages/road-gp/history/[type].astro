@@ -3,12 +3,8 @@ import Layout from '../../../components/Layout.astro';
 import PageHeader from '../../../components/PageHeader.astro';
 import AwardsHistoryTeams from '../../../components/AwardsHistoryTeams.astro';
 import AwardsHistoryIndividuals from '../../../components/AwardsHistoryIndividuals.astro';
-import { getAllAwardsByYear, getAllSeriesConfigs, pivotIndividualAwardsByCategory, resolveIndividualCategoryName } from '../../../lib/results';
 import { getAvailableYears } from '../../../lib/data';
-import { CLUB_COLORS } from '../../../lib/clubColors';
-import { buildRunnerUrlMap } from '../../../lib/runners';
-import type { TeamCategory } from '../../../lib/types';
-import type { CategoryHistoryData } from '../../../lib/results';
+import { buildClubMeta, buildTeamHistory, buildIndividualHistoryData } from '../../../lib/awardsHistory';
 
 export function getStaticPaths() {
   return [
@@ -20,51 +16,9 @@ export function getStaticPaths() {
 const series = 'road-gp';
 const { type } = Astro.params as { type: 'teams' | 'individuals' };
 
-const allYearlyAwards = getAllAwardsByYear(series);
-
 const pageTitle = type === 'teams' ? 'Road Grand Prix Team Winners' : 'Road Grand Prix Individual Winners';
 
-// ── Club colour swatches — sourced from the canonical clubColors.ts ─────────
-const CLUB_SWATCHES: Record<string, { swatch: string; ink: string }> = {
-  ...Object.fromEntries(Object.entries(CLUB_COLORS).map(([id, color]) => [id, { swatch: color, ink: '#fff' }])),
-  // Historical clubs that map to a current club's colour
-  'blackpool-fylde': { swatch: CLUB_COLORS['blackpool'] ?? '#e85d2c', ink: '#fff' },
-  // Historical clubs with no current equivalent
-  'north-fylde':     { swatch: 'var(--club-north-fylde)', ink: 'var(--club-north-fylde-ink)' },
-  'springfields':    { swatch: '#6b7280', ink: '#fff' },
-};
-
-// Pre-load known historical clubs (not in any current clubs.json)
-type ClubInfo = { id: string; name: string; shortName: string; swatch: string; ink: string; vest?: string };
-
-const clubMetaMap = new Map<string, ClubInfo>([
-  ['north-fylde',     { id: 'north-fylde',     name: 'North Fylde AC',        shortName: 'NFA', swatch: 'var(--club-north-fylde)', ink: 'var(--club-north-fylde-ink)' }],
-  ['springfields',    { id: 'springfields',    name: 'Springfields AC',        shortName: 'SAC', swatch: '#6b7280', ink: '#fff' }],
-  ['blackpool-fylde', { id: 'blackpool-fylde', name: 'Blackpool & Fylde AC',   shortName: 'BFA', swatch: CLUB_COLORS['blackpool'] ?? '#e85d2c', ink: '#fff' }],
-  ['chorley-ac',      { id: 'chorley-ac',      name: 'Chorley AC',             shortName: 'CAC', swatch: CLUB_COLORS['chorley-ac'] ?? '#8c1c1c', ink: '#fff' }],
-]);
-
-// Merge clubs from all years — includes vest filename from clubs.json
-allYearlyAwards.forEach(yearly => {
-  yearly.clubs.forEach(club => {
-    const swatchData = CLUB_SWATCHES[club.id] ?? { swatch: 'oklch(55% 0.08 250)', ink: '#fff' };
-    clubMetaMap.set(club.id, {
-      id: club.id,
-      name: club.name,
-      shortName: club.shortName ?? club.id.slice(0, 3).toUpperCase(),
-      vest: club.vest,
-      ...swatchData,
-    });
-  });
-});
-
-const clubMeta = Object.fromEntries(clubMetaMap);
-
-// ── Team data ─────────────────────────────────────────────────────────────
-// Canonical category IDs for this series (in display order)
 const CANONICAL_IDS = ['open', 'ladies', 'vets', 'lady-vets', 'vet50s', 'vet60s'];
-
-// Map variant IDs found in historical data to the canonical ID
 const ID_ALIASES: Record<string, string> = {
   'women':    'ladies',
   'womens':   'ladies',
@@ -75,114 +29,13 @@ const ID_ALIASES: Record<string, string> = {
   'ladyvets': 'lady-vets',
 };
 
-const normalizeId = (id: string): string => ID_ALIASES[id] ?? id;
+const clubMeta = buildClubMeta(series);
+const { allCategories, fullYearList } = type === 'teams'
+  ? buildTeamHistory(series, CANONICAL_IDS, ID_ALIASES, clubMeta)
+  : { allCategories: [], fullYearList: [] };
 
-interface EnrichedCategory extends TeamCategory {
-  since: number;
-}
+const categoryData = type === 'individuals' ? buildIndividualHistoryData(series) : [];
 
-interface YearRow {
-  year: number;
-  suspended?: string;
-  categoryWinners: Record<string, ClubInfo | null>;
-}
-
-let allCategories: EnrichedCategory[] = [];
-let fullYearList: YearRow[] = [];
-
-if (type === 'teams') {
-  const ascendingYears = [...allYearlyAwards].sort((a, b) => a.year - b.year);
-
-  // "since" = first year the canonical category appears in awards or config
-  const categorySince = new Map<string, number>();
-  ascendingYears.forEach(yearly => {
-    yearly.awards.teamAwards.forEach(award => {
-      const id = normalizeId(award.id);
-      if (CANONICAL_IDS.includes(id) && !categorySince.has(id)) categorySince.set(id, yearly.year);
-    });
-    yearly.config.teamCategories?.forEach(cat => {
-      const id = normalizeId(cat.id);
-      if (CANONICAL_IDS.includes(id) && !categorySince.has(id)) categorySince.set(id, yearly.year);
-    });
-  });
-
-  // Metadata from config (using newest-seen entry per canonical ID)
-  const categoryMap = new Map<string, TeamCategory>();
-  ascendingYears.forEach(yearly => {
-    yearly.config.teamCategories?.forEach(cat => {
-      const id = normalizeId(cat.id);
-      if (CANONICAL_IDS.includes(id) && !categoryMap.has(id)) {
-        categoryMap.set(id, { ...cat, id });
-      }
-    });
-  });
-  // Fallback for canonical IDs found only in awards (pre-config history)
-  for (const id of CANONICAL_IDS) {
-    if (!categoryMap.has(id) && categorySince.has(id)) {
-      const name = id.charAt(0).toUpperCase() + id.slice(1).replace(/[-_]/g, ' ');
-      categoryMap.set(id, { id, name });
-    }
-  }
-
-  // Keep canonical order, sorted by introduction year
-  allCategories = CANONICAL_IDS
-    .filter(id => categoryMap.has(id))
-    .map(id => ({ ...categoryMap.get(id)!, since: categorySince.get(id) ?? 0 }));
-
-  // Suspended years come from config note field; data years from awards
-  const noteByYear = new Map(
-    getAllSeriesConfigs(series)
-      .filter(({ config }) => !!config.note)
-      .map(({ year, config }) => [year, config.note!])
-  );
-  const awardYearSet = new Set(allYearlyAwards.map(y => y.year));
-  const allYearsSorted = [...new Set([...awardYearSet, ...noteByYear.keys()])]
-    .sort((a, b) => b - a);
-
-  for (const year of allYearsSorted) {
-    if (awardYearSet.has(year)) {
-      const yearly = allYearlyAwards.find(y => y.year === year)!;
-      const categoryWinners: Record<string, ClubInfo | null> = {};
-      allCategories.forEach(cat => { categoryWinners[cat.id] = null; });
-      yearly.awards.teamAwards.forEach(award => {
-        const id = normalizeId(award.id);
-        if (!(id in categoryWinners)) return;
-        const meta = clubMeta[award.club];
-        categoryWinners[id] = meta
-          ? { ...meta }
-          : { id: award.club, name: award.club, shortName: award.club.slice(0, 3).toUpperCase(), swatch: 'oklch(55% 0.08 250)', ink: '#fff' };
-      });
-      fullYearList.push({ year, categoryWinners });
-    } else {
-      fullYearList.push({ year, suspended: noteByYear.get(year)!, categoryWinners: {} });
-    }
-  }
-}
-
-// ── Individual data ───────────────────────────────────────────────────────
-let categoryData: CategoryHistoryData[] = [];
-
-if (type === 'individuals') {
-  const yearlyResolved = allYearlyAwards.map(yearly => {
-    const runnerUrlMap = buildRunnerUrlMap(yearly.year, series);
-    return {
-      year: yearly.year,
-      categories: yearly.awards.individualAwards.map(ia => ({
-        id: ia.id,
-        name: resolveIndividualCategoryName(ia.id, ia.sex, ia.ageCategory, ia.name),
-        sex: ia.sex ?? null,
-        awards: ia.awards.map(a => ({
-          position: a.position,
-          name: a.name,
-          clubName: yearly.clubs.find(c => c.id === a.club)?.name ?? a.club ?? '',
-          clubVest: yearly.clubs.find(c => c.id === a.club)?.vest,
-          runnerUrl: a.seriesRunnerId != null ? runnerUrlMap[a.seriesRunnerId] : undefined,
-        })),
-      })),
-    };
-  });
-  categoryData = pivotIndividualAwardsByCategory(yearlyResolved);
-}
 const historyBase = import.meta.env.BASE_URL.replace(/\/$/, '');
 const historySeriesLabel = series === 'road-gp' ? 'Road Grand Prix' : 'Fell Championship';
 const historyYears = type === 'individuals'

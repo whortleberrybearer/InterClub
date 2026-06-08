@@ -1,4 +1,4 @@
-import type { Club, IndividualStandings, RaceResult, Series, SeriesAwards, SeriesConfig, TeamResults, TeamStandings } from './types';
+import type { Club, IndividualStandings, RaceResult, ResolvedSeriesAwards, Series, SeriesAwards, SeriesConfig, TeamResults, TeamStandings } from './types';
 
 export function parseResultsCsv(csv: string): RaceResult[] {
   const lines = csv.replace(/\r\n/g, '\n').replace(/\r/g, '\n').trim().split('\n');
@@ -437,6 +437,47 @@ export interface CategoryHistoryData {
   name: string;
   sex: 'M' | 'F' | null;
   rows: CategoryHistoryRow[];
+}
+
+export function resolveSeriesAwards(
+  raw: SeriesAwards,
+  clubs: Club[],
+  config: SeriesConfig,
+  runnerUrlMap: Record<number, string>
+): ResolvedSeriesAwards {
+  const resolveClub         = (id: string) => clubs.find(c => c.id === id)?.name ?? id;
+  const resolveCategoryName = (id: string) => config.teamCategories?.find(c => c.id === id)?.name ?? id;
+  const resolveVest         = (id: string) => clubs.find(c => c.id === id)?.vest;
+  const resolveShortName    = (id: string) => clubs.find(c => c.id === id)?.shortName;
+
+  const partitioned = raw.individualAwards.map(ia => ({
+    sex: ia.sex,
+    resolved: {
+      categoryName: resolveIndividualCategoryName(ia.id, ia.sex, ia.ageCategory, ia.name),
+      ageCategory: ia.ageCategory,
+      showAgeCategory: !ia.ageCategory,
+      awards: ia.awards.map(a => ({
+        position: a.position,
+        name: a.name,
+        clubName: resolveClub(a.club),
+        vest: resolveVest(a.club),
+        ageCategory: a.ageCategory,
+        runnerUrl: a.seriesRunnerId != null ? runnerUrlMap[a.seriesRunnerId] : undefined,
+      })),
+    },
+  }));
+
+  return {
+    teamAwards: raw.teamAwards.map(ta => ({
+      categoryName: resolveCategoryName(ta.id),
+      clubName: resolveClub(ta.club),
+      vest: resolveVest(ta.club),
+      shortName: resolveShortName(ta.club),
+    })),
+    overallAwards: partitioned.filter(x => !x.sex).map(x => x.resolved),
+    maleAwards:    partitioned.filter(x => x.sex === 'M').map(x => x.resolved),
+    femaleAwards:  partitioned.filter(x => x.sex === 'F').map(x => x.resolved),
+  };
 }
 
 export function pivotIndividualAwardsByCategory(
