@@ -4,7 +4,7 @@ import PageHeader from '../../components/PageHeader.astro';
 import TrophyIcon from '../../components/TrophyIcon.astro';
 import { getRunnerProfileStaticPaths, resolveClubName } from '../../lib/runners';
 import { siteUrl } from '../../lib/url';
-import { formatTime, positionLabel } from '../../lib/format';
+import { formatTime, positionLabel, formatRaceDateShort } from '../../lib/format';
 import type { GlobalRunner, RunnerYearBlock, RunnerClubHistory, RunnerAwardSummary } from '../../lib/types';
 
 export async function getStaticPaths() {
@@ -30,10 +30,6 @@ const totalRoadGp = yearBlocks.reduce((n, b) => n + (b.roadGp?.races.length ?? 0
 const totalFell   = yearBlocks.reduce((n, b) => n + (b.fell?.races.length ?? 0), 0);
 const totalRaces  = totalRoadGp + totalFell;
 
-function formatDateShort(isoDate: string): string {
-  const d = new Date(isoDate);
-  return `${d.getUTCDate()}/${d.getUTCMonth() + 1}`;
-}
 ---
 
 <Layout title={title}>
@@ -266,7 +262,7 @@ function formatDateShort(isoDate: string): string {
                           class="border-b border-line last:border-b-0"
                         >
                           <td class="py-2 pr-3 font-mono text-xs text-muted w-10 shrink-0 tabular-nums align-middle">
-                            {formatDateShort(race.date)}
+                            {formatRaceDateShort(race.date)}
                           </td>
                           <td class="py-2 font-medium align-middle truncate">
                             {race.hasResults
@@ -314,7 +310,7 @@ function formatDateShort(isoDate: string): string {
                           class="border-b border-line last:border-b-0"
                         >
                           <td class="py-2 pr-3 font-mono text-xs text-muted w-10 shrink-0 tabular-nums align-middle">
-                            {formatDateShort(race.date)}
+                            {formatRaceDateShort(race.date)}
                           </td>
                           <td class="py-2 font-medium align-middle truncate">
                             {race.hasResults

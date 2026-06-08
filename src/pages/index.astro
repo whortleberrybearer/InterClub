@@ -3,7 +3,7 @@
 import Layout from '../components/Layout.astro';
 import RaceListRow from '../components/home/RaceListRow.astro';
 import { getCurrentYear, getRaces } from '../lib/data';
-import { hasResults, hasIndividualStandings, hasTeamStandings } from '../lib/results';
+import { hasResults } from '../lib/results';
 import { siteUrl } from '../lib/url';
 import type { Race } from '../lib/types';
 
@@ -22,16 +22,6 @@ today.setHours(0, 0, 0, 0);
 function isPast(race: Race): boolean {
   return toLocalDate(race.date) < today;
 }
-
-function getStandingsUrl(series: 'road-gp' | 'fell'): string | undefined {
-  if (hasIndividualStandings(currentYear, series))
-    return siteUrl(`/${series}/${currentYear}/individual-standings`);
-  if (hasTeamStandings(currentYear, series))
-    return siteUrl(`/${series}/${currentYear}/team-standings`);
-  return undefined;
-}
-
-const fellStandingsUrl = getStandingsUrl('fell');
 
 // Serialise race data for the client-side card script.
 // hasResults is computed at build time — results only ever appear after a push
@@ -114,15 +104,10 @@ const nextFellId = fellRaces.find(r => !isPast(r))?.id ?? null;
     <!-- ── Fell Championship ─────────────────────────────────────────────── -->
     <div class="space-y-3">
 
-      <!-- Section label + optional standings link -->
-      <div class="flex items-center justify-between pb-0.5">
-        <div class="flex items-center gap-2">
-          <span class="w-[7px] h-[7px] rounded-full bg-teal shrink-0"></span>
-          <span class="font-head text-[13px] font-bold tracking-[0.12em] uppercase">Fell Championship</span>
-        </div>
-        {fellStandingsUrl && (
-          <a href={fellStandingsUrl} class="text-[12px] text-teal font-semibold no-underline hover:underline">Standings →</a>
-        )}
+      <!-- Section label -->
+      <div class="flex items-center gap-2 pb-0.5">
+        <span class="w-[7px] h-[7px] rounded-full bg-teal shrink-0"></span>
+        <span class="font-head text-[13px] font-bold tracking-[0.12em] uppercase">Fell Championship</span>
       </div>
 
       <!-- Mobile: stacked. md+: cards left | race list right -->

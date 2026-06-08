@@ -5,6 +5,7 @@ import AwardsHistoryTeams from '../../../components/AwardsHistoryTeams.astro';
 import AwardsHistoryIndividuals from '../../../components/AwardsHistoryIndividuals.astro';
 import { getAvailableYears } from '../../../lib/data';
 import { buildClubMeta, buildTeamHistory, buildIndividualHistoryData } from '../../../lib/awardsHistory';
+import { getSeriesLongLabel } from '../../../lib/format';
 
 export function getStaticPaths() {
   return [
@@ -37,7 +38,7 @@ const { allCategories, fullYearList } = type === 'teams'
 const categoryData = type === 'individuals' ? buildIndividualHistoryData(series) : [];
 
 const historyBase = import.meta.env.BASE_URL.replace(/\/$/, '');
-const historySeriesLabel = series === 'road-gp' ? 'Road Grand Prix' : 'Fell Championship';
+const historySeriesLabel = getSeriesLongLabel(series);
 const historyYears = type === 'individuals'
   ? categoryData.flatMap(c => c.rows.map(r => r.year))
   : fullYearList.map(y => y.year);
