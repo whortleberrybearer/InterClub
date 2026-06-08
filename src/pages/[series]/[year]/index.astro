@@ -1,0 +1,95 @@
+---
+import Layout from '../../../components/Layout.astro';
+import HistoryRaceList from '../../../components/HistoryRaceList.astro';
+import ArchiveHeader from '../../../components/ArchiveHeader.astro';
+import ArchiveYearPicker from '../../../components/ArchiveYearPicker.astro';
+import { getCurrentYear, getAvailableYears, getRaces } from '../../../lib/data';
+import {
+  getAwards, getClubParticipantCounts, getClubs, getSeriesConfig,
+  hasAwards, hasIndividualStandings, hasTeamStandings, resolveSeriesAwards,
+} from '../../../lib/results';
+import { buildRunnerUrlMap } from '../../../lib/runners';
+import { seriesAccent, getSeriesLongLabel } from '../../../lib/format';
+import { siteUrl } from '../../../lib/url';
+import type { ResolvedSeriesAwards, Series } from '../../../lib/types';
+
+export async function getStaticPaths() {
+  const current = getCurrentYear();
+  const series: Series[] = ['road-gp', 'fell'];
+  return series.flatMap(s => {
+    const years = getAvailableYears(s).filter(y => y !== current);
+    return years.map(year => ({ params: { series: s, year: String(year) } }));
+  });
+}
+
+const { series, year: yearParam } = Astro.params as { series: Series; year: string };
+const year = parseInt(yearParam, 10);
+const currentYear = getCurrentYear();
+const availableYears = getAvailableYears(series);
+const races = getRaces(year, series);
+const standingsUrl = hasTeamStandings(year, series)
+  ? siteUrl(`/${series}/${year}/team-standings`)
+  : undefined;
+const individualStandingsUrl = hasIndividualStandings(year, series)
+  ? siteUrl(`/${series}/${year}/individual-standings`)
+  : undefined;
+const config = getSeriesConfig(year, series);
+const clubs = getClubs(year);
+const participantCounts = getClubParticipantCounts(year, series);
+
+const sortedYears = [...availableYears].sort((a, b) => b - a);
+const yearIndex = sortedYears.indexOf(year);
+const newerYear = yearIndex > 0 ? sortedYears[yearIndex - 1] : null;
+const olderYear = yearIndex < sortedYears.length - 1 ? sortedYears[yearIndex + 1] : null;
+
+let awards: ResolvedSeriesAwards | undefined;
+if (hasAwards(year, series)) {
+  const runnerUrlMap = buildRunnerUrlMap(year, series);
+  awards = resolveSeriesAwards(getAwards(year, series)!, clubs, config, runnerUrlMap);
+}
+
+const accent = seriesAccent(series);
+const seriesLabel = getSeriesLongLabel(series);
+---
+
+<Layout title={`${seriesLabel} ${year}`}>
+  <ArchiveHeader
+    slot="hero"
+    year={year}
+    seriesLabel={seriesLabel}
+    series={series}
+  >
+    {olderYear && (
+      <a href={siteUrl(`/${series}/${olderYear}/`)} class="hidden sm:inline-flex items-center px-3 py-1.5 rounded-md text-[11px] font-head font-bold tracking-[0.06em] uppercase text-white/70 bg-white/10 border border-white/20 hover:bg-white/20 hover:text-white transition-colors no-underline">
+        ← {olderYear}
+      </a>
+    )}
+    {newerYear && newerYear === currentYear ? (
+      <a href={siteUrl(`/${series}/`)} class={`hidden sm:inline-flex items-center px-3 py-1.5 rounded-md text-[11px] font-head font-bold tracking-[0.06em] uppercase text-white ${accent.badge} hover:opacity-80 transition-opacity no-underline`}>
+        Current →
+      </a>
+    ) : newerYear ? (
+      <a href={siteUrl(`/${series}/${newerYear}/`)} class="hidden sm:inline-flex items-center px-3 py-1.5 rounded-md text-[11px] font-head font-bold tracking-[0.06em] uppercase text-white/70 bg-white/10 border border-white/20 hover:bg-white/20 hover:text-white transition-colors no-underline">
+        {newerYear} →
+      </a>
+    ) : (
+      <a href={siteUrl(`/${series}/`)} class={`hidden sm:inline-flex items-center px-3 py-1.5 rounded-md text-[11px] font-head font-bold tracking-[0.06em] uppercase text-white ${accent.badge} hover:opacity-80 transition-opacity no-underline`}>
+        Current →
+      </a>
+    )}
+    <ArchiveYearPicker series={series} years={availableYears} activeYear={year} currentYear={currentYear} />
+  </ArchiveHeader>
+  <HistoryRaceList
+    races={races}
+    year={year}
+    series={series}
+    standingsUrl={standingsUrl}
+    individualStandingsUrl={individualStandingsUrl}
+    awards={awards}
+    note={config.note}
+    clubs={clubs}
+    participantCounts={participantCounts}
+    availableYears={availableYears}
+    currentYear={currentYear}
+  />
+</Layout>
