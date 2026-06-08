@@ -325,28 +325,28 @@ describe('resolveIndividualCategoryName', () => {
     expect(resolveIndividualCategoryName('x', 'M', 'V40', 'Custom')).toBe('Custom');
   });
 
-  it('derives Senior Men from SEN + M', () => {
-    expect(resolveIndividualCategoryName('sen-male', 'M', 'SEN')).toBe('Senior Men');
+  it('derives Senior Male from SEN + M', () => {
+    expect(resolveIndividualCategoryName('sen-male', 'M', 'SEN')).toBe('Senior Male');
   });
 
-  it('derives Junior Women from JUN + F', () => {
-    expect(resolveIndividualCategoryName('jun-female', 'F', 'JUN')).toBe('Junior Women');
+  it('derives Junior Female from JUN + F', () => {
+    expect(resolveIndividualCategoryName('jun-female', 'F', 'JUN')).toBe('Junior Female');
   });
 
-  it('derives V40 Men from V40 + M', () => {
-    expect(resolveIndividualCategoryName('v40-male', 'M', 'V40')).toBe('V40 Men');
+  it('derives V40 Male from V40 + M', () => {
+    expect(resolveIndividualCategoryName('v40-male', 'M', 'V40')).toBe('V40 Male');
   });
 
-  it('derives V55 Women from V55 + F', () => {
-    expect(resolveIndividualCategoryName('v55-female', 'F', 'V55')).toBe('V55 Women');
+  it('derives V55 Female from V55 + F', () => {
+    expect(resolveIndividualCategoryName('v55-female', 'F', 'V55')).toBe('V55 Female');
   });
 
-  it('derives Men from sex M with no ageCategory', () => {
-    expect(resolveIndividualCategoryName('male', 'M')).toBe('Men');
+  it('derives Male from sex M with no ageCategory', () => {
+    expect(resolveIndividualCategoryName('male', 'M')).toBe('Male');
   });
 
-  it('derives Women from sex F with no ageCategory', () => {
-    expect(resolveIndividualCategoryName('female', 'F')).toBe('Women');
+  it('derives Female from sex F with no ageCategory', () => {
+    expect(resolveIndividualCategoryName('female', 'F')).toBe('Female');
   });
 
   it('falls back to raw id when no sex, ageCategory, or name', () => {
