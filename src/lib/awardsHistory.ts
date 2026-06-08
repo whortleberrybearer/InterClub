@@ -9,6 +9,21 @@ import { buildRunnerUrlMap } from './runners';
 import type { Series, TeamCategory } from './types';
 import type { CategoryHistoryData } from './results';
 
+export const CANONICAL_IDS: Record<Series, string[]> = {
+  'road-gp': ['open', 'ladies', 'vets', 'lady-vets', 'vet50s', 'vet60s'],
+  'fell':    ['open', 'ladies', 'vets', 'vet50s', 'vet60s'],
+};
+
+export const ID_ALIASES: Record<string, string> = {
+  'women':    'ladies',
+  'womens':   'ladies',
+  'v50':      'vet50s',
+  'vet50':    'vet50s',
+  'v60':      'vet60s',
+  'vet60':    'vet60s',
+  'ladyvets': 'lady-vets',
+};
+
 export interface ClubInfo {
   id: string;
   name: string;
