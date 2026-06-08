@@ -4,41 +4,32 @@ import PageHeader from '../../../components/PageHeader.astro';
 import AwardsHistoryTeams from '../../../components/AwardsHistoryTeams.astro';
 import AwardsHistoryIndividuals from '../../../components/AwardsHistoryIndividuals.astro';
 import { getAvailableYears } from '../../../lib/data';
-import { buildClubMeta, buildTeamHistory, buildIndividualHistoryData } from '../../../lib/awardsHistory';
+import { buildClubMeta, buildTeamHistory, buildIndividualHistoryData, CANONICAL_IDS, ID_ALIASES } from '../../../lib/awardsHistory';
 import { getSeriesLongLabel } from '../../../lib/format';
+import type { Series } from '../../../lib/types';
 
 export function getStaticPaths() {
-  return [
-    { params: { type: 'teams' } },
-    { params: { type: 'individuals' } },
-  ];
+  const series: Series[] = ['road-gp', 'fell'];
+  return series.flatMap(s => [
+    { params: { series: s, type: 'teams' } },
+    { params: { series: s, type: 'individuals' } },
+  ]);
 }
 
-const series = 'fell';
-const { type } = Astro.params as { type: 'teams' | 'individuals' };
+const { series, type } = Astro.params as { series: Series; type: 'teams' | 'individuals' };
 
-const pageTitle = type === 'teams' ? 'Fell Championship Team Winners' : 'Fell Championship Individual Winners';
-
-const CANONICAL_IDS = ['open', 'ladies', 'vets', 'vet50s', 'vet60s'];
-const ID_ALIASES: Record<string, string> = {
-  'women':    'ladies',
-  'womens':   'ladies',
-  'v50':      'vet50s',
-  'vet50':    'vet50s',
-  'v60':      'vet60s',
-  'vet60':    'vet60s',
-  'ladyvets': 'lady-vets',
-};
+const seriesLabel = getSeriesLongLabel(series);
+const pageTitle = type === 'teams' ? `${seriesLabel} Team Winners` : `${seriesLabel} Individual Winners`;
 
 const clubMeta = buildClubMeta(series);
 const { allCategories, fullYearList } = type === 'teams'
-  ? buildTeamHistory(series, CANONICAL_IDS, ID_ALIASES, clubMeta)
+  ? buildTeamHistory(series, CANONICAL_IDS[series], ID_ALIASES, clubMeta)
   : { allCategories: [], fullYearList: [] };
 
 const categoryData = type === 'individuals' ? buildIndividualHistoryData(series) : [];
 
 const historyBase = import.meta.env.BASE_URL.replace(/\/$/, '');
-const historySeriesLabel = getSeriesLongLabel(series);
+const historySeriesLabel = seriesLabel;
 const historyYears = type === 'individuals'
   ? categoryData.flatMap(c => c.rows.map(r => r.year))
   : fullYearList.map(y => y.year);
