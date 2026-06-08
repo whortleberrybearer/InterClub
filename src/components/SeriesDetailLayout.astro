@@ -7,6 +7,7 @@ import AllTimeWinnersCard from './AllTimeWinnersCard.astro';
 import ScheduleTable from './ScheduleTable.astro';
 import { hasTeamStandings, hasIndividualStandings } from '../lib/results';
 import { siteUrl } from '../lib/url';
+import { seriesAccent } from '../lib/format';
 import type { Race, Series, SeriesConfig } from '../lib/types';
 
 export interface Props {
@@ -39,7 +40,7 @@ const scoringRules = [
   'Clubs with no finishers score 0 points',
 ];
 
-const accentClass = series === 'fell' ? 'text-teal' : 'text-amber';
+const accentClass = seriesAccent(series).text;
 
 const teamStandingsUrl = hasTeamStandings(year, series)
   ? siteUrl(`/${series}/${year}/team-standings`)

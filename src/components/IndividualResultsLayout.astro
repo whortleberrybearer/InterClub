@@ -8,7 +8,7 @@ import { CLUB_COLORS } from '../lib/clubColors';
 import { getRace, getRaces } from '../lib/data';
 import { hasTeamResults } from '../lib/results';
 import { siteUrl } from '../lib/url';
-import { formatRaceDate, formatTime, getSeriesLabel } from '../lib/format';
+import { formatRaceDate, formatTime, getSeriesLabel, seriesAccent } from '../lib/format';
 import type { Club, RaceResult, Series, SeriesConfig } from '../lib/types';
 
 export interface Props {
@@ -23,6 +23,7 @@ export interface Props {
 }
 
 const { series, year, raceId, results, provisional, clubs, config, runnerUrlMap } = Astro.props;
+const accent = seriesAccent(series);
 
 const race = getRace(year, series, raceId);
 const title = race?.name ?? raceId;
@@ -143,7 +144,7 @@ const showSexToggle = hasMale && hasFemale;
     <div class="flex">
       <a
         href={siteUrl(`/${series}/${year}/${raceId}/results`)}
-        class="flex-1 md:flex-none font-head text-[13px] font-bold tracking-[0.06em] uppercase py-2.5 md:mr-7 border-b-2 -mb-px text-center md:text-left border-amber text-hdr-text"
+        class:list={['flex-1 md:flex-none font-head text-[13px] font-bold tracking-[0.06em] uppercase py-2.5 md:mr-7 border-b-2 -mb-px text-center md:text-left text-hdr-text', accent.border]}
       >Individual</a>
       {showTeamResults ? (
         <a
@@ -202,7 +203,7 @@ const showSexToggle = hasMale && hasFemale;
               <button
                 class:list={[
                   'full-sidebar-btn w-full flex items-center px-3 py-2 rounded-lg border-l-2 text-left transition-colors font-head text-[13px] font-bold tracking-[0.04em] uppercase cursor-pointer',
-                  'border-l-amber bg-amber-bg text-amber',
+                  `${accent.borderLeft} ${accent.bg} ${accent.text}`,
                 ]}
               >
                 Full
@@ -213,7 +214,7 @@ const showSexToggle = hasMale && hasFemale;
                 class:list={[
                   'team-cat-btn w-full flex items-center px-3 py-2 rounded-lg border-l-2 text-left transition-colors font-head text-[13px] font-bold tracking-[0.04em] uppercase cursor-pointer',
                   !showFullChip && i === 0
-                    ? 'border-l-amber bg-amber-bg text-amber'
+                    ? `${accent.borderLeft} ${accent.bg} ${accent.text}`
                     : 'border-l-transparent hover:bg-canvas text-content',
                 ]}
                 data-cat-label={cat.name}
@@ -391,6 +392,7 @@ const showSexToggle = hasMale && hasFemale;
     </div>
   </div>
 
+  <script type="application/json" id="accent-data" set:html={JSON.stringify({text: accent.text, bg: accent.bg, badge: accent.badge, border: accent.border, borderLeft: accent.borderLeft})}></script>
   <script type="application/json" id="results-data" set:html={JSON.stringify(results).replace(/<\/script>/gi, '<\\/script>')}></script>
   <script type="application/json" id="clubs-data" set:html={JSON.stringify(clubs).replace(/<\/script>/gi, '<\\/script>')}></script>
   <script type="application/json" id="runner-url-map" set:html={JSON.stringify(runnerUrlMap).replace(/<\/script>/gi, '<\\/script>')}></script>
@@ -446,6 +448,9 @@ const showSexToggle = hasMale && hasFemale;
   const teamCategories: TeamCat[] = JSON.parse(document.getElementById('team-categories-data')!.textContent!);
   const hasCategoryData: boolean  = JSON.parse(document.getElementById('has-category-data')!.textContent!);
 
+  type Accent = { text: string; bg: string; badge: string; border: string; borderLeft: string };
+  const accent: Accent = JSON.parse(document.getElementById('accent-data')!.textContent!);
+
   // When there is no Full chip (no guests), the first category chip is pre-selected
   const showFullChip = !!document.querySelector('.full-sidebar-btn');
   let activeCategoryId: string | null =
@@ -468,12 +473,12 @@ const showSexToggle = hasMale && hasFemale;
   function syncChipBar(activeTarget: string) {
     chips.forEach(c => {
       const active = c.dataset.target === activeTarget;
-      c.classList.toggle('bg-amber',     active);
-      c.classList.toggle('border-amber', active);
-      c.classList.toggle('text-white',   active);
-      c.classList.toggle('bg-surface',   !active);
-      c.classList.toggle('border-line',  !active);
-      c.classList.toggle('text-muted',   !active);
+      c.classList.toggle(accent.badge,  active);
+      c.classList.toggle(accent.border, active);
+      c.classList.toggle('text-white',  active);
+      c.classList.toggle('bg-surface',  !active);
+      c.classList.toggle('border-line', !active);
+      c.classList.toggle('text-muted',  !active);
       c.setAttribute('aria-selected', active ? 'true' : 'false');
     });
   }
@@ -481,9 +486,9 @@ const showSexToggle = hasMale && hasFemale;
   const fullSidebarBtn = document.querySelector<HTMLButtonElement>('.full-sidebar-btn');
 
   function setSidebarBtnActive(btn: Element | null, active: boolean) {
-    btn?.classList.toggle('border-l-amber',       active);
-    btn?.classList.toggle('bg-amber-bg',          active);
-    btn?.classList.toggle('text-amber',           active);
+    btn?.classList.toggle(accent.borderLeft,      active);
+    btn?.classList.toggle(accent.bg,              active);
+    btn?.classList.toggle(accent.text,            active);
     btn?.classList.toggle('border-l-transparent', !active);
     btn?.classList.toggle('hover:bg-canvas',      !active);
     btn?.classList.toggle('text-content',         !active);
@@ -573,12 +578,12 @@ const showSexToggle = hasMale && hasFemale;
       btn.addEventListener('click', () => {
         btn.classList.toggle('active-filter');
         const on = btn.classList.contains('active-filter');
-        btn.classList.toggle('bg-amber',     on);
-        btn.classList.toggle('border-amber', on);
-        btn.classList.toggle('text-white',   on);
-        btn.classList.toggle('bg-surface',   !on);
-        btn.classList.toggle('border-line',  !on);
-        btn.classList.toggle('text-muted',   !on);
+        btn.classList.toggle(accent.badge,  on);
+        btn.classList.toggle(accent.border, on);
+        btn.classList.toggle('text-white',  on);
+        btn.classList.toggle('bg-surface',  !on);
+        btn.classList.toggle('border-line', !on);
+        btn.classList.toggle('text-muted',  !on);
         render();
       });
     });

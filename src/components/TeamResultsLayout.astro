@@ -12,7 +12,7 @@ import PageHeader from './PageHeader.astro';
 import TeamClubCard from './TeamClubCard.astro';
 import { getRace, getRaces } from '../lib/data';
 import { siteUrl } from '../lib/url';
-import { formatRaceDate, getSeriesLabel } from '../lib/format';
+import { formatRaceDate, getSeriesLabel, seriesAccent } from '../lib/format';
 import type { Club, Series, SeriesConfig, TeamResults } from '../lib/types';
 
 export interface Props {
@@ -27,6 +27,7 @@ export interface Props {
 }
 
 const { series, year, raceId, teamResults, provisional, clubs, config, runnerUrlMap } = Astro.props;
+const accent = seriesAccent(series);
 
 const seriesLabel = getSeriesLabel(series);
 
@@ -64,7 +65,7 @@ const categoryById = Object.fromEntries((config.teamCategories ?? []).map(c => [
       >Individual</a>
       <a
         href={siteUrl(`/${series}/${year}/${raceId}/team-results`)}
-        class="flex-1 md:flex-none font-head text-[13px] font-bold tracking-[0.06em] uppercase py-2.5 md:mr-7 border-b-2 -mb-px text-center md:text-left border-amber text-hdr-text transition-colors"
+        class:list={['flex-1 md:flex-none font-head text-[13px] font-bold tracking-[0.06em] uppercase py-2.5 md:mr-7 border-b-2 -mb-px text-center md:text-left text-hdr-text transition-colors', accent.border]}
       >Team</a>
     </div>
   </PageHeader>
@@ -94,7 +95,7 @@ const categoryById = Object.fromEntries((config.teamCategories ?? []).map(c => [
             <button
               class:list={[
                 'cat-sidebar-btn w-full flex items-center px-3 py-2 rounded-lg border-l-2 text-left transition-colors font-head text-[13px] font-bold tracking-[0.04em] uppercase',
-                i === 0 ? 'border-l-amber bg-amber-bg text-amber'
+                i === 0 ? `${accent.borderLeft} ${accent.bg} ${accent.text}`
                         : 'border-l-transparent hover:bg-canvas text-content',
               ]}
               data-target={`dt-cat-panel-${i}`}
@@ -185,10 +186,13 @@ const categoryById = Object.fromEntries((config.teamCategories ?? []).map(c => [
       );
     })}
   </div>
-
+  <script type="application/json" id="accent-data" set:html={JSON.stringify({text: accent.text, bg: accent.bg, badge: accent.badge, border: accent.border, borderLeft: accent.borderLeft})}></script>
 </Layout>
 
 <script>
+  type Accent = { text: string; bg: string; badge: string; border: string; borderLeft: string };
+  const accent: Accent = JSON.parse(document.getElementById('accent-data')!.textContent!);
+
   // ── Collapsible club cards — synced between desktop and mobile/tablet views ──
   function applyAccordionState(targetId: string, open: boolean) {
     const detail = document.getElementById(targetId);
@@ -222,12 +226,12 @@ const categoryById = Object.fromEntries((config.teamCategories ?? []).map(c => [
     // Sync chip bar
     chips.forEach(c => {
       const active = c.dataset.target === `cat-panel-${idx}`;
-      c.classList.toggle('bg-amber',     active);
-      c.classList.toggle('border-amber', active);
-      c.classList.toggle('text-white',   active);
-      c.classList.toggle('bg-surface',   !active);
-      c.classList.toggle('border-line',  !active);
-      c.classList.toggle('text-muted',   !active);
+      c.classList.toggle(accent.badge,  active);
+      c.classList.toggle(accent.border, active);
+      c.classList.toggle('text-white',  active);
+      c.classList.toggle('bg-surface',  !active);
+      c.classList.toggle('border-line', !active);
+      c.classList.toggle('text-muted',  !active);
       c.setAttribute('aria-selected', active ? 'true' : 'false');
     });
     // Sync mobile/tablet panels
@@ -237,9 +241,9 @@ const categoryById = Object.fromEntries((config.teamCategories ?? []).map(c => [
     // Sync desktop sidebar
     sidebarBtns.forEach(b => {
       const active = b.dataset.target === `dt-cat-panel-${idx}`;
-      b.classList.toggle('border-l-amber',       active);
-      b.classList.toggle('bg-amber-bg',          active);
-      b.classList.toggle('text-amber',           active);
+      b.classList.toggle(accent.borderLeft,      active);
+      b.classList.toggle(accent.bg,              active);
+      b.classList.toggle(accent.text,            active);
       b.classList.toggle('border-l-transparent', !active);
       b.classList.toggle('hover:bg-canvas',      !active);
       b.classList.toggle('text-content',         !active);

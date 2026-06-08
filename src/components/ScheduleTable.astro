@@ -10,7 +10,7 @@
 // highlight against the real current date so stale builds stay correct.
 import { hasResults, isResultsProvisional } from '../lib/results';
 import { siteUrl } from '../lib/url';
-import { formatRaceDate, formatRaceDateShort } from '../lib/format';
+import { formatRaceDate, formatRaceDateShort, seriesAccent } from '../lib/format';
 import type { Race, Series } from '../lib/types';
 
 interface Props {
@@ -30,9 +30,7 @@ interface Props {
 const { series, year, races, showNextRace = false, showCard = true, note, showDetailLinks = false } = Astro.props;
 const hasFooter = Astro.slots.has('default');
 
-const accentBg    = series === 'fell' ? 'bg-teal-bg'  : 'bg-amber-bg';
-const accentText  = series === 'fell' ? 'text-teal'   : 'text-amber';
-const accentBadge = series === 'fell' ? 'bg-teal'     : 'bg-amber';
+const { bg: accentBg, text: accentText, badge: accentBadge, time: accentTime } = seriesAccent(series);
 
 let nextFound = false;
 const raceStates = races.map(race => {
@@ -93,7 +91,7 @@ const scriptRaceData = showNextRace ? raceStates.map(({ race, past, rowUrl, isEx
                 <span class="hidden sm:inline">{formatRaceDate(race.date)}</span>
               </div>
               {showNextRace && race.time && (
-                <div data-time class:list={['font-mono text-[11px]', isNext ? (series === 'fell' ? 'text-teal/70' : 'text-amber/70') : 'text-muted/70']}>{race.time}</div>
+                <div data-time class:list={['font-mono text-[11px]', isNext ? accentTime : 'text-muted/70']}>{race.time}</div>
               )}
             </td>
             <td class="py-3 px-3 min-w-0">
@@ -148,7 +146,7 @@ const scriptRaceData = showNextRace ? raceStates.map(({ race, past, rowUrl, isEx
 </script>
 
 {showNextRace && (
-  <script define:vars={{ scriptRaceData, series }} is:inline>
+  <script define:vars={{ scriptRaceData, accentBg, accentText, accentTime, accentBadge }} is:inline>
   (function () {
     var RESULTS_WINDOW_DAYS = 5;
 
@@ -172,11 +170,6 @@ const scriptRaceData = showNextRace ? raceStates.map(({ race, past, rowUrl, isEx
     }
 
     var nextRace = scriptRaceData.find(function (r) { return showInNextSlot(r); }) || null;
-
-    var accentBg    = series === 'fell' ? 'bg-teal-bg'   : 'bg-amber-bg';
-    var accentText  = series === 'fell' ? 'text-teal'    : 'text-amber';
-    var accentTime  = series === 'fell' ? 'text-teal/70' : 'text-amber/70';
-    var accentBadge = series === 'fell' ? 'bg-teal'      : 'bg-amber';
 
     var rows = document.querySelectorAll('[data-schedule-row]');
     rows.forEach(function (row) {

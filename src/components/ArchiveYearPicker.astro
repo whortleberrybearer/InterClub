@@ -9,6 +9,7 @@
 //   - lg+ viewport: both hidden — the sidebar Past Seasons card handles navigation
 import type { Series } from '../lib/types';
 import { siteUrl } from '../lib/url';
+import { seriesAccent } from '../lib/format';
 
 interface Props {
   series: Series;
@@ -19,6 +20,7 @@ interface Props {
 }
 
 const { series, years, activeYear, currentYear, label = 'All Years' } = Astro.props;
+const accent = seriesAccent(series);
 
 const sorted = [...years].sort((a, b) => b - a);
 
@@ -32,12 +34,12 @@ const decadeGroups = [
 
 const selectClass = [
   'yp-select appearance-none w-full px-3 py-1.5 rounded-md text-[11px] font-head font-bold tracking-[0.06em] uppercase border cursor-pointer focus:outline-none',
-  series === 'fell' ? 'text-teal bg-teal/10 border-teal/40' : 'text-amber bg-amber/10 border-amber/40',
+  accent.soft,
 ].join(' ');
 
 const summaryClass = [
   'yp-summary inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-[11px] font-head font-bold tracking-[0.06em] uppercase border transition-colors no-underline cursor-pointer list-none select-none',
-  series === 'fell' ? 'text-teal bg-teal/10 border-teal/40' : 'text-amber bg-amber/10 border-amber/40',
+  accent.soft,
 ].join(' ');
 ---
 
@@ -70,8 +72,8 @@ const summaryClass = [
               class:list={[
                 'text-center py-1.5 font-mono text-[11px] rounded-md transition-colors no-underline',
                 y === activeYear
-                  ? (series === 'fell' ? 'bg-teal-bg text-teal font-bold' : 'bg-amber-bg text-amber font-bold')
-                  : 'text-content bg-canvas hover:text-amber',
+                  ? `${accent.bg} ${accent.text} font-bold`
+                  : `text-content bg-canvas ${accent.hoverText}`,
               ]}
             >
               {String(y).slice(2)}
