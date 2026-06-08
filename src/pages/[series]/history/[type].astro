@@ -5,10 +5,10 @@ import AwardsHistoryTeams from '../../../components/AwardsHistoryTeams.astro';
 import AwardsHistoryIndividuals from '../../../components/AwardsHistoryIndividuals.astro';
 import { getAvailableYears } from '../../../lib/data';
 import { buildClubMeta, buildTeamHistory, buildIndividualHistoryData, CANONICAL_IDS, ID_ALIASES } from '../../../lib/awardsHistory';
-import { getSeriesLongLabel } from '../../../lib/format';
+import { getSeriesLongLabel, seriesAccent } from '../../../lib/format';
 import type { Series } from '../../../lib/types';
 
-export function getStaticPaths() {
+export async function getStaticPaths() {
   const series: Series[] = ['road-gp', 'fell'];
   return series.flatMap(s => [
     { params: { series: s, type: 'teams' } },
@@ -19,6 +19,7 @@ export function getStaticPaths() {
 const { series, type } = Astro.params as { series: Series; type: 'teams' | 'individuals' };
 
 const seriesLabel = getSeriesLongLabel(series);
+const accent = seriesAccent(series);
 const pageTitle = type === 'teams' ? `${seriesLabel} Team Winners` : `${seriesLabel} Individual Winners`;
 
 const clubMeta = buildClubMeta(series);
@@ -29,7 +30,6 @@ const { allCategories, fullYearList } = type === 'teams'
 const categoryData = type === 'individuals' ? buildIndividualHistoryData(series) : [];
 
 const historyBase = import.meta.env.BASE_URL.replace(/\/$/, '');
-const historySeriesLabel = seriesLabel;
 const historyYears = type === 'individuals'
   ? categoryData.flatMap(c => c.rows.map(r => r.year))
   : fullYearList.map(y => y.year);
@@ -43,16 +43,16 @@ const historyYearRange = historyMin && historyMax ? `${historyMin}–${historyMa
     slot="hero"
     eyebrow="The Roll of Honour"
     title={type === 'teams' ? 'Team Winners' : 'Individual Winners'}
-    subtitleParts={historyYearRange ? [historySeriesLabel, historyYearRange] : [historySeriesLabel]}
+    subtitleParts={historyYearRange ? [seriesLabel, historyYearRange] : [seriesLabel]}
   >
     <div class="flex">
       <a
         href={`${historyBase}/${series}/history/teams`}
-        class={`flex-1 md:flex-none font-head text-[13px] font-bold tracking-[0.06em] uppercase py-2.5 md:mr-7 border-b-2 -mb-px text-center md:text-left transition-colors ${type === 'teams' ? 'border-amber text-hdr-text' : 'border-transparent text-hdr-muted hover:text-hdr-text'}`}
+        class={`flex-1 md:flex-none font-head text-[13px] font-bold tracking-[0.06em] uppercase py-2.5 md:mr-7 border-b-2 -mb-px text-center md:text-left transition-colors ${type === 'teams' ? `${accent.border} text-hdr-text` : 'border-transparent text-hdr-muted hover:text-hdr-text'}`}
       >Team Winners</a>
       <a
         href={`${historyBase}/${series}/history/individuals`}
-        class={`flex-1 md:flex-none font-head text-[13px] font-bold tracking-[0.06em] uppercase py-2.5 md:mr-7 border-b-2 -mb-px text-center md:text-left transition-colors ${type === 'individuals' ? 'border-amber text-hdr-text' : 'border-transparent text-hdr-muted hover:text-hdr-text'}`}
+        class={`flex-1 md:flex-none font-head text-[13px] font-bold tracking-[0.06em] uppercase py-2.5 md:mr-7 border-b-2 -mb-px text-center md:text-left transition-colors ${type === 'individuals' ? `${accent.border} text-hdr-text` : 'border-transparent text-hdr-muted hover:text-hdr-text'}`}
       >Individual Winners</a>
     </div>
   </PageHeader>
