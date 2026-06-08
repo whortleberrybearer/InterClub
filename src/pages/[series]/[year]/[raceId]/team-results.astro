@@ -1,0 +1,31 @@
+---
+import TeamResultsLayout from '../../../../components/TeamResultsLayout.astro';
+import { getTeamResultsStaticPaths } from '../../../../lib/results';
+import { buildRunnerUrlMap } from '../../../../lib/runners';
+import type { Club, Series, SeriesConfig, TeamResults } from '../../../../lib/types';
+
+export async function getStaticPaths() {
+  const series: Series[] = ['road-gp', 'fell'];
+  return series.flatMap(s =>
+    getTeamResultsStaticPaths(s).map(p => ({
+      ...p,
+      params: { ...p.params, series: s },
+      props: { ...p.props, series: s, runnerUrlMap: buildRunnerUrlMap(p.props.year, s) },
+    }))
+  );
+}
+
+interface Props {
+  series: Series;
+  year: number;
+  raceId: string;
+  teamResults: TeamResults;
+  provisional: boolean;
+  clubs: Club[];
+  config: SeriesConfig;
+  runnerUrlMap: Record<number, string>;
+}
+
+const { series } = Astro.props;
+---
+<TeamResultsLayout series={series} {...Astro.props} />
