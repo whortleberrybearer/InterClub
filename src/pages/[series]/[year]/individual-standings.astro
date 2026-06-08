@@ -1,0 +1,33 @@
+---
+import IndividualStandingsLayout from '../../../components/IndividualStandingsLayout.astro';
+import { getIndividualStandingsStaticPaths } from '../../../lib/results';
+import { buildRunnerUrlMap } from '../../../lib/runners';
+import type { Club, IndividualStandings, Series } from '../../../lib/types';
+
+export async function getStaticPaths() {
+  const series: Series[] = ['road-gp', 'fell'];
+  return series.flatMap(s =>
+    getIndividualStandingsStaticPaths(s).map(p => ({
+      ...p,
+      params: { ...p.params, series: s },
+      props: {
+        ...p.props,
+        series: s,
+        runnerUrlMap: buildRunnerUrlMap(p.props.year, s),
+      },
+    }))
+  );
+}
+
+interface Props {
+  series: Series;
+  year: number;
+  standings: IndividualStandings;
+  clubs: Club[];
+  linkedRaceIds: string[];
+  runnerUrlMap: Record<number, string>;
+}
+
+const { series } = Astro.props;
+---
+<IndividualStandingsLayout series={series} {...Astro.props} />
