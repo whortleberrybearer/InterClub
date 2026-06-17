@@ -1,8 +1,9 @@
 ﻿{
-    "provisional":  true,
+    "provisional":  false,
     "races":  [
                   "blackpool",
-                  "lytham"
+                  "lytham",
+                  "preston"
               ],
     "categories":  [
                        {
@@ -10,22 +11,24 @@
                            "clubs":  [
                                          {
                                              "position":  1,
-                                             "club":  "wesham",
-                                             "points":  [
-                                                            7,
-                                                            6
-                                                        ],
-                                             "total":  13,
-                                             "tiebreaker":  null
-                                         },
-                                         {
-                                             "position":  1,
                                              "club":  "preston",
                                              "points":  [
                                                             6,
+                                                            7,
                                                             7
                                                         ],
-                                             "total":  13,
+                                             "total":  20,
+                                             "tiebreaker":  null
+                                         },
+                                         {
+                                             "position":  2,
+                                             "club":  "wesham",
+                                             "points":  [
+                                                            7,
+                                                            6,
+                                                            6
+                                                        ],
+                                             "total":  19,
                                              "tiebreaker":  null
                                          },
                                          {
@@ -33,19 +36,10 @@
                                              "club":  "blackpool",
                                              "points":  [
                                                             5,
+                                                            5,
                                                             5
                                                         ],
-                                             "total":  10,
-                                             "tiebreaker":  null
-                                         },
-                                         {
-                                             "position":  4,
-                                             "club":  "red-rose",
-                                             "points":  [
-                                                            4,
-                                                            3
-                                                        ],
-                                             "total":  7,
+                                             "total":  15,
                                              "tiebreaker":  null
                                          },
                                          {
@@ -53,9 +47,21 @@
                                              "club":  "lytham",
                                              "points":  [
                                                             3,
+                                                            4,
                                                             4
                                                         ],
-                                             "total":  7,
+                                             "total":  11,
+                                             "tiebreaker":  null
+                                         },
+                                         {
+                                             "position":  5,
+                                             "club":  "red-rose",
+                                             "points":  [
+                                                            4,
+                                                            3,
+                                                            3
+                                                        ],
+                                             "total":  10,
                                              "tiebreaker":  null
                                          },
                                          {
@@ -63,9 +69,10 @@
                                              "club":  "chorley",
                                              "points":  [
                                                             2,
-                                                            2
+                                                            2,
+                                                            1
                                                         ],
-                                             "total":  4,
+                                             "total":  5,
                                              "tiebreaker":  null
                                          },
                                          {
@@ -73,9 +80,10 @@
                                              "club":  "thornton",
                                              "points":  [
                                                             1,
-                                                            1
+                                                            1,
+                                                            2
                                                         ],
-                                             "total":  2,
+                                             "total":  4,
                                              "tiebreaker":  null
                                          }
                                      ]
@@ -85,22 +93,24 @@
                            "clubs":  [
                                          {
                                              "position":  1,
-                                             "club":  "lytham",
-                                             "points":  [
-                                                            6,
-                                                            7
-                                                        ],
-                                             "total":  13,
-                                             "tiebreaker":  null
-                                         },
-                                         {
-                                             "position":  1,
                                              "club":  "preston",
                                              "points":  [
                                                             7,
-                                                            6
+                                                            6,
+                                                            7
                                                         ],
-                                             "total":  13,
+                                             "total":  20,
+                                             "tiebreaker":  null
+                                         },
+                                         {
+                                             "position":  2,
+                                             "club":  "lytham",
+                                             "points":  [
+                                                            6,
+                                                            7,
+                                                            5
+                                                        ],
+                                             "total":  18,
                                              "tiebreaker":  null
                                          },
                                          {
@@ -108,19 +118,21 @@
                                              "club":  "wesham",
                                              "points":  [
                                                             5,
-                                                            3
+                                                            3,
+                                                            6
                                                         ],
-                                             "total":  8,
+                                             "total":  14,
                                              "tiebreaker":  null
                                          },
                                          {
-                                             "position":  3,
+                                             "position":  4,
                                              "club":  "blackpool",
                                              "points":  [
                                                             3,
-                                                            5
+                                                            5,
+                                                            4
                                                         ],
-                                             "total":  8,
+                                             "total":  12,
                                              "tiebreaker":  null
                                          },
                                          {
@@ -128,9 +140,10 @@
                                              "club":  "red-rose",
                                              "points":  [
                                                             4,
-                                                            2
+                                                            2,
+                                                            3
                                                         ],
-                                             "total":  6,
+                                             "total":  9,
                                              "tiebreaker":  null
                                          },
                                          {
@@ -138,9 +151,10 @@
                                              "club":  "chorley",
                                              "points":  [
                                                             1,
-                                                            4
+                                                            4,
+                                                            1
                                                         ],
-                                             "total":  5,
+                                             "total":  6,
                                              "tiebreaker":  null
                                          },
                                          {
@@ -148,6 +162,89 @@
                                              "club":  "thornton",
                                              "points":  [
                                                             2,
+                                                            1,
+                                                            2
+                                                        ],
+                                             "total":  5,
+                                             "tiebreaker":  null
+                                         }
+                                     ]
+                       },
+                       {
+                           "id":  "vets",
+                           "clubs":  [
+                                         {
+                                             "position":  1,
+                                             "club":  "wesham",
+                                             "points":  [
+                                                            7,
+                                                            7,
+                                                            7
+                                                        ],
+                                             "total":  21,
+                                             "tiebreaker":  null
+                                         },
+                                         {
+                                             "position":  2,
+                                             "club":  "blackpool",
+                                             "points":  [
+                                                            5,
+                                                            6,
+                                                            6
+                                                        ],
+                                             "total":  17,
+                                             "tiebreaker":  null
+                                         },
+                                         {
+                                             "position":  3,
+                                             "club":  "preston",
+                                             "points":  [
+                                                            6,
+                                                            5,
+                                                            4
+                                                        ],
+                                             "total":  15,
+                                             "tiebreaker":  null
+                                         },
+                                         {
+                                             "position":  4,
+                                             "club":  "red-rose",
+                                             "points":  [
+                                                            4,
+                                                            4,
+                                                            5
+                                                        ],
+                                             "total":  13,
+                                             "tiebreaker":  null
+                                         },
+                                         {
+                                             "position":  5,
+                                             "club":  "lytham",
+                                             "points":  [
+                                                            3,
+                                                            3,
+                                                            2
+                                                        ],
+                                             "total":  8,
+                                             "tiebreaker":  null
+                                         },
+                                         {
+                                             "position":  6,
+                                             "club":  "thornton",
+                                             "points":  [
+                                                            2,
+                                                            2,
+                                                            3
+                                                        ],
+                                             "total":  7,
+                                             "tiebreaker":  null
+                                         },
+                                         {
+                                             "position":  7,
+                                             "club":  "chorley",
+                                             "points":  [
+                                                            1,
+                                                            1,
                                                             1
                                                         ],
                                              "total":  3,
@@ -163,9 +260,10 @@
                                              "club":  "lytham",
                                              "points":  [
                                                             7,
+                                                            7,
                                                             7
                                                         ],
-                                             "total":  14,
+                                             "total":  21,
                                              "tiebreaker":  null
                                          },
                                          {
@@ -173,29 +271,21 @@
                                              "club":  "wesham",
                                              "points":  [
                                                             5,
+                                                            6,
                                                             6
                                                         ],
-                                             "total":  11,
+                                             "total":  17,
                                              "tiebreaker":  null
                                          },
                                          {
-                                             "position":  2,
+                                             "position":  3,
                                              "club":  "preston",
                                              "points":  [
                                                             6,
+                                                            5,
                                                             5
                                                         ],
-                                             "total":  11,
-                                             "tiebreaker":  null
-                                         },
-                                         {
-                                             "position":  4,
-                                             "club":  "thornton",
-                                             "points":  [
-                                                            3,
-                                                            4
-                                                        ],
-                                             "total":  7,
+                                             "total":  16,
                                              "tiebreaker":  null
                                          },
                                          {
@@ -203,9 +293,21 @@
                                              "club":  "red-rose",
                                              "points":  [
                                                             4,
+                                                            3,
+                                                            4
+                                                        ],
+                                             "total":  11,
+                                             "tiebreaker":  null
+                                         },
+                                         {
+                                             "position":  5,
+                                             "club":  "thornton",
+                                             "points":  [
+                                                            3,
+                                                            4,
                                                             3
                                                         ],
-                                             "total":  7,
+                                             "total":  10,
                                              "tiebreaker":  null
                                          },
                                          {
@@ -213,94 +315,21 @@
                                              "club":  "blackpool",
                                              "points":  [
                                                             2,
+                                                            2,
                                                             2
-                                                        ],
-                                             "total":  4,
-                                             "tiebreaker":  null
-                                         },
-                                         {
-                                             "position":  7,
-                                             "club":  "chorley",
-                                             "points":  [
-                                                            1,
-                                                            1
-                                                        ],
-                                             "total":  2,
-                                             "tiebreaker":  null
-                                         }
-                                     ]
-                       },
-                       {
-                           "id":  "vets",
-                           "clubs":  [
-                                         {
-                                             "position":  1,
-                                             "club":  "wesham",
-                                             "points":  [
-                                                            7,
-                                                            7
-                                                        ],
-                                             "total":  14,
-                                             "tiebreaker":  null
-                                         },
-                                         {
-                                             "position":  2,
-                                             "club":  "preston",
-                                             "points":  [
-                                                            6,
-                                                            5
-                                                        ],
-                                             "total":  11,
-                                             "tiebreaker":  null
-                                         },
-                                         {
-                                             "position":  2,
-                                             "club":  "blackpool",
-                                             "points":  [
-                                                            5,
-                                                            6
-                                                        ],
-                                             "total":  11,
-                                             "tiebreaker":  null
-                                         },
-                                         {
-                                             "position":  4,
-                                             "club":  "red-rose",
-                                             "points":  [
-                                                            4,
-                                                            4
-                                                        ],
-                                             "total":  8,
-                                             "tiebreaker":  null
-                                         },
-                                         {
-                                             "position":  5,
-                                             "club":  "lytham",
-                                             "points":  [
-                                                            3,
-                                                            3
                                                         ],
                                              "total":  6,
                                              "tiebreaker":  null
                                          },
                                          {
-                                             "position":  6,
-                                             "club":  "thornton",
-                                             "points":  [
-                                                            2,
-                                                            2
-                                                        ],
-                                             "total":  4,
-                                             "tiebreaker":  null
-                                         },
-                                         {
                                              "position":  7,
                                              "club":  "chorley",
                                              "points":  [
                                                             1,
+                                                            1,
                                                             1
                                                         ],
-                                             "total":  2,
+                                             "total":  3,
                                              "tiebreaker":  null
                                          }
                                      ]
@@ -313,19 +342,10 @@
                                              "club":  "wesham",
                                              "points":  [
                                                             7,
+                                                            7,
                                                             7
                                                         ],
-                                             "total":  14,
-                                             "tiebreaker":  null
-                                         },
-                                         {
-                                             "position":  2,
-                                             "club":  "red-rose",
-                                             "points":  [
-                                                            6,
-                                                            4
-                                                        ],
-                                             "total":  10,
+                                             "total":  21,
                                              "tiebreaker":  null
                                          },
                                          {
@@ -333,19 +353,32 @@
                                              "club":  "blackpool",
                                              "points":  [
                                                             4,
+                                                            6,
                                                             6
                                                         ],
-                                             "total":  10,
+                                             "total":  16,
                                              "tiebreaker":  null
                                          },
                                          {
-                                             "position":  2,
+                                             "position":  3,
+                                             "club":  "red-rose",
+                                             "points":  [
+                                                            6,
+                                                            4,
+                                                            5
+                                                        ],
+                                             "total":  15,
+                                             "tiebreaker":  null
+                                         },
+                                         {
+                                             "position":  4,
                                              "club":  "preston",
                                              "points":  [
                                                             5,
-                                                            5
+                                                            5,
+                                                            4
                                                         ],
-                                             "total":  10,
+                                             "total":  14,
                                              "tiebreaker":  null
                                          },
                                          {
@@ -353,19 +386,10 @@
                                              "club":  "lytham",
                                              "points":  [
                                                             3,
+                                                            3,
                                                             3
                                                         ],
-                                             "total":  6,
-                                             "tiebreaker":  null
-                                         },
-                                         {
-                                             "position":  6,
-                                             "club":  "chorley",
-                                             "points":  [
-                                                            2,
-                                                            1
-                                                        ],
-                                             "total":  3,
+                                             "total":  9,
                                              "tiebreaker":  null
                                          },
                                          {
@@ -373,9 +397,21 @@
                                              "club":  "thornton",
                                              "points":  [
                                                             1,
+                                                            2,
                                                             2
                                                         ],
-                                             "total":  3,
+                                             "total":  5,
+                                             "tiebreaker":  null
+                                         },
+                                         {
+                                             "position":  7,
+                                             "club":  "chorley",
+                                             "points":  [
+                                                            2,
+                                                            1,
+                                                            1
+                                                        ],
+                                             "total":  4,
                                              "tiebreaker":  null
                                          }
                                      ]
@@ -388,9 +424,10 @@
                                              "club":  "wesham",
                                              "points":  [
                                                             7,
+                                                            7,
                                                             7
                                                         ],
-                                             "total":  14,
+                                             "total":  21,
                                              "tiebreaker":  null
                                          },
                                          {
@@ -398,9 +435,10 @@
                                              "club":  "red-rose",
                                              "points":  [
                                                             6,
-                                                            5
+                                                            5,
+                                                            6
                                                         ],
-                                             "total":  11,
+                                             "total":  17,
                                              "tiebreaker":  null
                                          },
                                          {
@@ -408,29 +446,32 @@
                                              "club":  "thornton",
                                              "points":  [
                                                             5,
-                                                            4
+                                                            4,
+                                                            5
                                                         ],
-                                             "total":  9,
+                                             "total":  14,
                                              "tiebreaker":  null
                                          },
                                          {
                                              "position":  4,
-                                             "club":  "preston",
+                                             "club":  "lytham",
                                              "points":  [
-                                                            2,
-                                                            6
+                                                            4,
+                                                            3,
+                                                            4
                                                         ],
-                                             "total":  8,
+                                             "total":  11,
                                              "tiebreaker":  null
                                          },
                                          {
                                              "position":  5,
-                                             "club":  "lytham",
+                                             "club":  "preston",
                                              "points":  [
-                                                            4,
-                                                            3
+                                                            2,
+                                                            6,
+                                                            1
                                                         ],
-                                             "total":  7,
+                                             "total":  9,
                                              "tiebreaker":  null
                                          },
                                          {
@@ -438,9 +479,10 @@
                                              "club":  "chorley",
                                              "points":  [
                                                             3,
-                                                            2
+                                                            2,
+                                                            3
                                                         ],
-                                             "total":  5,
+                                             "total":  8,
                                              "tiebreaker":  null
                                          },
                                          {
@@ -448,9 +490,10 @@
                                              "club":  "blackpool",
                                              "points":  [
                                                             1,
-                                                            1
+                                                            1,
+                                                            2
                                                         ],
-                                             "total":  2,
+                                             "total":  4,
                                              "tiebreaker":  null
                                          }
                                      ]
