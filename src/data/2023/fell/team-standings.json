@@ -3,7 +3,7 @@
   "races": ["wardle-skyline", "aggies-staircase", "beetham-sports", "golf-ball"],
   "categories": [
     {
-      "id": "overall",
+      "id": "open",
       "clubs": [
         {"position": 1, "club": "chorley", "points": [5, 7, 7, 7], "total": 26, "tiebreaker": null},
         {"position": 2, "club": "wesham", "points": [7, 4, 6, 6], "total": 23, "tiebreaker": null},
@@ -15,7 +15,7 @@
       ]
     },
     {
-      "id": "vet40",
+      "id": "vets",
       "clubs": [
         {"position": 1, "club": "chorley", "points": [6, 7, 7, 7], "total": 27, "tiebreaker": null},
         {"position": 2, "club": "red-rose", "points": [7, 5, 4, 5], "total": 21, "tiebreaker": null},
@@ -27,7 +27,7 @@
       ]
     },
     {
-      "id": "vet50",
+      "id": "v50",
       "clubs": [
         {"position": 1, "club": "chorley", "points": [6, 7, 7, 7], "total": 27, "tiebreaker": null},
         {"position": 2, "club": "red-rose", "points": [7, 5, 6, 5], "total": 23, "tiebreaker": null},
@@ -39,7 +39,7 @@
       ]
     },
     {
-      "id": "vet60",
+      "id": "v60",
       "clubs": [
         {"position": 1, "club": "red-rose", "points": [5, 7, 7, 7], "total": 26, "tiebreaker": null},
         {"position": 2, "club": "chorley", "points": [7, 5, 4, 6], "total": 22, "tiebreaker": null},
@@ -51,7 +51,7 @@
       ]
     },
     {
-      "id": "women",
+      "id": "ladies",
       "clubs": [
         {"position": 1, "club": "red-rose", "points": [7, 6, 6, 7], "total": 26, "tiebreaker": null},
         {"position": 2, "club": "wesham", "points": [6, 3, 5, 5], "total": 19, "tiebreaker": null},
