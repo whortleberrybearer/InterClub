@@ -425,6 +425,7 @@ export interface CategoryHistoryEntry {
 
 export interface CategoryHistoryRow {
   year: number;
+  suspended?: string;
   positions: {
     1: CategoryHistoryEntry | null;
     2: CategoryHistoryEntry | null;
@@ -481,7 +482,8 @@ export function resolveSeriesAwards(
 }
 
 export function pivotIndividualAwardsByCategory(
-  yearlyData: YearlyResolvedIndividual[]
+  yearlyData: YearlyResolvedIndividual[],
+  noteByYear: Map<number, string> = new Map()
 ): CategoryHistoryData[] {
   const categoryMap = new Map<string, { name: string; sex: 'M' | 'F' | null }>();
   for (const yearly of yearlyData) {
@@ -509,6 +511,20 @@ export function pivotIndividualAwardsByCategory(
           },
         };
       });
+
+    // Fill in years between this category's first and last instance so gaps
+    // (e.g. a year the award wasn't recorded) still render as an empty row.
+    if (rows.length > 0) {
+      const presentYears = new Set(rows.map(r => r.year));
+      const minYear = Math.min(...rows.map(r => r.year));
+      const maxYear = Math.max(...rows.map(r => r.year));
+      for (let year = minYear; year <= maxYear; year++) {
+        if (!presentYears.has(year)) {
+          rows.push({ year, suspended: noteByYear.get(year), positions: { 1: null, 2: null, 3: null } });
+        }
+      }
+    }
+
     return { id, name: meta.name, sex: meta.sex, rows };
   });
 }

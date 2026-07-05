@@ -66,6 +66,6 @@ const historyYearRange = historyMin && historyMax ? `${historyMin}–${historyMa
       linkedYears={new Set(getAvailableYears(series))}
     />
   ) : (
-    <AwardsHistoryIndividuals series={series} categories={categoryData} />
+    <AwardsHistoryIndividuals series={series} categories={categoryData} linkedYears={new Set(getAvailableYears(series))} />
   )}
 </Layout>

@@ -240,7 +240,7 @@ describe('pivotIndividualAwardsByCategory', () => {
     expect(result[0].rows[0].positions[3]).toBeNull();
   });
 
-  it('omits years that have no entry for a category', () => {
+  it('fills gap years between a category\'s first and last instance with an empty row', () => {
     const input = [
       {
         year: 2024,
@@ -256,8 +256,29 @@ describe('pivotIndividualAwardsByCategory', () => {
       },
     ];
     const result = pivotIndividualAwardsByCategory(input);
-    expect(result[0].rows).toHaveLength(2);
-    expect(result[0].rows.map(r => r.year)).toEqual([2024, 2022]);
+    expect(result[0].rows).toHaveLength(3);
+    expect(result[0].rows.map(r => r.year).sort()).toEqual([2022, 2023, 2024]);
+    const gapRow = result[0].rows.find(r => r.year === 2023)!;
+    expect(gapRow.positions).toEqual({ 1: null, 2: null, 3: null });
+  });
+
+  it('does not add years outside a category\'s first-to-last range', () => {
+    const input = [
+      {
+        year: 2024,
+        categories: [{ id: 'sen-m', name: 'Senior Men', sex: 'M' as const, awards: [{ position: 1, name: 'A', clubName: 'X' }] }],
+      },
+      {
+        year: 2022,
+        categories: [{ id: 'sen-m', name: 'Senior Men', sex: 'M' as const, awards: [{ position: 1, name: 'B', clubName: 'Y' }] }],
+      },
+      {
+        year: 2020,
+        categories: [], // before the category's range -- should not appear
+      },
+    ];
+    const result = pivotIndividualAwardsByCategory(input);
+    expect(result[0].rows.map(r => r.year).sort()).toEqual([2022, 2023, 2024]);
   });
 
   it('preserves the input year order (caller is responsible for sorting)', () => {
