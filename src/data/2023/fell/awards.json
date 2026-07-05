@@ -1,29 +1,29 @@
 {
   "teamAwards": [
     {
-      "id": "overall",
+      "id": "open",
       "club": "chorley"
     },
     {
-      "id": "m40",
-      "club": "chorley"
-    },
-    {
-      "id": "m50",
-      "club": "chorley"
-    },
-    {
-      "id": "m60",
+      "id": "ladies",
       "club": "red-rose"
     },
     {
-      "id": "women",
+      "id": "vets",
+      "club": "chorley"
+    },
+    {
+      "id": "v50",
+      "club": "chorley"
+    },
+    {
+      "id": "v60",
       "club": "red-rose"
     }
   ],
   "individualAwards": [
     {
-      "id": "m-sen",
+      "id": "m",
       "awards": [
         {
           "position": 1,
@@ -40,8 +40,7 @@
           "seriesRunnerId": 135
         }
       ],
-      "sex": "M",
-      "ageCategory": "SEN"
+      "sex": "M"
     },
     {
       "id": "m-v40",
@@ -107,7 +106,7 @@
       "ageCategory": "V60"
     },
     {
-      "id": "f-sen",
+      "id": "f",
       "awards": [
         {
           "position": 1,
@@ -124,8 +123,7 @@
           "seriesRunnerId": 116
         }
       ],
-      "sex": "F",
-      "ageCategory": "SEN"
+      "sex": "F"
     },
     {
       "id": "f-v40",
