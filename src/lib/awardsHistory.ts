@@ -153,6 +153,11 @@ export function buildTeamHistory(
 
 export function buildIndividualHistoryData(series: Series): CategoryHistoryData[] {
   const allYearlyAwards = getAllAwardsByYear(series);
+  const noteByYear = new Map(
+    getAllSeriesConfigs(series)
+      .filter(({ config }) => !!config.note)
+      .map(({ year, config }) => [year, config.note!])
+  );
   const yearlyResolved = allYearlyAwards.map(yearly => {
     const runnerUrlMap = buildRunnerUrlMap(yearly.year, series);
     return {
@@ -171,5 +176,5 @@ export function buildIndividualHistoryData(series: Series): CategoryHistoryData[
       })),
     };
   });
-  return pivotIndividualAwardsByCategory(yearlyResolved);
+  return pivotIndividualAwardsByCategory(yearlyResolved, noteByYear);
 }
