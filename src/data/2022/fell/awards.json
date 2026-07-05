@@ -1,139 +1,150 @@
-{
-  "teamAwards": [
-    {
-      "id": "open",
-      "club": "chorley"
-    },
-    {
-      "id": "ladies",
-      "club": "preston"
-    },
-    {
-      "id": "vets",
-      "club": "chorley"
-    },
-    {
-      "id": "v50",
-      "club": "chorley"
-    },
-    {
-      "id": "v60",
-      "club": "chorley"
-    }
-  ],
-  "individualAwards": [
-    {
-      "id": "m",
-      "awards": [
-        {
-          "position": 1,
-          "name": "Darren McDermott",
-          "club": "preston",
-          "ageCategory": "V50"
-        },
-        {
-          "position": 2,
-          "name": "Steve Baker",
-          "club": "chorley",
-          "ageCategory": "V60"
-        },
-        {
-          "position": 3,
-          "name": "Paul Lancashire",
-          "club": "wesham",
-          "ageCategory": "V40"
-        }
-      ],
-      "sex": "M"
-    },
-    {
-      "id": "f",
-      "awards": [
-        {
-          "position": 1,
-          "name": "Claire McDermott",
-          "club": "preston",
-          "ageCategory": "V50"
-        },
-        {
-          "position": 3,
-          "name": "Amanda Fuller",
-          "club": "blackpool",
-          "ageCategory": "V40"
-        }
-      ],
-      "sex": "F"
-    },
-    {
-      "id": "m-v40",
-      "awards": [
-        {
-          "position": 1,
-          "name": "John Naylor",
-          "club": "red-rose",
-          "ageCategory": "V40"
-        }
-      ],
-      "sex": "M",
-      "ageCategory": "V40"
-    },
-    {
-      "id": "m-v50",
-      "awards": [
-        {
-          "position": 2,
-          "name": "Mark Ellithorn",
-          "club": "chorley",
-          "ageCategory": "V50"
-        }
-      ],
-      "sex": "M",
-      "ageCategory": "V50"
-    },
-    {
-      "id": "m-v60",
-      "awards": [
-        {
-          "position": 1,
-          "name": "Steve Baker",
-          "club": "chorley",
-          "ageCategory": "V60"
-        }
-      ],
-      "sex": "M",
-      "ageCategory": "V60"
-    },
-    {
-      "id": "f-v40",
-      "awards": [
-        {
-          "position": 1,
-          "name": "Claire Markham",
-          "club": "lytham",
-          "ageCategory": "V40"
-        },
-        {
-          "position": 2,
-          "name": "Olga Wiggins",
-          "club": "preston",
-          "ageCategory": "V40"
-        }
-      ],
-      "sex": "F",
-      "ageCategory": "V40"
-    },
-    {
-      "id": "f-v50",
-      "awards": [
-        {
-          "position": 2,
-          "name": "Pamela Hardman",
-          "club": "lytham",
-          "ageCategory": "V60"
-        }
-      ],
-      "sex": "F",
-      "ageCategory": "V50"
-    }
-  ]
+﻿{
+    "teamAwards":  [
+                       {
+                           "id":  "open",
+                           "club":  "chorley"
+                       },
+                       {
+                           "id":  "ladies",
+                           "club":  "preston"
+                       },
+                       {
+                           "id":  "vets",
+                           "club":  "chorley"
+                       },
+                       {
+                           "id":  "v50",
+                           "club":  "chorley"
+                       },
+                       {
+                           "id":  "v60",
+                           "club":  "chorley"
+                       }
+                   ],
+    "individualAwards":  [
+                             {
+                                 "id":  "m",
+                                 "awards":  [
+                                                {
+                                                    "position":  1,
+                                                    "name":  "Darren McDermott",
+                                                    "club":  "preston",
+                                                    "ageCategory":  "V50",
+                                                    "seriesRunnerId":  130
+                                                },
+                                                {
+                                                    "position":  2,
+                                                    "name":  "Steve Baker",
+                                                    "club":  "chorley",
+                                                    "ageCategory":  "V60",
+                                                    "seriesRunnerId":  106
+                                                },
+                                                {
+                                                    "position":  3,
+                                                    "name":  "Paul Lancashire",
+                                                    "club":  "wesham",
+                                                    "ageCategory":  "V40",
+                                                    "seriesRunnerId":  134
+                                                }
+                                            ],
+                                 "sex":  "M"
+                             },
+                             {
+                                 "id":  "f",
+                                 "awards":  [
+                                                {
+                                                    "position":  1,
+                                                    "name":  "Claire McDermott",
+                                                    "club":  "preston",
+                                                    "ageCategory":  "V50",
+                                                    "seriesRunnerId":  116
+                                                },
+                                                {
+                                                    "position":  3,
+                                                    "name":  "Amanda Fuller",
+                                                    "club":  "blackpool",
+                                                    "ageCategory":  "V40",
+                                                    "seriesRunnerId":  124
+                                                }
+                                            ],
+                                 "sex":  "F"
+                             },
+                             {
+                                 "id":  "m-v40",
+                                 "awards":  [
+                                                {
+                                                    "position":  1,
+                                                    "name":  "John Naylor",
+                                                    "club":  "red-rose",
+                                                    "ageCategory":  "V40",
+                                                    "seriesRunnerId":  115
+                                                }
+                                            ],
+                                 "sex":  "M",
+                                 "ageCategory":  "V40"
+                             },
+                             {
+                                 "id":  "m-v50",
+                                 "awards":  [
+                                                {
+                                                    "position":  2,
+                                                    "name":  "Mark Ellithorn",
+                                                    "club":  "chorley",
+                                                    "ageCategory":  "V50",
+                                                    "seriesRunnerId":  105
+                                                }
+                                            ],
+                                 "sex":  "M",
+                                 "ageCategory":  "V50"
+                             },
+                             {
+                                 "id":  "m-v60",
+                                 "awards":  [
+                                                {
+                                                    "position":  1,
+                                                    "name":  "Steve Baker",
+                                                    "club":  "chorley",
+                                                    "ageCategory":  "V60",
+                                                    "seriesRunnerId":  106
+                                                }
+                                            ],
+                                 "sex":  "M",
+                                 "ageCategory":  "V60"
+                             },
+                             {
+                                 "id":  "f-v40",
+                                 "awards":  [
+                                                {
+                                                    "position":  1,
+                                                    "name":  "Claire Markham",
+                                                    "club":  "lytham",
+                                                    "ageCategory":  "V40",
+                                                    "seriesRunnerId":  147
+                                                },
+                                                {
+                                                    "position":  2,
+                                                    "name":  "Olga Wiggins",
+                                                    "club":  "preston",
+                                                    "ageCategory":  "V40",
+                                                    "seriesRunnerId":  120
+                                                }
+                                            ],
+                                 "sex":  "F",
+                                 "ageCategory":  "V40"
+                             },
+                             {
+                                 "id":  "f-v50",
+                                 "awards":  [
+                                                {
+                                                    "position":  2,
+                                                    "name":  "Pamela Hardman",
+                                                    "club":  "lytham",
+                                                    "ageCategory":  "V60",
+                                                    "seriesRunnerId":  148
+                                                }
+                                            ],
+                                 "sex":  "F",
+                                 "ageCategory":  "V50"
+                             }
+                         ]
 }
