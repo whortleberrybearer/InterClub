@@ -1,63 +1,370 @@
-﻿{
+{
   "categories": [
     {
       "id": "open",
       "clubs": [
-        {"position": 1, "club": "preston", "points": 208, "scorers": [{"position": 19}, {"position": 34}, {"position": 41}, {"position": 55}, {"position": 59}]},
-        {"position": 2, "club": "red-rose", "points": 300, "scorers": [{"position": 13}, {"position": 20}, {"position": 58}, {"position": 78}, {"position": 131}]},
-        {"position": 3, "club": "chorley", "points": 369, "scorers": [{"position": 28}, {"position": 30}, {"position": 74}, {"position": 76}, {"position": 161}]},
-        {"position": 4, "club": "blackpool", "points": 0, "scorers": [{"position": 85}, {"position": 154}, {"position": 156}]},
-        {"position": 5, "club": "lytham", "points": 0, "scorers": [{"position": 140}, {"position": 162}, {"position": 166}]},
-        {"position": 6, "club": "wesham", "points": 0, "scorers": [{"position": 69}, {"position": 182}]},
-        {"position": 7, "club": "thornton-cleveleys", "points": 0, "scorers": []}
+        {
+          "position": 1,
+          "points": 7,
+          "club": "preston",
+          "total": 33,
+          "scorers": [
+            {"position": 2, "name": "Jon Green", "seriesRunnerId": 177},
+            {"position": 6, "name": "Darren McDermott", "seriesRunnerId": 130},
+            {"position": 7, "name": "David Parkington", "seriesRunnerId": 180},
+            {"position": 8, "name": "Thomas Brown", "seriesRunnerId": 181},
+            {"position": 10, "name": "Steven Bamber", "seriesRunnerId": 183}
+          ]
+        },
+        {
+          "position": 2,
+          "points": 6,
+          "club": "red-rose",
+          "total": 44,
+          "scorers": [
+            {"position": 1, "name": "Daniel Hughes", "seriesRunnerId": 128},
+            {"position": 3, "name": "Karl Hodgson", "seriesRunnerId": 178},
+            {"position": 9, "name": "Steven Willetts", "seriesRunnerId": 182},
+            {"position": 14, "name": "John Naylor", "seriesRunnerId": 115},
+            {"position": 17, "name": "Steven Moon", "seriesRunnerId": 184}
+          ]
+        },
+        {
+          "position": 3,
+          "points": 5,
+          "club": "chorley",
+          "total": 58,
+          "scorers": [
+            {"position": 4, "name": "Katherine Klunder", "seriesRunnerId": 165},
+            {"position": 5, "name": "Stuart Hemmings", "seriesRunnerId": 179},
+            {"position": 12, "name": "Bill Beckett", "seriesRunnerId": 139},
+            {"position": 13, "name": "Stephen Baker", "seriesRunnerId": 136},
+            {"position": 24, "name": "Graham Schofield", "seriesRunnerId": 187}
+          ]
+        },
+        {
+          "position": 4,
+          "points": 4,
+          "club": "blackpool",
+          "total": 60,
+          "scorers": [
+            {"position": 15, "name": "Richard Pinches", "seriesRunnerId": 157},
+            {"position": 22, "name": "Simon Scarr", "seriesRunnerId": 121},
+            {"position": 23, "name": "Amanda Fuller", "seriesRunnerId": 124}
+          ]
+        },
+        {
+          "position": 5,
+          "points": 3,
+          "club": "lytham",
+          "total": 70,
+          "scorers": [
+            {"position": 19, "name": "Claire Markham", "seriesRunnerId": 147},
+            {"position": 25, "name": "Julia Rolfe", "seriesRunnerId": 188},
+            {"position": 26, "name": "Pamela Hardman", "seriesRunnerId": 148}
+          ]
+        },
+        {
+          "position": 6,
+          "points": 2,
+          "club": "wesham",
+          "total": 41,
+          "scorers": [
+            {"position": 11, "name": "Paul Lancashire", "seriesRunnerId": 134},
+            {"position": 30, "name": "Kirsty Holland", "seriesRunnerId": 161}
+          ]
+        },
+        {
+          "position": 7,
+          "points": 0,
+          "club": "thornton",
+          "total": 0,
+          "scorers": []
+        }
       ]
     },
     {
       "id": "ladies",
       "clubs": [
-        {"position": 1, "club": "preston", "points": 164, "scorers": [{"position": 21}, {"position": 27}, {"position": 28}]},
-        {"position": 2, "club": "lytham", "points": 174, "scorers": [{"position": 20}, {"position": 26}]},
-        {"position": 3, "club": "chorley", "points": 200, "scorers": [{"position": 5}, {"position": 24}, {"position": 29}]},
-        {"position": 4, "club": "blackpool", "points": 0, "scorers": [{"position": 23}]},
-        {"position": 5, "club": "red-rose", "points": 0, "scorers": [{"position": 29}]},
-        {"position": 6, "club": "wesham", "points": 0, "scorers": []},
-        {"position": 7, "club": "thornton-cleveleys", "points": 0, "scorers": []}
+        {
+          "position": 1,
+          "points": 7,
+          "club": "preston",
+          "total": 14,
+          "scorers": [
+            {"position": 2, "name": "Claire McDermott", "seriesRunnerId": 116},
+            {"position": 4, "name": "Victoria Osten", "seriesRunnerId": 186},
+            {"position": 8, "name": "Olga Wiggins", "seriesRunnerId": 120}
+          ]
+        },
+        {
+          "position": 2,
+          "points": 6,
+          "club": "lytham",
+          "total": 16,
+          "scorers": [
+            {"position": 3, "name": "Claire Markham", "seriesRunnerId": 147},
+            {"position": 6, "name": "Julia Rolfe", "seriesRunnerId": 188},
+            {"position": 7, "name": "Pamela Hardman", "seriesRunnerId": 148}
+          ]
+        },
+        {
+          "position": 3,
+          "points": 5,
+          "club": "chorley",
+          "total": 1,
+          "scorers": [
+            {"position": 1, "name": "Katherine Klunder", "seriesRunnerId": 165}
+          ]
+        },
+        {
+          "position": 4,
+          "points": 4,
+          "club": "blackpool",
+          "total": 5,
+          "scorers": [
+            {"position": 5, "name": "Amanda Fuller", "seriesRunnerId": 124}
+          ]
+        },
+        {
+          "position": 5,
+          "points": 3,
+          "club": "red-rose",
+          "total": 10,
+          "scorers": [
+            {"position": 10, "name": "Alison Mercer", "seriesRunnerId": 125}
+          ]
+        },
+        {
+          "position": 6,
+          "points": 2,
+          "club": "wesham",
+          "total": 11,
+          "scorers": [
+            {"position": 11, "name": "Kirsty Holland", "seriesRunnerId": 161}
+          ]
+        },
+        {
+          "position": 7,
+          "points": 0,
+          "club": "thornton",
+          "total": 0,
+          "scorers": []
+        }
       ]
     },
     {
       "id": "vets",
       "clubs": [
-        {"position": 1, "club": "preston", "points": 191, "scorers": [{"position": 19}, {"position": 34}, {"position": 41}, {"position": 55}]},
-        {"position": 2, "club": "chorley", "points": 249, "scorers": [{"position": 28}, {"position": 30}, {"position": 74}, {"position": 76}]},
-        {"position": 3, "club": "lytham", "points": 0, "scorers": [{"position": 20}, {"position": 140}]},
-        {"position": 4, "club": "red-rose", "points": 0, "scorers": [{"position": 58}, {"position": 78}]},
-        {"position": 5, "club": "blackpool", "points": 0, "scorers": [{"position": 85}]},
-        {"position": 6, "club": "wesham", "points": 0, "scorers": []},
-        {"position": 7, "club": "thornton-cleveleys", "points": 0, "scorers": []}
+        {
+          "position": 1,
+          "points": 7,
+          "club": "preston",
+          "total": 13,
+          "scorers": [
+            {"position": 1, "name": "Jon Green", "seriesRunnerId": 177},
+            {"position": 3, "name": "Darren McDermott", "seriesRunnerId": 130},
+            {"position": 4, "name": "David Parkington", "seriesRunnerId": 180},
+            {"position": 5, "name": "Steven Bamber", "seriesRunnerId": 183}
+          ]
+        },
+        {
+          "position": 2,
+          "points": 6,
+          "club": "chorley",
+          "total": 35,
+          "scorers": [
+            {"position": 2, "name": "Stuart Hemmings", "seriesRunnerId": 179},
+            {"position": 7, "name": "Bill Beckett", "seriesRunnerId": 139},
+            {"position": 8, "name": "Stephen Baker", "seriesRunnerId": 136},
+            {"position": 18, "name": "Graham Schofield", "seriesRunnerId": 187}
+          ]
+        },
+        {
+          "position": 3,
+          "points": 5,
+          "club": "red-rose",
+          "total": 49,
+          "scorers": [
+            {"position": 9, "name": "John Naylor", "seriesRunnerId": 115},
+            {"position": 12, "name": "Steven Moon", "seriesRunnerId": 184},
+            {"position": 13, "name": "Rob Mather", "seriesRunnerId": 140},
+            {"position": 15, "name": "Peter Bolton", "seriesRunnerId": 185}
+          ]
+        },
+        {
+          "position": 4,
+          "points": 4,
+          "club": "blackpool",
+          "total": 43,
+          "scorers": [
+            {"position": 10, "name": "Richard Pinches", "seriesRunnerId": 157},
+            {"position": 16, "name": "Simon Scarr", "seriesRunnerId": 121},
+            {"position": 17, "name": "Amanda Fuller", "seriesRunnerId": 124}
+          ]
+        },
+        {
+          "position": 5,
+          "points": 3,
+          "club": "lytham",
+          "total": 53,
+          "scorers": [
+            {"position": 14, "name": "Claire Markham", "seriesRunnerId": 147},
+            {"position": 19, "name": "Julia Rolfe", "seriesRunnerId": 188},
+            {"position": 20, "name": "Pamela Hardman", "seriesRunnerId": 148}
+          ]
+        },
+        {
+          "position": 6,
+          "points": 2,
+          "club": "wesham",
+          "total": 6,
+          "scorers": [
+            {"position": 6, "name": "Paul Lancashire", "seriesRunnerId": 134}
+          ]
+        },
+        {
+          "position": 7,
+          "points": 0,
+          "club": "thornton",
+          "total": 0,
+          "scorers": []
+        }
       ]
     },
     {
       "id": "v50",
       "clubs": [
-        {"position": 1, "club": "preston", "points": 152, "scorers": [{"position": 34}, {"position": 55}, {"position": 59}]},
-        {"position": 2, "club": "chorley", "points": 0, "scorers": [{"position": 74}]},
-        {"position": 3, "club": "red-rose", "points": 0, "scorers": [{"position": 58}]},
-        {"position": 4, "club": "blackpool", "points": 0, "scorers": [{"position": 85}]},
-        {"position": 5, "club": "lytham", "points": 0, "scorers": []},
-        {"position": 6, "club": "wesham", "points": 0, "scorers": []},
-        {"position": 7, "club": "thornton-cleveleys", "points": 0, "scorers": []}
+        {
+          "position": 1,
+          "points": 7,
+          "club": "preston",
+          "total": 9,
+          "scorers": [
+            {"position": 2, "name": "Darren McDermott", "seriesRunnerId": 130},
+            {"position": 3, "name": "David Parkington", "seriesRunnerId": 180},
+            {"position": 4, "name": "Steven Bamber", "seriesRunnerId": 183}
+          ]
+        },
+        {
+          "position": 2,
+          "points": 6,
+          "club": "chorley",
+          "total": 12,
+          "scorers": [
+            {"position": 1, "name": "Stuart Hemmings", "seriesRunnerId": 179},
+            {"position": 5, "name": "Bill Beckett", "seriesRunnerId": 139},
+            {"position": 6, "name": "Stephen Baker", "seriesRunnerId": 136}
+          ]
+        },
+        {
+          "position": 3,
+          "points": 5,
+          "club": "red-rose",
+          "total": 34,
+          "scorers": [
+            {"position": 9, "name": "Rob Mather", "seriesRunnerId": 140},
+            {"position": 10, "name": "Peter Bolton", "seriesRunnerId": 185},
+            {"position": 15, "name": "Alison Mercer", "seriesRunnerId": 125}
+          ]
+        },
+        {
+          "position": 4,
+          "points": 4,
+          "club": "blackpool",
+          "total": 18,
+          "scorers": [
+            {"position": 7, "name": "Richard Pinches", "seriesRunnerId": 157},
+            {"position": 11, "name": "Simon Scarr", "seriesRunnerId": 121}
+          ]
+        },
+        {
+          "position": 5,
+          "points": 3,
+          "club": "lytham",
+          "total": 27,
+          "scorers": [
+            {"position": 13, "name": "Julia Rolfe", "seriesRunnerId": 188},
+            {"position": 14, "name": "Pamela Hardman", "seriesRunnerId": 148}
+          ]
+        },
+        {
+          "position": 6,
+          "points": 0,
+          "club": "wesham",
+          "total": 0,
+          "scorers": []
+        },
+        {
+          "position": 7,
+          "points": 0,
+          "club": "thornton",
+          "total": 0,
+          "scorers": []
+        }
       ]
     },
     {
       "id": "v60",
       "clubs": [
-        {"position": 1, "club": "chorley", "points": 0, "scorers": [{"position": 25}]},
-        {"position": 2, "club": "red-rose", "points": 0, "scorers": [{"position": 29}]},
-        {"position": 3, "club": "blackpool", "points": 0, "scorers": [{"position": 23}]},
-        {"position": 4, "club": "preston", "points": 0, "scorers": [{"position": 27}]},
-        {"position": 5, "club": "lytham", "points": 0, "scorers": []},
-        {"position": 6, "club": "wesham", "points": 0, "scorers": []},
-        {"position": 7, "club": "thornton-cleveleys", "points": 0, "scorers": []}
+        {
+          "position": 1,
+          "points": 7,
+          "club": "chorley",
+          "total": 4,
+          "scorers": [
+            {"position": 1, "name": "Stephen Baker", "seriesRunnerId": 136},
+            {"position": 3, "name": "Graham Schofield", "seriesRunnerId": 187}
+          ]
+        },
+        {
+          "position": 2,
+          "points": 6,
+          "club": "red-rose",
+          "total": 8,
+          "scorers": [
+            {"position": 2, "name": "Peter Bolton", "seriesRunnerId": 185},
+            {"position": 6, "name": "Alison Mercer", "seriesRunnerId": 125}
+          ]
+        },
+        {
+          "position": 3,
+          "points": 5,
+          "club": "lytham",
+          "total": 9,
+          "scorers": [
+            {"position": 4, "name": "Julia Rolfe", "seriesRunnerId": 188},
+            {"position": 5, "name": "Pamela Hardman", "seriesRunnerId": 148}
+          ]
+        },
+        {
+          "position": 4,
+          "points": 0,
+          "club": "preston",
+          "total": 0,
+          "scorers": []
+        },
+        {
+          "position": 5,
+          "points": 0,
+          "club": "blackpool",
+          "total": 0,
+          "scorers": []
+        },
+        {
+          "position": 6,
+          "points": 0,
+          "club": "wesham",
+          "total": 0,
+          "scorers": []
+        },
+        {
+          "position": 7,
+          "points": 0,
+          "club": "thornton",
+          "total": 0,
+          "scorers": []
+        }
       ]
     }
   ]
