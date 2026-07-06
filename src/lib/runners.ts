@@ -165,18 +165,32 @@ function resolveClubVest(clubId: string): string | undefined {
 }
 
 function buildClubHistory(entries: Array<{ year: number; club: string }>): RunnerClubHistory[] {
-  const clubYears = new Map<string, Set<number>>();
+  // One club per year (first entry seen wins if a runner somehow has two clubs in the same year)
+  const yearToClub = new Map<number, string>();
   for (const { year, club } of entries) {
-    if (!clubYears.has(club)) clubYears.set(club, new Set());
-    clubYears.get(club)!.add(year);
+    if (!yearToClub.has(year)) yearToClub.set(year, club);
   }
-  return [...clubYears.entries()]
-    .map(([clubId, yearsSet]) => {
-      const years = [...yearsSet].sort((a, b) => a - b);
-      return { clubId, clubName: resolveClubName(clubId), yearRanges: formatYearRanges(years), vest: resolveClubVest(clubId), firstYear: years[0] };
-    })
-    .sort((a, b) => a.firstYear - b.firstYear)
-    .map(({ clubId, clubName, yearRanges, vest }) => ({ clubId, clubName, yearRanges, vest }));
+  const years = [...yearToClub.keys()].sort((a, b) => a - b);
+
+  // Split into contiguous spans by club so a return to a former club after a gap
+  // shows as a separate entry, making the switch visible in chronological order.
+  const spans: Array<{ clubId: string; years: number[] }> = [];
+  for (const year of years) {
+    const clubId = yearToClub.get(year)!;
+    const current = spans[spans.length - 1];
+    if (current && current.clubId === clubId) {
+      current.years.push(year);
+    } else {
+      spans.push({ clubId, years: [year] });
+    }
+  }
+
+  return spans.map(({ clubId, years }) => ({
+    clubId,
+    clubName: resolveClubName(clubId),
+    yearRanges: formatYearRanges(years),
+    vest: resolveClubVest(clubId),
+  }));
 }
 
 function buildAwardSummary(yearBlocks: RunnerYearBlock[]): RunnerAwardSummary {
