@@ -5,6 +5,10 @@
       "club": "preston"
     },
     {
+      "id": "ladies",
+      "club": "red-rose"
+    },
+    {
       "id": "vets",
       "club": "preston"
     },
@@ -15,29 +19,26 @@
     {
       "id": "v60",
       "club": "preston"
-    },
-    {
-      "id": "ladies",
-      "club": "red-rose"
     }
   ],
   "individualAwards": [
     {
-      "id": "m-sen",
+      "id": "m",
       "awards": [
         {
           "position": 1,
           "name": "Daniel Hughes",
-          "club": "red-rose"
+          "club": "red-rose",
+          "seriesRunnerId": 101
         },
         {
           "position": 2,
           "name": "Barry Wheeler",
-          "club": "red-rose"
+          "club": "red-rose",
+          "seriesRunnerId": 110
         }
       ],
-      "sex": "M",
-      "ageCategory": "SEN"
+      "sex": "M"
     },
     {
       "id": "m-v40",
@@ -45,12 +46,14 @@
         {
           "position": 1,
           "name": "Neil Whipp",
-          "club": "wesham"
+          "club": "wesham",
+          "seriesRunnerId": 123
         },
         {
           "position": 2,
           "name": "Chris Charnley",
-          "club": "red-rose"
+          "club": "red-rose",
+          "seriesRunnerId": 115
         }
       ],
       "sex": "M",
@@ -62,12 +65,14 @@
         {
           "position": 1,
           "name": "Stephen Woodruff",
-          "club": "red-rose"
+          "club": "red-rose",
+          "seriesRunnerId": 152
         },
         {
           "position": 2,
           "name": "Frank Nightingale",
-          "club": "red-rose"
+          "club": "red-rose",
+          "seriesRunnerId": 116
         }
       ],
       "sex": "M",
@@ -79,7 +84,8 @@
         {
           "position": 1,
           "name": "Graham Schofield",
-          "club": "chorley"
+          "club": "chorley",
+          "seriesRunnerId": 135
         }
       ],
       "sex": "M",
@@ -91,7 +97,8 @@
         {
           "position": 1,
           "name": "Nicola Hughes",
-          "club": "red-rose"
+          "club": "red-rose",
+          "seriesRunnerId": 121
         }
       ],
       "sex": "F"
@@ -102,12 +109,14 @@
         {
           "position": 1,
           "name": "Vicki Sherrington",
-          "club": "preston"
+          "club": "preston",
+          "seriesRunnerId": 131
         },
         {
           "position": 2,
           "name": "Amanda Fuller",
-          "club": "blackpool"
+          "club": "blackpool",
+          "seriesRunnerId": 144
         }
       ],
       "sex": "F",
@@ -119,7 +128,8 @@
         {
           "position": 1,
           "name": "Paula Plowman",
-          "club": "red-rose"
+          "club": "red-rose",
+          "seriesRunnerId": 176
         }
       ],
       "sex": "F",
