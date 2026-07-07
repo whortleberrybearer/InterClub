@@ -1693,9 +1693,10 @@
             },
             "tockholes": {
               "points": 99,
-              "counting": true
+              "counting": false
             }
-          }
+          },
+          "seriesRunnerId": 106
         },
         {
           "position": 2,
@@ -1710,7 +1711,7 @@
             },
             "austwick-amble": {
               "points": 98,
-              "counting": true
+              "counting": false
             },
             "settle-hills": {
               "points": 99,
@@ -1720,7 +1721,8 @@
               "points": 100,
               "counting": true
             }
-          }
+          },
+          "seriesRunnerId": 113
         },
         {
           "position": 3,
@@ -1739,13 +1741,14 @@
             },
             "settle-hills": {
               "points": 94,
-              "counting": true
+              "counting": false
             },
             "tockholes": {
               "points": 96,
               "counting": true
             }
-          }
+          },
+          "seriesRunnerId": 117
         },
         {
           "position": 4,
@@ -1768,9 +1771,10 @@
             },
             "tockholes": {
               "points": 93,
-              "counting": true
+              "counting": false
             }
-          }
+          },
+          "seriesRunnerId": 126
         },
         {
           "position": 5,
@@ -1781,7 +1785,7 @@
           "results": {
             "mearley-clough": {
               "points": 92,
-              "counting": true
+              "counting": false
             },
             "austwick-amble": {
               "points": 93,
@@ -1795,7 +1799,8 @@
               "points": 94,
               "counting": true
             }
-          }
+          },
+          "seriesRunnerId": 127
         },
         {
           "position": 6,
@@ -1812,15 +1817,12 @@
               "points": 94,
               "counting": true
             },
-            "settle-hills": {
-              "points": 92,
-              "counting": true
-            },
             "tockholes": {
               "points": 92,
               "counting": true
             }
-          }
+          },
+          "seriesRunnerId": 130
         },
         {
           "position": 7,
@@ -1831,7 +1833,7 @@
           "results": {
             "mearley-clough": {
               "points": 88,
-              "counting": true
+              "counting": false
             },
             "austwick-amble": {
               "points": 91,
@@ -1845,7 +1847,8 @@
               "points": 91,
               "counting": true
             }
-          }
+          },
+          "seriesRunnerId": 135
         },
         {
           "position": 8,
@@ -1856,7 +1859,7 @@
           "results": {
             "mearley-clough": {
               "points": 86,
-              "counting": true
+              "counting": false
             },
             "austwick-amble": {
               "points": 90,
@@ -1870,7 +1873,8 @@
               "points": 90,
               "counting": true
             }
-          }
+          },
+          "seriesRunnerId": 147
         },
         {
           "position": 9,
@@ -1881,7 +1885,7 @@
           "results": {
             "mearley-clough": {
               "points": 85,
-              "counting": true
+              "counting": false
             },
             "austwick-amble": {
               "points": 88,
@@ -1895,7 +1899,8 @@
               "points": 88,
               "counting": true
             }
-          }
+          },
+          "seriesRunnerId": 155
         },
         {
           "position": 10,
@@ -1912,10 +1917,11 @@
               "points": 98,
               "counting": true
             }
-          }
+          },
+          "seriesRunnerId": 199
         },
         {
-          "position": 11,
+          "position": 10,
           "name": "John Griffiths",
           "club": "preston",
           "ageCategory": "V50",
@@ -1929,7 +1935,8 @@
               "points": 99,
               "counting": true
             }
-          }
+          },
+          "seriesRunnerId": 114
         },
         {
           "position": 12,
@@ -1946,12 +1953,13 @@
               "points": 96,
               "counting": true
             }
-          }
+          },
+          "seriesRunnerId": 179
         },
         {
           "position": 13,
           "name": "Jim Doherty",
-          "club": "red-rose",
+          "club": "preston",
           "ageCategory": "V50",
           "total": 183,
           "results": {
@@ -1963,7 +1971,8 @@
               "points": 92,
               "counting": true
             }
-          }
+          },
+          "seriesRunnerId": 129
         },
         {
           "position": 14,
@@ -1980,7 +1989,8 @@
               "points": 89,
               "counting": true
             }
-          }
+          },
+          "seriesRunnerId": 188
         },
         {
           "position": 15,
@@ -1997,7 +2007,8 @@
               "points": 92,
               "counting": true
             }
-          }
+          },
+          "seriesRunnerId": 159
         },
         {
           "position": 16,
@@ -2006,11 +2017,12 @@
           "ageCategory": "V50",
           "total": 99,
           "results": {
-            "austwick-amble": {
+            "mearley-clough": {
               "points": 99,
               "counting": true
             }
-          }
+          },
+          "seriesRunnerId": 107
         },
         {
           "position": 17,
@@ -2023,20 +2035,22 @@
               "points": 97,
               "counting": true
             }
-          }
+          },
+          "seriesRunnerId": 202
         },
         {
-          "position": 18,
+          "position": 17,
           "name": "Steven Bamber",
           "club": "preston",
           "ageCategory": "V55",
           "total": 97,
           "results": {
-            "mearley-clough": {
+            "tockholes": {
               "points": 97,
               "counting": true
             }
-          }
+          },
+          "seriesRunnerId": 208
         },
         {
           "position": 19,
@@ -2045,16 +2059,17 @@
           "ageCategory": "V50",
           "total": 95,
           "results": {
-            "settle-hills": {
+            "tockholes": {
               "points": 95,
               "counting": true
             }
-          }
+          },
+          "seriesRunnerId": 211
         },
         {
           "position": 20,
           "name": "Alan Martin",
-          "club": "red-rose",
+          "club": "preston",
           "ageCategory": "V50",
           "total": 94,
           "results": {
@@ -2062,7 +2077,8 @@
               "points": 94,
               "counting": true
             }
-          }
+          },
+          "seriesRunnerId": 125
         },
         {
           "position": 21,
@@ -2075,51 +2091,55 @@
               "points": 89,
               "counting": true
             }
-          }
+          },
+          "seriesRunnerId": 132
         },
         {
           "position": 22,
           "name": "Glyn Denver",
           "club": "chorley",
-          "ageCategory": "V50",
-          "total": 89,
+          "ageCategory": "V55",
+          "total": 87,
           "results": {
-            "mearley-clough": {
-              "points": 89,
+            "tockholes": {
+              "points": 87,
               "counting": true
             }
-          }
+          },
+          "seriesRunnerId": 216
         },
         {
-          "position": 23,
+          "position": 22,
           "name": "Peter Bolton",
           "club": "red-rose",
-          "ageCategory": "V55",
+          "ageCategory": "V50",
           "total": 87,
           "results": {
             "mearley-clough": {
               "points": 87,
               "counting": true
             }
-          }
+          },
+          "seriesRunnerId": 138
         },
         {
           "position": 24,
           "name": "David Michael Barnes",
           "club": "red-rose",
           "ageCategory": "V50",
-          "total": 87,
+          "total": 83,
           "results": {
             "mearley-clough": {
-              "points": 87,
+              "points": 83,
               "counting": true
             }
-          }
+          },
+          "seriesRunnerId": 164
         },
         {
           "position": 25,
           "name": "Shane Collins",
-          "club": "preston",
+          "club": "red-rose",
           "ageCategory": "V50",
           "total": 82,
           "results": {
@@ -2127,7 +2147,8 @@
               "points": 82,
               "counting": true
             }
-          }
+          },
+          "seriesRunnerId": 168
         }
       ]
     },
