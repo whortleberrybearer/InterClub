@@ -1,7 +1,7 @@
-﻿{
+{
   "categories": [
     {
-      "id": "overall",
+      "id": "open",
       "clubs": [
         {
           "position": 1,
@@ -9,11 +9,31 @@
           "club": "preston",
           "total": 16,
           "scorers": [
-            { "position": 1 },
-            { "position": 2 },
-            { "position": 3 },
-            { "position": 4 },
-            { "position": 6 }
+            {
+              "position": 1,
+              "name": "Richard Smith",
+              "seriesRunnerId": 173
+            },
+            {
+              "position": 2,
+              "name": "Jon Green",
+              "seriesRunnerId": 101
+            },
+            {
+              "position": 3,
+              "name": "Simon Collins",
+              "seriesRunnerId": 174
+            },
+            {
+              "position": 4,
+              "name": "Andy Whaley",
+              "seriesRunnerId": 104
+            },
+            {
+              "position": 6,
+              "name": "John Rainford",
+              "seriesRunnerId": 106
+            }
           ]
         },
         {
@@ -22,11 +42,31 @@
           "club": "red-rose",
           "total": 43,
           "scorers": [
-            { "position": 5 },
-            { "position": 7 },
-            { "position": 8 },
-            { "position": 9 },
-            { "position": 14 }
+            {
+              "position": 5,
+              "name": "James Simon",
+              "seriesRunnerId": 102
+            },
+            {
+              "position": 7,
+              "name": "Volker Schwarzer",
+              "seriesRunnerId": 175
+            },
+            {
+              "position": 8,
+              "name": "Chris Charnley",
+              "seriesRunnerId": 110
+            },
+            {
+              "position": 9,
+              "name": "Frank Nightingale",
+              "seriesRunnerId": 113
+            },
+            {
+              "position": 14,
+              "name": "Kevin Smith",
+              "seriesRunnerId": 202
+            }
           ]
         },
         {
@@ -35,11 +75,31 @@
           "club": "chorley",
           "total": 79,
           "scorers": [
-            { "position": 11 },
-            { "position": 12 },
-            { "position": 13 },
-            { "position": 17 },
-            { "position": 26 }
+            {
+              "position": 11,
+              "name": "Martin Quinn",
+              "seriesRunnerId": 200
+            },
+            {
+              "position": 12,
+              "name": "Edward Gilbertson",
+              "seriesRunnerId": 201
+            },
+            {
+              "position": 13,
+              "name": "Darran Bowles",
+              "seriesRunnerId": 180
+            },
+            {
+              "position": 17,
+              "name": "Stephen Baker",
+              "seriesRunnerId": 127
+            },
+            {
+              "position": 26,
+              "name": "Graham Schofield",
+              "seriesRunnerId": 189
+            }
           ]
         },
         {
@@ -48,11 +108,31 @@
           "club": "blackpool",
           "total": 125,
           "scorers": [
-            { "position": 16 },
-            { "position": 21 },
-            { "position": 24 },
-            { "position": 29 },
-            { "position": 35 }
+            {
+              "position": 16,
+              "name": "Peter Singleton",
+              "seriesRunnerId": 123
+            },
+            {
+              "position": 21,
+              "name": "Mark Warner",
+              "seriesRunnerId": 185
+            },
+            {
+              "position": 24,
+              "name": "Basia Pawelczak",
+              "seriesRunnerId": 203
+            },
+            {
+              "position": 29,
+              "name": "Simon Scarr",
+              "seriesRunnerId": 147
+            },
+            {
+              "position": 35,
+              "name": "Alan Wilkinson",
+              "seriesRunnerId": 190
+            }
           ]
         },
         {
@@ -61,13 +141,31 @@
           "club": "lytham",
           "total": 33,
           "scorers": [
-            { "position": 33 }
+            {
+              "position": 33,
+              "name": "Greg Oulton",
+              "seriesRunnerId": 155
+            }
           ]
+        },
+        {
+          "position": 6,
+          "points": 0,
+          "club": "wesham",
+          "total": 0,
+          "scorers": []
+        },
+        {
+          "position": 7,
+          "points": 0,
+          "club": "thornton",
+          "total": 0,
+          "scorers": []
         }
       ]
     },
     {
-      "id": "v40",
+      "id": "vets",
       "clubs": [
         {
           "position": 1,
@@ -75,10 +173,26 @@
           "club": "preston",
           "total": 12,
           "scorers": [
-            { "position": 1 },
-            { "position": 2 },
-            { "position": 3 },
-            { "position": 6 }
+            {
+              "position": 1,
+              "name": "Jon Green",
+              "seriesRunnerId": 101
+            },
+            {
+              "position": 2,
+              "name": "Andy Whaley",
+              "seriesRunnerId": 104
+            },
+            {
+              "position": 3,
+              "name": "John Rainford",
+              "seriesRunnerId": 106
+            },
+            {
+              "position": 6,
+              "name": "Colin Shuttleworth",
+              "seriesRunnerId": 199
+            }
           ]
         },
         {
@@ -87,10 +201,26 @@
           "club": "red-rose",
           "total": 28,
           "scorers": [
-            { "position": 4 },
-            { "position": 5 },
-            { "position": 9 },
-            { "position": 10 }
+            {
+              "position": 4,
+              "name": "Chris Charnley",
+              "seriesRunnerId": 110
+            },
+            {
+              "position": 5,
+              "name": "Frank Nightingale",
+              "seriesRunnerId": 113
+            },
+            {
+              "position": 9,
+              "name": "Kevin Smith",
+              "seriesRunnerId": 202
+            },
+            {
+              "position": 10,
+              "name": "Philip Butler",
+              "seriesRunnerId": 126
+            }
           ]
         },
         {
@@ -99,10 +229,26 @@
           "club": "chorley",
           "total": 46,
           "scorers": [
-            { "position": 7 },
-            { "position": 8 },
-            { "position": 12 },
-            { "position": 19 }
+            {
+              "position": 7,
+              "name": "Martin Quinn",
+              "seriesRunnerId": 200
+            },
+            {
+              "position": 8,
+              "name": "Darran Bowles",
+              "seriesRunnerId": 180
+            },
+            {
+              "position": 12,
+              "name": "Stephen Baker",
+              "seriesRunnerId": 127
+            },
+            {
+              "position": 19,
+              "name": "Graham Schofield",
+              "seriesRunnerId": 189
+            }
           ]
         },
         {
@@ -111,9 +257,21 @@
           "club": "blackpool",
           "total": 60,
           "scorers": [
-            { "position": 11 },
-            { "position": 22 },
-            { "position": 27 }
+            {
+              "position": 11,
+              "name": "Peter Singleton",
+              "seriesRunnerId": 123
+            },
+            {
+              "position": 22,
+              "name": "Simon Scarr",
+              "seriesRunnerId": 147
+            },
+            {
+              "position": 27,
+              "name": "Alan Wilkinson",
+              "seriesRunnerId": 190
+            }
           ]
         },
         {
@@ -122,8 +280,26 @@
           "club": "lytham",
           "total": 25,
           "scorers": [
-            { "position": 25 }
+            {
+              "position": 25,
+              "name": "Greg Oulton",
+              "seriesRunnerId": 155
+            }
           ]
+        },
+        {
+          "position": 6,
+          "points": 0,
+          "club": "wesham",
+          "total": 0,
+          "scorers": []
+        },
+        {
+          "position": 7,
+          "points": 0,
+          "club": "thornton",
+          "total": 0,
+          "scorers": []
         }
       ]
     },
@@ -136,9 +312,21 @@
           "club": "red-rose",
           "total": 11,
           "scorers": [
-            { "position": 2 },
-            { "position": 4 },
-            { "position": 5 }
+            {
+              "position": 2,
+              "name": "Frank Nightingale",
+              "seriesRunnerId": 113
+            },
+            {
+              "position": 4,
+              "name": "Kevin Smith",
+              "seriesRunnerId": 202
+            },
+            {
+              "position": 5,
+              "name": "Philip Butler",
+              "seriesRunnerId": 126
+            }
           ]
         },
         {
@@ -147,9 +335,21 @@
           "club": "preston",
           "total": 12,
           "scorers": [
-            { "position": 1 },
-            { "position": 3 },
-            { "position": 8 }
+            {
+              "position": 1,
+              "name": "John Rainford",
+              "seriesRunnerId": 106
+            },
+            {
+              "position": 3,
+              "name": "Colin Shuttleworth",
+              "seriesRunnerId": 199
+            },
+            {
+              "position": 8,
+              "name": "Roger Taylor",
+              "seriesRunnerId": 117
+            }
           ]
         },
         {
@@ -158,9 +358,21 @@
           "club": "blackpool",
           "total": 40,
           "scorers": [
-            { "position": 6 },
-            { "position": 15 },
-            { "position": 19 }
+            {
+              "position": 6,
+              "name": "Peter Singleton",
+              "seriesRunnerId": 123
+            },
+            {
+              "position": 15,
+              "name": "Simon Scarr",
+              "seriesRunnerId": 147
+            },
+            {
+              "position": 19,
+              "name": "Alan Wilkinson",
+              "seriesRunnerId": 190
+            }
           ]
         },
         {
@@ -169,8 +381,16 @@
           "club": "chorley",
           "total": 20,
           "scorers": [
-            { "position": 7 },
-            { "position": 13 }
+            {
+              "position": 7,
+              "name": "Stephen Baker",
+              "seriesRunnerId": 127
+            },
+            {
+              "position": 13,
+              "name": "Graham Schofield",
+              "seriesRunnerId": 189
+            }
           ]
         },
         {
@@ -179,8 +399,26 @@
           "club": "lytham",
           "total": 18,
           "scorers": [
-            { "position": 18 }
+            {
+              "position": 18,
+              "name": "Greg Oulton",
+              "seriesRunnerId": 155
+            }
           ]
+        },
+        {
+          "position": 6,
+          "points": 0,
+          "club": "wesham",
+          "total": 0,
+          "scorers": []
+        },
+        {
+          "position": 7,
+          "points": 0,
+          "club": "thornton",
+          "total": 0,
+          "scorers": []
         }
       ]
     },
@@ -193,8 +431,16 @@
           "club": "preston",
           "total": 5,
           "scorers": [
-            { "position": 2 },
-            { "position": 3 }
+            {
+              "position": 2,
+              "name": "Alan Appleby",
+              "seriesRunnerId": 131
+            },
+            {
+              "position": 3,
+              "name": "Michael McLoughlin",
+              "seriesRunnerId": 143
+            }
           ]
         },
         {
@@ -203,8 +449,16 @@
           "club": "blackpool",
           "total": 8,
           "scorers": [
-            { "position": 1 },
-            { "position": 7 }
+            {
+              "position": 1,
+              "name": "Peter Singleton",
+              "seriesRunnerId": 123
+            },
+            {
+              "position": 7,
+              "name": "Alan Wilkinson",
+              "seriesRunnerId": 190
+            }
           ]
         },
         {
@@ -213,7 +467,11 @@
           "club": "chorley",
           "total": 5,
           "scorers": [
-            { "position": 5 }
+            {
+              "position": 5,
+              "name": "Graham Schofield",
+              "seriesRunnerId": 189
+            }
           ]
         },
         {
@@ -222,13 +480,38 @@
           "club": "red-rose",
           "total": 6,
           "scorers": [
-            { "position": 6 }
+            {
+              "position": 6,
+              "name": "Sue Tonge",
+              "seriesRunnerId": 205
+            }
           ]
+        },
+        {
+          "position": 5,
+          "points": 0,
+          "club": "wesham",
+          "total": 0,
+          "scorers": []
+        },
+        {
+          "position": 6,
+          "points": 0,
+          "club": "lytham",
+          "total": 0,
+          "scorers": []
+        },
+        {
+          "position": 7,
+          "points": 0,
+          "club": "thornton",
+          "total": 0,
+          "scorers": []
         }
       ]
     },
     {
-      "id": "women",
+      "id": "ladies",
       "clubs": [
         {
           "position": 1,
@@ -236,9 +519,21 @@
           "club": "red-rose",
           "total": 13,
           "scorers": [
-            { "position": 3 },
-            { "position": 4 },
-            { "position": 6 }
+            {
+              "position": 3,
+              "name": "Debbie Porter",
+              "seriesRunnerId": 191
+            },
+            {
+              "position": 4,
+              "name": "Alison Mercer",
+              "seriesRunnerId": 156
+            },
+            {
+              "position": 6,
+              "name": "Sue Tonge",
+              "seriesRunnerId": 205
+            }
           ]
         },
         {
@@ -247,8 +542,16 @@
           "club": "preston",
           "total": 7,
           "scorers": [
-            { "position": 2 },
-            { "position": 5 }
+            {
+              "position": 2,
+              "name": "Vicky Sherringham",
+              "seriesRunnerId": 204
+            },
+            {
+              "position": 5,
+              "name": "Olga Wiggins",
+              "seriesRunnerId": 151
+            }
           ]
         },
         {
@@ -257,8 +560,40 @@
           "club": "blackpool",
           "total": 1,
           "scorers": [
-            { "position": 1 }
+            {
+              "position": 1,
+              "name": "Basia Pawelczak",
+              "seriesRunnerId": 203
+            }
           ]
+        },
+        {
+          "position": 4,
+          "points": 0,
+          "club": "lytham",
+          "total": 0,
+          "scorers": []
+        },
+        {
+          "position": 5,
+          "points": 0,
+          "club": "wesham",
+          "total": 0,
+          "scorers": []
+        },
+        {
+          "position": 6,
+          "points": 0,
+          "club": "chorley",
+          "total": 0,
+          "scorers": []
+        },
+        {
+          "position": 7,
+          "points": 0,
+          "club": "thornton",
+          "total": 0,
+          "scorers": []
         }
       ]
     }
