@@ -2174,12 +2174,9 @@
             "settle-hills": {
               "points": 100,
               "counting": true
-            },
-            "tockholes": {
-              "points": 100,
-              "counting": true
             }
-          }
+          },
+          "seriesRunnerId": 123
         },
         {
           "position": 2,
@@ -2190,7 +2187,7 @@
           "results": {
             "mearley-clough": {
               "points": 98,
-              "counting": true
+              "counting": false
             },
             "austwick-amble": {
               "points": 99,
@@ -2204,7 +2201,8 @@
               "points": 100,
               "counting": true
             }
-          }
+          },
+          "seriesRunnerId": 131
         },
         {
           "position": 3,
@@ -2215,7 +2213,7 @@
           "results": {
             "mearley-clough": {
               "points": 96,
-              "counting": true
+              "counting": false
             },
             "austwick-amble": {
               "points": 97,
@@ -2229,7 +2227,8 @@
               "points": 98,
               "counting": true
             }
-          }
+          },
+          "seriesRunnerId": 143
         },
         {
           "position": 4,
@@ -2249,12 +2248,9 @@
             "settle-hills": {
               "points": 97,
               "counting": true
-            },
-            "tockholes": {
-              "points": 97,
-              "counting": true
             }
-          }
+          },
+          "seriesRunnerId": 137
         },
         {
           "position": 5,
@@ -2275,7 +2271,8 @@
               "points": 97,
               "counting": true
             }
-          }
+          },
+          "seriesRunnerId": 189
         },
         {
           "position": 6,
@@ -2296,7 +2293,8 @@
               "points": 96,
               "counting": true
             }
-          }
+          },
+          "seriesRunnerId": 190
         },
         {
           "position": 7,
@@ -2313,12 +2311,13 @@
               "points": 99,
               "counting": true
             }
-          }
+          },
+          "seriesRunnerId": 128
         },
         {
           "position": 8,
           "name": "Jim Robinson",
-          "club": "chorley",
+          "club": "red-rose",
           "ageCategory": "V70",
           "total": 187,
           "results": {
@@ -2330,7 +2329,8 @@
               "points": 94,
               "counting": true
             }
-          }
+          },
+          "seriesRunnerId": 160
         },
         {
           "position": 9,
@@ -2343,7 +2343,8 @@
               "points": 95,
               "counting": true
             }
-          }
+          },
+          "seriesRunnerId": 152
         },
         {
           "position": 10,
@@ -2356,7 +2357,8 @@
               "points": 94,
               "counting": true
             }
-          }
+          },
+          "seriesRunnerId": 158
         },
         {
           "position": 11,
@@ -2365,11 +2367,12 @@
           "ageCategory": "V60",
           "total": 93,
           "results": {
-            "settle-hills": {
+            "austwick-amble": {
               "points": 93,
               "counting": true
             }
-          }
+          },
+          "seriesRunnerId": 193
         },
         {
           "position": 12,
@@ -2382,7 +2385,8 @@
               "points": 92,
               "counting": true
             }
-          }
+          },
+          "seriesRunnerId": 163
         },
         {
           "position": 13,
@@ -2395,7 +2399,8 @@
               "points": 91,
               "counting": true
             }
-          }
+          },
+          "seriesRunnerId": 169
         }
       ]
     },
