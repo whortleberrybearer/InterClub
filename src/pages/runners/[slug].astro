@@ -238,7 +238,7 @@ const totalRaces  = totalRoadGp + totalFell;
               </div>
 
               <!-- Road GP races -->
-              {block.roadGp && (
+              {block.roadGp && block.roadGp.races.length > 0 && (
                 <div data-series="road-gp" class="mb-5">
                   <h3 class="flex items-center gap-2 flex-wrap font-head font-bold text-xs uppercase tracking-widest text-amber mb-2">
                     Road GP
@@ -287,7 +287,7 @@ const totalRaces  = totalRoadGp + totalFell;
               )}
 
               <!-- Fell races -->
-              {block.fell && (
+              {block.fell && block.fell.races.length > 0 && (
                 <div data-series="fell" class="mb-5">
                   <h3 class="flex items-center gap-2 flex-wrap font-head font-bold text-xs uppercase tracking-widest text-teal mb-2">
                     Fell
