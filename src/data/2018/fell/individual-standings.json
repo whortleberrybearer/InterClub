@@ -2426,12 +2426,9 @@
             "settle-hills": {
               "points": 99,
               "counting": true
-            },
-            "tockholes": {
-              "points": 99,
-              "counting": true
             }
-          }
+          },
+          "seriesRunnerId": 148
         },
         {
           "position": 2,
@@ -2446,7 +2443,7 @@
             },
             "austwick-amble": {
               "points": 90,
-              "counting": true
+              "counting": false
             },
             "settle-hills": {
               "points": 96,
@@ -2456,10 +2453,11 @@
               "points": 97,
               "counting": true
             }
-          }
+          },
+          "seriesRunnerId": 151
         },
         {
-          "position": 3,
+          "position": 2,
           "name": "Alison Mercer",
           "club": "red-rose",
           "ageCategory": "V50",
@@ -2467,7 +2465,7 @@
           "results": {
             "mearley-clough": {
               "points": 88,
-              "counting": true
+              "counting": false
             },
             "austwick-amble": {
               "points": 92,
@@ -2481,7 +2479,8 @@
               "points": 95,
               "counting": true
             }
-          }
+          },
+          "seriesRunnerId": 156
         },
         {
           "position": 4,
@@ -2498,15 +2497,12 @@
               "points": 91,
               "counting": true
             },
-            "settle-hills": {
-              "points": 96,
-              "counting": true
-            },
             "tockholes": {
               "points": 96,
               "counting": true
             }
-          }
+          },
+          "seriesRunnerId": 146
         },
         {
           "position": 5,
@@ -2527,7 +2523,8 @@
               "points": 94,
               "counting": true
             }
-          }
+          },
+          "seriesRunnerId": 191
         },
         {
           "position": 6,
@@ -2547,12 +2544,9 @@
             "settle-hills": {
               "points": 94,
               "counting": true
-            },
-            "tockholes": {
-              "points": 94,
-              "counting": true
             }
-          }
+          },
+          "seriesRunnerId": 162
         },
         {
           "position": 7,
@@ -2569,7 +2563,8 @@
               "points": 100,
               "counting": true
             }
-          }
+          },
+          "seriesRunnerId": 124
         },
         {
           "position": 8,
@@ -2586,7 +2581,8 @@
               "points": 99,
               "counting": true
             }
-          }
+          },
+          "seriesRunnerId": 134
         },
         {
           "position": 9,
@@ -2599,11 +2595,12 @@
               "points": 97,
               "counting": true
             },
-            "settle-hills": {
+            "tockholes": {
               "points": 98,
               "counting": true
             }
-          }
+          },
+          "seriesRunnerId": 141
         },
         {
           "position": 10,
@@ -2620,7 +2617,8 @@
               "points": 94,
               "counting": true
             }
-          }
+          },
+          "seriesRunnerId": 150
         },
         {
           "position": 11,
@@ -2629,15 +2627,16 @@
           "ageCategory": "V50",
           "total": 176,
           "results": {
-            "settle-hills": {
+            "austwick-amble": {
               "points": 83,
               "counting": true
             },
-            "tockholes": {
+            "settle-hills": {
               "points": 93,
               "counting": true
             }
-          }
+          },
+          "seriesRunnerId": 195
         },
         {
           "position": 12,
@@ -2654,7 +2653,8 @@
               "points": 85,
               "counting": true
             }
-          }
+          },
+          "seriesRunnerId": 153
         },
         {
           "position": 13,
@@ -2663,15 +2663,16 @@
           "ageCategory": "V50",
           "total": 174,
           "results": {
-            "settle-hills": {
+            "austwick-amble": {
               "points": 82,
               "counting": true
             },
-            "tockholes": {
+            "settle-hills": {
               "points": 92,
               "counting": true
             }
-          }
+          },
+          "seriesRunnerId": 196
         },
         {
           "position": 14,
@@ -2680,24 +2681,26 @@
           "ageCategory": "SEN",
           "total": 100,
           "results": {
-            "mearley-clough": {
+            "settle-hills": {
               "points": 100,
               "counting": true
             }
-          }
+          },
+          "seriesRunnerId": 203
         },
         {
-          "position": 15,
+          "position": 14,
           "name": "Katherine Klunder",
           "club": "chorley",
           "ageCategory": "SEN",
           "total": 100,
           "results": {
-            "mearley-clough": {
+            "tockholes": {
               "points": 100,
               "counting": true
             }
-          }
+          },
+          "seriesRunnerId": 209
         },
         {
           "position": 16,
@@ -2706,11 +2709,12 @@
           "ageCategory": "V45",
           "total": 99,
           "results": {
-            "mearley-clough": {
+            "tockholes": {
               "points": 99,
               "counting": true
             }
-          }
+          },
+          "seriesRunnerId": 213
         },
         {
           "position": 17,
@@ -2723,38 +2727,55 @@
               "points": 98,
               "counting": true
             }
-          }
+          },
+          "seriesRunnerId": 136
         },
         {
-          "position": 18,
+          "position": 17,
           "name": "Robyn Anderson",
           "club": "preston",
-          "ageCategory": "SEN",
+          "ageCategory": "V40",
           "total": 98,
           "results": {
-            "mearley-clough": {
+            "austwick-amble": {
               "points": 98,
               "counting": true
             }
-          }
+          },
+          "seriesRunnerId": 181
         },
         {
           "position": 19,
           "name": "Natasha Fellows",
           "club": "chorley",
           "ageCategory": "V50",
-          "total": 96,
+          "total": 97,
           "results": {
-            "settle-hills": {
-              "points": 96,
+            "austwick-amble": {
+              "points": 97,
               "counting": true
             }
-          }
+          },
+          "seriesRunnerId": 182
         },
         {
           "position": 20,
           "name": "Emily Ingham",
           "club": "red-rose",
+          "ageCategory": "SEN",
+          "total": 96,
+          "results": {
+            "mearley-clough": {
+              "points": 96,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 145
+        },
+        {
+          "position": 20,
+          "name": "Margaret Lupton",
+          "club": "red-rose",
           "ageCategory": "V50",
           "total": 96,
           "results": {
@@ -2762,37 +2783,40 @@
               "points": 96,
               "counting": true
             }
-          }
-        },
-        {
-          "position": 21,
-          "name": "Margaret Lupton",
-          "club": "red-rose",
-          "ageCategory": "V50",
-          "total": 95,
-          "results": {
-            "settle-hills": {
-              "points": 95,
-              "counting": true
-            }
-          }
+          },
+          "seriesRunnerId": 184
         },
         {
           "position": 22,
           "name": "Sue Tonge",
           "club": "red-rose",
-          "ageCategory": "V50",
+          "ageCategory": "V60",
           "total": 95,
           "results": {
-            "mearley-clough": {
+            "settle-hills": {
               "points": 95,
               "counting": true
             }
-          }
+          },
+          "seriesRunnerId": 205
         },
         {
           "position": 23,
           "name": "Laura Marie Lawler",
+          "club": "blackpool",
+          "ageCategory": "V40",
+          "total": 93,
+          "results": {
+            "mearley-clough": {
+              "points": 93,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 149
+        },
+        {
+          "position": 23,
+          "name": "Pauline Moorcroft",
           "club": "red-rose",
           "ageCategory": "V50",
           "total": 93,
@@ -2801,25 +2825,27 @@
               "points": 93,
               "counting": true
             }
-          }
-        },
-        {
-          "position": 24,
-          "name": "Pauline Moorcroft",
-          "club": "blackpool",
-          "ageCategory": "V50",
-          "total": 93,
-          "results": {
-            "settle-hills": {
-              "points": 93,
-              "counting": true
-            }
-          }
+          },
+          "seriesRunnerId": 187
         },
         {
           "position": 25,
           "name": "Samantha Edwards",
           "club": "red-rose",
+          "ageCategory": "SEN",
+          "total": 89,
+          "results": {
+            "mearley-clough": {
+              "points": 89,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 154
+        },
+        {
+          "position": 26,
+          "name": "Pam Hardman",
+          "club": "lytham",
           "ageCategory": "V50",
           "total": 87,
           "results": {
@@ -2827,51 +2853,55 @@
               "points": 87,
               "counting": true
             }
-          }
+          },
+          "seriesRunnerId": 157
         },
         {
           "position": 26,
-          "name": "Pam Hardman",
+          "name": "Paula Plowman",
           "club": "red-rose",
-          "ageCategory": "V40",
+          "ageCategory": "V50",
           "total": 87,
           "results": {
-            "settle-hills": {
+            "austwick-amble": {
               "points": 87,
               "counting": true
             }
-          }
-        },
-        {
-          "position": 27,
-          "name": "Paula Plowman",
-          "club": "lytham",
-          "ageCategory": "V40",
-          "total": 84,
-          "results": {
-            "mearley-clough": {
-              "points": 84,
-              "counting": true
-            }
-          }
+          },
+          "seriesRunnerId": 192
         },
         {
           "position": 28,
           "name": "Emily Ingham",
           "club": "red-rose",
-          "ageCategory": "V50",
-          "total": 84,
+          "ageCategory": "SEN",
+          "total": 86,
           "results": {
-            "mearley-clough": {
-              "points": 84,
+            "austwick-amble": {
+              "points": 86,
               "counting": true
             }
-          }
+          },
+          "seriesRunnerId": 145
         },
         {
-          "position": 29,
+          "position": 28,
           "name": "Mandy Slater",
           "club": "red-rose",
+          "ageCategory": "V50",
+          "total": 86,
+          "results": {
+            "mearley-clough": {
+              "points": 86,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 161
+        },
+        {
+          "position": 30,
+          "name": "Jenny Macdonald",
+          "club": "preston",
           "ageCategory": "V40",
           "total": 84,
           "results": {
@@ -2879,11 +2909,26 @@
               "points": 84,
               "counting": true
             }
-          }
+          },
+          "seriesRunnerId": 194
         },
         {
           "position": 30,
-          "name": "Jenny Macdonald",
+          "name": "Wendy Ward",
+          "club": "red-rose",
+          "ageCategory": "V40",
+          "total": 84,
+          "results": {
+            "mearley-clough": {
+              "points": 84,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 166
+        },
+        {
+          "position": 32,
+          "name": "Helen Greenhalgh",
           "club": "red-rose",
           "ageCategory": "V40",
           "total": 83,
@@ -2892,85 +2937,64 @@
               "points": 83,
               "counting": true
             }
-          }
+          },
+          "seriesRunnerId": 167
         },
         {
-          "position": 31,
-          "name": "Wendy Ward",
-          "club": "preston",
-          "ageCategory": "V40",
+          "position": 33,
+          "name": "Nina Colquhoun",
+          "club": "red-rose",
+          "ageCategory": "SEN",
           "total": 82,
           "results": {
             "mearley-clough": {
               "points": 82,
               "counting": true
             }
-          }
-        },
-        {
-          "position": 32,
-          "name": "Helen Greenhalgh",
-          "club": "red-rose",
-          "ageCategory": "V40",
-          "total": 81,
-          "results": {
-            "settle-hills": {
-              "points": 81,
-              "counting": true
-            }
-          }
-        },
-        {
-          "position": 33,
-          "name": "Nina Colquhoun",
-          "club": "red-rose",
-          "ageCategory": "V50",
-          "total": 81,
-          "results": {
-            "austwick-amble": {
-              "points": 81,
-              "counting": true
-            }
-          }
+          },
+          "seriesRunnerId": 170
         },
         {
           "position": 34,
           "name": "Amanda Berrt",
           "club": "red-rose",
           "ageCategory": "V50",
+          "total": 81,
+          "results": {
+            "mearley-clough": {
+              "points": 81,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 171
+        },
+        {
+          "position": 34,
+          "name": "Mary Conway",
+          "club": "red-rose",
+          "ageCategory": "V50",
+          "total": 81,
+          "results": {
+            "austwick-amble": {
+              "points": 81,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 197
+        },
+        {
+          "position": 36,
+          "name": "Kelly Day",
+          "club": "red-rose",
+          "ageCategory": "SEN",
           "total": 80,
           "results": {
             "mearley-clough": {
               "points": 80,
               "counting": true
             }
-          }
-        },
-        {
-          "position": 35,
-          "name": "Mary Conway",
-          "club": "red-rose",
-          "ageCategory": "V50",
-          "total": 80,
-          "results": {
-            "settle-hills": {
-              "points": 80,
-              "counting": true
-            }
-          }
-        },
-        {
-          "position": 36,
-          "name": "Kelly Day",
-          "club": "red-rose",
-          "ageCategory": "V50",
-          "total": 80,
-          "results": {
-            "austwick-amble": {
-              "points": 80,
-              "counting": true
-            }
-          }
+          },
+          "seriesRunnerId": 172
         }
       ]
     },
