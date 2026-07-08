@@ -37,7 +37,7 @@ const races = getRaces(year, series);
 const clubById = Object.fromEntries(clubs.map(c => [c.id, c]));
 const categoryById = Object.fromEntries((config.teamCategories ?? []).map(c => [c.id, c]));
 
-const abbr = (t: string) => t.replace(/ points\b/g, ' pts').replace(/ teams\b/g, ' tms');
+const abbr = (t: string) => t.replace(/ points\b/g, ' pts');
 
 const standingsRaceIdx = Object.fromEntries(standings.races.map((id, i) => [id, i]));
 
