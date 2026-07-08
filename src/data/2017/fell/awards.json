@@ -1,23 +1,24 @@
 {
   "individualAwards": [
     {
-      "id": "m-sen",
+      "id": "m",
       "awards": [
         {
           "position": 1,
           "name": "Richard Smith",
           "club": "preston",
-          "ageCategory": "SEN"
+          "ageCategory": "SEN",
+          "seriesRunnerId": 154
         },
         {
           "position": 3,
           "name": "Andrew Christie",
           "club": "red-rose",
-          "ageCategory": "SEN"
+          "ageCategory": "SEN",
+          "seriesRunnerId": 106
         }
       ],
-      "sex": "M",
-      "ageCategory": "SEN"
+      "sex": "M"
     },
     {
       "id": "m-v40",
@@ -26,13 +27,15 @@
           "position": 1,
           "name": "Darren Fishwick",
           "club": "chorley",
-          "ageCategory": "V45"
+          "ageCategory": "V45",
+          "seriesRunnerId": 100
         },
         {
           "position": 2,
           "name": "Chris Charnley",
           "club": "chorley",
-          "ageCategory": "V40"
+          "ageCategory": "V40",
+          "seriesRunnerId": 111
         }
       ],
       "sex": "M",
@@ -45,13 +48,15 @@
           "position": 1,
           "name": "John Griffiths",
           "club": "preston",
-          "ageCategory": "V50"
+          "ageCategory": "V50",
+          "seriesRunnerId": 107
         },
         {
           "position": 2,
           "name": "Mark Ellithorn",
           "club": "chorley",
-          "ageCategory": "V50"
+          "ageCategory": "V50",
+          "seriesRunnerId": 115
         }
       ],
       "sex": "M",
@@ -64,30 +69,32 @@
           "position": 1,
           "name": "John Collier",
           "club": "wesham",
-          "ageCategory": "V60"
+          "ageCategory": "V60",
+          "seriesRunnerId": 121
         },
         {
           "position": 2,
           "name": "Alan Appleby",
           "club": "preston",
-          "ageCategory": "V65"
+          "ageCategory": "V65",
+          "seriesRunnerId": 167
         }
       ],
       "sex": "M",
       "ageCategory": "V60"
     },
     {
-      "id": "f-sen",
+      "id": "f",
       "awards": [
         {
           "position": 1,
           "name": "Debbie Cooper",
           "club": "lytham",
-          "ageCategory": "V40"
+          "ageCategory": "V40",
+          "seriesRunnerId": 128
         }
       ],
-      "sex": "F",
-      "ageCategory": "SEN"
+      "sex": "F"
     },
     {
       "id": "f-v50",
@@ -96,13 +103,15 @@
           "position": 1,
           "name": "Paula Plowman",
           "club": "red-rose",
-          "ageCategory": "V50"
+          "ageCategory": "V50",
+          "seriesRunnerId": 130
         },
         {
           "position": 2,
           "name": "Alison Mercer",
           "club": "red-rose",
-          "ageCategory": "V55"
+          "ageCategory": "V55",
+          "seriesRunnerId": 140
         }
       ],
       "sex": "F",
@@ -115,6 +124,10 @@
       "id": "open"
     },
     {
+      "club": "red-rose",
+      "id": "ladies"
+    },
+    {
       "club": "chorley",
       "id": "vets"
     },
@@ -125,10 +138,6 @@
     {
       "club": "preston",
       "id": "v60"
-    },
-    {
-      "club": "red-rose",
-      "id": "ladies"
     }
   ]
 }
