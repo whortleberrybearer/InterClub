@@ -5,8 +5,9 @@
             "awards": [
                 {
                     "position": 1,
-                    "name": "R. Danson",
-                    "club": "wesham"
+                    "name": "Robert Danson",
+                    "club": "wesham",
+                    "seriesRunnerId": 100
                 }
             ]
         },
@@ -15,46 +16,47 @@
             "awards": [
                 {
                     "position": 1,
-                    "name": "J. Goorney",
-                    "club": "lytham"
+                    "name": "Joanna Goorney",
+                    "club": "lytham",
+                    "seriesRunnerId": 150
                 }
             ],
             "sex": "F"
         },
         {
-            "id": "m-v40",
+            "id": "v40",
             "awards": [
                 {
                     "position": 1,
-                    "name": "R. Affleck",
-                    "club": "preston"
+                    "name": "Rob Affleck",
+                    "club": "preston",
+                    "seriesRunnerId": 101
                 }
             ],
-            "sex": "M",
             "ageCategory": "V40"
         },
         {
-            "id": "m-v50",
+            "id": "v50",
             "awards": [
                 {
                     "position": 1,
-                    "name": "J. Wright",
-                    "club": "blackpool"
+                    "name": "John Wright",
+                    "club": "blackpool",
+                    "seriesRunnerId": 112
                 }
             ],
-            "sex": "M",
             "ageCategory": "V50"
         },
         {
-            "id": "m-v60",
+            "id": "v60",
             "awards": [
                 {
                     "position": 1,
-                    "name": "K. Addison",
-                    "club": "red-rose"
+                    "name": "Ken Addison",
+                    "club": "red-rose",
+                    "seriesRunnerId": 140
                 }
             ],
-            "sex": "M",
             "ageCategory": "V60"
         }
     ],
@@ -64,8 +66,16 @@
             "id": "open"
         },
         {
+            "club": "wesham",
+            "id": "ladies"
+        },
+        {
             "club": "preston",
             "id": "vets"
+        },
+        {
+            "club": "wesham",
+            "id": "lady-vets"
         },
         {
             "club": "red-rose",
@@ -74,14 +84,6 @@
         {
             "club": "red-rose",
             "id": "v60"
-        },
-        {
-            "club": "wesham",
-            "id": "ladies"
-        },
-        {
-            "club": "wesham",
-            "id": "lady-vets"
         }
     ]
 }
