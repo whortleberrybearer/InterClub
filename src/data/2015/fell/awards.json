@@ -28,7 +28,9 @@
         {
           "position": 1,
           "name": "Joe Greenwood",
-          "club": "lytham"
+          "club": "lytham",
+          "ageCategory": "SEN",
+          "seriesRunnerId": 102
         }
       ]
     },
@@ -38,7 +40,8 @@
         {
           "position": 2,
           "name": "Daniel Hughes",
-          "club": "red-rose"
+          "club": "red-rose",
+          "seriesRunnerId": 104
         }
       ],
       "sex": "M",
@@ -50,12 +53,14 @@
         {
           "position": 1,
           "name": "Chris Charnley",
-          "club": "red-rose"
+          "club": "red-rose",
+          "seriesRunnerId": 107
         },
         {
           "position": 2,
           "name": "Andrew Fairbairn",
-          "club": "thornton"
+          "club": "thornton",
+          "seriesRunnerId": 105
         }
       ],
       "sex": "M",
@@ -67,12 +72,14 @@
         {
           "position": 1,
           "name": "Mark Ellithorn",
-          "club": "chorley"
+          "club": "chorley",
+          "seriesRunnerId": 106
         },
         {
           "position": 2,
           "name": "Alex Rowe",
-          "club": "wesham"
+          "club": "wesham",
+          "seriesRunnerId": 178
         }
       ],
       "sex": "M",
@@ -84,36 +91,33 @@
         {
           "position": 1,
           "name": "Terry Hellings",
-          "club": "lytham"
+          "club": "lytham",
+          "seriesRunnerId": 131
         },
         {
           "position": 2,
           "name": "Malcolm Sherwood",
-          "club": "thornton"
+          "club": "thornton",
+          "seriesRunnerId": 169
         }
       ],
       "sex": "M",
       "ageCategory": "V60"
     },
     {
-      "id": "f-sen",
+      "id": "f-v40",
       "awards": [
         {
           "position": 1,
           "name": "Joanna Goorney",
-          "club": "lytham"
-        }
-      ],
-      "sex": "F",
-      "ageCategory": "SEN"
-    },
-    {
-      "id": "f-v40",
-      "awards": [
+          "club": "lytham",
+          "seriesRunnerId": 113
+        },
         {
           "position": 2,
           "name": "Lynne Clough",
-          "club": "chorley"
+          "club": "chorley",
+          "seriesRunnerId": 182
         }
       ],
       "sex": "F",
@@ -125,7 +129,8 @@
         {
           "position": 1,
           "name": "Deborah Myerscough",
-          "club": "wesham"
+          "club": "wesham",
+          "seriesRunnerId": 201
         }
       ],
       "sex": "F",
