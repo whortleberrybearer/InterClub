@@ -1,333 +1,685 @@
 ﻿{
-  "categories": [
-    {
-      "id": "open",
-      "clubs": [
-        {
-          "position": 1,
-          "points": 7,
-          "club": "red-rose",
-          "total": 49,
-          "scorers": [
-            { "name": "Daniel Hughes", "position": 15 },
-            { "name": "Chris Charnley", "position": 24 },
-            { "name": "Stephen Woodruffe", "position": 27 },
-            { "name": "Ben Donaghue", "position": 36 },
-            { "name": "Stuart Cann", "position": 51 }
-          ]
-        },
-        {
-          "position": 2,
-          "points": 6,
-          "club": "chorley",
-          "total": 49,
-          "scorers": [
-            { "name": "Darren Fishwick", "position": 6 },
-            { "name": "Mark Ellithorn", "position": 23 },
-            { "name": "Yewan Bennison", "position": 30 },
-            { "name": "Martin Quinn", "position": 40 },
-            { "name": "Phil Iddon", "position": 55 }
-          ]
-        },
-        {
-          "position": 3,
-          "points": 5,
-          "club": "preston",
-          "total": 78,
-          "scorers": [
-            { "name": "Tony Livesey", "position": 5 },
-            { "name": "Richard Smith", "position": 35 },
-            { "name": "John Bradley", "position": 53 },
-            { "name": "John Griffiths", "position": 66 },
-            { "name": "Richard Clark", "position": 90 }
-          ]
-        },
-        {
-          "position": 4,
-          "points": 4,
-          "club": "thornton",
-          "total": 101,
-          "scorers": [
-            { "name": "Matt Walsh", "position": 11 },
-            { "name": "Andrew Fairbairn", "position": 16 },
-            { "name": "Pete Waywell", "position": 81 },
-            { "name": "Tony Codling", "position": 83 },
-            { "name": "Ben Brennan", "position": 127 }
-          ]
-        },
-        {
-          "position": 5,
-          "points": 3,
-          "club": "lytham",
-          "total": 122,
-          "scorers": [
-            { "name": "Joe Greenwood", "position": 8 },
-            { "name": "Joanna Goorney", "position": 44 },
-            { "name": "Graham Webster", "position": 77 },
-            { "name": "Terry Hellings", "position": 97 },
-            { "name": "Greg Oulton", "position": 171 }
-          ]
-        },
-        {
-          "position": 6,
-          "points": 2,
-          "club": "blackpool",
-          "total": 242,
-          "scorers": [
-            { "name": "Peter Singleton", "position": 91 },
-            { "name": "Simon Scarr", "position": 151 },
-            { "name": "Alan Wilkinson", "position": 152 },
-            { "name": "Rick Pinches", "position": 155 },
-            { "name": "Bernard Singleton", "position": 218 }
-          ]
-        }
-      ]
-    },
-    {
-      "id": "vets",
-      "clubs": [
-        {
-          "position": 1,
-          "points": 7,
-          "club": "chorley",
-          "total": 17,
-          "scorers": [
-            { "name": "Darren Fishwick", "position": 6 },
-            { "name": "Mark Ellithorn", "position": 23 },
-            { "name": "Yewan Bennison", "position": 30 },
-            { "name": "Martin Quinn", "position": 40 }
-          ]
-        },
-        {
-          "position": 2,
-          "points": 6,
-          "club": "red-rose",
-          "total": 31,
-          "scorers": [
-            { "name": "Chris Charnley", "position": 24 },
-            { "name": "Stephen Woodruffe", "position": 27 },
-            { "name": "Stuart Cann", "position": 51 },
-            { "name": "Philip Davidson", "position": 76 }
-          ]
-        },
-        {
-          "position": 3,
-          "points": 5,
-          "club": "thornton",
-          "total": 61,
-          "scorers": [
-            { "name": "Andrew Fairbairn", "position": 16 },
-            { "name": "Pete Waywell", "position": 81 },
-            { "name": "Tony Codling", "position": 83 },
-            { "name": "Ben Brennan", "position": 127 }
-          ]
-        },
-        {
-          "position": 4,
-          "points": 4,
-          "club": "lytham",
-          "total": 79,
-          "scorers": [
-            { "name": "Graham Webster", "position": 77 },
-            { "name": "Terry Hellings", "position": 97 },
-            { "name": "Greg Oulton", "position": 171 }
-          ]
-        },
-        {
-          "position": 5,
-          "points": 3,
-          "club": "blackpool",
-          "total": 120,
-          "scorers": [
-            { "name": "Peter Singleton", "position": 91 },
-            { "name": "Simon Scarr", "position": 151 },
-            { "name": "Alan Wilkinson", "position": 152 },
-            { "name": "Rick Pinches", "position": 155 }
-          ]
-        },
-        {
-          "position": 6,
-          "points": 2,
-          "club": "preston",
-          "total": 41,
-          "scorers": [
-            { "name": "John Griffiths", "position": 66 },
-            { "name": "Jim Doherty", "position": 145 }
-          ]
-        }
-      ]
-    },
-    {
-      "id": "v50",
-      "clubs": [
-        {
-          "position": 1,
-          "points": 7,
-          "club": "red-rose",
-          "total": 10,
-          "scorers": [
-            { "name": "Stephen Woodruffe", "position": 27 },
-            { "name": "Stuart Cann", "position": 51 },
-            { "name": "Philip Davidson", "position": 76 }
-          ]
-        },
-        {
-          "position": 2,
-          "points": 6,
-          "club": "chorley",
-          "total": 35,
-          "scorers": [
-            { "name": "Mark Ellithorn", "position": 23 },
-            { "name": "David Miller", "position": 138 },
-            { "name": "Graham Schofield", "position": 182 }
-          ]
-        },
-        {
-          "position": 3,
-          "points": 5,
-          "club": "lytham",
-          "total": 36,
-          "scorers": [
-            { "name": "Graham Webster", "position": 77 },
-            { "name": "Terry Hellings", "position": 97 },
-            { "name": "Fiona Geldard", "position": 172 }
-          ]
-        },
-        {
-          "position": 4,
-          "points": 4,
-          "club": "blackpool",
-          "total": 45,
-          "scorers": [
-            { "name": "Peter Singleton", "position": 91 },
-            { "name": "Simon Scarr", "position": 151 },
-            { "name": "Alan Wilkinson", "position": 152 }
-          ]
-        },
-        {
-          "position": 5,
-          "points": 3,
-          "club": "thornton",
-          "total": 56,
-          "scorers": [
-            { "name": "Tony Codling", "position": 83 },
-            { "name": "Steve Burgess", "position": 208 },
-            { "name": "Deborah Cardwell", "position": 211 }
-          ]
-        },
-        {
-          "position": 6,
-          "points": 2,
-          "club": "preston",
-          "total": 20,
-          "scorers": [
-            { "name": "John Griffiths", "position": 66 },
-            { "name": "Jim Doherty", "position": 145 }
-          ]
-        }
-      ]
-    },
-    {
-      "id": "v60",
-      "clubs": [
-        {
-          "position": 1,
-          "points": 7,
-          "club": "lytham",
-          "total": 3,
-          "scorers": [
-            { "name": "Graham Webster", "position": 77 },
-            { "name": "Terry Hellings", "position": 97 }
-          ]
-        },
-        {
-          "position": 2,
-          "points": 6,
-          "club": "chorley",
-          "total": 9,
-          "scorers": [
-            { "name": "David Miller", "position": 138 },
-            { "name": "Graham Schofield", "position": 182 }
-          ]
-        },
-        {
-          "position": 3,
-          "points": 5,
-          "club": "blackpool",
-          "total": 12,
-          "scorers": [
-            { "name": "Alan Wilkinson", "position": 152 },
-            { "name": "Bernard Singleton", "position": 218 }
-          ]
-        },
-        {
-          "position": 4,
-          "points": 4,
-          "club": "red-rose",
-          "total": 14,
-          "scorers": [
-            { "name": "John Hyde", "position": 142 },
-            { "name": "Lydia Plackett", "position": 229 }
-          ]
-        },
-        {
-          "position": 5,
-          "points": 3,
-          "club": "thornton",
-          "total": 9,
-          "scorers": [
-            { "name": "Malcolm Sherwood", "position": 222 }
-          ]
-        }
-      ]
-    },
-    {
-      "id": "ladies",
-      "clubs": [
-        {
-          "position": 1,
-          "points": 7,
-          "club": "lytham",
-          "total": 13,
-          "scorers": [
-            { "name": "Joanna Goorney", "position": 44 },
-            { "name": "Fiona Geldard", "position": 172 },
-            { "name": "Julia Rolfe", "position": 193 }
-          ]
-        },
-        {
-          "position": 2,
-          "points": 6,
-          "club": "red-rose",
-          "total": 23,
-          "scorers": [
-            { "name": "Debbie Porter", "position": 183 },
-            { "name": "Paula Plowman", "position": 196 },
-            { "name": "Vicki Gore", "position": 198 }
-          ]
-        },
-        {
-          "position": 3,
-          "points": 5,
-          "club": "thornton",
-          "total": 35,
-          "scorers": [
-            { "name": "Lesley Gray", "position": 141 },
-            { "name": "Deborah Cardwell", "position": 211 },
-            { "name": "Jackie Routledge", "position": 223 }
-          ]
-        },
-        {
-          "position": 4,
-          "points": 4,
-          "club": "chorley",
-          "total": 5,
-          "scorers": [
-            { "name": "Laura Murphy", "position": 101 },
-            { "name": "Jackie Redmayne", "position": 110 }
-          ]
-        }
-      ]
-    }
-  ]
+    "categories":  [
+                       {
+                           "id":  "open",
+                           "clubs":  [
+                                         {
+                                             "position":  1,
+                                             "points":  7,
+                                             "club":  "red-rose",
+                                             "total":  49,
+                                             "scorers":  [
+                                                             {
+                                                                 "name":  "Daniel Hughes",
+                                                                 "position":  15,
+                                                                 "seriesRunnerId":  104
+                                                             },
+                                                             {
+                                                                 "name":  "Chris Charnley",
+                                                                 "position":  24,
+                                                                 "seriesRunnerId":  107
+                                                             },
+                                                             {
+                                                                 "name":  "Stephen Woodruffe",
+                                                                 "position":  27,
+                                                                 "seriesRunnerId":  108
+                                                             },
+                                                             {
+                                                                 "name":  "Ben Donaghue",
+                                                                 "position":  36,
+                                                                 "seriesRunnerId":  111
+                                                             },
+                                                             {
+                                                                 "name":  "Stuart Cann",
+                                                                 "position":  51,
+                                                                 "seriesRunnerId":  114
+                                                             }
+                                                         ]
+                                         },
+                                         {
+                                             "position":  2,
+                                             "points":  6,
+                                             "club":  "chorley",
+                                             "total":  49,
+                                             "scorers":  [
+                                                             {
+                                                                 "name":  "Darren Fishwick",
+                                                                 "position":  6,
+                                                                 "seriesRunnerId":  101
+                                                             },
+                                                             {
+                                                                 "name":  "Mark Ellithorn",
+                                                                 "position":  23,
+                                                                 "seriesRunnerId":  106
+                                                             },
+                                                             {
+                                                                 "name":  "Yewan Bennison",
+                                                                 "position":  30,
+                                                                 "seriesRunnerId":  109
+                                                             },
+                                                             {
+                                                                 "name":  "Martin Quinn",
+                                                                 "position":  40,
+                                                                 "seriesRunnerId":  112
+                                                             },
+                                                             {
+                                                                 "name":  "Phil Iddon",
+                                                                 "position":  55,
+                                                                 "seriesRunnerId":  116
+                                                             }
+                                                         ]
+                                         },
+                                         {
+                                             "position":  3,
+                                             "points":  5,
+                                             "club":  "preston",
+                                             "total":  78,
+                                             "scorers":  [
+                                                             {
+                                                                 "name":  "Tony Livesey",
+                                                                 "position":  5,
+                                                                 "seriesRunnerId":  100
+                                                             },
+                                                             {
+                                                                 "name":  "Richard Smith",
+                                                                 "position":  35,
+                                                                 "seriesRunnerId":  110
+                                                             },
+                                                             {
+                                                                 "name":  "John Bradley",
+                                                                 "position":  53,
+                                                                 "seriesRunnerId":  115
+                                                             },
+                                                             {
+                                                                 "name":  "John Griffiths",
+                                                                 "position":  66,
+                                                                 "seriesRunnerId":  119
+                                                             },
+                                                             {
+                                                                 "name":  "Richard Clark",
+                                                                 "position":  90,
+                                                                 "seriesRunnerId":  129
+                                                             }
+                                                         ]
+                                         },
+                                         {
+                                             "position":  4,
+                                             "points":  4,
+                                             "club":  "thornton",
+                                             "total":  101,
+                                             "scorers":  [
+                                                             {
+                                                                 "name":  "Matt Walsh",
+                                                                 "position":  11,
+                                                                 "seriesRunnerId":  103
+                                                             },
+                                                             {
+                                                                 "name":  "Andrew Fairbairn",
+                                                                 "position":  16,
+                                                                 "seriesRunnerId":  105
+                                                             },
+                                                             {
+                                                                 "name":  "Pete Waywell",
+                                                                 "position":  81,
+                                                                 "seriesRunnerId":  124
+                                                             },
+                                                             {
+                                                                 "name":  "Tony Codling",
+                                                                 "position":  83,
+                                                                 "seriesRunnerId":  125
+                                                             },
+                                                             {
+                                                                 "name":  "Ben Brennan",
+                                                                 "position":  127,
+                                                                 "seriesRunnerId":  139
+                                                             }
+                                                         ]
+                                         },
+                                         {
+                                             "position":  5,
+                                             "points":  3,
+                                             "club":  "lytham",
+                                             "total":  122,
+                                             "scorers":  [
+                                                             {
+                                                                 "name":  "Joe Greenwood",
+                                                                 "position":  8,
+                                                                 "seriesRunnerId":  102
+                                                             },
+                                                             {
+                                                                 "name":  "Joanna Goorney",
+                                                                 "position":  44,
+                                                                 "seriesRunnerId":  113
+                                                             },
+                                                             {
+                                                                 "name":  "Graham Webster",
+                                                                 "position":  77,
+                                                                 "seriesRunnerId":  122
+                                                             },
+                                                             {
+                                                                 "name":  "Terry Hellings",
+                                                                 "position":  97,
+                                                                 "seriesRunnerId":  131
+                                                             },
+                                                             {
+                                                                 "name":  "Greg Oulton",
+                                                                 "position":  171,
+                                                                 "seriesRunnerId":  149
+                                                             }
+                                                         ]
+                                         },
+                                         {
+                                             "position":  6,
+                                             "points":  2,
+                                             "club":  "blackpool",
+                                             "total":  242,
+                                             "scorers":  [
+                                                             {
+                                                                 "name":  "Peter Singleton",
+                                                                 "position":  91,
+                                                                 "seriesRunnerId":  130
+                                                             },
+                                                             {
+                                                                 "name":  "Simon Scarr",
+                                                                 "position":  151,
+                                                                 "seriesRunnerId":  146
+                                                             },
+                                                             {
+                                                                 "name":  "Alan Wilkinson",
+                                                                 "position":  152,
+                                                                 "seriesRunnerId":  147
+                                                             },
+                                                             {
+                                                                 "name":  "Rick Pinches",
+                                                                 "position":  155,
+                                                                 "seriesRunnerId":  148
+                                                             },
+                                                             {
+                                                                 "name":  "Bernard Singleton",
+                                                                 "position":  218,
+                                                                 "seriesRunnerId":  166
+                                                             }
+                                                         ]
+                                         }
+                                     ]
+                       },
+                       {
+                           "id":  "vets",
+                           "clubs":  [
+                                         {
+                                             "position":  1,
+                                             "points":  7,
+                                             "club":  "chorley",
+                                             "total":  17,
+                                             "scorers":  [
+                                                             {
+                                                                 "name":  "Darren Fishwick",
+                                                                 "position":  6,
+                                                                 "seriesRunnerId":  101
+                                                             },
+                                                             {
+                                                                 "name":  "Mark Ellithorn",
+                                                                 "position":  23,
+                                                                 "seriesRunnerId":  106
+                                                             },
+                                                             {
+                                                                 "name":  "Yewan Bennison",
+                                                                 "position":  30,
+                                                                 "seriesRunnerId":  109
+                                                             },
+                                                             {
+                                                                 "name":  "Martin Quinn",
+                                                                 "position":  40,
+                                                                 "seriesRunnerId":  112
+                                                             }
+                                                         ]
+                                         },
+                                         {
+                                             "position":  2,
+                                             "points":  6,
+                                             "club":  "red-rose",
+                                             "total":  31,
+                                             "scorers":  [
+                                                             {
+                                                                 "name":  "Chris Charnley",
+                                                                 "position":  24,
+                                                                 "seriesRunnerId":  107
+                                                             },
+                                                             {
+                                                                 "name":  "Stephen Woodruffe",
+                                                                 "position":  27,
+                                                                 "seriesRunnerId":  108
+                                                             },
+                                                             {
+                                                                 "name":  "Stuart Cann",
+                                                                 "position":  51,
+                                                                 "seriesRunnerId":  114
+                                                             },
+                                                             {
+                                                                 "name":  "Philip Davidson",
+                                                                 "position":  76,
+                                                                 "seriesRunnerId":  121
+                                                             }
+                                                         ]
+                                         },
+                                         {
+                                             "position":  3,
+                                             "points":  5,
+                                             "club":  "thornton",
+                                             "total":  61,
+                                             "scorers":  [
+                                                             {
+                                                                 "name":  "Andrew Fairbairn",
+                                                                 "position":  16,
+                                                                 "seriesRunnerId":  105
+                                                             },
+                                                             {
+                                                                 "name":  "Pete Waywell",
+                                                                 "position":  81,
+                                                                 "seriesRunnerId":  124
+                                                             },
+                                                             {
+                                                                 "name":  "Tony Codling",
+                                                                 "position":  83,
+                                                                 "seriesRunnerId":  125
+                                                             },
+                                                             {
+                                                                 "name":  "Ben Brennan",
+                                                                 "position":  127,
+                                                                 "seriesRunnerId":  139
+                                                             }
+                                                         ]
+                                         },
+                                         {
+                                             "position":  4,
+                                             "points":  4,
+                                             "club":  "lytham",
+                                             "total":  79,
+                                             "scorers":  [
+                                                             {
+                                                                 "name":  "Graham Webster",
+                                                                 "position":  77,
+                                                                 "seriesRunnerId":  122
+                                                             },
+                                                             {
+                                                                 "name":  "Terry Hellings",
+                                                                 "position":  97,
+                                                                 "seriesRunnerId":  131
+                                                             },
+                                                             {
+                                                                 "name":  "Greg Oulton",
+                                                                 "position":  171,
+                                                                 "seriesRunnerId":  149
+                                                             }
+                                                         ]
+                                         },
+                                         {
+                                             "position":  5,
+                                             "points":  3,
+                                             "club":  "blackpool",
+                                             "total":  120,
+                                             "scorers":  [
+                                                             {
+                                                                 "name":  "Peter Singleton",
+                                                                 "position":  91,
+                                                                 "seriesRunnerId":  130
+                                                             },
+                                                             {
+                                                                 "name":  "Simon Scarr",
+                                                                 "position":  151,
+                                                                 "seriesRunnerId":  146
+                                                             },
+                                                             {
+                                                                 "name":  "Alan Wilkinson",
+                                                                 "position":  152,
+                                                                 "seriesRunnerId":  147
+                                                             },
+                                                             {
+                                                                 "name":  "Rick Pinches",
+                                                                 "position":  155,
+                                                                 "seriesRunnerId":  148
+                                                             }
+                                                         ]
+                                         },
+                                         {
+                                             "position":  6,
+                                             "points":  2,
+                                             "club":  "preston",
+                                             "total":  41,
+                                             "scorers":  [
+                                                             {
+                                                                 "name":  "John Griffiths",
+                                                                 "position":  66,
+                                                                 "seriesRunnerId":  119
+                                                             },
+                                                             {
+                                                                 "name":  "Jim Doherty",
+                                                                 "position":  145,
+                                                                 "seriesRunnerId":  144
+                                                             }
+                                                         ]
+                                         }
+                                     ]
+                       },
+                       {
+                           "id":  "v50",
+                           "clubs":  [
+                                         {
+                                             "position":  1,
+                                             "points":  7,
+                                             "club":  "red-rose",
+                                             "total":  10,
+                                             "scorers":  [
+                                                             {
+                                                                 "name":  "Stephen Woodruffe",
+                                                                 "position":  27,
+                                                                 "seriesRunnerId":  108
+                                                             },
+                                                             {
+                                                                 "name":  "Stuart Cann",
+                                                                 "position":  51,
+                                                                 "seriesRunnerId":  114
+                                                             },
+                                                             {
+                                                                 "name":  "Philip Davidson",
+                                                                 "position":  76,
+                                                                 "seriesRunnerId":  121
+                                                             }
+                                                         ]
+                                         },
+                                         {
+                                             "position":  2,
+                                             "points":  6,
+                                             "club":  "chorley",
+                                             "total":  35,
+                                             "scorers":  [
+                                                             {
+                                                                 "name":  "Mark Ellithorn",
+                                                                 "position":  23,
+                                                                 "seriesRunnerId":  106
+                                                             },
+                                                             {
+                                                                 "name":  "David Miller",
+                                                                 "position":  138,
+                                                                 "seriesRunnerId":  141
+                                                             },
+                                                             {
+                                                                 "name":  "Graham Schofield",
+                                                                 "position":  182,
+                                                                 "seriesRunnerId":  152
+                                                             }
+                                                         ]
+                                         },
+                                         {
+                                             "position":  3,
+                                             "points":  5,
+                                             "club":  "lytham",
+                                             "total":  36,
+                                             "scorers":  [
+                                                             {
+                                                                 "name":  "Graham Webster",
+                                                                 "position":  77,
+                                                                 "seriesRunnerId":  122
+                                                             },
+                                                             {
+                                                                 "name":  "Terry Hellings",
+                                                                 "position":  97,
+                                                                 "seriesRunnerId":  131
+                                                             },
+                                                             {
+                                                                 "name":  "Fiona Geldard",
+                                                                 "position":  172,
+                                                                 "seriesRunnerId":  150
+                                                             }
+                                                         ]
+                                         },
+                                         {
+                                             "position":  4,
+                                             "points":  4,
+                                             "club":  "blackpool",
+                                             "total":  45,
+                                             "scorers":  [
+                                                             {
+                                                                 "name":  "Peter Singleton",
+                                                                 "position":  91,
+                                                                 "seriesRunnerId":  130
+                                                             },
+                                                             {
+                                                                 "name":  "Simon Scarr",
+                                                                 "position":  151,
+                                                                 "seriesRunnerId":  146
+                                                             },
+                                                             {
+                                                                 "name":  "Alan Wilkinson",
+                                                                 "position":  152,
+                                                                 "seriesRunnerId":  147
+                                                             }
+                                                         ]
+                                         },
+                                         {
+                                             "position":  5,
+                                             "points":  3,
+                                             "club":  "thornton",
+                                             "total":  56,
+                                             "scorers":  [
+                                                             {
+                                                                 "name":  "Tony Codling",
+                                                                 "position":  83,
+                                                                 "seriesRunnerId":  125
+                                                             },
+                                                             {
+                                                                 "name":  "Steve Burgess",
+                                                                 "position":  208,
+                                                                 "seriesRunnerId":  159
+                                                             },
+                                                             {
+                                                                 "name":  "Deborah Cardwell",
+                                                                 "position":  211,
+                                                                 "seriesRunnerId":  162
+                                                             }
+                                                         ]
+                                         },
+                                         {
+                                             "position":  6,
+                                             "points":  2,
+                                             "club":  "preston",
+                                             "total":  20,
+                                             "scorers":  [
+                                                             {
+                                                                 "name":  "John Griffiths",
+                                                                 "position":  66,
+                                                                 "seriesRunnerId":  119
+                                                             },
+                                                             {
+                                                                 "name":  "Jim Doherty",
+                                                                 "position":  145,
+                                                                 "seriesRunnerId":  144
+                                                             }
+                                                         ]
+                                         }
+                                     ]
+                       },
+                       {
+                           "id":  "v60",
+                           "clubs":  [
+                                         {
+                                             "position":  1,
+                                             "points":  7,
+                                             "club":  "lytham",
+                                             "total":  3,
+                                             "scorers":  [
+                                                             {
+                                                                 "name":  "Graham Webster",
+                                                                 "position":  77,
+                                                                 "seriesRunnerId":  122
+                                                             },
+                                                             {
+                                                                 "name":  "Terry Hellings",
+                                                                 "position":  97,
+                                                                 "seriesRunnerId":  131
+                                                             }
+                                                         ]
+                                         },
+                                         {
+                                             "position":  2,
+                                             "points":  6,
+                                             "club":  "chorley",
+                                             "total":  9,
+                                             "scorers":  [
+                                                             {
+                                                                 "name":  "David Miller",
+                                                                 "position":  138,
+                                                                 "seriesRunnerId":  141
+                                                             },
+                                                             {
+                                                                 "name":  "Graham Schofield",
+                                                                 "position":  182,
+                                                                 "seriesRunnerId":  152
+                                                             }
+                                                         ]
+                                         },
+                                         {
+                                             "position":  3,
+                                             "points":  5,
+                                             "club":  "blackpool",
+                                             "total":  12,
+                                             "scorers":  [
+                                                             {
+                                                                 "name":  "Alan Wilkinson",
+                                                                 "position":  152,
+                                                                 "seriesRunnerId":  147
+                                                             },
+                                                             {
+                                                                 "name":  "Bernard Singleton",
+                                                                 "position":  218,
+                                                                 "seriesRunnerId":  166
+                                                             }
+                                                         ]
+                                         },
+                                         {
+                                             "position":  4,
+                                             "points":  4,
+                                             "club":  "red-rose",
+                                             "total":  14,
+                                             "scorers":  [
+                                                             {
+                                                                 "name":  "John Hyde",
+                                                                 "position":  142,
+                                                                 "seriesRunnerId":  143
+                                                             },
+                                                             {
+                                                                 "name":  "Lydia Plackett",
+                                                                 "position":  229,
+                                                                 "seriesRunnerId":  211
+                                                             }
+                                                         ]
+                                         },
+                                         {
+                                             "position":  5,
+                                             "points":  3,
+                                             "club":  "thornton",
+                                             "total":  9,
+                                             "scorers":  [
+                                                             {
+                                                                 "name":  "Malcolm Sherwood",
+                                                                 "position":  222,
+                                                                 "seriesRunnerId":  169
+                                                             }
+                                                         ]
+                                         }
+                                     ]
+                       },
+                       {
+                           "id":  "ladies",
+                           "clubs":  [
+                                         {
+                                             "position":  1,
+                                             "points":  7,
+                                             "club":  "lytham",
+                                             "total":  13,
+                                             "scorers":  [
+                                                             {
+                                                                 "name":  "Joanna Goorney",
+                                                                 "position":  44,
+                                                                 "seriesRunnerId":  113
+                                                             },
+                                                             {
+                                                                 "name":  "Fiona Geldard",
+                                                                 "position":  172,
+                                                                 "seriesRunnerId":  150
+                                                             },
+                                                             {
+                                                                 "name":  "Julia Rolfe",
+                                                                 "position":  193,
+                                                                 "seriesRunnerId":  154
+                                                             }
+                                                         ]
+                                         },
+                                         {
+                                             "position":  2,
+                                             "points":  6,
+                                             "club":  "red-rose",
+                                             "total":  23,
+                                             "scorers":  [
+                                                             {
+                                                                 "name":  "Debbie Porter",
+                                                                 "position":  183,
+                                                                 "seriesRunnerId":  153
+                                                             },
+                                                             {
+                                                                 "name":  "Paula Plowman",
+                                                                 "position":  196,
+                                                                 "seriesRunnerId":  155
+                                                             },
+                                                             {
+                                                                 "name":  "Vicki Gore",
+                                                                 "position":  198,
+                                                                 "seriesRunnerId":  156
+                                                             }
+                                                         ]
+                                         },
+                                         {
+                                             "position":  3,
+                                             "points":  5,
+                                             "club":  "thornton",
+                                             "total":  35,
+                                             "scorers":  [
+                                                             {
+                                                                 "name":  "Lesley Gray",
+                                                                 "position":  141,
+                                                                 "seriesRunnerId":  142
+                                                             },
+                                                             {
+                                                                 "name":  "Deborah Cardwell",
+                                                                 "position":  211,
+                                                                 "seriesRunnerId":  162
+                                                             },
+                                                             {
+                                                                 "name":  "Jackie Routledge",
+                                                                 "position":  223,
+                                                                 "seriesRunnerId":  170
+                                                             }
+                                                         ]
+                                         },
+                                         {
+                                             "position":  4,
+                                             "points":  4,
+                                             "club":  "chorley",
+                                             "total":  5,
+                                             "scorers":  [
+                                                             {
+                                                                 "name":  "Laura Murphy",
+                                                                 "position":  101,
+                                                                 "seriesRunnerId":  133
+                                                             },
+                                                             {
+                                                                 "name":  "Jackie Redmayne",
+                                                                 "position":  110,
+                                                                 "seriesRunnerId":  136
+                                                             }
+                                                         ]
+                                         }
+                                     ]
+                       }
+                   ]
 }

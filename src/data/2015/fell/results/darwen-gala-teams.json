@@ -9,11 +9,31 @@
           "club": "red-rose",
           "total": 31,
           "scorers": [
-            { "name": "Duncan Anderson", "position": 4 },
-            { "name": "Daniel Hughes", "position": 10 },
-            { "name": "Barry Wheeler", "position": 21 },
-            { "name": "Frank Nightingale", "position": 26 },
-            { "name": "Chris Charnley", "position": 32 }
+            {
+              "name": "Duncan Anderson",
+              "position": 4,
+              "seriesRunnerId": 213
+            },
+            {
+              "name": "Daniel Hughes",
+              "position": 10,
+              "seriesRunnerId": 104
+            },
+            {
+              "name": "Barry Wheeler",
+              "position": 21,
+              "seriesRunnerId": 117
+            },
+            {
+              "name": "Frank Nightingale",
+              "position": 26,
+              "seriesRunnerId": 127
+            },
+            {
+              "name": "Chris Charnley",
+              "position": 32,
+              "seriesRunnerId": 107
+            }
           ]
         },
         {
@@ -22,11 +42,31 @@
           "club": "chorley",
           "total": 58,
           "scorers": [
-            { "name": "Mark Ellithorn", "position": 12 },
-            { "name": "Lynne Clough", "position": 24 },
-            { "name": "Bill Beckett", "position": 25 },
-            { "name": "Paul Wareing", "position": 53 },
-            { "name": "Paul Jackson", "position": 58 }
+            {
+              "name": "Mark Ellithorn",
+              "position": 12,
+              "seriesRunnerId": 106
+            },
+            {
+              "name": "Lynne Clough",
+              "position": 24,
+              "seriesRunnerId": 182
+            },
+            {
+              "name": "Bill Beckett",
+              "position": 25,
+              "seriesRunnerId": 126
+            },
+            {
+              "name": "Paul Wareing",
+              "position": 53,
+              "seriesRunnerId": 214
+            },
+            {
+              "name": "Paul Jackson",
+              "position": 58,
+              "seriesRunnerId": 138
+            }
           ]
         },
         {
@@ -35,11 +75,31 @@
           "club": "lytham",
           "total": 76,
           "scorers": [
-            { "name": "Joe Greenwood", "position": 9 },
-            { "name": "Joanna Goorney", "position": 41 },
-            { "name": "Terry Hellings", "position": 45 },
-            { "name": "Mark Selby", "position": 55 },
-            { "name": "Debbie Cooper", "position": 101 }
+            {
+              "name": "Joe Greenwood",
+              "position": 9,
+              "seriesRunnerId": 102
+            },
+            {
+              "name": "Joanna Goorney",
+              "position": 41,
+              "seriesRunnerId": 113
+            },
+            {
+              "name": "Terry Hellings",
+              "position": 45,
+              "seriesRunnerId": 131
+            },
+            {
+              "name": "Mark Selby",
+              "position": 55,
+              "seriesRunnerId": 187
+            },
+            {
+              "name": "Debbie Cooper",
+              "position": 101,
+              "seriesRunnerId": 204
+            }
           ]
         },
         {
@@ -48,10 +108,26 @@
           "club": "wesham",
           "total": 75,
           "scorers": [
-            { "name": "Alex Rowe", "position": 22 },
-            { "name": "John Collier", "position": 44 },
-            { "name": "Steve Myerscough", "position": 76 },
-            { "name": "Debbie Myerscough", "position": 116 }
+            {
+              "name": "Alex Rowe",
+              "position": 22,
+              "seriesRunnerId": 178
+            },
+            {
+              "name": "John Collier",
+              "position": 44,
+              "seriesRunnerId": 246
+            },
+            {
+              "name": "Steve Myerscough",
+              "position": 76,
+              "seriesRunnerId": 183
+            },
+            {
+              "name": "Debbie Myerscough",
+              "position": 116,
+              "seriesRunnerId": 247
+            }
           ]
         },
         {
@@ -60,8 +136,16 @@
           "club": "preston",
           "total": 39,
           "scorers": [
-            { "name": "Tony Livesey", "position": 11 },
-            { "name": "George Arnold", "position": 128 }
+            {
+              "name": "Tony Livesey",
+              "position": 11,
+              "seriesRunnerId": 100
+            },
+            {
+              "name": "George Arnold",
+              "position": 128,
+              "seriesRunnerId": 248
+            }
           ]
         },
         {
@@ -70,7 +154,11 @@
           "club": "blackpool",
           "total": 24,
           "scorers": [
-            { "name": "Simon Scarr", "position": 83 }
+            {
+              "name": "Simon Scarr",
+              "position": 83,
+              "seriesRunnerId": 146
+            }
           ]
         }
       ]
@@ -84,10 +172,26 @@
           "club": "chorley",
           "total": 19,
           "scorers": [
-            { "name": "Mark Ellithorn", "position": 12 },
-            { "name": "Lynne Clough", "position": 24 },
-            { "name": "Bill Beckett", "position": 25 },
-            { "name": "Paul Wareing", "position": 53 }
+            {
+              "name": "Mark Ellithorn",
+              "position": 12,
+              "seriesRunnerId": 106
+            },
+            {
+              "name": "Lynne Clough",
+              "position": 24,
+              "seriesRunnerId": 182
+            },
+            {
+              "name": "Bill Beckett",
+              "position": 25,
+              "seriesRunnerId": 126
+            },
+            {
+              "name": "Paul Wareing",
+              "position": 53,
+              "seriesRunnerId": 214
+            }
           ]
         },
         {
@@ -96,10 +200,26 @@
           "club": "red-rose",
           "total": 31,
           "scorers": [
-            { "name": "Frank Nightingale", "position": 26 },
-            { "name": "Chris Charnley", "position": 32 },
-            { "name": "Stuart Cann", "position": 38 },
-            { "name": "Mark McCrea", "position": 62 }
+            {
+              "name": "Frank Nightingale",
+              "position": 26,
+              "seriesRunnerId": 127
+            },
+            {
+              "name": "Chris Charnley",
+              "position": 32,
+              "seriesRunnerId": 107
+            },
+            {
+              "name": "Stuart Cann",
+              "position": 38,
+              "seriesRunnerId": 114
+            },
+            {
+              "name": "Mark McCrea",
+              "position": 62,
+              "seriesRunnerId": 123
+            }
           ]
         },
         {
@@ -108,10 +228,26 @@
           "club": "wesham",
           "total": 49,
           "scorers": [
-            { "name": "Alex Rowe", "position": 22 },
-            { "name": "John Collier", "position": 44 },
-            { "name": "Steve Myerscough", "position": 76 },
-            { "name": "Debbie Myerscough", "position": 116 }
+            {
+              "name": "Alex Rowe",
+              "position": 22,
+              "seriesRunnerId": 178
+            },
+            {
+              "name": "John Collier",
+              "position": 44,
+              "seriesRunnerId": 246
+            },
+            {
+              "name": "Steve Myerscough",
+              "position": 76,
+              "seriesRunnerId": 183
+            },
+            {
+              "name": "Debbie Myerscough",
+              "position": 116,
+              "seriesRunnerId": 247
+            }
           ]
         },
         {
@@ -120,10 +256,26 @@
           "club": "lytham",
           "total": 58,
           "scorers": [
-            { "name": "Joanna Goorney", "position": 41 },
-            { "name": "Terry Hellings", "position": 45 },
-            { "name": "Debbie Cooper", "position": 101 },
-            { "name": "Julia Rolfe", "position": 105 }
+            {
+              "name": "Joanna Goorney",
+              "position": 41,
+              "seriesRunnerId": 113
+            },
+            {
+              "name": "Terry Hellings",
+              "position": 45,
+              "seriesRunnerId": 131
+            },
+            {
+              "name": "Debbie Cooper",
+              "position": 101,
+              "seriesRunnerId": 204
+            },
+            {
+              "name": "Julia Rolfe",
+              "position": 105,
+              "seriesRunnerId": 154
+            }
           ]
         },
         {
@@ -132,7 +284,11 @@
           "club": "blackpool",
           "total": 17,
           "scorers": [
-            { "name": "Simon Scarr", "position": 83 }
+            {
+              "name": "Simon Scarr",
+              "position": 83,
+              "seriesRunnerId": 146
+            }
           ]
         },
         {
@@ -141,7 +297,11 @@
           "club": "preston",
           "total": 27,
           "scorers": [
-            { "name": "George Arnold", "position": 128 }
+            {
+              "name": "George Arnold",
+              "position": 128,
+              "seriesRunnerId": 248
+            }
           ]
         }
       ]
@@ -155,9 +315,21 @@
           "club": "chorley",
           "total": 12,
           "scorers": [
-            { "name": "Mark Ellithorn", "position": 12 },
-            { "name": "Bill Beckett", "position": 25 },
-            { "name": "Paul Wareing", "position": 53 }
+            {
+              "name": "Mark Ellithorn",
+              "position": 12,
+              "seriesRunnerId": 106
+            },
+            {
+              "name": "Bill Beckett",
+              "position": 25,
+              "seriesRunnerId": 126
+            },
+            {
+              "name": "Paul Wareing",
+              "position": 53,
+              "seriesRunnerId": 214
+            }
           ]
         },
         {
@@ -166,9 +338,21 @@
           "club": "wesham",
           "total": 21,
           "scorers": [
-            { "name": "Alex Rowe", "position": 22 },
-            { "name": "John Collier", "position": 44 },
-            { "name": "Debbie Myerscough", "position": 116 }
+            {
+              "name": "Alex Rowe",
+              "position": 22,
+              "seriesRunnerId": 178
+            },
+            {
+              "name": "John Collier",
+              "position": 44,
+              "seriesRunnerId": 246
+            },
+            {
+              "name": "Debbie Myerscough",
+              "position": 116,
+              "seriesRunnerId": 247
+            }
           ]
         },
         {
@@ -177,9 +361,21 @@
           "club": "red-rose",
           "total": 24,
           "scorers": [
-            { "name": "Frank Nightingale", "position": 26 },
-            { "name": "Stuart Cann", "position": 38 },
-            { "name": "Jenny Fairclough", "position": 124 }
+            {
+              "name": "Frank Nightingale",
+              "position": 26,
+              "seriesRunnerId": 127
+            },
+            {
+              "name": "Stuart Cann",
+              "position": 38,
+              "seriesRunnerId": 114
+            },
+            {
+              "name": "Jenny Fairclough",
+              "position": 124,
+              "seriesRunnerId": 164
+            }
           ]
         },
         {
@@ -188,9 +384,21 @@
           "club": "lytham",
           "total": 30,
           "scorers": [
-            { "name": "Terry Hellings", "position": 45 },
-            { "name": "Julia Rolfe", "position": 105 },
-            { "name": "Pamela Hardman", "position": 106 }
+            {
+              "name": "Terry Hellings",
+              "position": 45,
+              "seriesRunnerId": 131
+            },
+            {
+              "name": "Julia Rolfe",
+              "position": 105,
+              "seriesRunnerId": 154
+            },
+            {
+              "name": "Pamela Hardman",
+              "position": 106,
+              "seriesRunnerId": 158
+            }
           ]
         },
         {
@@ -199,7 +407,11 @@
           "club": "blackpool",
           "total": 10,
           "scorers": [
-            { "name": "Simon Scarr", "position": 83 }
+            {
+              "name": "Simon Scarr",
+              "position": 83,
+              "seriesRunnerId": 146
+            }
           ]
         },
         {
@@ -208,7 +420,11 @@
           "club": "preston",
           "total": 16,
           "scorers": [
-            { "name": "George Arnold", "position": 128 }
+            {
+              "name": "George Arnold",
+              "position": 128,
+              "seriesRunnerId": 248
+            }
           ]
         }
       ]
@@ -222,8 +438,16 @@
           "club": "lytham",
           "total": 7,
           "scorers": [
-            { "name": "Terry Hellings", "position": 45 },
-            { "name": "Down Lock", "position": 139 }
+            {
+              "name": "Terry Hellings",
+              "position": 45,
+              "seriesRunnerId": 131
+            },
+            {
+              "name": "Down Lock",
+              "position": 139,
+              "seriesRunnerId": 250
+            }
           ]
         },
         {
@@ -232,7 +456,11 @@
           "club": "wesham",
           "total": 1,
           "scorers": [
-            { "name": "John Collier", "position": 44 }
+            {
+              "name": "John Collier",
+              "position": 44,
+              "seriesRunnerId": 246
+            }
           ]
         },
         {
@@ -241,7 +469,11 @@
           "club": "preston",
           "total": 3,
           "scorers": [
-            { "name": "George Arnold", "position": 128 }
+            {
+              "name": "George Arnold",
+              "position": 128,
+              "seriesRunnerId": 248
+            }
           ]
         },
         {
@@ -250,7 +482,11 @@
           "club": "chorley",
           "total": 4,
           "scorers": [
-            { "name": "Les Paul", "position": 131 }
+            {
+              "name": "Les Paul",
+              "position": 131,
+              "seriesRunnerId": 209
+            }
           ]
         },
         {
@@ -259,7 +495,11 @@
           "club": "red-rose",
           "total": 6,
           "scorers": [
-            { "name": "Tom Hilton", "position": 140 }
+            {
+              "name": "Tom Hilton",
+              "position": 140,
+              "seriesRunnerId": 249
+            }
           ]
         }
       ]
@@ -273,9 +513,21 @@
           "club": "lytham",
           "total": 12,
           "scorers": [
-            { "name": "Joanna Goorney", "position": 41 },
-            { "name": "Debbie Cooper", "position": 101 },
-            { "name": "Julia Rolfe", "position": 105 }
+            {
+              "name": "Joanna Goorney",
+              "position": 41,
+              "seriesRunnerId": 113
+            },
+            {
+              "name": "Debbie Cooper",
+              "position": 101,
+              "seriesRunnerId": 204
+            },
+            {
+              "name": "Julia Rolfe",
+              "position": 105,
+              "seriesRunnerId": 154
+            }
           ]
         },
         {
@@ -284,9 +536,21 @@
           "club": "chorley",
           "total": 16,
           "scorers": [
-            { "name": "Lynne Clough", "position": 24 },
-            { "name": "Jackie Redmayne", "position": 81 },
-            { "name": "Christine Sweatman", "position": 132 }
+            {
+              "name": "Lynne Clough",
+              "position": 24,
+              "seriesRunnerId": 182
+            },
+            {
+              "name": "Jackie Redmayne",
+              "position": 81,
+              "seriesRunnerId": 136
+            },
+            {
+              "name": "Christine Sweatman",
+              "position": 132,
+              "seriesRunnerId": 207
+            }
           ]
         },
         {
@@ -295,9 +559,21 @@
           "club": "red-rose",
           "total": 22,
           "scorers": [
-            { "name": "Debbie Porter", "position": 104 },
-            { "name": "Vicky Gore", "position": 109 },
-            { "name": "Sally Cape", "position": 113 }
+            {
+              "name": "Debbie Porter",
+              "position": 104,
+              "seriesRunnerId": 153
+            },
+            {
+              "name": "Vicky Gore",
+              "position": 109,
+              "seriesRunnerId": 229
+            },
+            {
+              "name": "Sally Cape",
+              "position": 113,
+              "seriesRunnerId": 160
+            }
           ]
         },
         {
@@ -306,7 +582,11 @@
           "club": "wesham",
           "total": 10,
           "scorers": [
-            { "name": "Debbie Myerscough", "position": 116 }
+            {
+              "name": "Debbie Myerscough",
+              "position": 116,
+              "seriesRunnerId": 247
+            }
           ]
         }
       ]
