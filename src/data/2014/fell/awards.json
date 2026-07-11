@@ -27,7 +27,10 @@
       "awards": [
         {
           "position": 1,
-          "name": "Jon Green"
+          "name": "Jon Green",
+          "club": "preston",
+          "ageCategory": "SEN",
+          "seriesRunnerId": 100
         }
       ]
     },
@@ -36,11 +39,15 @@
       "awards": [
         {
           "position": 1,
-          "name": "Darren Fishwick"
+          "name": "Darren Fishwick",
+          "club": "chorley",
+          "seriesRunnerId": 101
         },
         {
           "position": 2,
-          "name": "Mark Ellithorn"
+          "name": "Mark Ellithorn",
+          "club": "chorley",
+          "seriesRunnerId": 103
         }
       ],
       "ageCategory": "V40"
@@ -50,11 +57,15 @@
       "awards": [
         {
           "position": 1,
-          "name": "Alex Rowe"
+          "name": "Alex Rowe",
+          "club": "wesham",
+          "seriesRunnerId": 105
         },
         {
           "position": 2,
-          "name": "Stuart Cann"
+          "name": "Stuart Cann",
+          "club": "red-rose",
+          "seriesRunnerId": 110
         }
       ],
       "ageCategory": "V50"
@@ -64,7 +75,9 @@
       "awards": [
         {
           "position": 1,
-          "name": "George Fletcher"
+          "name": "George Fletcher",
+          "club": "red-rose",
+          "seriesRunnerId": 137
         }
       ],
       "ageCategory": "V60"
@@ -74,11 +87,17 @@
       "awards": [
         {
           "position": 1,
-          "name": "Joanna Goorney"
+          "name": "Joanna Goorney",
+          "club": "lytham",
+          "ageCategory": "V40",
+          "seriesRunnerId": 108
         },
         {
           "position": 2,
-          "name": "Paula Plowman"
+          "name": "Paula Plowman",
+          "club": "red-rose",
+          "ageCategory": "V50",
+          "seriesRunnerId": 120
         }
       ],
       "sex": "F"
