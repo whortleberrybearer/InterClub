@@ -5,8 +5,9 @@
             "awards": [
                 {
                     "position": 1,
-                    "name": "R. Affleck",
-                    "club": "preston"
+                    "name": "Rob Affleck",
+                    "club": "preston",
+                    "ageCategory": "V40"
                 }
             ]
         },
@@ -15,8 +16,9 @@
             "awards": [
                 {
                     "position": 1,
-                    "name": "J. Goorney",
-                    "club": "lytham"
+                    "name": "Joanna Goorney",
+                    "club": "lytham",
+                    "ageCategory": "V45"
                 }
             ],
             "sex": "F"
@@ -28,20 +30,20 @@
             "id": "open"
         },
         {
+            "club": "blackpool",
+            "id": "ladies"
+        },
+        {
             "club": "preston",
             "id": "vets"
         },
         {
             "club": "red-rose",
-            "id": "vet50"
+            "id": "v50"
         },
         {
             "club": "wesham",
-            "id": "vet60"
-        },
-        {
-            "club": "blackpool",
-            "id": "ladies"
+            "id": "v60"
         }
     ]
 }
