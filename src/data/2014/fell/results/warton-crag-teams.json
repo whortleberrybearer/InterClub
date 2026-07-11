@@ -1,554 +1,560 @@
-﻿{
-    "categories":  [
-                       {
-                           "id":  "open",
-                           "clubs":  [
-                                         {
-                                             "position":  1,
-                                             "scorers":  [
-                                                             {
-                                                                 "name":  "Darren Fishwick",
-                                                                 "position":  5
-                                                             },
-                                                             {
-                                                                 "name":  "Mark Ellithorn",
-                                                                 "position":  11
-                                                             },
-                                                             {
-                                                                 "name":  "Malc Christie",
-                                                                 "position":  17
-                                                             },
-                                                             {
-                                                                 "name":  "Bill Beckett",
-                                                                 "position":  19
-                                                             },
-                                                             {
-                                                                 "name":  "Paul Wareing",
-                                                                 "position":  27
-                                                             }
-                                                         ],
-                                             "total":  0,
-                                             "points":  6,
-                                             "club":  "chorley"
-                                         },
-                                         {
-                                             "position":  2,
-                                             "scorers":  [
-                                                             {
-                                                                 "name":  "Jon Green",
-                                                                 "position":  3
-                                                             },
-                                                             {
-                                                                 "name":  "John Rainford",
-                                                                 "position":  12
-                                                             },
-                                                             {
-                                                                 "name":  "Gordon Thompson",
-                                                                 "position":  34
-                                                             },
-                                                             {
-                                                                 "name":  "Steve Taylor",
-                                                                 "position":  36
-                                                             },
-                                                             {
-                                                                 "name":  "Jenny Gornall",
-                                                                 "position":  37
-                                                             }
-                                                         ],
-                                             "total":  0,
-                                             "points":  5,
-                                             "club":  "preston"
-                                         },
-                                         {
-                                             "position":  3,
-                                             "scorers":  [
-                                                             {
-                                                                 "name":  "Frank Nightingale",
-                                                                 "position":  26
-                                                             },
-                                                             {
-                                                                 "name":  "Philip Davidson",
-                                                                 "position":  33
-                                                             },
-                                                             {
-                                                                 "name":  "Paula Plowman",
-                                                                 "position":  41
-                                                             },
-                                                             {
-                                                                 "name":  "Steve Coey",
-                                                                 "position":  44
-                                                             },
-                                                             {
-                                                                 "name":  "Margaret Lupton",
-                                                                 "position":  45
-                                                             }
-                                                         ],
-                                             "total":  0,
-                                             "points":  4,
-                                             "club":  "red-rose"
-                                         },
-                                         {
-                                             "position":  4,
-                                             "scorers":  [
-                                                             {
-                                                                 "name":  "Alex Rowe",
-                                                                 "position":  8
-                                                             },
-                                                             {
-                                                                 "name":  "Steve Myerscough",
-                                                                 "position":  13
-                                                             },
-                                                             {
-                                                                 "name":  "John Collier",
-                                                                 "position":  18
-                                                             }
-                                                         ],
-                                             "total":  0,
-                                             "points":  3,
-                                             "club":  "wesham"
-                                         },
-                                         {
-                                             "position":  5,
-                                             "scorers":  [
-                                                             {
-                                                                 "name":  "Peter Singleton",
-                                                                 "position":  29
-                                                             },
-                                                             {
-                                                                 "name":  "Robert Massey",
-                                                                 "position":  51
-                                                             },
-                                                             {
-                                                                 "name":  "Bernard Singleton",
-                                                                 "position":  53
-                                                             }
-                                                         ],
-                                             "total":  0,
-                                             "points":  2,
-                                             "club":  "blackpool"
-                                         },
-                                         {
-                                             "position":  6,
-                                             "scorers":  [
-                                                             {
-                                                                 "name":  "Greg Oulton",
-                                                                 "position":  48
-                                                             },
-                                                             {
-                                                                 "name":  "Colin Laidlaw",
-                                                                 "position":  62
-                                                             }
-                                                         ],
-                                             "total":  0,
-                                             "points":  1,
-                                             "club":  "lytham"
-                                         }
-                                     ]
-                       },
-                       {
-                           "id":  "vets",
-                           "clubs":  [
-                                         {
-                                             "position":  1,
-                                             "scorers":  [
-                                                             {
-                                                                 "name":  "Darren Fishwick",
-                                                                 "position":  5
-                                                             },
-                                                             {
-                                                                 "name":  "Mark Ellithorn",
-                                                                 "position":  11
-                                                             },
-                                                             {
-                                                                 "name":  "Malc Christie",
-                                                                 "position":  17
-                                                             },
-                                                             {
-                                                                 "name":  "Bill Beckett",
-                                                                 "position":  19
-                                                             }
-                                                         ],
-                                             "total":  0,
-                                             "points":  6,
-                                             "club":  "chorley"
-                                         },
-                                         {
-                                             "position":  2,
-                                             "scorers":  [
-                                                             {
-                                                                 "name":  "John Rainford",
-                                                                 "position":  12
-                                                             },
-                                                             {
-                                                                 "name":  "Gordon Thompson",
-                                                                 "position":  34
-                                                             },
-                                                             {
-                                                                 "name":  "Steve Taylor",
-                                                                 "position":  36
-                                                             },
-                                                             {
-                                                                 "name":  "Alan Appleby",
-                                                                 "position":  43
-                                                             }
-                                                         ],
-                                             "total":  0,
-                                             "points":  5,
-                                             "club":  "preston"
-                                         },
-                                         {
-                                             "position":  3,
-                                             "scorers":  [
-                                                             {
-                                                                 "name":  "Frank Nightingale",
-                                                                 "position":  26
-                                                             },
-                                                             {
-                                                                 "name":  "Philip Davidson",
-                                                                 "position":  33
-                                                             },
-                                                             {
-                                                                 "name":  "Paula Plowman",
-                                                                 "position":  41
-                                                             },
-                                                             {
-                                                                 "name":  "Steve Coey",
-                                                                 "position":  44
-                                                             }
-                                                         ],
-                                             "total":  0,
-                                             "points":  4,
-                                             "club":  "red-rose"
-                                         },
-                                         {
-                                             "position":  4,
-                                             "scorers":  [
-                                                             {
-                                                                 "name":  "Alex Rowe",
-                                                                 "position":  8
-                                                             },
-                                                             {
-                                                                 "name":  "Steve Myerscough",
-                                                                 "position":  13
-                                                             },
-                                                             {
-                                                                 "name":  "John Collier",
-                                                                 "position":  18
-                                                             }
-                                                         ],
-                                             "total":  0,
-                                             "points":  3,
-                                             "club":  "wesham"
-                                         },
-                                         {
-                                             "position":  5,
-                                             "scorers":  [
-                                                             {
-                                                                 "name":  "Peter Singleton",
-                                                                 "position":  29
-                                                             },
-                                                             {
-                                                                 "name":  "Robert Massey",
-                                                                 "position":  51
-                                                             },
-                                                             {
-                                                                 "name":  "Bernard Singleton",
-                                                                 "position":  53
-                                                             }
-                                                         ],
-                                             "total":  0,
-                                             "points":  2,
-                                             "club":  "blackpool"
-                                         },
-                                         {
-                                             "position":  6,
-                                             "scorers":  [
-                                                             {
-                                                                 "name":  "Greg Oulton",
-                                                                 "position":  48
-                                                             },
-                                                             {
-                                                                 "name":  "Colin Laidlaw",
-                                                                 "position":  62
-                                                             }
-                                                         ],
-                                             "total":  0,
-                                             "points":  1,
-                                             "club":  "lytham"
-                                         }
-                                     ]
-                       },
-                       {
-                           "id":  "v50",
-                           "clubs":  [
-                                         {
-                                             "position":  1,
-                                             "scorers":  [
-                                                             {
-                                                                 "name":  "John Rainford",
-                                                                 "position":  12
-                                                             },
-                                                             {
-                                                                 "name":  "Gordon Thompson",
-                                                                 "position":  34
-                                                             },
-                                                             {
-                                                                 "name":  "Steve Taylor",
-                                                                 "position":  36
-                                                             }
-                                                         ],
-                                             "total":  0,
-                                             "points":  6,
-                                             "club":  "preston"
-                                         },
-                                         {
-                                             "position":  2,
-                                             "scorers":  [
-                                                             {
-                                                                 "name":  "Frank Nightingale",
-                                                                 "position":  26
-                                                             },
-                                                             {
-                                                                 "name":  "Philip Davidson",
-                                                                 "position":  33
-                                                             },
-                                                             {
-                                                                 "name":  "Paula Plowman",
-                                                                 "position":  41
-                                                             }
-                                                         ],
-                                             "total":  0,
-                                             "points":  5,
-                                             "club":  "red-rose"
-                                         },
-                                         {
-                                             "position":  3,
-                                             "scorers":  [
-                                                             {
-                                                                 "name":  "Malc Christie",
-                                                                 "position":  17
-                                                             },
-                                                             {
-                                                                 "name":  "Paul Wareing",
-                                                                 "position":  27
-                                                             },
-                                                             {
-                                                                 "name":  "Phil McCullagh",
-                                                                 "position":  55
-                                                             }
-                                                         ],
-                                             "total":  0,
-                                             "points":  4,
-                                             "club":  "chorley"
-                                         },
-                                         {
-                                             "position":  4,
-                                             "scorers":  [
-                                                             {
-                                                                 "name":  "Peter Singleton",
-                                                                 "position":  29
-                                                             },
-                                                             {
-                                                                 "name":  "Robert Massey",
-                                                                 "position":  51
-                                                             },
-                                                             {
-                                                                 "name":  "Bernard Singleton",
-                                                                 "position":  53
-                                                             }
-                                                         ],
-                                             "total":  0,
-                                             "points":  3,
-                                             "club":  "blackpool"
-                                         },
-                                         {
-                                             "position":  5,
-                                             "scorers":  [
-                                                             {
-                                                                 "name":  "Alex Rowe",
-                                                                 "position":  8
-                                                             },
-                                                             {
-                                                                 "name":  "John Collier",
-                                                                 "position":  18
-                                                             }
-                                                         ],
-                                             "total":  0,
-                                             "points":  2,
-                                             "club":  "wesham"
-                                         },
-                                         {
-                                             "position":  6,
-                                             "scorers":  [
-                                                             {
-                                                                 "name":  "Colin Laidlaw",
-                                                                 "position":  62
-                                                             }
-                                                         ],
-                                             "total":  0,
-                                             "points":  1,
-                                             "club":  "lytham"
-                                         }
-                                     ]
-                       },
-                       {
-                           "id":  "v60",
-                           "clubs":  [
-                                         {
-                                             "position":  1,
-                                             "scorers":  [
-                                                             {
-                                                                 "name":  "Robert Massey",
-                                                                 "position":  51
-                                                             },
-                                                             {
-                                                                 "name":  "Bernard Singleton",
-                                                                 "position":  53
-                                                             }
-                                                         ],
-                                             "total":  0,
-                                             "points":  6,
-                                             "club":  "blackpool"
-                                         },
-                                         {
-                                             "position":  2,
-                                             "scorers":  [
-                                                             {
-                                                                 "name":  "Les Paul",
-                                                                 "position":  58
-                                                             },
-                                                             {
-                                                                 "name":  "Tom Hilton",
-                                                                 "position":  60
-                                                             }
-                                                         ],
-                                             "total":  0,
-                                             "points":  5,
-                                             "club":  "chorley"
-                                         },
-                                         {
-                                             "position":  3,
-                                             "scorers":  [
-                                                             {
-                                                                 "name":  "John Collier",
-                                                                 "position":  18
-                                                             }
-                                                         ],
-                                             "total":  0,
-                                             "points":  4,
-                                             "club":  "wesham"
-                                         },
-                                         {
-                                             "position":  4,
-                                             "scorers":  [
-                                                             {
-                                                                 "name":  "Alan Appleby",
-                                                                 "position":  43
-                                                             }
-                                                         ],
-                                             "total":  0,
-                                             "points":  3,
-                                             "club":  "preston"
-                                         },
-                                         {
-                                             "position":  5,
-                                             "scorers":  [
-                                                             {
-                                                                 "name":  "George Fletcher",
-                                                                 "position":  56
-                                                             }
-                                                         ],
-                                             "total":  0,
-                                             "points":  2,
-                                             "club":  "red-rose"
-                                         },
-                                         {
-                                             "position":  6,
-                                             "scorers":  [
-
-                                                         ],
-                                             "total":  0,
-                                             "points":  0,
-                                             "club":  "lytham"
-                                         }
-                                     ]
-                       },
-                       {
-                           "id":  "ladies",
-                           "clubs":  [
-                                         {
-                                             "position":  1,
-                                             "scorers":  [
-                                                             {
-                                                                 "name":  "Paula Plowman",
-                                                                 "position":  41
-                                                             },
-                                                             {
-                                                                 "name":  "Margaret Lupton",
-                                                                 "position":  45
-                                                             },
-                                                             {
-                                                                 "name":  "Debbie Porter",
-                                                                 "position":  49
-                                                             }
-                                                         ],
-                                             "total":  0,
-                                             "points":  6,
-                                             "club":  "red-rose"
-                                         },
-                                         {
-                                             "position":  2,
-                                             "scorers":  [
-                                                             {
-                                                                 "name":  "Jenny Gornall",
-                                                                 "position":  37
-                                                             },
-                                                             {
-                                                                 "name":  "Victoria Cowling",
-                                                                 "position":  42
-                                                             }
-                                                         ],
-                                             "total":  0,
-                                             "points":  5,
-                                             "club":  "preston"
-                                         },
-                                         {
-                                             "position":  3,
-                                             "scorers":  [
-
-                                                         ],
-                                             "total":  0,
-                                             "points":  0,
-                                             "club":  "blackpool"
-                                         },
-                                         {
-                                             "position":  4,
-                                             "scorers":  [
-
-                                                         ],
-                                             "total":  0,
-                                             "points":  0,
-                                             "club":  "chorley"
-                                         },
-                                         {
-                                             "position":  5,
-                                             "scorers":  [
-
-                                                         ],
-                                             "total":  0,
-                                             "points":  0,
-                                             "club":  "lytham"
-                                         },
-                                         {
-                                             "position":  6,
-                                             "scorers":  [
-
-                                                         ],
-                                             "total":  0,
-                                             "points":  0,
-                                             "club":  "wesham"
-                                         }
-                                     ]
-                       }
-                   ]
+{
+  "categories": [
+    {
+      "id": "open",
+      "clubs": [
+        {
+          "position": 1,
+          "points": 6,
+          "club": "chorley",
+          "total": 33,
+          "scorers": [
+            {
+              "name": "Darren Fishwick",
+              "position": 2
+            },
+            {
+              "name": "Mark Ellithorn",
+              "position": 4
+            },
+            {
+              "name": "Malc Christie",
+              "position": 7
+            },
+            {
+              "name": "Bill Beckett",
+              "position": 9
+            },
+            {
+              "name": "Paul Wareing",
+              "position": 11
+            }
+          ]
+        },
+        {
+          "position": 2,
+          "points": 5,
+          "club": "preston",
+          "total": 51,
+          "scorers": [
+            {
+              "name": "Jon Green",
+              "position": 1
+            },
+            {
+              "name": "John Rainford",
+              "position": 5
+            },
+            {
+              "name": "Gordon Thompson",
+              "position": 14
+            },
+            {
+              "name": "Steve Taylor",
+              "position": 15
+            },
+            {
+              "name": "Jenny Gornall",
+              "position": 16
+            }
+          ]
+        },
+        {
+          "position": 3,
+          "points": 4,
+          "club": "red-rose",
+          "total": 81,
+          "scorers": [
+            {
+              "name": "Frank Nightingale",
+              "position": 10
+            },
+            {
+              "name": "Philip Davidson",
+              "position": 13
+            },
+            {
+              "name": "Paula Plowman",
+              "position": 17
+            },
+            {
+              "name": "Steve Coey",
+              "position": 20
+            },
+            {
+              "name": "Margaret Lupton",
+              "position": 21
+            }
+          ]
+        },
+        {
+          "position": 4,
+          "points": 3,
+          "club": "wesham",
+          "total": 17,
+          "scorers": [
+            {
+              "name": "Alex Rowe",
+              "position": 3
+            },
+            {
+              "name": "Steve Myerscough",
+              "position": 6
+            },
+            {
+              "name": "John Collier",
+              "position": 8
+            }
+          ]
+        },
+        {
+          "position": 5,
+          "points": 2,
+          "club": "blackpool",
+          "total": 62,
+          "scorers": [
+            {
+              "name": "Peter Singleton",
+              "position": 12
+            },
+            {
+              "name": "Robert Massey",
+              "position": 24
+            },
+            {
+              "name": "Bernard Singleton",
+              "position": 26
+            }
+          ]
+        },
+        {
+          "position": 6,
+          "points": 1,
+          "club": "lytham",
+          "total": 56,
+          "scorers": [
+            {
+              "name": "Greg Oulton",
+              "position": 22
+            },
+            {
+              "name": "Colin Laidlaw",
+              "position": 34
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "vets",
+      "clubs": [
+        {
+          "position": 1,
+          "points": 6,
+          "club": "chorley",
+          "total": 18,
+          "scorers": [
+            {
+              "name": "Darren Fishwick",
+              "position": 1
+            },
+            {
+              "name": "Mark Ellithorn",
+              "position": 3
+            },
+            {
+              "name": "Malc Christie",
+              "position": 6
+            },
+            {
+              "name": "Bill Beckett",
+              "position": 8
+            }
+          ]
+        },
+        {
+          "position": 2,
+          "points": 5,
+          "club": "preston",
+          "total": 47,
+          "scorers": [
+            {
+              "name": "John Rainford",
+              "position": 4
+            },
+            {
+              "name": "Gordon Thompson",
+              "position": 13
+            },
+            {
+              "name": "Steve Taylor",
+              "position": 14
+            },
+            {
+              "name": "Alan Appleby",
+              "position": 16
+            }
+          ]
+        },
+        {
+          "position": 3,
+          "points": 4,
+          "club": "red-rose",
+          "total": 53,
+          "scorers": [
+            {
+              "name": "Frank Nightingale",
+              "position": 9
+            },
+            {
+              "name": "Philip Davidson",
+              "position": 12
+            },
+            {
+              "name": "Paula Plowman",
+              "position": 15
+            },
+            {
+              "name": "Steve Coey",
+              "position": 17
+            }
+          ]
+        },
+        {
+          "position": 4,
+          "points": 3,
+          "club": "wesham",
+          "total": 14,
+          "scorers": [
+            {
+              "name": "Alex Rowe",
+              "position": 2
+            },
+            {
+              "name": "Steve Myerscough",
+              "position": 5
+            },
+            {
+              "name": "John Collier",
+              "position": 7
+            }
+          ]
+        },
+        {
+          "position": 5,
+          "points": 2,
+          "club": "blackpool",
+          "total": 55,
+          "scorers": [
+            {
+              "name": "Peter Singleton",
+              "position": 11
+            },
+            {
+              "name": "Robert Massey",
+              "position": 21
+            },
+            {
+              "name": "Bernard Singleton",
+              "position": 23
+            }
+          ]
+        },
+        {
+          "position": 6,
+          "points": 1,
+          "club": "lytham",
+          "total": 49,
+          "scorers": [
+            {
+              "name": "Greg Oulton",
+              "position": 19
+            },
+            {
+              "name": "Colin Laidlaw",
+              "position": 30
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "v50",
+      "clubs": [
+        {
+          "position": 1,
+          "points": 6,
+          "club": "preston",
+          "total": 21,
+          "scorers": [
+            {
+              "name": "John Rainford",
+              "position": 2
+            },
+            {
+              "name": "Gordon Thompson",
+              "position": 9
+            },
+            {
+              "name": "Steve Taylor",
+              "position": 10
+            }
+          ]
+        },
+        {
+          "position": 2,
+          "points": 5,
+          "club": "red-rose",
+          "total": 24,
+          "scorers": [
+            {
+              "name": "Frank Nightingale",
+              "position": 5
+            },
+            {
+              "name": "Philip Davidson",
+              "position": 8
+            },
+            {
+              "name": "Paula Plowman",
+              "position": 11
+            }
+          ]
+        },
+        {
+          "position": 3,
+          "points": 4,
+          "club": "chorley",
+          "total": 26,
+          "scorers": [
+            {
+              "name": "Malc Christie",
+              "position": 3
+            },
+            {
+              "name": "Paul Wareing",
+              "position": 6
+            },
+            {
+              "name": "Phil McCullagh",
+              "position": 17
+            }
+          ]
+        },
+        {
+          "position": 4,
+          "points": 3,
+          "club": "blackpool",
+          "total": 37,
+          "scorers": [
+            {
+              "name": "Peter Singleton",
+              "position": 7
+            },
+            {
+              "name": "Robert Massey",
+              "position": 14
+            },
+            {
+              "name": "Bernard Singleton",
+              "position": 16
+            }
+          ]
+        },
+        {
+          "position": 5,
+          "points": 2,
+          "club": "wesham",
+          "total": 5,
+          "scorers": [
+            {
+              "name": "Alex Rowe",
+              "position": 1
+            },
+            {
+              "name": "John Collier",
+              "position": 4
+            }
+          ]
+        },
+        {
+          "position": 6,
+          "points": 1,
+          "club": "lytham",
+          "total": 21,
+          "scorers": [
+            {
+              "name": "Colin Laidlaw",
+              "position": 21
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "v60",
+      "clubs": [
+        {
+          "position": 1,
+          "points": 6,
+          "club": "blackpool",
+          "total": 7,
+          "scorers": [
+            {
+              "name": "Robert Massey",
+              "position": 3
+            },
+            {
+              "name": "Bernard Singleton",
+              "position": 4
+            }
+          ]
+        },
+        {
+          "position": 2,
+          "points": 5,
+          "club": "chorley",
+          "total": 13,
+          "scorers": [
+            {
+              "name": "Les Paul",
+              "position": 6
+            },
+            {
+              "name": "Tom Hilton",
+              "position": 7
+            }
+          ]
+        },
+        {
+          "position": 3,
+          "points": 4,
+          "club": "wesham",
+          "total": 1,
+          "scorers": [
+            {
+              "name": "John Collier",
+              "position": 1
+            }
+          ]
+        },
+        {
+          "position": 4,
+          "points": 3,
+          "club": "preston",
+          "total": 2,
+          "scorers": [
+            {
+              "name": "Alan Appleby",
+              "position": 2
+            }
+          ]
+        },
+        {
+          "position": 5,
+          "points": 2,
+          "club": "red-rose",
+          "total": 5,
+          "scorers": [
+            {
+              "name": "George Fletcher",
+              "position": 5
+            }
+          ]
+        },
+        {
+          "position": 6,
+          "points": 0,
+          "club": "lytham",
+          "total": 0,
+          "scorers": []
+        }
+      ]
+    },
+    {
+      "id": "ladies",
+      "clubs": [
+        {
+          "position": 1,
+          "points": 6,
+          "club": "red-rose",
+          "total": 41,
+          "scorers": [
+            {
+              "name": "Paula Plowman",
+              "position": 2
+            },
+            {
+              "name": "Margaret Lupton",
+              "position": 4
+            },
+            {
+              "name": "Debbie Porter",
+              "position": 5
+            },
+            {
+              "name": "Sally Cape",
+              "position": 6
+            },
+            {
+              "name": "Pita Oates",
+              "position": 7
+            },
+            {
+              "name": "Aimee Midgely",
+              "position": 8
+            },
+            {
+              "name": "Lisa Hyde",
+              "position": 9
+            }
+          ]
+        },
+        {
+          "position": 2,
+          "points": 5,
+          "club": "preston",
+          "total": 4,
+          "scorers": [
+            {
+              "name": "Jenny Gornall",
+              "position": 1
+            },
+            {
+              "name": "Victoria Cowling",
+              "position": 3
+            }
+          ]
+        },
+        {
+          "position": 3,
+          "points": 0,
+          "club": "blackpool",
+          "total": 0,
+          "scorers": []
+        },
+        {
+          "position": 4,
+          "points": 0,
+          "club": "chorley",
+          "total": 0,
+          "scorers": []
+        },
+        {
+          "position": 5,
+          "points": 0,
+          "club": "lytham",
+          "total": 0,
+          "scorers": []
+        },
+        {
+          "position": 6,
+          "points": 0,
+          "club": "wesham",
+          "total": 0,
+          "scorers": []
+        }
+      ]
+    }
+  ]
 }
