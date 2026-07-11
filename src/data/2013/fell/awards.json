@@ -27,50 +27,67 @@
       "awards": [
         {
           "position": 1,
-          "name": "Lee Barlow"
+          "name": "Lee Barlow",
+          "club": "wesham",
+          "ageCategory": "V40",
+          "seriesRunnerId": 103
         }
       ]
     },
     {
-      "id": "m-sen",
+      "id": "m",
       "awards": [
         {
           "position": 1,
-          "name": "Ben Donoghue"
+          "name": "Ben Donoghue",
+          "club": "red-rose",
+          "ageCategory": "SEN",
+          "seriesRunnerId": 125
         }
       ],
-      "sex": "M",
-      "ageCategory": "SEN"
+      "sex": "M"
     },
     {
-      "id": "f-sen",
+      "id": "f",
       "awards": [
         {
           "position": 1,
-          "name": "Kath Hoyer"
+          "name": "Kath Hoyer",
+          "club": "wesham",
+          "ageCategory": "V50",
+          "seriesRunnerId": 133
         },
         {
           "position": 2,
-          "name": "Debbie Cooper"
+          "name": "Debbie Cooper",
+          "club": "lytham",
+          "ageCategory": "SEN",
+          "seriesRunnerId": 135
         },
         {
           "position": 3,
-          "name": "Jenny Salt"
+          "name": "Jenny Salt",
+          "club": "wesham",
+          "ageCategory": "SEN",
+          "seriesRunnerId": 161
         }
       ],
-      "sex": "F",
-      "ageCategory": "SEN"
+      "sex": "F"
     },
     {
       "id": "m-v40",
       "awards": [
         {
           "position": 2,
-          "name": "Darren Fishwick"
+          "name": "Darren Fishwick",
+          "club": "chorley",
+          "seriesRunnerId": 102
         },
         {
           "position": 3,
-          "name": "Jason Barlow"
+          "name": "Jason Barlow",
+          "club": "wesham",
+          "seriesRunnerId": 112
         }
       ],
       "sex": "M",
@@ -81,15 +98,21 @@
       "awards": [
         {
           "position": 1,
-          "name": "Alex Rowe"
+          "name": "Alex Rowe",
+          "club": "wesham",
+          "seriesRunnerId": 108
         },
         {
           "position": 2,
-          "name": "Fred Lynch"
+          "name": "Fred Lynch",
+          "club": "red-rose",
+          "seriesRunnerId": 150
         },
         {
           "position": 3,
-          "name": "John Collier"
+          "name": "John Collier",
+          "club": "wesham",
+          "seriesRunnerId": 115
         }
       ],
       "sex": "M",
@@ -100,7 +123,9 @@
       "awards": [
         {
           "position": 1,
-          "name": "Graham Schofield"
+          "name": "Graham Schofield",
+          "club": "chorley",
+          "seriesRunnerId": 131
         }
       ],
       "sex": "M",
