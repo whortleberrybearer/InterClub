@@ -72,6 +72,9 @@ const pairedAwards = (() => {
                       {a.runnerUrl
                         ? <a href={a.runnerUrl} class="font-medium link link-hover">{a.name}</a>
                         : <span class="font-medium">{a.name}</span>}
+                      {cat.showAgeCategory && a.ageCategory && (
+                        <span class="badge badge-sm font-normal">{a.ageCategory}</span>
+                      )}
                       <span class="text-content/50 text-xs">{a.clubName}</span>
                     </div>
                   ))}
@@ -95,6 +98,9 @@ const pairedAwards = (() => {
                           {a.runnerUrl
                             ? <a href={a.runnerUrl} class="font-medium link link-hover">{a.name}</a>
                             : <span class="font-medium">{a.name}</span>}
+                          {male.showAgeCategory && a.ageCategory && (
+                            <span class="badge badge-sm font-normal">{a.ageCategory}</span>
+                          )}
                           <span class="text-content/50 text-xs">{a.clubName}</span>
                         </div>
                       ))}
@@ -111,6 +117,9 @@ const pairedAwards = (() => {
                           {a.runnerUrl
                             ? <a href={a.runnerUrl} class="font-medium link link-hover">{a.name}</a>
                             : <span class="font-medium">{a.name}</span>}
+                          {female.showAgeCategory && a.ageCategory && (
+                            <span class="badge badge-sm font-normal">{a.ageCategory}</span>
+                          )}
                           <span class="text-content/50 text-xs">{a.clubName}</span>
                         </div>
                       ))}
