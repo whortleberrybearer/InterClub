@@ -5,6 +5,10 @@
       "club": "preston"
     },
     {
+      "id": "ladies",
+      "club": "red-rose"
+    },
+    {
       "id": "vets",
       "club": "preston"
     },
@@ -15,10 +19,6 @@
     {
       "id": "v60",
       "club": "chorley"
-    },
-    {
-      "id": "ladies",
-      "club": "red-rose"
     }
   ],
   "individualAwards": [
@@ -33,7 +33,7 @@
       ]
     },
     {
-      "id": "v40",
+      "id": "m-v40",
       "awards": [
         {
           "position": 1,
@@ -46,6 +46,7 @@
           "club": "red-rose"
         }
       ],
+      "sex": "M",
       "ageCategory": "V40"
     },
     {
@@ -60,7 +61,7 @@
       "sex": "M"
     },
     {
-      "id": "v50",
+      "id": "m-v50",
       "awards": [
         {
           "position": 2,
@@ -68,6 +69,7 @@
           "club": "preston"
         }
       ],
+      "sex": "M",
       "ageCategory": "V50"
     },
     {
@@ -82,18 +84,20 @@
       "sex": "F"
     },
     {
-      "id": "f",
+      "id": "f-v40",
       "awards": [
         {
           "position": 1,
           "name": "Paula Plowman",
-          "club": "red-rose"
+          "club": "red-rose",
+          "ageCategory": "V40"
         }
       ],
-      "sex": "F"
+      "sex": "F",
+      "ageCategory": "V40"
     },
     {
-      "id": "v60",
+      "id": "m-v60",
       "awards": [
         {
           "position": 1,
@@ -101,6 +105,7 @@
           "club": "chorley"
         }
       ],
+      "sex": "M",
       "ageCategory": "V60"
     }
   ]
