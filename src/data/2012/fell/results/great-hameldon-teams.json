@@ -70,10 +70,13 @@
         },
         {
           "position": 6,
-          "points": 0,
+          "points": 58,
           "club": "blackpool",
-          "total": 0,
-          "scorers": []
+          "total": 58,
+          "scorers": [
+            { "name": "Jeffrey Wright", "position": 130 },
+            { "name": "Peter Gibson", "position": 151 }
+          ]
         }
       ]
     },
@@ -86,10 +89,10 @@
           "club": "wesham",
           "total": 22,
           "scorers": [
+            { "name": "Alex Rowe", "position": 6 },
             { "name": "Lee Barlow", "position": 51 },
             { "name": "Gary Moore", "position": 59 },
-            { "name": "John Collier", "position": 63 },
-            { "name": "Nigel Shepherd", "position": 101 }
+            { "name": "John Collier", "position": 63 }
           ]
         },
         {
@@ -129,17 +132,23 @@
         },
         {
           "position": 5,
-          "points": 0,
-          "club": "lytham",
-          "total": 0,
-          "scorers": []
+          "points": 40,
+          "club": "blackpool",
+          "total": 40,
+          "scorers": [
+            { "name": "Jeffrey Wright", "position": 130 },
+            { "name": "Peter Gibson", "position": 151 }
+          ]
         },
         {
           "position": 6,
-          "points": 0,
-          "club": "blackpool",
-          "total": 0,
-          "scorers": []
+          "points": 41,
+          "club": "lytham",
+          "total": 41,
+          "scorers": [
+            { "name": "Steve Quarmby", "position": 88 },
+            { "name": "Dawn Lock", "position": 201 }
+          ]
         }
       ]
     },
@@ -170,10 +179,14 @@
         },
         {
           "position": 3,
-          "points": 0,
-          "club": "preston",
-          "total": 0,
-          "scorers": []
+          "points": 42,
+          "club": "chorley",
+          "total": 42,
+          "scorers": [
+            { "name": "John Minton", "position": 169 },
+            { "name": "Phil McCullagh", "position": 188 },
+            { "name": "Tom Hilton", "position": 199 }
+          ]
         },
         {
           "position": 4,
@@ -188,16 +201,17 @@
         {
           "position": 5,
           "points": 23,
-          "club": "chorley",
+          "club": "lytham",
           "total": 23,
           "scorers": [
-            { "name": "Phil McCullagh", "position": 188 }
+            { "name": "Steve Quarmby", "position": 88 },
+            { "name": "Dawn Lock", "position": 201 }
           ]
         },
         {
           "position": 6,
           "points": 0,
-          "club": "lytham",
+          "club": "preston",
           "total": 0,
           "scorers": []
         }
@@ -289,21 +303,21 @@
         {
           "position": 4,
           "points": 0,
-          "club": "chorley",
+          "club": "blackpool",
           "total": 0,
           "scorers": []
         },
         {
           "position": 5,
           "points": 0,
-          "club": "preston",
+          "club": "chorley",
           "total": 0,
           "scorers": []
         },
         {
           "position": 6,
           "points": 0,
-          "club": "blackpool",
+          "club": "preston",
           "total": 0,
           "scorers": []
         }
