@@ -81,6 +81,60 @@
       ]
     },
     {
+      "id": "ladies",
+      "clubs": [
+        {
+          "position": 1,
+          "points": 9,
+          "club": "red-rose",
+          "total": 9,
+          "scorers": [
+            { "name": "Claire Bunce", "position": 104 },
+            { "name": "Paula Plowman", "position": 142 },
+            { "name": "Glenda Dobie", "position": 153 }
+          ]
+        },
+        {
+          "position": 2,
+          "points": 8,
+          "club": "lytham",
+          "total": 8,
+          "scorers": [
+            { "name": "Melanie Koth", "position": 89 },
+            { "name": "Down Lock", "position": 201 }
+          ]
+        },
+        {
+          "position": 3,
+          "points": 0,
+          "club": "wesham",
+          "total": 0,
+          "scorers": []
+        },
+        {
+          "position": 4,
+          "points": 0,
+          "club": "blackpool",
+          "total": 0,
+          "scorers": []
+        },
+        {
+          "position": 5,
+          "points": 0,
+          "club": "chorley",
+          "total": 0,
+          "scorers": []
+        },
+        {
+          "position": 6,
+          "points": 0,
+          "club": "preston",
+          "total": 0,
+          "scorers": []
+        }
+      ]
+    },
+    {
       "id": "vets",
       "clubs": [
         {
@@ -264,60 +318,6 @@
           "position": 6,
           "points": 0,
           "club": "blackpool",
-          "total": 0,
-          "scorers": []
-        }
-      ]
-    },
-    {
-      "id": "ladies",
-      "clubs": [
-        {
-          "position": 1,
-          "points": 9,
-          "club": "red-rose",
-          "total": 9,
-          "scorers": [
-            { "name": "Claire Bunce", "position": 104 },
-            { "name": "Paula Plowman", "position": 142 },
-            { "name": "Glenda Dobie", "position": 153 }
-          ]
-        },
-        {
-          "position": 2,
-          "points": 8,
-          "club": "lytham",
-          "total": 8,
-          "scorers": [
-            { "name": "Melanie Koth", "position": 89 },
-            { "name": "Down Lock", "position": 201 }
-          ]
-        },
-        {
-          "position": 3,
-          "points": 0,
-          "club": "wesham",
-          "total": 0,
-          "scorers": []
-        },
-        {
-          "position": 4,
-          "points": 0,
-          "club": "blackpool",
-          "total": 0,
-          "scorers": []
-        },
-        {
-          "position": 5,
-          "points": 0,
-          "club": "chorley",
-          "total": 0,
-          "scorers": []
-        },
-        {
-          "position": 6,
-          "points": 0,
-          "club": "preston",
           "total": 0,
           "scorers": []
         }

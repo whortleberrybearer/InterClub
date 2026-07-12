@@ -80,6 +80,72 @@
       ]
     },
     {
+      "id": "ladies",
+      "clubs": [
+        {
+          "position": 1,
+          "points": 15,
+          "club": "red-rose",
+          "total": 15,
+          "scorers": [
+            { "name": "Claire Bunce", "position": 79 },
+            { "name": "Paula Plowman", "position": 168 },
+            { "name": "Glenda Dobie", "position": 173 }
+          ]
+        },
+        {
+          "position": 2,
+          "points": 21,
+          "club": "lytham",
+          "total": 21,
+          "scorers": [
+            { "name": "Melanie Koth", "position": 85 },
+            { "name": "Debbie Cooper", "position": 177 },
+            { "name": "Laura Ashworth", "position": 212 }
+          ]
+        },
+        {
+          "position": 3,
+          "points": 23,
+          "club": "preston",
+          "total": 23,
+          "scorers": [
+            { "name": "Nichola Jackson", "position": 50 },
+            { "name": "Elspeth Pennington", "position": 193 },
+            { "name": "Rebecca Porter", "position": 216 }
+          ]
+        },
+        {
+          "position": 4,
+          "points": 9,
+          "club": "wesham",
+          "total": 9,
+          "scorers": [
+            { "name": "Helen Lawrence", "position": 159 },
+            { "name": "Kath Hoyer", "position": 167 }
+          ]
+        },
+        {
+          "position": 5,
+          "points": 16,
+          "club": "blackpool",
+          "total": 16,
+          "scorers": [
+            { "name": "Tanya Barlow", "position": 227 }
+          ]
+        },
+        {
+          "position": 6,
+          "points": 18,
+          "club": "chorley",
+          "total": 18,
+          "scorers": [
+            { "name": "Sarah Heys", "position": 241 }
+          ]
+        }
+      ]
+    },
+    {
       "id": "vets",
       "clubs": [
         {
@@ -273,72 +339,6 @@
           "club": "wesham",
           "total": 0,
           "scorers": []
-        }
-      ]
-    },
-    {
-      "id": "ladies",
-      "clubs": [
-        {
-          "position": 1,
-          "points": 15,
-          "club": "red-rose",
-          "total": 15,
-          "scorers": [
-            { "name": "Claire Bunce", "position": 79 },
-            { "name": "Paula Plowman", "position": 168 },
-            { "name": "Glenda Dobie", "position": 173 }
-          ]
-        },
-        {
-          "position": 2,
-          "points": 21,
-          "club": "lytham",
-          "total": 21,
-          "scorers": [
-            { "name": "Melanie Koth", "position": 85 },
-            { "name": "Debbie Cooper", "position": 177 },
-            { "name": "Laura Ashworth", "position": 212 }
-          ]
-        },
-        {
-          "position": 3,
-          "points": 23,
-          "club": "preston",
-          "total": 23,
-          "scorers": [
-            { "name": "Nichola Jackson", "position": 50 },
-            { "name": "Elspeth Pennington", "position": 193 },
-            { "name": "Rebecca Porter", "position": 216 }
-          ]
-        },
-        {
-          "position": 4,
-          "points": 9,
-          "club": "wesham",
-          "total": 9,
-          "scorers": [
-            { "name": "Helen Lawrence", "position": 159 },
-            { "name": "Kath Hoyer", "position": 167 }
-          ]
-        },
-        {
-          "position": 5,
-          "points": 16,
-          "club": "blackpool",
-          "total": 16,
-          "scorers": [
-            { "name": "Tanya Barlow", "position": 227 }
-          ]
-        },
-        {
-          "position": 6,
-          "points": 18,
-          "club": "chorley",
-          "total": 18,
-          "scorers": [
-            { "name": "Sarah Heys", "position": 241 }
-          ]
         }
       ]
     }
