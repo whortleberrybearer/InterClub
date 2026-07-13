@@ -1,934 +1,1099 @@
-﻿{
-    "categories":  [
-                       {
-                           "id":  "open",
-                           "clubs":  [
-                                         {
-                                             "position":  1,
-                                             "points":  6,
-                                             "club":  "preston",
-                                             "total":  87,
-                                             "scorers":  [
-                                                             {
-                                                                 "position":  1,
-                                                                 "name":  "Gary Pennington"
-                                                             },
-                                                             {
-                                                                 "position":  2,
-                                                                 "name":  "Rob Affleck"
-                                                             },
-                                                             {
-                                                                 "position":  3,
-                                                                 "name":  "David Rigby"
-                                                             },
-                                                             {
-                                                                 "position":  4,
-                                                                 "name":  "Jon Green"
-                                                             },
-                                                             {
-                                                                 "position":  6,
-                                                                 "name":  "Gethin Butler"
-                                                             },
-                                                             {
-                                                                 "position":  7,
-                                                                 "name":  "Steve Hallas"
-                                                             },
-                                                             {
-                                                                 "position":  12,
-                                                                 "name":  "David Watson"
-                                                             },
-                                                             {
-                                                                 "position":  15,
-                                                                 "name":  "Mark Lee"
-                                                             },
-                                                             {
-                                                                 "position":  17,
-                                                                 "name":  "David Barker"
-                                                             },
-                                                             {
-                                                                 "position":  20,
-                                                                 "name":  "Neil McDonald"
-                                                             }
-                                                         ]
-                                         },
-                                         {
-                                             "position":  2,
-                                             "points":  5,
-                                             "club":  "wesham",
-                                             "total":  241,
-                                             "scorers":  [
-                                                             {
-                                                                 "position":  8,
-                                                                 "name":  "Barry Norman"
-                                                             },
-                                                             {
-                                                                 "position":  11,
-                                                                 "name":  "Jason Barlow"
-                                                             },
-                                                             {
-                                                                 "position":  18,
-                                                                 "name":  "Lee Barlow"
-                                                             },
-                                                             {
-                                                                 "position":  25,
-                                                                 "name":  "Trevor Raynor"
-                                                             },
-                                                             {
-                                                                 "position":  26,
-                                                                 "name":  "John Collier"
-                                                             },
-                                                             {
-                                                                 "position":  27,
-                                                                 "name":  "Gary De-Banke"
-                                                             },
-                                                             {
-                                                                 "position":  29,
-                                                                 "name":  "Mick Edge"
-                                                             },
-                                                             {
-                                                                 "position":  30,
-                                                                 "name":  "Alan Hudson"
-                                                             },
-                                                             {
-                                                                 "position":  32,
-                                                                 "name":  "Mark Belfield"
-                                                             },
-                                                             {
-                                                                 "position":  35,
-                                                                 "name":  "Russ Mabbett"
-                                                             }
-                                                         ]
-                                         },
-                                         {
-                                             "position":  3,
-                                             "points":  4,
-                                             "club":  "lytham",
-                                             "total":  407,
-                                             "scorers":  [
-                                                             {
-                                                                 "position":  19,
-                                                                 "name":  "Peter Cruse"
-                                                             },
-                                                             {
-                                                                 "position":  28,
-                                                                 "name":  "Gavin Brandie"
-                                                             },
-                                                             {
-                                                                 "position":  31,
-                                                                 "name":  "Graham Webster"
-                                                             },
-                                                             {
-                                                                 "position":  33,
-                                                                 "name":  "Andrew Draper"
-                                                             },
-                                                             {
-                                                                 "position":  42,
-                                                                 "name":  "Terry Hellings"
-                                                             },
-                                                             {
-                                                                 "position":  44,
-                                                                 "name":  "Dave Dunn"
-                                                             },
-                                                             {
-                                                                 "position":  48,
-                                                                 "name":  "Rachel Crowe"
-                                                             },
-                                                             {
-                                                                 "position":  50,
-                                                                 "name":  "Mark Willett"
-                                                             },
-                                                             {
-                                                                 "position":  55,
-                                                                 "name":  "Todd Wheeler"
-                                                             },
-                                                             {
-                                                                 "position":  57,
-                                                                 "name":  "Colin Nelson"
-                                                             }
-                                                         ]
-                                         },
-                                         {
-                                             "position":  4,
-                                             "points":  3,
-                                             "club":  "blackpool",
-                                             "total":  413,
-                                             "scorers":  [
-                                                             {
-                                                                 "position":  5,
-                                                                 "name":  "Phillip Leybourne"
-                                                             },
-                                                             {
-                                                                 "position":  10,
-                                                                 "name":  "John Wright"
-                                                             },
-                                                             {
-                                                                 "position":  16,
-                                                                 "name":  "Luke Berry"
-                                                             },
-                                                             {
-                                                                 "position":  36,
-                                                                 "name":  "Carolyn Robbins"
-                                                             },
-                                                             {
-                                                                 "position":  40,
-                                                                 "name":  "Peter Broome"
-                                                             },
-                                                             {
-                                                                 "position":  47,
-                                                                 "name":  "David Brooks"
-                                                             },
-                                                             {
-                                                                 "position":  51,
-                                                                 "name":  "Stasia Bligh"
-                                                             },
-                                                             {
-                                                                 "position":  67,
-                                                                 "name":  "Andrea Smith"
-                                                             },
-                                                             {
-                                                                 "position":  69,
-                                                                 "name":  "Dave Skinner"
-                                                             },
-                                                             {
-                                                                 "position":  72,
-                                                                 "name":  "David Dyson"
-                                                             }
-                                                         ]
-                                         },
-                                         {
-                                             "position":  5,
-                                             "points":  2,
-                                             "club":  "chorley-ac",
-                                             "total":  417,
-                                             "scorers":  [
-                                                             {
-                                                                 "position":  9,
-                                                                 "name":  "Luke Betts"
-                                                             },
-                                                             {
-                                                                 "position":  13,
-                                                                 "name":  "Adam Sciacca"
-                                                             },
-                                                             {
-                                                                 "position":  14,
-                                                                 "name":  "Ryan Sciacca"
-                                                             },
-                                                             {
-                                                                 "position":  39,
-                                                                 "name":  "Paul Wareing"
-                                                             },
-                                                             {
-                                                                 "position":  41,
-                                                                 "name":  "Dave Kershaw"
-                                                             },
-                                                             {
-                                                                 "position":  56,
-                                                                 "name":  "Simon Townsend"
-                                                             },
-                                                             {
-                                                                 "position":  59,
-                                                                 "name":  "Emma Perin"
-                                                             },
-                                                             {
-                                                                 "position":  60,
-                                                                 "name":  "Paul Clyne"
-                                                             },
-                                                             {
-                                                                 "position":  61,
-                                                                 "name":  "David Taylor"
-                                                             },
-                                                             {
-                                                                 "position":  65,
-                                                                 "name":  "Ian Walker"
-                                                             }
-                                                         ]
-                                         },
-                                         {
-                                             "position":  6,
-                                             "points":  1,
-                                             "club":  "red-rose",
-                                             "total":  1136,
-                                             "scorers":  [
-                                                             {
-                                                                 "position":  34,
-                                                                 "name":  "Ken Addison"
-                                                             },
-                                                             {
-                                                                 "position":  94,
-                                                                 "name":  "Barry Wheeler"
-                                                             },
-                                                             {
-                                                                 "position":  103,
-                                                                 "name":  "Charlene Johnson"
-                                                             },
-                                                             {
-                                                                 "position":  112,
-                                                                 "name":  "Carol Douglas"
-                                                             },
-                                                             {
-                                                                 "position":  119,
-                                                                 "name":  "Roger Johnson"
-                                                             },
-                                                             {
-                                                                 "position":  123,
-                                                                 "name":  "Joan Gouldthorpe"
-                                                             },
-                                                             {
-                                                                 "position":  129,
-                                                                 "name":  "Yvonne Johnson"
-                                                             },
-                                                             {
-                                                                 "position":  130,
-                                                                 "name":  "Albert Bolton"
-                                                             },
-                                                             {
-                                                                 "position":  143,
-                                                                 "name":  "Allan Fitchett"
-                                                             },
-                                                             {
-                                                                 "position":  149,
-                                                                 "name":  "Evelyn Elkington"
-                                                             }
-                                                         ]
-                                         }
-                                     ]
-                       },
-                       {
-                           "id":  "ladies",
-                           "clubs":  [
-                                         {
-                                             "position":  1,
-                                             "points":  6,
-                                             "club":  "preston",
-                                             "total":  44,
-                                             "scorers":  [
-                                                             {
-                                                                 "position":  2,
-                                                                 "name":  "Phillipa Walsh"
-                                                             },
-                                                             {
-                                                                 "position":  3,
-                                                                 "name":  "Gema Adams"
-                                                             },
-                                                             {
-                                                                 "position":  10,
-                                                                 "name":  "Robyn Anderson"
-                                                             },
-                                                             {
-                                                                 "position":  14,
-                                                                 "name":  "Claire McDermott"
-                                                             },
-                                                             {
-                                                                 "position":  15,
-                                                                 "name":  "Helen Houlding"
-                                                             }
-                                                         ]
-                                         },
-                                         {
-                                             "position":  2,
-                                             "points":  5,
-                                             "club":  "blackpool",
-                                             "total":  50,
-                                             "scorers":  [
-                                                             {
-                                                                 "position":  1,
-                                                                 "name":  "Carolyn Robbins"
-                                                             },
-                                                             {
-                                                                 "position":  5,
-                                                                 "name":  "Stasia Bligh"
-                                                             },
-                                                             {
-                                                                 "position":  11,
-                                                                 "name":  "Andrea Smith"
-                                                             },
-                                                             {
-                                                                 "position":  16,
-                                                                 "name":  "Morag O\u0027Neill"
-                                                             },
-                                                             {
-                                                                 "position":  17,
-                                                                 "name":  "Laura Lawler"
-                                                             }
-                                                         ]
-                                         },
-                                         {
-                                             "position":  3,
-                                             "points":  4,
-                                             "club":  "wesham",
-                                             "total":  63,
-                                             "scorers":  [
-                                                             {
-                                                                 "position":  6,
-                                                                 "name":  "Carmel Sullivan"
-                                                             },
-                                                             {
-                                                                 "position":  7,
-                                                                 "name":  "Sarah Sherratt"
-                                                             },
-                                                             {
-                                                                 "position":  9,
-                                                                 "name":  "Michaela Dempsey"
-                                                             },
-                                                             {
-                                                                 "position":  18,
-                                                                 "name":  "Helen Lawrenson"
-                                                             },
-                                                             {
-                                                                 "position":  23,
-                                                                 "name":  "Nicola Unsworth"
-                                                             }
-                                                         ]
-                                         },
-                                         {
-                                             "position":  4,
-                                             "points":  3,
-                                             "club":  "lytham",
-                                             "total":  84,
-                                             "scorers":  [
-                                                             {
-                                                                 "position":  4,
-                                                                 "name":  "Rachel Crowe"
-                                                             },
-                                                             {
-                                                                 "position":  12,
-                                                                 "name":  "Lucinda McNiven"
-                                                             },
-                                                             {
-                                                                 "position":  13,
-                                                                 "name":  "Melanie Koth"
-                                                             },
-                                                             {
-                                                                 "position":  25,
-                                                                 "name":  "Laura Ashworth"
-                                                             },
-                                                             {
-                                                                 "position":  30,
-                                                                 "name":  "Debbie Cooper"
-                                                             }
-                                                         ]
-                                         },
-                                         {
-                                             "position":  5,
-                                             "points":  2,
-                                             "club":  "red-rose",
-                                             "total":  157,
-                                             "scorers":  [
-                                                             {
-                                                                 "position":  24,
-                                                                 "name":  "Charlene Johnson"
-                                                             },
-                                                             {
-                                                                 "position":  28,
-                                                                 "name":  "Carol Douglas"
-                                                             },
-                                                             {
-                                                                 "position":  32,
-                                                                 "name":  "Joan Gouldthorpe"
-                                                             },
-                                                             {
-                                                                 "position":  33,
-                                                                 "name":  "Yvonne Johnson"
-                                                             },
-                                                             {
-                                                                 "position":  40,
-                                                                 "name":  "Evelyn Elkington"
-                                                             }
-                                                         ]
-                                         },
-                                         {
-                                             "position":  6,
-                                             "points":  1,
-                                             "club":  "chorley-ac",
-                                             "total":  207,
-                                             "scorers":  [
-                                                             {
-                                                                 "position":  8,
-                                                                 "name":  "Emma Perin"
-                                                             },
-                                                             {
-                                                                 "position":  35,
-                                                                 "name":  "Jeanette Murray"
-                                                             },
-                                                             {
-                                                                 "position":  37,
-                                                                 "name":  "Christine Sweatman"
-                                                             }
-                                                         ]
-                                         }
-                                     ]
-                       },
-                       {
-                           "id":  "vets",
-                           "clubs":  [
-                                         {
-                                             "position":  1,
-                                             "points":  6,
-                                             "club":  "preston",
-                                             "total":  35,
-                                             "scorers":  [
-                                                             {
-                                                                 "position":  1,
-                                                                 "name":  "Gary Pennington"
-                                                             },
-                                                             {
-                                                                 "position":  3,
-                                                                 "name":  "Gethin Butler"
-                                                             },
-                                                             {
-                                                                 "position":  6,
-                                                                 "name":  "David Watson"
-                                                             },
-                                                             {
-                                                                 "position":  7,
-                                                                 "name":  "Mark Lee"
-                                                             },
-                                                             {
-                                                                 "position":  8,
-                                                                 "name":  "David Barker"
-                                                             },
-                                                             {
-                                                                 "position":  10,
-                                                                 "name":  "Neil McDonald"
-                                                             }
-                                                         ]
-                                         },
-                                         {
-                                             "position":  2,
-                                             "points":  5,
-                                             "club":  "wesham",
-                                             "total":  85,
-                                             "scorers":  [
-                                                             {
-                                                                 "position":  5,
-                                                                 "name":  "Jason Barlow"
-                                                             },
-                                                             {
-                                                                 "position":  14,
-                                                                 "name":  "Trevor Raynor"
-                                                             },
-                                                             {
-                                                                 "position":  15,
-                                                                 "name":  "John Collier"
-                                                             },
-                                                             {
-                                                                 "position":  16,
-                                                                 "name":  "Gary De-Banke"
-                                                             },
-                                                             {
-                                                                 "position":  17,
-                                                                 "name":  "Mick Edge"
-                                                             },
-                                                             {
-                                                                 "position":  18,
-                                                                 "name":  "Alan Hudson"
-                                                             }
-                                                         ]
-                                         },
-                                         {
-                                             "position":  3,
-                                             "points":  4,
-                                             "club":  "blackpool",
-                                             "total":  143,
-                                             "scorers":  [
-                                                             {
-                                                                 "position":  2,
-                                                                 "name":  "Phillip Leybourne"
-                                                             },
-                                                             {
-                                                                 "position":  4,
-                                                                 "name":  "John Wright"
-                                                             },
-                                                             {
-                                                                 "position":  22,
-                                                                 "name":  "Carolyn Robbins"
-                                                             },
-                                                             {
-                                                                 "position":  25,
-                                                                 "name":  "Peter Broome"
-                                                             },
-                                                             {
-                                                                 "position":  44,
-                                                                 "name":  "Andrea Smith"
-                                                             },
-                                                             {
-                                                                 "position":  46,
-                                                                 "name":  "Dave Skinner"
-                                                             }
-                                                         ]
-                                         },
-                                         {
-                                             "position":  4,
-                                             "points":  3,
-                                             "club":  "lytham",
-                                             "total":  171,
-                                             "scorers":  [
-                                                             {
-                                                                 "position":  9,
-                                                                 "name":  "Peter Cruse"
-                                                             },
-                                                             {
-                                                                 "position":  19,
-                                                                 "name":  "Graham Webster"
-                                                             },
-                                                             {
-                                                                 "position":  27,
-                                                                 "name":  "Terry Hellings"
-                                                             },
-                                                             {
-                                                                 "position":  29,
-                                                                 "name":  "Dave Dunn"
-                                                             },
-                                                             {
-                                                                 "position":  35,
-                                                                 "name":  "Todd Wheeler"
-                                                             },
-                                                             {
-                                                                 "position":  52,
-                                                                 "name":  "Melanie Koth"
-                                                             }
-                                                         ]
-                                         },
-                                         {
-                                             "position":  5,
-                                             "points":  2,
-                                             "club":  "chorley-ac",
-                                             "total":  205,
-                                             "scorers":  [
-                                                             {
-                                                                 "position":  24,
-                                                                 "name":  "Paul Wareing"
-                                                             },
-                                                             {
-                                                                 "position":  26,
-                                                                 "name":  "Dave Kershaw"
-                                                             },
-                                                             {
-                                                                 "position":  36,
-                                                                 "name":  "Simon Townsend"
-                                                             },
-                                                             {
-                                                                 "position":  38,
-                                                                 "name":  "Paul Clyne"
-                                                             },
-                                                             {
-                                                                 "position":  39,
-                                                                 "name":  "David Taylor"
-                                                             },
-                                                             {
-                                                                 "position":  42,
-                                                                 "name":  "Ian Walker"
-                                                             }
-                                                         ]
-                                         },
-                                         {
-                                             "position":  6,
-                                             "points":  1,
-                                             "club":  "red-rose",
-                                             "total":  471,
-                                             "scorers":  [
-                                                             {
-                                                                 "position":  20,
-                                                                 "name":  "Ken Addison"
-                                                             },
-                                                             {
-                                                                 "position":  82,
-                                                                 "name":  "Carol Douglas"
-                                                             },
-                                                             {
-                                                                 "position":  88,
-                                                                 "name":  "Roger Johnson"
-                                                             },
-                                                             {
-                                                                 "position":  90,
-                                                                 "name":  "Joan Gouldthorpe"
-                                                             },
-                                                             {
-                                                                 "position":  95,
-                                                                 "name":  "Yvonne Johnson"
-                                                             },
-                                                             {
-                                                                 "position":  96,
-                                                                 "name":  "Albert Bolton"
-                                                             }
-                                                         ]
-                                         }
-                                     ]
-                       },
-                       {
-                           "id":  "v50",
-                           "clubs":  [
-                                         {
-                                             "position":  1,
-                                             "points":  6,
-                                             "club":  "wesham",
-                                             "total":  24,
-                                             "scorers":  [
-                                                             {
-                                                                 "position":  3,
-                                                                 "name":  "John Collier"
-                                                             },
-                                                             {
-                                                                 "position":  4,
-                                                                 "name":  "Mick Edge"
-                                                             },
-                                                             {
-                                                                 "position":  5,
-                                                                 "name":  "Alan Hudson"
-                                                             },
-                                                             {
-                                                                 "position":  12,
-                                                                 "name":  "John Bertenshaw"
-                                                             }
-                                                         ]
-                                         },
-                                         {
-                                             "position":  2,
-                                             "points":  5,
-                                             "club":  "preston",
-                                             "total":  43,
-                                             "scorers":  [
-                                                             {
-                                                                 "position":  1,
-                                                                 "name":  "David Barker"
-                                                             },
-                                                             {
-                                                                 "position":  2,
-                                                                 "name":  "Kevin Hesketh"
-                                                             },
-                                                             {
-                                                                 "position":  16,
-                                                                 "name":  "Steven Jackson"
-                                                             },
-                                                             {
-                                                                 "position":  24,
-                                                                 "name":  "Marian Hesketh"
-                                                             }
-                                                         ]
-                                         },
-                                         {
-                                             "position":  3,
-                                             "points":  4,
-                                             "club":  "blackpool",
-                                             "total":  54,
-                                             "scorers":  [
-                                                             {
-                                                                 "position":  8,
-                                                                 "name":  "Carolyn Robbins"
-                                                             },
-                                                             {
-                                                                 "position":  9,
-                                                                 "name":  "Peter Broome"
-                                                             },
-                                                             {
-                                                                 "position":  18,
-                                                                 "name":  "David Dyson"
-                                                             },
-                                                             {
-                                                                 "position":  19,
-                                                                 "name":  "Michael Golden"
-                                                             }
-                                                         ]
-                                         },
-                                         {
-                                             "position":  4,
-                                             "points":  3,
-                                             "club":  "lytham",
-                                             "total":  71,
-                                             "scorers":  [
-                                                             {
-                                                                 "position":  6,
-                                                                 "name":  "Graham Webster"
-                                                             },
-                                                             {
-                                                                 "position":  11,
-                                                                 "name":  "Terry Hellings"
-                                                             },
-                                                             {
-                                                                 "position":  26,
-                                                                 "name":  "Roy Stevens"
-                                                             },
-                                                             {
-                                                                 "position":  28,
-                                                                 "name":  "Dave Cosh"
-                                                             }
-                                                         ]
-                                         },
-                                         {
-                                             "position":  5,
-                                             "points":  2,
-                                             "club":  "chorley-ac",
-                                             "total":  74,
-                                             "scorers":  [
-                                                             {
-                                                                 "position":  10,
-                                                                 "name":  "Dave Kershaw"
-                                                             },
-                                                             {
-                                                                 "position":  15,
-                                                                 "name":  "Ian Walker"
-                                                             },
-                                                             {
-                                                                 "position":  22,
-                                                                 "name":  "Henry Minorczyk"
-                                                             },
-                                                             {
-                                                                 "position":  27,
-                                                                 "name":  "Ted Orrell"
-                                                             }
-                                                         ]
-                                         },
-                                         {
-                                             "position":  6,
-                                             "points":  1,
-                                             "club":  "red-rose",
-                                             "total":  124,
-                                             "scorers":  [
-                                                             {
-                                                                 "position":  7,
-                                                                 "name":  "Ken Addison"
-                                                             },
-                                                             {
-                                                                 "position":  37,
-                                                                 "name":  "Roger Johnson"
-                                                             },
-                                                             {
-                                                                 "position":  38,
-                                                                 "name":  "Joan Gouldthorpe"
-                                                             },
-                                                             {
-                                                                 "position":  42,
-                                                                 "name":  "Yvonne Johnson"
-                                                             }
-                                                         ]
-                                         }
-                                     ]
-                       },
-                       {
-                           "id":  "v60",
-                           "clubs":  [
-                                         {
-                                             "position":  1,
-                                             "points":  6,
-                                             "club":  "wesham",
-                                             "total":  10,
-                                             "scorers":  [
-                                                             {
-                                                                 "position":  1,
-                                                                 "name":  "Alan Hudson"
-                                                             },
-                                                             {
-                                                                 "position":  2,
-                                                                 "name":  "Dave Waywell"
-                                                             },
-                                                             {
-                                                                 "position":  7,
-                                                                 "name":  "Dave Young"
-                                                             }
-                                                         ]
-                                         },
-                                         {
-                                             "position":  2,
-                                             "points":  5,
-                                             "club":  "blackpool",
-                                             "total":  17,
-                                             "scorers":  [
-                                                             {
-                                                                 "position":  3,
-                                                                 "name":  "Reg Smallbone"
-                                                             },
-                                                             {
-                                                                 "position":  5,
-                                                                 "name":  "Robert Newman"
-                                                             },
-                                                             {
-                                                                 "position":  9,
-                                                                 "name":  "John Winters"
-                                                             }
-                                                         ]
-                                         },
-                                         {
-                                             "position":  3,
-                                             "points":  4,
-                                             "club":  "chorley-ac",
-                                             "total":  22,
-                                             "scorers":  [
-                                                             {
-                                                                 "position":  4,
-                                                                 "name":  "Henry Minorczyk"
-                                                             },
-                                                             {
-                                                                 "position":  6,
-                                                                 "name":  "Ted Orrell"
-                                                             },
-                                                             {
-                                                                 "position":  12,
-                                                                 "name":  "J Swift"
-                                                             }
-                                                         ]
-                                         },
-                                         {
-                                             "position":  4,
-                                             "points":  3,
-                                             "club":  "red-rose",
-                                             "total":  47,
-                                             "scorers":  [
-                                                             {
-                                                                 "position":  8,
-                                                                 "name":  "Carol Douglas"
-                                                             },
-                                                             {
-                                                                 "position":  18,
-                                                                 "name":  "Allan Fitchett"
-                                                             },
-                                                             {
-                                                                 "position":  21,
-                                                                 "name":  "Evelyn Elkington"
-                                                             }
-                                                         ]
-                                         },
-                                         {
-                                             "position":  5,
-                                             "points":  2,
-                                             "club":  "preston",
-                                             "total":  51,
-                                             "scorers":  [
-                                                             {
-                                                                 "position":  15,
-                                                                 "name":  "Brian Dearnaley"
-                                                             },
-                                                             {
-                                                                 "position":  17,
-                                                                 "name":  "Dave Roberts"
-                                                             },
-                                                             {
-                                                                 "position":  19,
-                                                                 "name":  "Eileen Bates"
-                                                             }
-                                                         ]
-                                         },
-                                         {
-                                             "position":  6,
-                                             "points":  1,
-                                             "club":  "lytham",
-                                             "total":  59,
-                                             "scorers":  [
-                                                             {
-                                                                 "position":  14,
-                                                                 "name":  "Bill Lock"
-                                                             },
-                                                             {
-                                                                 "position":  20,
-                                                                 "name":  "Mike Hutchinson"
-                                                             },
-                                                             {
-                                                                 "position":  25,
-                                                                 "name":  "Dawn Lock"
-                                                             }
-                                                         ]
-                                         }
-                                     ]
-                       }
-                   ]
+{
+  "categories": [
+    {
+      "id": "open",
+      "clubs": [
+        {
+          "position": 1,
+          "points": 6,
+          "club": "preston",
+          "total": 87,
+          "scorers": [
+            {
+              "position": 1,
+              "name": "Gary Pennington",
+              "seriesRunnerId": 101
+            },
+            {
+              "position": 2,
+              "name": "Rob Affleck",
+              "seriesRunnerId": 325
+            },
+            {
+              "position": 3,
+              "name": "David Rigby",
+              "seriesRunnerId": 324
+            },
+            {
+              "position": 4,
+              "name": "Jon Green",
+              "seriesRunnerId": 105
+            },
+            {
+              "position": 6,
+              "name": "Gethin Butler",
+              "seriesRunnerId": 103
+            },
+            {
+              "position": 7,
+              "name": "Steve Hallas",
+              "seriesRunnerId": 479
+            },
+            {
+              "position": 12,
+              "name": "David Watson",
+              "seriesRunnerId": 122
+            },
+            {
+              "position": 15,
+              "name": "Mark Lee",
+              "seriesRunnerId": 116
+            },
+            {
+              "position": 17,
+              "name": "David Barker",
+              "seriesRunnerId": 119
+            },
+            {
+              "position": 20,
+              "name": "Neil McDonald",
+              "seriesRunnerId": 143
+            }
+          ]
+        },
+        {
+          "position": 2,
+          "points": 5,
+          "club": "wesham",
+          "total": 241,
+          "scorers": [
+            {
+              "position": 8,
+              "name": "Barry Norman",
+              "seriesRunnerId": 111
+            },
+            {
+              "position": 11,
+              "name": "Jason Barlow",
+              "seriesRunnerId": 117
+            },
+            {
+              "position": 18,
+              "name": "Lee Barlow",
+              "seriesRunnerId": 124
+            },
+            {
+              "position": 25,
+              "name": "Trevor Raynor",
+              "seriesRunnerId": 546
+            },
+            {
+              "position": 26,
+              "name": "John Collier",
+              "seriesRunnerId": 138
+            },
+            {
+              "position": 27,
+              "name": "Gary De-Banke",
+              "seriesRunnerId": 334
+            },
+            {
+              "position": 29,
+              "name": "Mick Edge",
+              "seriesRunnerId": 156
+            },
+            {
+              "position": 30,
+              "name": "Alan Hudson",
+              "seriesRunnerId": 141
+            },
+            {
+              "position": 32,
+              "name": "Mark Belfield",
+              "seriesRunnerId": 482
+            },
+            {
+              "position": 35,
+              "name": "Russ Mabbett",
+              "seriesRunnerId": 153
+            }
+          ]
+        },
+        {
+          "position": 3,
+          "points": 4,
+          "club": "lytham",
+          "total": 407,
+          "scorers": [
+            {
+              "position": 19,
+              "name": "Peter Cruse",
+              "seriesRunnerId": 330
+            },
+            {
+              "position": 28,
+              "name": "Gavin Brandie",
+              "seriesRunnerId": 139
+            },
+            {
+              "position": 31,
+              "name": "Graham Webster",
+              "seriesRunnerId": 154
+            },
+            {
+              "position": 33,
+              "name": "Andrew Draper",
+              "seriesRunnerId": 547
+            },
+            {
+              "position": 42,
+              "name": "Terry Hellings",
+              "seriesRunnerId": 165
+            },
+            {
+              "position": 44,
+              "name": "Dave Dunn",
+              "seriesRunnerId": 339
+            },
+            {
+              "position": 48,
+              "name": "Rachel Crowe",
+              "seriesRunnerId": 550
+            },
+            {
+              "position": 50,
+              "name": "Mark Willett",
+              "seriesRunnerId": 435
+            },
+            {
+              "position": 55,
+              "name": "Todd Wheeler",
+              "seriesRunnerId": 194
+            },
+            {
+              "position": 57,
+              "name": "Colin Nelson",
+              "seriesRunnerId": 360
+            }
+          ]
+        },
+        {
+          "position": 4,
+          "points": 3,
+          "club": "blackpool",
+          "total": 413,
+          "scorers": [
+            {
+              "position": 5,
+              "name": "Phillip Leybourne",
+              "seriesRunnerId": 544
+            },
+            {
+              "position": 10,
+              "name": "John Wright",
+              "seriesRunnerId": 108
+            },
+            {
+              "position": 16,
+              "name": "Luke Berry",
+              "seriesRunnerId": 114
+            },
+            {
+              "position": 36,
+              "name": "Carolyn Robbins",
+              "seriesRunnerId": 161
+            },
+            {
+              "position": 40,
+              "name": "Peter Broome",
+              "seriesRunnerId": 163
+            },
+            {
+              "position": 47,
+              "name": "David Brooks",
+              "seriesRunnerId": 199
+            },
+            {
+              "position": 51,
+              "name": "Stasia Bligh",
+              "seriesRunnerId": 173
+            },
+            {
+              "position": 67,
+              "name": "Andrea Smith",
+              "seriesRunnerId": 384
+            },
+            {
+              "position": 69,
+              "name": "Dave Skinner",
+              "seriesRunnerId": 198
+            },
+            {
+              "position": 72,
+              "name": "David Dyson",
+              "seriesRunnerId": 216
+            }
+          ]
+        },
+        {
+          "position": 5,
+          "points": 2,
+          "club": "chorley-ac",
+          "total": 417,
+          "scorers": [
+            {
+              "position": 9,
+              "name": "Luke Betts",
+              "seriesRunnerId": 110
+            },
+            {
+              "position": 13,
+              "name": "Adam Sciacca",
+              "seriesRunnerId": 125
+            },
+            {
+              "position": 14,
+              "name": "Ryan Sciacca",
+              "seriesRunnerId": 137
+            },
+            {
+              "position": 39,
+              "name": "Paul Wareing",
+              "seriesRunnerId": 158
+            },
+            {
+              "position": 41,
+              "name": "Dave Kershaw",
+              "seriesRunnerId": 177
+            },
+            {
+              "position": 56,
+              "name": "Simon Townsend",
+              "seriesRunnerId": 183
+            },
+            {
+              "position": 59,
+              "name": "Emma Perin",
+              "seriesRunnerId": 551
+            },
+            {
+              "position": 60,
+              "name": "Paul Clyne",
+              "seriesRunnerId": 525
+            },
+            {
+              "position": 61,
+              "name": "David Taylor",
+              "seriesRunnerId": 168
+            },
+            {
+              "position": 65,
+              "name": "Ian Walker",
+              "seriesRunnerId": 359
+            }
+          ]
+        },
+        {
+          "position": 6,
+          "points": 1,
+          "club": "red-rose",
+          "total": 1136,
+          "scorers": [
+            {
+              "position": 34,
+              "name": "Ken Addison",
+              "seriesRunnerId": 164
+            },
+            {
+              "position": 94,
+              "name": "Barry Wheeler",
+              "seriesRunnerId": 533
+            },
+            {
+              "position": 103,
+              "name": "Charlene Johnson",
+              "seriesRunnerId": 250
+            },
+            {
+              "position": 112,
+              "name": "Carol Douglas",
+              "seriesRunnerId": 504
+            },
+            {
+              "position": 119,
+              "name": "Roger Johnson",
+              "seriesRunnerId": 409
+            },
+            {
+              "position": 123,
+              "name": "Joan Gouldthorpe",
+              "seriesRunnerId": 272
+            },
+            {
+              "position": 129,
+              "name": "Yvonne Johnson",
+              "seriesRunnerId": 403
+            },
+            {
+              "position": 130,
+              "name": "Albert Bolton",
+              "seriesRunnerId": 470
+            },
+            {
+              "position": 143,
+              "name": "Allan Fitchett",
+              "seriesRunnerId": 541
+            },
+            {
+              "position": 149,
+              "name": "Evelyn Elkington",
+              "seriesRunnerId": 416
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ladies",
+      "clubs": [
+        {
+          "position": 1,
+          "points": 6,
+          "club": "preston",
+          "total": 44,
+          "scorers": [
+            {
+              "position": 2,
+              "name": "Phillipa Walsh",
+              "seriesRunnerId": 548
+            },
+            {
+              "position": 3,
+              "name": "Gema Adams",
+              "seriesRunnerId": 549
+            },
+            {
+              "position": 10,
+              "name": "Robyn Anderson",
+              "seriesRunnerId": 363
+            },
+            {
+              "position": 14,
+              "name": "Claire McDermott",
+              "seriesRunnerId": 201
+            },
+            {
+              "position": 15,
+              "name": "Helen Houlding",
+              "seriesRunnerId": 496
+            }
+          ]
+        },
+        {
+          "position": 2,
+          "points": 5,
+          "club": "blackpool",
+          "total": 50,
+          "scorers": [
+            {
+              "position": 1,
+              "name": "Carolyn Robbins",
+              "seriesRunnerId": 161
+            },
+            {
+              "position": 5,
+              "name": "Stasia Bligh",
+              "seriesRunnerId": 173
+            },
+            {
+              "position": 11,
+              "name": "Andrea Smith",
+              "seriesRunnerId": 384
+            },
+            {
+              "position": 16,
+              "name": "Morag O'Neill",
+              "seriesRunnerId": 361
+            },
+            {
+              "position": 17,
+              "name": "Laura Lawler",
+              "seriesRunnerId": 369
+            }
+          ]
+        },
+        {
+          "position": 3,
+          "points": 4,
+          "club": "wesham",
+          "total": 63,
+          "scorers": [
+            {
+              "position": 6,
+              "name": "Carmel Sullivan",
+              "seriesRunnerId": 437
+            },
+            {
+              "position": 7,
+              "name": "Sarah Sherratt",
+              "seriesRunnerId": 191
+            },
+            {
+              "position": 9,
+              "name": "Michaela Dempsey",
+              "seriesRunnerId": 193
+            },
+            {
+              "position": 18,
+              "name": "Helen Lawrenson",
+              "seriesRunnerId": 377
+            },
+            {
+              "position": 23,
+              "name": "Nicola Unsworth",
+              "seriesRunnerId": 382
+            }
+          ]
+        },
+        {
+          "position": 4,
+          "points": 3,
+          "club": "lytham",
+          "total": 84,
+          "scorers": [
+            {
+              "position": 4,
+              "name": "Rachel Crowe",
+              "seriesRunnerId": 550
+            },
+            {
+              "position": 12,
+              "name": "Lucinda McNiven",
+              "seriesRunnerId": 448
+            },
+            {
+              "position": 13,
+              "name": "Melanie Koth",
+              "seriesRunnerId": 208
+            },
+            {
+              "position": 25,
+              "name": "Laura Ashworth",
+              "seriesRunnerId": 234
+            },
+            {
+              "position": 30,
+              "name": "Debbie Cooper",
+              "seriesRunnerId": 252
+            }
+          ]
+        },
+        {
+          "position": 5,
+          "points": 2,
+          "club": "red-rose",
+          "total": 157,
+          "scorers": [
+            {
+              "position": 24,
+              "name": "Charlene Johnson",
+              "seriesRunnerId": 250
+            },
+            {
+              "position": 28,
+              "name": "Carol Douglas",
+              "seriesRunnerId": 504
+            },
+            {
+              "position": 32,
+              "name": "Joan Gouldthorpe",
+              "seriesRunnerId": 272
+            },
+            {
+              "position": 33,
+              "name": "Yvonne Johnson",
+              "seriesRunnerId": 403
+            },
+            {
+              "position": 40,
+              "name": "Evelyn Elkington",
+              "seriesRunnerId": 416
+            }
+          ]
+        },
+        {
+          "position": 6,
+          "points": 1,
+          "club": "chorley-ac",
+          "total": 207,
+          "scorers": [
+            {
+              "position": 8,
+              "name": "Emma Perin",
+              "seriesRunnerId": 551
+            },
+            {
+              "position": 35,
+              "name": "Jeanette Murray",
+              "seriesRunnerId": 300
+            },
+            {
+              "position": 37,
+              "name": "Christine Sweatman",
+              "seriesRunnerId": 279
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "vets",
+      "clubs": [
+        {
+          "position": 1,
+          "points": 6,
+          "club": "preston",
+          "total": 35,
+          "scorers": [
+            {
+              "position": 1,
+              "name": "Gary Pennington",
+              "seriesRunnerId": 101
+            },
+            {
+              "position": 3,
+              "name": "Gethin Butler",
+              "seriesRunnerId": 103
+            },
+            {
+              "position": 6,
+              "name": "David Watson",
+              "seriesRunnerId": 122
+            },
+            {
+              "position": 7,
+              "name": "Mark Lee",
+              "seriesRunnerId": 116
+            },
+            {
+              "position": 8,
+              "name": "David Barker",
+              "seriesRunnerId": 119
+            },
+            {
+              "position": 10,
+              "name": "Neil McDonald",
+              "seriesRunnerId": 143
+            }
+          ]
+        },
+        {
+          "position": 2,
+          "points": 5,
+          "club": "wesham",
+          "total": 85,
+          "scorers": [
+            {
+              "position": 5,
+              "name": "Jason Barlow",
+              "seriesRunnerId": 117
+            },
+            {
+              "position": 14,
+              "name": "Trevor Raynor",
+              "seriesRunnerId": 546
+            },
+            {
+              "position": 15,
+              "name": "John Collier",
+              "seriesRunnerId": 138
+            },
+            {
+              "position": 16,
+              "name": "Gary De-Banke",
+              "seriesRunnerId": 334
+            },
+            {
+              "position": 17,
+              "name": "Mick Edge",
+              "seriesRunnerId": 156
+            },
+            {
+              "position": 18,
+              "name": "Alan Hudson",
+              "seriesRunnerId": 141
+            }
+          ]
+        },
+        {
+          "position": 3,
+          "points": 4,
+          "club": "blackpool",
+          "total": 143,
+          "scorers": [
+            {
+              "position": 2,
+              "name": "Phillip Leybourne",
+              "seriesRunnerId": 544
+            },
+            {
+              "position": 4,
+              "name": "John Wright",
+              "seriesRunnerId": 108
+            },
+            {
+              "position": 22,
+              "name": "Carolyn Robbins",
+              "seriesRunnerId": 161
+            },
+            {
+              "position": 25,
+              "name": "Peter Broome",
+              "seriesRunnerId": 163
+            },
+            {
+              "position": 44,
+              "name": "Andrea Smith",
+              "seriesRunnerId": 384
+            },
+            {
+              "position": 46,
+              "name": "Dave Skinner",
+              "seriesRunnerId": 198
+            }
+          ]
+        },
+        {
+          "position": 4,
+          "points": 3,
+          "club": "lytham",
+          "total": 171,
+          "scorers": [
+            {
+              "position": 9,
+              "name": "Peter Cruse",
+              "seriesRunnerId": 330
+            },
+            {
+              "position": 19,
+              "name": "Graham Webster",
+              "seriesRunnerId": 154
+            },
+            {
+              "position": 27,
+              "name": "Terry Hellings",
+              "seriesRunnerId": 165
+            },
+            {
+              "position": 29,
+              "name": "Dave Dunn",
+              "seriesRunnerId": 339
+            },
+            {
+              "position": 35,
+              "name": "Todd Wheeler",
+              "seriesRunnerId": 194
+            },
+            {
+              "position": 52,
+              "name": "Melanie Koth",
+              "seriesRunnerId": 208
+            }
+          ]
+        },
+        {
+          "position": 5,
+          "points": 2,
+          "club": "chorley-ac",
+          "total": 205,
+          "scorers": [
+            {
+              "position": 24,
+              "name": "Paul Wareing",
+              "seriesRunnerId": 158
+            },
+            {
+              "position": 26,
+              "name": "Dave Kershaw",
+              "seriesRunnerId": 177
+            },
+            {
+              "position": 36,
+              "name": "Simon Townsend",
+              "seriesRunnerId": 183
+            },
+            {
+              "position": 38,
+              "name": "Paul Clyne",
+              "seriesRunnerId": 525
+            },
+            {
+              "position": 39,
+              "name": "David Taylor",
+              "seriesRunnerId": 168
+            },
+            {
+              "position": 42,
+              "name": "Ian Walker",
+              "seriesRunnerId": 359
+            }
+          ]
+        },
+        {
+          "position": 6,
+          "points": 1,
+          "club": "red-rose",
+          "total": 471,
+          "scorers": [
+            {
+              "position": 20,
+              "name": "Ken Addison",
+              "seriesRunnerId": 164
+            },
+            {
+              "position": 82,
+              "name": "Carol Douglas",
+              "seriesRunnerId": 504
+            },
+            {
+              "position": 88,
+              "name": "Roger Johnson",
+              "seriesRunnerId": 409
+            },
+            {
+              "position": 90,
+              "name": "Joan Gouldthorpe",
+              "seriesRunnerId": 272
+            },
+            {
+              "position": 95,
+              "name": "Yvonne Johnson",
+              "seriesRunnerId": 403
+            },
+            {
+              "position": 96,
+              "name": "Albert Bolton",
+              "seriesRunnerId": 470
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "v50",
+      "clubs": [
+        {
+          "position": 1,
+          "points": 6,
+          "club": "wesham",
+          "total": 24,
+          "scorers": [
+            {
+              "position": 3,
+              "name": "John Collier",
+              "seriesRunnerId": 138
+            },
+            {
+              "position": 4,
+              "name": "Mick Edge",
+              "seriesRunnerId": 156
+            },
+            {
+              "position": 5,
+              "name": "Alan Hudson",
+              "seriesRunnerId": 141
+            },
+            {
+              "position": 12,
+              "name": "John Bertenshaw",
+              "seriesRunnerId": 342
+            }
+          ]
+        },
+        {
+          "position": 2,
+          "points": 5,
+          "club": "preston",
+          "total": 43,
+          "scorers": [
+            {
+              "position": 1,
+              "name": "David Barker",
+              "seriesRunnerId": 119
+            },
+            {
+              "position": 2,
+              "name": "Kevin Hesketh",
+              "seriesRunnerId": 128
+            },
+            {
+              "position": 16,
+              "name": "Steven Jackson",
+              "seriesRunnerId": 187
+            },
+            {
+              "position": 24,
+              "name": "Marian Hesketh",
+              "seriesRunnerId": 371
+            }
+          ]
+        },
+        {
+          "position": 3,
+          "points": 4,
+          "club": "blackpool",
+          "total": 54,
+          "scorers": [
+            {
+              "position": 8,
+              "name": "Carolyn Robbins",
+              "seriesRunnerId": 161
+            },
+            {
+              "position": 9,
+              "name": "Peter Broome",
+              "seriesRunnerId": 163
+            },
+            {
+              "position": 18,
+              "name": "David Dyson",
+              "seriesRunnerId": 216
+            },
+            {
+              "position": 19,
+              "name": "Michael Golden",
+              "seriesRunnerId": 202
+            }
+          ]
+        },
+        {
+          "position": 4,
+          "points": 3,
+          "club": "lytham",
+          "total": 71,
+          "scorers": [
+            {
+              "position": 6,
+              "name": "Graham Webster",
+              "seriesRunnerId": 154
+            },
+            {
+              "position": 11,
+              "name": "Terry Hellings",
+              "seriesRunnerId": 165
+            },
+            {
+              "position": 26,
+              "name": "Roy Stevens",
+              "seriesRunnerId": 386
+            },
+            {
+              "position": 28,
+              "name": "Dave Cosh",
+              "seriesRunnerId": 389
+            }
+          ]
+        },
+        {
+          "position": 5,
+          "points": 2,
+          "club": "chorley-ac",
+          "total": 74,
+          "scorers": [
+            {
+              "position": 10,
+              "name": "Dave Kershaw",
+              "seriesRunnerId": 177
+            },
+            {
+              "position": 15,
+              "name": "Ian Walker",
+              "seriesRunnerId": 359
+            },
+            {
+              "position": 22,
+              "name": "Henry Minorczyk",
+              "seriesRunnerId": 362
+            },
+            {
+              "position": 27,
+              "name": "Ted Orrell",
+              "seriesRunnerId": 231
+            }
+          ]
+        },
+        {
+          "position": 6,
+          "points": 1,
+          "club": "red-rose",
+          "total": 124,
+          "scorers": [
+            {
+              "position": 7,
+              "name": "Ken Addison",
+              "seriesRunnerId": 164
+            },
+            {
+              "position": 37,
+              "name": "Roger Johnson",
+              "seriesRunnerId": 409
+            },
+            {
+              "position": 38,
+              "name": "Joan Gouldthorpe",
+              "seriesRunnerId": 272
+            },
+            {
+              "position": 42,
+              "name": "Yvonne Johnson",
+              "seriesRunnerId": 403
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "v60",
+      "clubs": [
+        {
+          "position": 1,
+          "points": 6,
+          "club": "wesham",
+          "total": 10,
+          "scorers": [
+            {
+              "position": 1,
+              "name": "Alan Hudson",
+              "seriesRunnerId": 141
+            },
+            {
+              "position": 2,
+              "name": "Dave Waywell",
+              "seriesRunnerId": 182
+            },
+            {
+              "position": 7,
+              "name": "Dave Young",
+              "seriesRunnerId": 406
+            }
+          ]
+        },
+        {
+          "position": 2,
+          "points": 5,
+          "club": "blackpool",
+          "total": 17,
+          "scorers": [
+            {
+              "position": 3,
+              "name": "Reg Smallbone",
+              "seriesRunnerId": 244
+            },
+            {
+              "position": 5,
+              "name": "Robert Newman",
+              "seriesRunnerId": 372
+            },
+            {
+              "position": 9,
+              "name": "John Winters",
+              "seriesRunnerId": 458
+            }
+          ]
+        },
+        {
+          "position": 3,
+          "points": 4,
+          "club": "chorley-ac",
+          "total": 22,
+          "scorers": [
+            {
+              "position": 4,
+              "name": "Henry Minorczyk",
+              "seriesRunnerId": 362
+            },
+            {
+              "position": 6,
+              "name": "Ted Orrell",
+              "seriesRunnerId": 231
+            },
+            {
+              "position": 12,
+              "name": "J Swift",
+              "seriesRunnerId": 242
+            }
+          ]
+        },
+        {
+          "position": 4,
+          "points": 3,
+          "club": "red-rose",
+          "total": 47,
+          "scorers": [
+            {
+              "position": 8,
+              "name": "Carol Douglas",
+              "seriesRunnerId": 504
+            },
+            {
+              "position": 18,
+              "name": "Allan Fitchett",
+              "seriesRunnerId": 541
+            },
+            {
+              "position": 21,
+              "name": "Evelyn Elkington",
+              "seriesRunnerId": 416
+            }
+          ]
+        },
+        {
+          "position": 5,
+          "points": 2,
+          "club": "preston",
+          "total": 51,
+          "scorers": [
+            {
+              "position": 15,
+              "name": "Brian Dearnaley",
+              "seriesRunnerId": 286
+            },
+            {
+              "position": 17,
+              "name": "Dave Roberts",
+              "seriesRunnerId": 401
+            },
+            {
+              "position": 19,
+              "name": "Eileen Bates",
+              "seriesRunnerId": 297
+            }
+          ]
+        },
+        {
+          "position": 6,
+          "points": 1,
+          "club": "lytham",
+          "total": 59,
+          "scorers": [
+            {
+              "position": 14,
+              "name": "Bill Lock",
+              "seriesRunnerId": 278
+            },
+            {
+              "position": 20,
+              "name": "Mike Hutchinson",
+              "seriesRunnerId": 422
+            },
+            {
+              "position": 25,
+              "name": "Dawn Lock",
+              "seriesRunnerId": 320
+            }
+          ]
+        }
+      ]
+    }
+  ]
 }
-
