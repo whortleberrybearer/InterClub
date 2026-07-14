@@ -1069,7 +1069,13 @@ function Parse-Teams2009Sheet {
     param($Sheet, [string]$DefaultCatId)
 
     $totalRows    = $Sheet.UsedRange.Rows.Count
-    $nameColsList = @(2, 6, 10, 14, 18, 22)
+    # Club columns repeat in 4-col blocks (pos, name, cat, blank) starting at col 2.
+    # Sized dynamically from the sheet's used range rather than a fixed 6-club count,
+    # since some years (e.g. 2006) field 7 interclub clubs.
+    $totalCols    = $Sheet.UsedRange.Columns.Count
+    $maxClubCol   = [Math]::Max(22, $totalCols)
+    $slotCount    = [int][Math]::Floor(($maxClubCol - 2) / 4) + 1
+    $nameColsList = 1..$slotCount | ForEach-Object { 2 + 4 * ($_ - 1) }
 
     $scorers    = @{}
     $positions  = @{}
@@ -1608,7 +1614,9 @@ try {
         )) {
             Write-Host "Parsing $($sheetSpec.SheetName) sheet (2009)..." -ForegroundColor DarkGray
             $sh   = $wb.Sheets.Item($sheetSpec.SheetName)
-            $data = Parse-Teams2009Sheet $sh $sheetSpec.DefaultCat
+            $defaultCatId = Get-TeamCategoryId $sheetSpec.DefaultCat
+            if (-not $defaultCatId) { $defaultCatId = $sheetSpec.DefaultCat }
+            $data = Parse-Teams2009Sheet $sh $defaultCatId
             foreach ($k in $data.Scorers.Keys)   { $teamScorers[$k]   = $data.Scorers[$k]   }
             foreach ($k in $data.Positions.Keys) { $teamPositions[$k] = $data.Positions[$k] }
         }
