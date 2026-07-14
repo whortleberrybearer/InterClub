@@ -994,20 +994,26 @@ function Parse-Main2009 {
                 Category = Normalize-Category2009 $cat
                 Sex      = Get-Sex2009 $cat
                 Time     = $time
+                CategoryPositions = @{}
             })
         }
     } else {
         # Multi-column: left block (cols 1-10) then right block (cols 12-21)
+        # Cols 3-6 / 14-17 carry per-runner category-rank positions: V=vets, V50=v50, V60=v60, L=ladies
         $blocks = @(
-            [PSCustomObject]@{ PosCol=1;  IcCol=2;  NameCol=7;  CatCol=8;  ClubCol=9;  TimeCol=10 },
-            [PSCustomObject]@{ PosCol=12; IcCol=13; NameCol=18; CatCol=19; ClubCol=20; TimeCol=21 }
+            [PSCustomObject]@{ PosCol=1;  IcCol=2;  VetsCol=3;  V50Col=4;  V60Col=5;  LadiesCol=6;  NameCol=7;  CatCol=8;  ClubCol=9;  TimeCol=10 },
+            [PSCustomObject]@{ PosCol=12; IcCol=13; VetsCol=14; V50Col=15; V60Col=16; LadiesCol=17; NameCol=18; CatCol=19; ClubCol=20; TimeCol=21 }
         )
         foreach ($blk in $blocks) {
             for ($r = 2; $r -le $totalRows; $r++) {
                 $pos = $Sheet.Cells.Item($r, $blk.PosCol).Text.Trim()
                 if ($pos -notmatch '^\d+$') { continue }
 
-                $icPos   = $Sheet.Cells.Item($r, $blk.IcCol).Text.Trim()
+                $icPos    = $Sheet.Cells.Item($r, $blk.IcCol).Text.Trim()
+                $vetsPos  = $Sheet.Cells.Item($r, $blk.VetsCol).Text.Trim()
+                $v50Pos   = $Sheet.Cells.Item($r, $blk.V50Col).Text.Trim()
+                $v60Pos   = $Sheet.Cells.Item($r, $blk.V60Col).Text.Trim()
+                $ladiesPos = $Sheet.Cells.Item($r, $blk.LadiesCol).Text.Trim()
                 $name    = $Sheet.Cells.Item($r, $blk.NameCol).Text.Trim()
                 $cat     = $Sheet.Cells.Item($r, $blk.CatCol).Text.Trim()
                 $clubRaw = $Sheet.Cells.Item($r, $blk.ClubCol).Text.Trim()
@@ -1018,6 +1024,13 @@ function Parse-Main2009 {
                 $np     = Split-Name2009 $name
                 $clubId = Get-ClubId $clubRaw
                 if ($null -eq $clubId) { Write-Warning "Row ${r} col $($blk.PosCol): unknown club '$clubRaw'"; $clubId = "Guest" }
+
+                $catPositions = @{
+                    vets   = if ($vetsPos   -match '^\d+$') { [int]$vetsPos }   else { $null }
+                    v50    = if ($v50Pos    -match '^\d+$') { [int]$v50Pos }    else { $null }
+                    v60    = if ($v60Pos    -match '^\d+$') { [int]$v60Pos }    else { $null }
+                    ladies = if ($ladiesPos -match '^\d+$') { [int]$ladiesPos } else { $null }
+                }
 
                 $results.Add([PSCustomObject]@{
                     ExcelRow = $r
@@ -1030,6 +1043,7 @@ function Parse-Main2009 {
                     Category = Normalize-Category2009 $cat
                     Sex      = Get-Sex2009 $cat
                     Time     = $time
+                    CategoryPositions = $catPositions
                 })
             }
         }
@@ -1486,6 +1500,8 @@ try {
         Write-Host "Parsing Main sheet (2009)..." -ForegroundColor DarkGray
         $posSheet = $wb.Sheets.Item("Main")
         $results  = @(Parse-Main2009 $posSheet)
+        # Main sheet carries per-runner category-rank columns (V/V50/V60/L) beyond IC/cat_open
+        $script:catCols = @{ vets = 0; v50 = 0; v60 = 0; ladies = 0 }
     } else {
         $indvSheet    = $wb.Sheets | Where-Object { $_.Name -ieq "Individual" } | Select-Object -First 1
         $posSheetName = if ($indvSheet) { $indvSheet.Name } else { "Positions" }
