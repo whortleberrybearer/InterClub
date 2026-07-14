@@ -265,9 +265,7 @@ const raceColWidth = races.length >= 7 ? '3rem'
                         </td>
                         <td class="py-3 pl-2 pr-2 align-middle max-w-0 overflow-hidden">
                           <div class="flex items-center gap-2 min-w-0">
-                            {clubById[clubResult.club]?.vest && (
-                              <img src={siteUrl(`/images/vests/${clubById[clubResult.club].vest}`)} alt="" class="h-6 w-auto shrink-0 object-contain" />
-                            )}
+                            <img src={siteUrl(`/images/vests/${clubById[clubResult.club]?.vest ?? 'unknown.png'}`)} alt="" class="h-6 w-auto shrink-0 object-contain" />
                             <span class="font-semibold text-[14px] truncate">{clubName}</span>
                           </div>
                         </td>
