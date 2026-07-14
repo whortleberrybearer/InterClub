@@ -119,15 +119,11 @@ const lastYear  = availableYears.length > 0 ? Math.max(...availableYears) : unde
                 <span class="font-head text-[11px] font-bold tracking-[0.06em] uppercase text-muted w-[80px] shrink-0">
                   {ta.categoryName}
                 </span>
-                {ta.vest ? (
-                  <img
-                    src={siteUrl(`/images/vests/${ta.vest.replace('.png', '-sm.png')}`)}
-                    alt={ta.clubName}
-                    class="w-[34px] h-[42px] object-contain shrink-0"
-                  />
-                ) : (
-                  <div class="w-[34px] h-[42px] shrink-0" />
-                )}
+                <img
+                  src={siteUrl(`/images/vests/${(ta.vest ?? 'unknown.png').replace('.png', '-sm.png')}`)}
+                  alt={ta.clubName}
+                  class="w-[34px] h-[42px] object-contain shrink-0"
+                />
                 <span class="font-head text-[15px] font-bold flex-1 min-w-0 truncate">
                   {ta.clubName}
                 </span>
@@ -151,16 +147,12 @@ const lastYear  = availableYears.length > 0 ? Math.max(...availableYears) : unde
                 <span class:list={['font-head text-[11px] font-bold tracking-[0.08em] uppercase leading-none', accentText]}>
                   {ta.categoryName}
                 </span>
-                {ta.vest ? (
-                  <img
-                    src={siteUrl(`/images/vests/${ta.vest}`)}
-                    alt={ta.clubName}
-                    class="w-[60px] h-[72px] object-contain mt-3 mb-2"
-                    style="filter: drop-shadow(0 6px 12px rgba(0,0,0,0.12))"
-                  />
-                ) : (
-                  <div class="w-[60px] h-[72px] mt-3 mb-2" />
-                )}
+                <img
+                  src={siteUrl(`/images/vests/${ta.vest ?? 'unknown.png'}`)}
+                  alt={ta.clubName}
+                  class="w-[60px] h-[72px] object-contain mt-3 mb-2"
+                  style="filter: drop-shadow(0 6px 12px rgba(0,0,0,0.12))"
+                />
                 <div class="font-head text-[13px] font-bold tracking-tight leading-snug">
                   {ta.clubName}
                 </div>
@@ -194,11 +186,7 @@ const lastYear  = availableYears.length > 0 ? Math.max(...availableYears) : unde
                       <span class:list={['inline-flex items-center justify-center w-[22px] h-[22px] rounded-full text-[11px] font-bold font-mono shrink-0', posBadgeClasses(a.position)]}>
                         {a.position}
                       </span>
-                      {a.vest ? (
-                        <img src={siteUrl(`/images/vests/${a.vest.replace('.png', '-sm.png')}`)} alt="" class="h-9 w-[26px] object-contain shrink-0" />
-                      ) : (
-                        <div class="w-[26px] h-9 shrink-0" />
-                      )}
+                      <img src={siteUrl(`/images/vests/${(a.vest ?? 'unknown.png').replace('.png', '-sm.png')}`)} alt="" class="h-9 w-[26px] object-contain shrink-0" />
                       <div class="flex-1 min-w-0">
                         <div class="font-semibold text-[13px] leading-tight truncate">
                           {a.runnerUrl ? <a href={a.runnerUrl} class="link link-hover">{a.name}</a> : a.name}
@@ -245,11 +233,7 @@ const lastYear  = availableYears.length > 0 ? Math.max(...availableYears) : unde
                           <span class:list={['inline-flex items-center justify-center w-[22px] h-[22px] rounded-full text-[11px] font-bold font-mono shrink-0', posBadgeClasses(a.position)]}>
                             {a.position}
                           </span>
-                          {a.vest ? (
-                            <img src={siteUrl(`/images/vests/${a.vest.replace('.png', '-sm.png')}`)} alt="" class="h-9 w-[26px] object-contain shrink-0" />
-                          ) : (
-                            <div class="w-[26px] h-9 shrink-0" />
-                          )}
+                          <img src={siteUrl(`/images/vests/${(a.vest ?? 'unknown.png').replace('.png', '-sm.png')}`)} alt="" class="h-9 w-[26px] object-contain shrink-0" />
                           <div class="flex-1 min-w-0">
                             <div class="font-semibold text-[13px] leading-tight truncate">
                               {a.runnerUrl ? <a href={a.runnerUrl} class="link link-hover">{a.name}</a> : a.name}
@@ -274,11 +258,7 @@ const lastYear  = availableYears.length > 0 ? Math.max(...availableYears) : unde
                           <span class:list={['inline-flex items-center justify-center w-[22px] h-[22px] rounded-full text-[11px] font-bold font-mono shrink-0', posBadgeClasses(a.position)]}>
                             {a.position}
                           </span>
-                          {a.vest ? (
-                            <img src={siteUrl(`/images/vests/${a.vest.replace('.png', '-sm.png')}`)} alt="" class="h-9 w-[26px] object-contain shrink-0" />
-                          ) : (
-                            <div class="w-[26px] h-9 shrink-0" />
-                          )}
+                          <img src={siteUrl(`/images/vests/${(a.vest ?? 'unknown.png').replace('.png', '-sm.png')}`)} alt="" class="h-9 w-[26px] object-contain shrink-0" />
                           <div class="flex-1 min-w-0">
                             <div class="font-semibold text-[13px] leading-tight truncate">
                               {a.runnerUrl ? <a href={a.runnerUrl} class="link link-hover">{a.name}</a> : a.name}
