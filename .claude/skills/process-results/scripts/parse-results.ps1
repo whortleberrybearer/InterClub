@@ -1229,9 +1229,9 @@ function Parse-Tables2009 {
 # ─── Output builders ──────────────────────────────────────────────────────────
 
 function Build-TeamResultsJson {
-    param($TeamPositions, $TeamScorers, [string[]]$CategoryOrder)
+    param($TeamPositions, $TeamScorers, [string[]]$CategoryOrder, [string[]]$AllClubs)
 
-    $numClubs = 7   # always 7 clubs in the series
+    $numClubs = $AllClubs.Count   # total clubs in the series, incl. non-scoring ones
 
     # Mapping from Team Scorers display name -> club ID
     $scorerClubMap = @{
@@ -1252,11 +1252,10 @@ function Build-TeamResultsJson {
         $orderedClubs = $TeamPositions[$catId]
         $clubs = [System.Collections.Generic.List[object]]@()
 
-        $scoringClubs = $orderedClubs.Count   # points: N for 1st, 1 for last
         for ($i = 0; $i -lt $orderedClubs.Count; $i++) {
             $entry    = $orderedClubs[$i]
             $position = $i + 1
-            $points   = $scoringClubs - $i
+            $points   = $numClubs - $position + 1
 
             # Collect scorers — try club ID first (2015 format), then display-name map (current format)
             $scorers = [System.Collections.Generic.List[object]]@()
@@ -1286,6 +1285,25 @@ function Build-TeamResultsJson {
                 total    = $entry.Total
                 scorers  = $scorers.ToArray()
             })
+        }
+
+        # Any club with no totals-row entry (e.g. an incomplete team the source
+        # spreadsheet excluded from ranking) is appended at the back of the field
+        # rather than dropped from the category entirely — every club fields a
+        # slot every race. Points still follow the numClubs-position+1 scale,
+        # matching how genuinely non-scoring clubs are scored elsewhere.
+        $rankedClubIds = @($orderedClubs | ForEach-Object { $_.Club })
+        $missingClubs  = @($AllClubs | Where-Object { $_ -notin $rankedClubIds })
+        $nextPosition  = $orderedClubs.Count + 1
+        foreach ($missingClub in $missingClubs) {
+            $clubs.Add([ordered]@{
+                position = $nextPosition
+                points   = $numClubs - $nextPosition + 1
+                club     = $missingClub
+                total    = $null
+                scorers  = @()
+            })
+            $nextPosition++
         }
 
         $categories.Add([ordered]@{
@@ -1765,7 +1783,7 @@ try {
     # ── 6. Build output JSON ───────────────────────────────────────────────
     Write-Host ""
     Write-Host "Building team results JSON..." -ForegroundColor DarkGray
-    $teamsJson    = Build-TeamResultsJson $teamPositions $teamScorers $categoryIds
+    $teamsJson    = Build-TeamResultsJson $teamPositions $teamScorers $categoryIds $clubIds
     $teamsJsonStr = $teamsJson | ConvertTo-Json -Depth 10
 
     Write-Host "Building team standings JSON..." -ForegroundColor DarkGray
