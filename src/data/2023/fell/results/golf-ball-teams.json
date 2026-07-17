@@ -81,6 +81,72 @@
       ]
     },
     {
+      "id": "ladies",
+      "clubs": [
+        {
+          "position": 1,
+          "points": 7,
+          "club": "red-rose",
+          "total": 14,
+          "scorers": [
+            { "position": 2, "name": "Samantha Edwards", "seriesRunnerId": 139 },
+            { "position": 5, "name": "Paula Plowman", "seriesRunnerId": 158 },
+            { "position": 7, "name": "Alison Mercer", "seriesRunnerId": 121 }
+          ]
+        },
+        {
+          "position": 2,
+          "points": 5,
+          "club": "preston",
+          "total": 9,
+          "scorers": [
+            { "position": 3, "name": "Claire McDermott", "seriesRunnerId": 148 },
+            { "position": 6, "name": "Olga Wiggins", "seriesRunnerId": 122 }
+          ]
+        },
+        {
+          "position": 3,
+          "points": 4,
+          "club": "wesham",
+          "total": 12,
+          "scorers": [
+            { "position": 4, "name": "Kay Twist", "seriesRunnerId": 113 },
+            { "position": 8, "name": "Sally Deacon", "seriesRunnerId": 123 }
+          ]
+        },
+        {
+          "position": 4,
+          "points": 3,
+          "club": "chorley",
+          "total": 1,
+          "scorers": [
+            { "position": 1, "name": "Amber Pilkington", "seriesRunnerId": 166 }
+          ]
+        },
+        {
+          "position": 5,
+          "points": 2,
+          "club": "lytham",
+          "total": 0,
+          "scorers": []
+        },
+        {
+          "position": 6,
+          "points": 1,
+          "club": "blackpool",
+          "total": 0,
+          "scorers": []
+        },
+        {
+          "position": 7,
+          "points": 0,
+          "club": "thornton",
+          "total": 0,
+          "scorers": []
+        }
+      ]
+    },
+    {
       "id": "vets",
       "clubs": [
         {
@@ -278,72 +344,6 @@
           "position": 6,
           "points": 1,
           "club": "preston",
-          "total": 0,
-          "scorers": []
-        },
-        {
-          "position": 7,
-          "points": 0,
-          "club": "thornton",
-          "total": 0,
-          "scorers": []
-        }
-      ]
-    },
-    {
-      "id": "ladies",
-      "clubs": [
-        {
-          "position": 1,
-          "points": 7,
-          "club": "red-rose",
-          "total": 14,
-          "scorers": [
-            { "position": 2, "name": "Samantha Edwards", "seriesRunnerId": 139 },
-            { "position": 5, "name": "Paula Plowman", "seriesRunnerId": 158 },
-            { "position": 7, "name": "Alison Mercer", "seriesRunnerId": 121 }
-          ]
-        },
-        {
-          "position": 2,
-          "points": 5,
-          "club": "preston",
-          "total": 9,
-          "scorers": [
-            { "position": 3, "name": "Claire McDermott", "seriesRunnerId": 148 },
-            { "position": 6, "name": "Olga Wiggins", "seriesRunnerId": 122 }
-          ]
-        },
-        {
-          "position": 3,
-          "points": 4,
-          "club": "wesham",
-          "total": 12,
-          "scorers": [
-            { "position": 4, "name": "Kay Twist", "seriesRunnerId": 113 },
-            { "position": 8, "name": "Sally Deacon", "seriesRunnerId": 123 }
-          ]
-        },
-        {
-          "position": 4,
-          "points": 3,
-          "club": "chorley",
-          "total": 1,
-          "scorers": [
-            { "position": 1, "name": "Amber Pilkington", "seriesRunnerId": 166 }
-          ]
-        },
-        {
-          "position": 5,
-          "points": 2,
-          "club": "lytham",
-          "total": 0,
-          "scorers": []
-        },
-        {
-          "position": 6,
-          "points": 1,
-          "club": "blackpool",
           "total": 0,
           "scorers": []
         },

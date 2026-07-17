@@ -90,6 +90,82 @@
       ]
     },
     {
+      "id": "ladies",
+      "clubs": [
+        {
+          "position": 1,
+          "points": 7,
+          "club": "chorley",
+          "total": 8,
+          "scorers": [
+            { "position": 1, "name": "Katherine Klunder", "seriesRunnerId": 128 },
+            { "position": 3, "name": "Hannah Caulfield", "seriesRunnerId": 145 },
+            { "position": 4, "name": "Laura Livesey", "seriesRunnerId": 147 }
+          ]
+        },
+        {
+          "position": 2,
+          "points": 5,
+          "club": "red-rose",
+          "total": 19,
+          "scorers": [
+            { "position": 2, "name": "Samantha Edwards", "seriesRunnerId": 139 },
+            { "position": 6, "name": "Janine Needham", "seriesRunnerId": 149 },
+            { "position": 11, "name": "Sarah Denver", "seriesRunnerId": 157 }
+          ]
+        },
+        {
+          "position": 3,
+          "points": 4,
+          "club": "blackpool",
+          "total": 32,
+          "scorers": [
+            { "position": 8, "name": "Laura Lawler", "seriesRunnerId": 151 },
+            { "position": 9, "name": "Fran Connolly", "seriesRunnerId": 154 },
+            { "position": 15, "name": "Jenny Burtonwood", "seriesRunnerId": 159 }
+          ]
+        },
+        {
+          "position": 4,
+          "points": 3,
+          "club": "preston",
+          "total": 19,
+          "scorers": [
+            { "position": 5, "name": "Claire McDermott", "seriesRunnerId": 148 },
+            { "position": 14, "name": "Olga Wiggins", "seriesRunnerId": 122 }
+          ]
+        },
+        {
+          "position": 5,
+          "points": 2,
+          "club": "wesham",
+          "total": 24,
+          "scorers": [
+            { "position": 7, "name": "Kay Twist", "seriesRunnerId": 113 },
+            { "position": 17, "name": "Sally Deacon", "seriesRunnerId": 123 }
+          ]
+        },
+        {
+          "position": 6,
+          "points": 1,
+          "club": "lytham",
+          "total": 10,
+          "scorers": [
+            { "position": 10, "name": "Julia Rolfe", "seriesRunnerId": 116 }
+          ]
+        },
+        {
+          "position": 7,
+          "points": 0,
+          "club": "thornton",
+          "total": 19,
+          "scorers": [
+            { "position": 19, "name": "Karen Smith", "seriesRunnerId": 162 }
+          ]
+        }
+      ]
+    },
+    {
       "id": "vets",
       "clubs": [
         {
@@ -312,82 +388,6 @@
           "club": "thornton",
           "total": 0,
           "scorers": []
-        }
-      ]
-    },
-    {
-      "id": "ladies",
-      "clubs": [
-        {
-          "position": 1,
-          "points": 7,
-          "club": "chorley",
-          "total": 8,
-          "scorers": [
-            { "position": 1, "name": "Katherine Klunder", "seriesRunnerId": 128 },
-            { "position": 3, "name": "Hannah Caulfield", "seriesRunnerId": 145 },
-            { "position": 4, "name": "Laura Livesey", "seriesRunnerId": 147 }
-          ]
-        },
-        {
-          "position": 2,
-          "points": 5,
-          "club": "red-rose",
-          "total": 19,
-          "scorers": [
-            { "position": 2, "name": "Samantha Edwards", "seriesRunnerId": 139 },
-            { "position": 6, "name": "Janine Needham", "seriesRunnerId": 149 },
-            { "position": 11, "name": "Sarah Denver", "seriesRunnerId": 157 }
-          ]
-        },
-        {
-          "position": 3,
-          "points": 4,
-          "club": "blackpool",
-          "total": 32,
-          "scorers": [
-            { "position": 8, "name": "Laura Lawler", "seriesRunnerId": 151 },
-            { "position": 9, "name": "Fran Connolly", "seriesRunnerId": 154 },
-            { "position": 15, "name": "Jenny Burtonwood", "seriesRunnerId": 159 }
-          ]
-        },
-        {
-          "position": 4,
-          "points": 3,
-          "club": "preston",
-          "total": 19,
-          "scorers": [
-            { "position": 5, "name": "Claire McDermott", "seriesRunnerId": 148 },
-            { "position": 14, "name": "Olga Wiggins", "seriesRunnerId": 122 }
-          ]
-        },
-        {
-          "position": 5,
-          "points": 2,
-          "club": "wesham",
-          "total": 24,
-          "scorers": [
-            { "position": 7, "name": "Kay Twist", "seriesRunnerId": 113 },
-            { "position": 17, "name": "Sally Deacon", "seriesRunnerId": 123 }
-          ]
-        },
-        {
-          "position": 6,
-          "points": 1,
-          "club": "lytham",
-          "total": 10,
-          "scorers": [
-            { "position": 10, "name": "Julia Rolfe", "seriesRunnerId": 116 }
-          ]
-        },
-        {
-          "position": 7,
-          "points": 0,
-          "club": "thornton",
-          "total": 19,
-          "scorers": [
-            { "position": 19, "name": "Karen Smith", "seriesRunnerId": 162 }
-          ]
         }
       ]
     }

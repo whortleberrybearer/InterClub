@@ -79,6 +79,71 @@
       ]
     },
     {
+      "id": "ladies",
+      "clubs": [
+        {
+          "position": 1,
+          "points": 7,
+          "club": "red-rose",
+          "total": 10,
+          "scorers": [
+            { "position": 1, "name": "Nicola Hughes", "seriesRunnerId": 109 },
+            { "position": 4, "name": "Sarah Penver", "seriesRunnerId": 157 },
+            { "position": 5, "name": "Alison Parkinson", "seriesRunnerId": 118 }
+          ]
+        },
+        {
+          "position": 2,
+          "points": 5,
+          "club": "wesham",
+          "total": 10,
+          "scorers": [
+            { "position": 2, "name": "Kay Twist", "seriesRunnerId": 113 },
+            { "position": 8, "name": "Sally Deacon", "seriesRunnerId": 123 }
+          ]
+        },
+        {
+          "position": 3,
+          "points": 4,
+          "club": "lytham",
+          "total": 3,
+          "scorers": [
+            { "position": 3, "name": "Julia Rolfe", "seriesRunnerId": 116 }
+          ]
+        },
+        {
+          "position": 4,
+          "points": 3,
+          "club": "preston",
+          "total": 7,
+          "scorers": [
+            { "position": 7, "name": "Olga Wiggins", "seriesRunnerId": 122 }
+          ]
+        },
+        {
+          "position": 5,
+          "points": 2,
+          "club": "chorley",
+          "total": 0,
+          "scorers": []
+        },
+        {
+          "position": 6,
+          "points": 1,
+          "club": "blackpool",
+          "total": 0,
+          "scorers": []
+        },
+        {
+          "position": 7,
+          "points": 0,
+          "club": "thornton",
+          "total": 0,
+          "scorers": []
+        }
+      ]
+    },
+    {
       "id": "vets",
       "clubs": [
         {
@@ -273,71 +338,6 @@
           "position": 6,
           "points": 1,
           "club": "wesham",
-          "total": 0,
-          "scorers": []
-        },
-        {
-          "position": 7,
-          "points": 0,
-          "club": "thornton",
-          "total": 0,
-          "scorers": []
-        }
-      ]
-    },
-    {
-      "id": "ladies",
-      "clubs": [
-        {
-          "position": 1,
-          "points": 7,
-          "club": "red-rose",
-          "total": 10,
-          "scorers": [
-            { "position": 1, "name": "Nicola Hughes", "seriesRunnerId": 109 },
-            { "position": 4, "name": "Sarah Penver", "seriesRunnerId": 157 },
-            { "position": 5, "name": "Alison Parkinson", "seriesRunnerId": 118 }
-          ]
-        },
-        {
-          "position": 2,
-          "points": 5,
-          "club": "wesham",
-          "total": 10,
-          "scorers": [
-            { "position": 2, "name": "Kay Twist", "seriesRunnerId": 113 },
-            { "position": 8, "name": "Sally Deacon", "seriesRunnerId": 123 }
-          ]
-        },
-        {
-          "position": 3,
-          "points": 4,
-          "club": "lytham",
-          "total": 3,
-          "scorers": [
-            { "position": 3, "name": "Julia Rolfe", "seriesRunnerId": 116 }
-          ]
-        },
-        {
-          "position": 4,
-          "points": 3,
-          "club": "preston",
-          "total": 7,
-          "scorers": [
-            { "position": 7, "name": "Olga Wiggins", "seriesRunnerId": 122 }
-          ]
-        },
-        {
-          "position": 5,
-          "points": 2,
-          "club": "chorley",
-          "total": 0,
-          "scorers": []
-        },
-        {
-          "position": 6,
-          "points": 1,
-          "club": "blackpool",
           "total": 0,
           "scorers": []
         },
