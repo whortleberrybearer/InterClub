@@ -13,7 +13,7 @@ interface Props {
 const { race, year, series } = Astro.props;
 const { id, name, date, time, location, distance, detailsUrl, image } = race;
 
-const formattedDate = date ? formatRaceDate(date, time) : 'Date unknown';
+const formattedDate = date ? formatRaceDate(date, time) : '';
 const isFell = series === 'fell';
 const href = isFell
   ? (detailsUrl ?? null)
