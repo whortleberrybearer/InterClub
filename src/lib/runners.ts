@@ -121,7 +121,7 @@ function getRacesForRunner(year: number, series: Series, seriesLocalId: number):
     const race = raceById[raceId];
     if (!race) continue;
     results.push({
-      date: race.date,
+      date: race.date ?? '',
       raceName: race.name,
       raceId,
       time: match.time,

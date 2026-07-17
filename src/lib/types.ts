@@ -8,7 +8,7 @@ export interface Race {
   id: string;
   name: string;
   shortName?: string;
-  date: string;       // ISO date string: "2026-06-07"
+  date?: string;      // ISO date string: "2026-06-07"; absent when the date is unknown
   time?: string;      // "HH:MM", e.g. "10:30"
   location?: string;
   distance?: string;
