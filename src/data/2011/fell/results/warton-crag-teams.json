@@ -9,11 +9,31 @@
           "total": 28,
           "club": "red-rose",
           "scorers": [
-            { "name": "Fred Lynch", "position": 3 },
-            { "name": "Ken Addison", "position": 4 },
-            { "name": "Philip Bulter", "position": 6 },
-            { "name": "John Shepherd", "position": 7 },
-            { "name": "Shane Cliffe", "position": 8 }
+            {
+              "name": "Fred Lynch",
+              "position": 3,
+              "seriesRunnerId": 155
+            },
+            {
+              "name": "Ken Addison",
+              "position": 4,
+              "seriesRunnerId": 154
+            },
+            {
+              "name": "Philip Bulter",
+              "position": 6,
+              "seriesRunnerId": 183
+            },
+            {
+              "name": "John Shepherd",
+              "position": 7,
+              "seriesRunnerId": 151
+            },
+            {
+              "name": "Shane Cliffe",
+              "position": 8,
+              "seriesRunnerId": 115
+            }
           ]
         },
         {
@@ -22,11 +42,31 @@
           "total": 70,
           "club": "wesham",
           "scorers": [
-            { "name": "Steve Myerscough", "position": 2 },
-            { "name": "Mark Midgley", "position": 9 },
-            { "name": "Sarah Sherratt", "position": 16 },
-            { "name": "Nigel Shepherd", "position": 20 },
-            { "name": "Alistair Morris", "position": 23 }
+            {
+              "name": "Steve Myerscough",
+              "position": 2,
+              "seriesRunnerId": 150
+            },
+            {
+              "name": "Mark Midgley",
+              "position": 9,
+              "seriesRunnerId": 110
+            },
+            {
+              "name": "Sarah Sherratt",
+              "position": 16,
+              "seriesRunnerId": 108
+            },
+            {
+              "name": "Nigel Shepherd",
+              "position": 20,
+              "seriesRunnerId": 128
+            },
+            {
+              "name": "Alistair Morris",
+              "position": 23,
+              "seriesRunnerId": 186
+            }
           ]
         },
         {
@@ -35,11 +75,31 @@
           "total": 101,
           "club": "chorley-ac",
           "scorers": [
-            { "name": "Dave Kershaw", "position": 10 },
-            { "name": "Simon Townsend", "position": 12 },
-            { "name": "Henry Minorczyk", "position": 17 },
-            { "name": "John Minton", "position": 29 },
-            { "name": "Tom Hilton", "position": 33 }
+            {
+              "name": "Dave Kershaw",
+              "position": 10,
+              "seriesRunnerId": 112
+            },
+            {
+              "name": "Simon Townsend",
+              "position": 12,
+              "seriesRunnerId": 111
+            },
+            {
+              "name": "Henry Minorczyk",
+              "position": 17,
+              "seriesRunnerId": 123
+            },
+            {
+              "name": "John Minton",
+              "position": 29,
+              "seriesRunnerId": 136
+            },
+            {
+              "name": "Tom Hilton",
+              "position": 33,
+              "seriesRunnerId": 146
+            }
           ]
         },
         {
@@ -48,9 +108,21 @@
           "total": 62,
           "club": "lytham",
           "scorers": [
-            { "name": "Melanie Koth", "position": 13 },
-            { "name": "Colin Nelson", "position": 22 },
-            { "name": "Debbie Cooper", "position": 27 }
+            {
+              "name": "Melanie Koth",
+              "position": 13,
+              "seriesRunnerId": 116
+            },
+            {
+              "name": "Colin Nelson",
+              "position": 22,
+              "seriesRunnerId": 185
+            },
+            {
+              "name": "Debbie Cooper",
+              "position": 27,
+              "seriesRunnerId": 131
+            }
           ]
         },
         {
@@ -59,8 +131,16 @@
           "total": 6,
           "club": "preston",
           "scorers": [
-            { "name": "Jon Green", "position": 1 },
-            { "name": "John Griffiths", "position": 5 }
+            {
+              "name": "Jon Green",
+              "position": 1,
+              "seriesRunnerId": 182
+            },
+            {
+              "name": "John Griffiths",
+              "position": 5,
+              "seriesRunnerId": 103
+            }
           ]
         },
         {
@@ -81,10 +161,26 @@
           "total": 12,
           "club": "red-rose",
           "scorers": [
-            { "name": "Fred Lynch", "position": 1 },
-            { "name": "Ken Addison", "position": 2 },
-            { "name": "Philip Bulter", "position": 4 },
-            { "name": "John Shepherd", "position": 5 }
+            {
+              "name": "Fred Lynch",
+              "position": 1,
+              "seriesRunnerId": 155
+            },
+            {
+              "name": "Ken Addison",
+              "position": 2,
+              "seriesRunnerId": 154
+            },
+            {
+              "name": "Philip Bulter",
+              "position": 4,
+              "seriesRunnerId": 183
+            },
+            {
+              "name": "John Shepherd",
+              "position": 5,
+              "seriesRunnerId": 151
+            }
           ]
         },
         {
@@ -93,10 +189,26 @@
           "total": 50,
           "club": "chorley-ac",
           "scorers": [
-            { "name": "Dave Kershaw", "position": 8 },
-            { "name": "Simon Townsend", "position": 9 },
-            { "name": "Henry Minorczyk", "position": 12 },
-            { "name": "John Minton", "position": 21 }
+            {
+              "name": "Dave Kershaw",
+              "position": 8,
+              "seriesRunnerId": 112
+            },
+            {
+              "name": "Simon Townsend",
+              "position": 9,
+              "seriesRunnerId": 111
+            },
+            {
+              "name": "Henry Minorczyk",
+              "position": 12,
+              "seriesRunnerId": 123
+            },
+            {
+              "name": "John Minton",
+              "position": 21,
+              "seriesRunnerId": 136
+            }
           ]
         },
         {
@@ -105,10 +217,26 @@
           "total": 58,
           "club": "wesham",
           "scorers": [
-            { "name": "Mark Midgley", "position": 7 },
-            { "name": "Nigel Shepherd", "position": 15 },
-            { "name": "Alistair Morris", "position": 17 },
-            { "name": "Kath Hoyer", "position": 19 }
+            {
+              "name": "Mark Midgley",
+              "position": 7,
+              "seriesRunnerId": 110
+            },
+            {
+              "name": "Nigel Shepherd",
+              "position": 15,
+              "seriesRunnerId": 128
+            },
+            {
+              "name": "Alistair Morris",
+              "position": 17,
+              "seriesRunnerId": 186
+            },
+            {
+              "name": "Kath Hoyer",
+              "position": 19,
+              "seriesRunnerId": 188
+            }
           ]
         },
         {
@@ -117,7 +245,11 @@
           "total": 3,
           "club": "preston",
           "scorers": [
-            { "name": "John Griffiths", "position": 3 }
+            {
+              "name": "John Griffiths",
+              "position": 3,
+              "seriesRunnerId": 103
+            }
           ]
         },
         {
@@ -145,9 +277,21 @@
           "total": 7,
           "club": "red-rose",
           "scorers": [
-            { "name": "Fred Lynch", "position": 1 },
-            { "name": "Ken Addison", "position": 2 },
-            { "name": "John Rogerson", "position": 4 }
+            {
+              "name": "Fred Lynch",
+              "position": 1,
+              "seriesRunnerId": 155
+            },
+            {
+              "name": "Ken Addison",
+              "position": 2,
+              "seriesRunnerId": 154
+            },
+            {
+              "name": "John Rogerson",
+              "position": 4,
+              "seriesRunnerId": 119
+            }
           ]
         },
         {
@@ -156,9 +300,21 @@
           "total": 20,
           "club": "chorley-ac",
           "scorers": [
-            { "name": "Dave Kershaw", "position": 3 },
-            { "name": "Henry Minorczyk", "position": 5 },
-            { "name": "John Minton", "position": 12 }
+            {
+              "name": "Dave Kershaw",
+              "position": 3,
+              "seriesRunnerId": 112
+            },
+            {
+              "name": "Henry Minorczyk",
+              "position": 5,
+              "seriesRunnerId": 123
+            },
+            {
+              "name": "John Minton",
+              "position": 12,
+              "seriesRunnerId": 136
+            }
           ]
         },
         {
@@ -167,9 +323,21 @@
           "total": 27,
           "club": "wesham",
           "scorers": [
-            { "name": "Nigel Shepherd", "position": 7 },
-            { "name": "Alistair Morris", "position": 9 },
-            { "name": "Kath Hoyer", "position": 11 }
+            {
+              "name": "Nigel Shepherd",
+              "position": 7,
+              "seriesRunnerId": 128
+            },
+            {
+              "name": "Alistair Morris",
+              "position": 9,
+              "seriesRunnerId": 186
+            },
+            {
+              "name": "Kath Hoyer",
+              "position": 11,
+              "seriesRunnerId": 188
+            }
           ]
         },
         {
@@ -204,8 +372,16 @@
           "total": 3,
           "club": "chorley-ac",
           "scorers": [
-            { "name": "Henry Minorczyk", "position": 1 },
-            { "name": "John Minton", "position": 2 }
+            {
+              "name": "Henry Minorczyk",
+              "position": 1,
+              "seriesRunnerId": 123
+            },
+            {
+              "name": "John Minton",
+              "position": 2,
+              "seriesRunnerId": 136
+            }
           ]
         },
         {
@@ -214,8 +390,16 @@
           "total": 7,
           "club": "red-rose",
           "scorers": [
-            { "name": "George Fletcher", "position": 3 },
-            { "name": "Bernard Elkington", "position": 4 }
+            {
+              "name": "George Fletcher",
+              "position": 3,
+              "seriesRunnerId": 139
+            },
+            {
+              "name": "Bernard Elkington",
+              "position": 4,
+              "seriesRunnerId": 189
+            }
           ]
         },
         {
@@ -257,8 +441,16 @@
           "total": 6,
           "club": "wesham",
           "scorers": [
-            { "name": "Sarah Sherratt", "position": 2 },
-            { "name": "Kath Hoyer", "position": 4 }
+            {
+              "name": "Sarah Sherratt",
+              "position": 2,
+              "seriesRunnerId": 108
+            },
+            {
+              "name": "Kath Hoyer",
+              "position": 4,
+              "seriesRunnerId": 188
+            }
           ]
         },
         {
@@ -267,8 +459,16 @@
           "total": 6,
           "club": "lytham",
           "scorers": [
-            { "name": "Melanie Koth", "position": 1 },
-            { "name": "Debbie Cooper", "position": 5 }
+            {
+              "name": "Melanie Koth",
+              "position": 1,
+              "seriesRunnerId": 116
+            },
+            {
+              "name": "Debbie Cooper",
+              "position": 5,
+              "seriesRunnerId": 131
+            }
           ]
         },
         {
@@ -277,8 +477,16 @@
           "total": 9,
           "club": "red-rose",
           "scorers": [
-            { "name": "Alison John-Haslam", "position": 3 },
-            { "name": "Paula Plowman", "position": 6 }
+            {
+              "name": "Alison John-Haslam",
+              "position": 3,
+              "seriesRunnerId": 162
+            },
+            {
+              "name": "Paula Plowman",
+              "position": 6,
+              "seriesRunnerId": 172
+            }
           ]
         },
         {

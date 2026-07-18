@@ -9,11 +9,31 @@
           "total": 20,
           "club": "wesham",
           "scorers": [
-            { "name": "Charlie Pass", "position": 1 },
-            { "name": "Lee Barlow", "position": 2 },
-            { "name": "Steve Myerscough", "position": 3 },
-            { "name": "Mark Belfield", "position": 6 },
-            { "name": "Mark Midgley", "position": 8 }
+            {
+              "name": "Charlie Pass",
+              "position": 1,
+              "seriesRunnerId": 100
+            },
+            {
+              "name": "Lee Barlow",
+              "position": 2,
+              "seriesRunnerId": 149
+            },
+            {
+              "name": "Steve Myerscough",
+              "position": 3,
+              "seriesRunnerId": 150
+            },
+            {
+              "name": "Mark Belfield",
+              "position": 6,
+              "seriesRunnerId": 153
+            },
+            {
+              "name": "Mark Midgley",
+              "position": 8,
+              "seriesRunnerId": 110
+            }
           ]
         },
         {
@@ -22,11 +42,31 @@
           "total": 48,
           "club": "red-rose",
           "scorers": [
-            { "name": "John Shepherd", "position": 4 },
-            { "name": "Ken Addison", "position": 9 },
-            { "name": "Philip Butler", "position": 10 },
-            { "name": "Fred Lynch", "position": 12 },
-            { "name": "Paul Woan", "position": 13 }
+            {
+              "name": "John Shepherd",
+              "position": 4,
+              "seriesRunnerId": 151
+            },
+            {
+              "name": "Ken Addison",
+              "position": 9,
+              "seriesRunnerId": 154
+            },
+            {
+              "name": "Philip Butler",
+              "position": 10,
+              "seriesRunnerId": 109
+            },
+            {
+              "name": "Fred Lynch",
+              "position": 12,
+              "seriesRunnerId": 155
+            },
+            {
+              "name": "Paul Woan",
+              "position": 13,
+              "seriesRunnerId": 156
+            }
           ]
         },
         {
@@ -35,11 +75,31 @@
           "total": 99,
           "club": "chorley-ac",
           "scorers": [
-            { "name": "Dave Kershaw", "position": 11 },
-            { "name": "Simon Townsend", "position": 14 },
-            { "name": "Stuart Tunney", "position": 15 },
-            { "name": "Henry Minorczyk", "position": 23 },
-            { "name": "Barry Chester", "position": 36 }
+            {
+              "name": "Dave Kershaw",
+              "position": 11,
+              "seriesRunnerId": 112
+            },
+            {
+              "name": "Simon Townsend",
+              "position": 14,
+              "seriesRunnerId": 111
+            },
+            {
+              "name": "Stuart Tunney",
+              "position": 15,
+              "seriesRunnerId": 114
+            },
+            {
+              "name": "Henry Minorczyk",
+              "position": 23,
+              "seriesRunnerId": 123
+            },
+            {
+              "name": "Barry Chester",
+              "position": 36,
+              "seriesRunnerId": 132
+            }
           ]
         },
         {
@@ -48,11 +108,31 @@
           "total": 155,
           "club": "lytham",
           "scorers": [
-            { "name": "Melanie Koth", "position": 17 },
-            { "name": "Steve Quarmby", "position": 32 },
-            { "name": "Kevin Ashworth", "position": 33 },
-            { "name": "Colin Nelion", "position": 34 },
-            { "name": "Debbie Cooper", "position": 39 }
+            {
+              "name": "Melanie Koth",
+              "position": 17,
+              "seriesRunnerId": 116
+            },
+            {
+              "name": "Steve Quarmby",
+              "position": 32,
+              "seriesRunnerId": 166
+            },
+            {
+              "name": "Kevin Ashworth",
+              "position": 33,
+              "seriesRunnerId": 167
+            },
+            {
+              "name": "Colin Nelion",
+              "position": 34,
+              "seriesRunnerId": 168
+            },
+            {
+              "name": "Debbie Cooper",
+              "position": 39,
+              "seriesRunnerId": 131
+            }
           ]
         },
         {
@@ -61,11 +141,31 @@
           "total": 161,
           "club": "preston",
           "scorers": [
-            { "name": "Nichola Jackson", "position": 7 },
-            { "name": "Billy Johnstone", "position": 22 },
-            { "name": "Pete McDermott", "position": 40 },
-            { "name": "Eddie Stewart", "position": 44 },
-            { "name": "David Roberts", "position": 48 }
+            {
+              "name": "Nichola Jackson",
+              "position": 7,
+              "seriesRunnerId": 102
+            },
+            {
+              "name": "Billy Johnstone",
+              "position": 22,
+              "seriesRunnerId": 160
+            },
+            {
+              "name": "Pete McDermott",
+              "position": 40,
+              "seriesRunnerId": 133
+            },
+            {
+              "name": "Eddie Stewart",
+              "position": 44,
+              "seriesRunnerId": 174
+            },
+            {
+              "name": "David Roberts",
+              "position": 48,
+              "seriesRunnerId": 178
+            }
           ]
         },
         {
@@ -74,8 +174,16 @@
           "total": 33,
           "club": "blackpool",
           "scorers": [
-            { "name": "Gary Johnston", "position": 5 },
-            { "name": "David Brooks", "position": 28 }
+            {
+              "name": "Gary Johnston",
+              "position": 5,
+              "seriesRunnerId": 152
+            },
+            {
+              "name": "David Brooks",
+              "position": 28,
+              "seriesRunnerId": 163
+            }
           ]
         }
       ]
@@ -89,10 +197,26 @@
           "total": 17,
           "club": "red-rose",
           "scorers": [
-            { "name": "John Shepherd", "position": 1 },
-            { "name": "Ken Addison", "position": 4 },
-            { "name": "Philip Butler", "position": 5 },
-            { "name": "Fred Lynch", "position": 7 }
+            {
+              "name": "John Shepherd",
+              "position": 1,
+              "seriesRunnerId": 151
+            },
+            {
+              "name": "Ken Addison",
+              "position": 4,
+              "seriesRunnerId": 154
+            },
+            {
+              "name": "Philip Butler",
+              "position": 5,
+              "seriesRunnerId": 109
+            },
+            {
+              "name": "Fred Lynch",
+              "position": 7,
+              "seriesRunnerId": 155
+            }
           ]
         },
         {
@@ -101,10 +225,26 @@
           "total": 54,
           "club": "chorley-ac",
           "scorers": [
-            { "name": "Dave Kershaw", "position": 6 },
-            { "name": "Simon Townsend", "position": 9 },
-            { "name": "Henry Minorczyk", "position": 15 },
-            { "name": "Barry Chester", "position": 24 }
+            {
+              "name": "Dave Kershaw",
+              "position": 6,
+              "seriesRunnerId": 112
+            },
+            {
+              "name": "Simon Townsend",
+              "position": 9,
+              "seriesRunnerId": 111
+            },
+            {
+              "name": "Henry Minorczyk",
+              "position": 15,
+              "seriesRunnerId": 123
+            },
+            {
+              "name": "Barry Chester",
+              "position": 24,
+              "seriesRunnerId": 132
+            }
           ]
         },
         {
@@ -113,10 +253,26 @@
           "total": 58,
           "club": "wesham",
           "scorers": [
-            { "name": "Mark Midgley", "position": 3 },
-            { "name": "Helen Lawrenson", "position": 16 },
-            { "name": "Peter Bartlett", "position": 19 },
-            { "name": "John Sharples", "position": 20 }
+            {
+              "name": "Mark Midgley",
+              "position": 3,
+              "seriesRunnerId": 110
+            },
+            {
+              "name": "Helen Lawrenson",
+              "position": 16,
+              "seriesRunnerId": 161
+            },
+            {
+              "name": "Peter Bartlett",
+              "position": 19,
+              "seriesRunnerId": 164
+            },
+            {
+              "name": "John Sharples",
+              "position": 20,
+              "seriesRunnerId": 165
+            }
           ]
         },
         {
@@ -125,10 +281,26 @@
           "total": 98,
           "club": "preston",
           "scorers": [
-            { "name": "Billy Johnstone", "position": 14 },
-            { "name": "Pete McDermott", "position": 25 },
-            { "name": "Eddie Stewart", "position": 28 },
-            { "name": "David Roberts", "position": 31 }
+            {
+              "name": "Billy Johnstone",
+              "position": 14,
+              "seriesRunnerId": 160
+            },
+            {
+              "name": "Pete McDermott",
+              "position": 25,
+              "seriesRunnerId": 133
+            },
+            {
+              "name": "Eddie Stewart",
+              "position": 28,
+              "seriesRunnerId": 174
+            },
+            {
+              "name": "David Roberts",
+              "position": 31,
+              "seriesRunnerId": 178
+            }
           ]
         },
         {
@@ -137,10 +309,26 @@
           "total": 107,
           "club": "lytham",
           "scorers": [
-            { "name": "Steve Quarmby", "position": 22 },
-            { "name": "Kevin Ashworth", "position": 23 },
-            { "name": "Bec Willetts", "position": 30 },
-            { "name": "Pamela Hardman", "position": 32 }
+            {
+              "name": "Steve Quarmby",
+              "position": 22,
+              "seriesRunnerId": 166
+            },
+            {
+              "name": "Kevin Ashworth",
+              "position": 23,
+              "seriesRunnerId": 167
+            },
+            {
+              "name": "Bec Willetts",
+              "position": 30,
+              "seriesRunnerId": 177
+            },
+            {
+              "name": "Pamela Hardman",
+              "position": 32,
+              "seriesRunnerId": 179
+            }
           ]
         },
         {
@@ -149,7 +337,11 @@
           "total": 2,
           "club": "blackpool",
           "scorers": [
-            { "name": "Gary Johnston", "position": 2 }
+            {
+              "name": "Gary Johnston",
+              "position": 2,
+              "seriesRunnerId": 152
+            }
           ]
         }
       ]
@@ -163,9 +355,21 @@
           "total": 11,
           "club": "red-rose",
           "scorers": [
-            { "name": "Ken Addison", "position": 2 },
-            { "name": "Fred Lynch", "position": 4 },
-            { "name": "John Rogerson", "position": 5 }
+            {
+              "name": "Ken Addison",
+              "position": 2,
+              "seriesRunnerId": 154
+            },
+            {
+              "name": "Fred Lynch",
+              "position": 4,
+              "seriesRunnerId": 155
+            },
+            {
+              "name": "John Rogerson",
+              "position": 5,
+              "seriesRunnerId": 119
+            }
           ]
         },
         {
@@ -174,9 +378,21 @@
           "total": 22,
           "club": "chorley-ac",
           "scorers": [
-            { "name": "Dave Kershaw", "position": 3 },
-            { "name": "Henry Minorczyk", "position": 7 },
-            { "name": "Barry Chester", "position": 12 }
+            {
+              "name": "Dave Kershaw",
+              "position": 3,
+              "seriesRunnerId": 112
+            },
+            {
+              "name": "Henry Minorczyk",
+              "position": 7,
+              "seriesRunnerId": 123
+            },
+            {
+              "name": "Barry Chester",
+              "position": 12,
+              "seriesRunnerId": 132
+            }
           ]
         },
         {
@@ -185,9 +401,21 @@
           "total": 44,
           "club": "preston",
           "scorers": [
-            { "name": "Pete McDermott", "position": 13 },
-            { "name": "Eddie Stewart", "position": 15 },
-            { "name": "David Roberts", "position": 16 }
+            {
+              "name": "Pete McDermott",
+              "position": 13,
+              "seriesRunnerId": 133
+            },
+            {
+              "name": "Eddie Stewart",
+              "position": 15,
+              "seriesRunnerId": 174
+            },
+            {
+              "name": "David Roberts",
+              "position": 16,
+              "seriesRunnerId": 178
+            }
           ]
         },
         {
@@ -196,8 +424,16 @@
           "total": 19,
           "club": "wesham",
           "scorers": [
-            { "name": "Peter Bartlett", "position": 9 },
-            { "name": "John Sharples", "position": 10 }
+            {
+              "name": "Peter Bartlett",
+              "position": 9,
+              "seriesRunnerId": 164
+            },
+            {
+              "name": "John Sharples",
+              "position": 10,
+              "seriesRunnerId": 165
+            }
           ]
         },
         {
@@ -206,8 +442,16 @@
           "total": 39,
           "club": "lytham",
           "scorers": [
-            { "name": "Pamela Hardman", "position": 17 },
-            { "name": "Dawn Lock", "position": 22 }
+            {
+              "name": "Pamela Hardman",
+              "position": 17,
+              "seriesRunnerId": 179
+            },
+            {
+              "name": "Dawn Lock",
+              "position": 22,
+              "seriesRunnerId": 147
+            }
           ]
         },
         {
@@ -216,7 +460,11 @@
           "total": 1,
           "club": "blackpool",
           "scorers": [
-            { "name": "Gary Johnston", "position": 1 }
+            {
+              "name": "Gary Johnston",
+              "position": 1,
+              "seriesRunnerId": 152
+            }
           ]
         }
       ]
@@ -230,8 +478,16 @@
           "total": 4,
           "club": "chorley-ac",
           "scorers": [
-            { "name": "Henry Minorczyk", "position": 1 },
-            { "name": "Barry Chester", "position": 3 }
+            {
+              "name": "Henry Minorczyk",
+              "position": 1,
+              "seriesRunnerId": 123
+            },
+            {
+              "name": "Barry Chester",
+              "position": 3,
+              "seriesRunnerId": 132
+            }
           ]
         },
         {
@@ -240,8 +496,16 @@
           "total": 10,
           "club": "preston",
           "scorers": [
-            { "name": "Pete McDermott", "position": 4 },
-            { "name": "Eddie Stewart", "position": 6 }
+            {
+              "name": "Pete McDermott",
+              "position": 4,
+              "seriesRunnerId": 133
+            },
+            {
+              "name": "Eddie Stewart",
+              "position": 6,
+              "seriesRunnerId": 174
+            }
           ]
         },
         {
@@ -250,7 +514,11 @@
           "total": 2,
           "club": "wesham",
           "scorers": [
-            { "name": "Peter Bartlett", "position": 2 }
+            {
+              "name": "Peter Bartlett",
+              "position": 2,
+              "seriesRunnerId": 164
+            }
           ]
         },
         {
@@ -259,7 +527,11 @@
           "total": 8,
           "club": "red-rose",
           "scorers": [
-            { "name": "George Fletcher", "position": 8 }
+            {
+              "name": "George Fletcher",
+              "position": 8,
+              "seriesRunnerId": 139
+            }
           ]
         },
         {
@@ -268,7 +540,11 @@
           "total": 10,
           "club": "lytham",
           "scorers": [
-            { "name": "Dawn Lock", "position": 10 }
+            {
+              "name": "Dawn Lock",
+              "position": 10,
+              "seriesRunnerId": 147
+            }
           ]
         },
         {
@@ -289,9 +565,21 @@
           "total": 15,
           "club": "wesham",
           "scorers": [
-            { "name": "Sarah Sherratt", "position": 3 },
-            { "name": "Helen Lawrenson", "position": 4 },
-            { "name": "Jen Salt", "position": 8 }
+            {
+              "name": "Sarah Sherratt",
+              "position": 3,
+              "seriesRunnerId": 108
+            },
+            {
+              "name": "Helen Lawrenson",
+              "position": 4,
+              "seriesRunnerId": 161
+            },
+            {
+              "name": "Jen Salt",
+              "position": 8,
+              "seriesRunnerId": 171
+            }
           ]
         },
         {
@@ -300,9 +588,21 @@
           "total": 18,
           "club": "red-rose",
           "scorers": [
-            { "name": "Alison John-Haslam", "position": 5 },
-            { "name": "Glenda Dobie", "position": 6 },
-            { "name": "Janine Needham", "position": 7 }
+            {
+              "name": "Alison John-Haslam",
+              "position": 5,
+              "seriesRunnerId": 162
+            },
+            {
+              "name": "Glenda Dobie",
+              "position": 6,
+              "seriesRunnerId": 129
+            },
+            {
+              "name": "Janine Needham",
+              "position": 7,
+              "seriesRunnerId": 169
+            }
           ]
         },
         {
@@ -311,9 +611,21 @@
           "total": 23,
           "club": "lytham",
           "scorers": [
-            { "name": "Melanie Koth", "position": 2 },
-            { "name": "Debbie Cooper", "position": 9 },
-            { "name": "Laura Ashworth", "position": 12 }
+            {
+              "name": "Melanie Koth",
+              "position": 2,
+              "seriesRunnerId": 116
+            },
+            {
+              "name": "Debbie Cooper",
+              "position": 9,
+              "seriesRunnerId": 131
+            },
+            {
+              "name": "Laura Ashworth",
+              "position": 12,
+              "seriesRunnerId": 175
+            }
           ]
         },
         {
@@ -322,8 +634,16 @@
           "total": 17,
           "club": "preston",
           "scorers": [
-            { "name": "Nichola Jackson", "position": 1 },
-            { "name": "Melanie Howorth", "position": 16 }
+            {
+              "name": "Nichola Jackson",
+              "position": 1,
+              "seriesRunnerId": 102
+            },
+            {
+              "name": "Melanie Howorth",
+              "position": 16,
+              "seriesRunnerId": 180
+            }
           ]
         },
         {
@@ -332,7 +652,11 @@
           "total": 11,
           "club": "chorley-ac",
           "scorers": [
-            { "name": "Lauren Caton", "position": 11 }
+            {
+              "name": "Lauren Caton",
+              "position": 11,
+              "seriesRunnerId": 173
+            }
           ]
         },
         {
