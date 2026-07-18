@@ -1,10 +1,10 @@
 ﻿position,cat_open,cat_ladies,cat_v50,cat_v60,cat_vets,race_number,first_name,last_name,club,age_category,sex,time,series_runner_id
 1,1,,,,,,Adam,Sutton,preston,SEN,M,24.20,100
 2,2,,,,,,Malc,Eadie,north-fylde,SEN,M,26.08,281
-3,3,,,,,,Tom,Cunningham,blackpool-fylde,SEN,M,26.10,282
+3,3,,,,,,Tom,Cunningham,blackpool-fylde,JUN,M,26.10,282
 4,4,,,,1,,Greg,Seddon,blackpool-fylde,V40,M,26.18,283
 5,5,,,,,,Matt,Livingstone,preston,SEN,M,26.19,284
-6,6,,,,,,Peter,Street,preston,SEN,M,26.45,285
+6,6,,,,,,Peter,Street,preston,JUN,M,26.45,285
 7,7,,,,,,Steve,Hallas,preston,SEN,M,26.47,101
 8,8,,,,2,,Dave,Parkington,preston,V40,M,27.00,286
 9,9,,,,3,,Gary,Wilson,preston,V40,M,27.13,107
@@ -16,8 +16,8 @@
 15,15,,,,,,John,Winder,preston,V40,M,28.10,288
 16,16,,1,,7,,John,Houghton,north-fylde,V50,M,28.14,110
 17,17,,,,,,Lee,Barlow,wesham,SEN,M,28.27,113
-18,18,,,,,,David,Rigby,preston,SEN,M,28.28,289
-19,19,,,,,,Adam,Hulme,north-fylde,SEN,M,28.36,290
+18,18,,,,,,David,Rigby,preston,JUN,M,28.28,289
+19,19,,,,,,Adam,Hulme,north-fylde,JUN,M,28.36,290
 20,20,,,,8,,Jeff,Lawton,north-fylde,V45,M,28.37,291
 21,21,,2,,9,,Les,Endean,north-fylde,V50,M,28.42,292
 22,22,,,,,,Steve,Myerscough,wesham,SEN,M,28.45,109
@@ -46,7 +46,7 @@
 45,44,,,,,,Joe,Hodkinson,wesham,SEN,M,30.41,302
 46,45,,,,23,,Brian,Dewhurst,preston,V40,M,30.59,303
 47,46,,,,,,Chris,Lloyd,north-fylde,SEN,M,31.00,304
-48,47,,,,,,Andrew,Holmes,chorley-ac,SEN,M,31.06,125
+48,47,,,,,,Andrew,Holmes,chorley-ac,JUN,M,31.06,125
 49,48,2,,,24,,Carolyn,Robbins,blackpool-fylde,V45,F,31.07,136
 50,49,,,,25,,Paul,Ellis,lytham,V45,M,31.26,138
 51,50,,,,,,Gavin,Brandie,lytham,SEN,M,31.39,305
@@ -59,7 +59,7 @@
 58,56,,,,30,,Dave,Dunn,lytham,V40,M,32.13,145
 59,57,,,,,,Roy,Upton,lytham,SEN,M,32.17,144
 60,58,,,,,,Nathan,Lawton,chorley-ac,SEN,M,32.27,307
-61,59,,,,,,Matthew,Wadsworth,preston,SEN,M,32.36,146
+61,59,,,,,,Matthew,Wadsworth,preston,JUN,M,32.36,146
 62,60,,,,,,Stephen,Young,preston,SEN,M,32.43,308
 63,61,,,,31,,Terry,Bradshaw,north-fylde,V45,M,32.45,168
 64,62,,,,32,,Duncan,Richardson,north-fylde,V40,M,32.50,169
@@ -91,7 +91,7 @@
 90,87,12,,,55,,Kath,Hoyer,wesham,V45,F,35.03,197
 91,88,,,,,,Anthony,Blight,north-fylde,SEN,M,35.05,192
 92,89,,,,,,Alan,Taylor,wesham,SEN,M,35.12,191
-93,90,13,,,,,Laura,Livesey,chorley-ac,SEN,F,35.16,320
+93,90,13,,,,,Laura,Livesey,chorley-ac,JUN,F,35.16,320
 94,91,14,,,,,Yvonne,Russell,wesham,SEN,F,35.24,321
 95,92,,,,56,,Russ,Mabbett,wesham,V40,M,35.33,130
 96,93,,,,,,Jonathan,Fountain,north-fylde,SEN,M,35.40,322
@@ -117,12 +117,12 @@
 116,113,,28,,69,,Dave,Dyson,north-fylde,V50,M,37.18,331
 117,114,,29,,70,,Dave,Wood,north-fylde,V55,M,37.29,230
 118,115,,30,5,71,,Alan,Fitchett,red-rose,V65,M,37.35,226
-119,116,23,,,,,Rachel,Proctor,lytham,SEN,F,37.37,332
+119,116,23,,,,,Rachel,Proctor,lytham,JUN,F,37.37,332
 120,117,24,,,72,,Karen,Dunford,north-fylde,V40,F,37.42,218
 121,118,25,,,,,Michelle,Devine,chorley-ac,SEN,F,37.57,333
 122,119,,31,6,73,,Doug,Brown,wesham,V65,M,38.00,334
 123,120,,32,7,74,,John,Winters,blackpool-fylde,V70,M,38.03,237
-124,121,,,,,,Mark,Harrison,preston,SEN,M,38.05,335
+124,121,,,,,,Mark,Harrison,preston,JUN,M,38.05,335
 125,122,,,,75,,Chris,Moss,wesham,V40,M,38.16,336
 126,123,,33,8,76,,John,Bradley,north-fylde,V65,M,38.22,337
 127,124,,,,,,Paul,Carter,wesham,SEN,M,38.25,338
@@ -154,7 +154,7 @@
 153,148,38,,,96,,Mandy,Ingham,wesham,V35,F,42.31,247
 154,,,,,,,David,Wells,Guest,,M,42.35,
 155,149,,46,,97,,Stuart,Swann,chorley-ac,V55,M,42.57,238
-156,150,39,,,,,Carly,Wright,north-fylde,SEN,F,43.08,350
+156,150,39,,,,,Carly,Wright,north-fylde,JUN,F,43.08,350
 157,151,40,,,,,Rosemary,Reid,lytham,SEN,F,43.09,351
 158,152,41,47,,98,,Jennie,Thompsom,wesham,V55,F,43.27,352
 159,153,42,,,99,,Pauline,Weller,wesham,V45,F,43.46,255
@@ -164,7 +164,7 @@
 163,157,,50,19,103,,Peter,Earnshaw,wesham,V60,M,44.43,274
 164,158,44,,,104,,Angela,Bradshaw,preston,V40,F,44.59,355
 165,159,45,51,,105,,Jan,Mayor,chorley-ac,V50,F,45.33,356
-166,160,46,,,,,Chrisi,Naylor,north-fylde,SEN,F,46.09,357
+166,160,46,,,,,Chrisi,Naylor,north-fylde,JUN,F,46.09,357
 167,161,47,,,106,,Liz,Routledge,north-fylde,V40,F,46.11,358
 168,162,48,52,,107,,Marie,Wyld,wesham,V50,F,47.12,278
 169,163,,53,,108,,Malc,Sherwood,north-fylde,V50,M,47.15,359
