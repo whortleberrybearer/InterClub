@@ -1,0 +1,61 @@
+{
+  "provisional": false,
+  "races": ["pendle", "two-lads", "warton-crag", "golf-ball"],
+  "categories": [
+    {
+      "id": "open",
+      "clubs": [
+        { "position": 1, "club": "red-rose", "points": [4, 5, 6, 6], "total": 21, "tiebreaker": null },
+        { "position": 2, "club": "wesham", "points": [5, 6, 5, 2], "total": 18, "tiebreaker": null },
+        { "position": 3, "club": "preston", "points": [6, 2, 2, 5], "total": 15, "tiebreaker": null },
+        { "position": 4, "club": "chorley-ac", "points": [3, 4, 4, 3], "total": 14, "tiebreaker": null },
+        { "position": 5, "club": "lytham", "points": [2, 3, 3, 4], "total": 12, "tiebreaker": null },
+        { "position": 6, "club": "blackpool", "points": [1, 1, 0, 1], "total": 3, "tiebreaker": null }
+      ]
+    },
+    {
+      "id": "vets",
+      "clubs": [
+        { "position": 1, "club": "red-rose", "points": [4, 6, 6, 6], "total": 22, "tiebreaker": null },
+        { "position": 2, "club": "chorley-ac", "points": [3, 5, 5, 4], "total": 17, "tiebreaker": "246 points" },
+        { "position": 3, "club": "preston", "points": [6, 3, 3, 5], "total": 17, "tiebreaker": "279 points" },
+        { "position": 4, "club": "wesham", "points": [5, 4, 4, 3], "total": 16, "tiebreaker": null },
+        { "position": 5, "club": "lytham", "points": [1, 2, 0, 2], "total": 5, "tiebreaker": null },
+        { "position": 6, "club": "blackpool", "points": [2, 1, 0, 1], "total": 4, "tiebreaker": null }
+      ]
+    },
+    {
+      "id": "v50",
+      "clubs": [
+        { "position": 1, "club": "red-rose", "points": [6, 6, 6, 6], "total": 24, "tiebreaker": null },
+        { "position": 2, "club": "chorley-ac", "points": [5, 5, 5, 4], "total": 19, "tiebreaker": null },
+        { "position": 3, "club": "preston", "points": [3, 4, 0, 5], "total": 12, "tiebreaker": null },
+        { "position": 4, "club": "wesham", "points": [2, 3, 4, 2], "total": 11, "tiebreaker": null },
+        { "position": 5, "club": "blackpool", "points": [4, 1, 0, 3], "total": 8, "tiebreaker": null },
+        { "position": 6, "club": "lytham", "points": [1, 2, 0, 1], "total": 4, "tiebreaker": null }
+      ]
+    },
+    {
+      "id": "v60",
+      "clubs": [
+        { "position": 1, "club": "chorley-ac", "points": [6, 6, 6, 6], "total": 24, "tiebreaker": null },
+        { "position": 2, "club": "red-rose", "points": [4, 3, 5, 4], "total": 16, "tiebreaker": null },
+        { "position": 3, "club": "preston", "points": [5, 5, 0, 5], "total": 15, "tiebreaker": null },
+        { "position": 4, "club": "lytham", "points": [3, 2, 0, 3], "total": 8, "tiebreaker": null },
+        { "position": 5, "club": "wesham", "points": [0, 4, 0, 0], "total": 4, "tiebreaker": null },
+        { "position": 6, "club": "blackpool", "points": [0, 0, 0, 0], "total": 0, "tiebreaker": null }
+      ]
+    },
+    {
+      "id": "ladies",
+      "clubs": [
+        { "position": 1, "club": "lytham", "points": [5, 4, 5, 5], "total": 19, "tiebreaker": "86 points" },
+        { "position": 2, "club": "wesham", "points": [4, 6, 6, 3], "total": 19, "tiebreaker": "108 points" },
+        { "position": 3, "club": "red-rose", "points": [3, 5, 4, 4], "total": 16, "tiebreaker": null },
+        { "position": 4, "club": "preston", "points": [6, 3, 0, 6], "total": 15, "tiebreaker": null },
+        { "position": 5, "club": "chorley-ac", "points": [0, 2, 0, 0], "total": 2, "tiebreaker": null },
+        { "position": 6, "club": "blackpool", "points": [0, 0, 0, 0], "total": 0, "tiebreaker": null }
+      ]
+    }
+  ]
+}
