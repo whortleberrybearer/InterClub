@@ -1,45 +1,92 @@
 {
   "teamAwards": [
-    { "id": "open", "club": "red-rose" },
-    { "id": "ladies", "club": "lytham" },
-    { "id": "vets", "club": "red-rose" },
-    { "id": "v50", "club": "red-rose" },
-    { "id": "v60", "club": "chorley-ac" }
+    {
+      "id": "open",
+      "club": "red-rose"
+    },
+    {
+      "id": "ladies",
+      "club": "lytham"
+    },
+    {
+      "id": "vets",
+      "club": "red-rose"
+    },
+    {
+      "id": "v50",
+      "club": "red-rose"
+    },
+    {
+      "id": "v60",
+      "club": "chorley-ac"
+    }
   ],
   "individualAwards": [
     {
       "id": "overall",
       "awards": [
-        { "position": 1, "name": "Nichola Jackson", "club": "preston", "ageCategory": "SEN" }
+        {
+          "position": 1,
+          "name": "Nichola Jackson",
+          "club": "preston",
+          "ageCategory": "SEN",
+          "seriesRunnerId": 102
+        }
       ]
     },
     {
       "id": "m",
       "sex": "M",
       "awards": [
-        { "position": 1, "name": "Gary Johnston", "club": "blackpool", "ageCategory": "V50" }
+        {
+          "position": 1,
+          "name": "Gary Johnston",
+          "club": "blackpool",
+          "ageCategory": "V50",
+          "seriesRunnerId": 152
+        }
       ]
     },
     {
       "id": "v40",
       "ageCategory": "V40",
       "awards": [
-        { "position": 1, "name": "Philip Butler", "club": "red-rose" }
+        {
+          "position": 1,
+          "name": "Philip Butler",
+          "club": "red-rose",
+          "seriesRunnerId": 109
+        }
       ]
     },
     {
       "id": "v50",
       "ageCategory": "V50",
       "awards": [
-        { "position": 2, "name": "Ken Addison", "club": "red-rose" },
-        { "position": 3, "name": "Fred Lynch", "club": "red-rose" }
+        {
+          "position": 2,
+          "name": "Ken Addison",
+          "club": "red-rose",
+          "seriesRunnerId": 154
+        },
+        {
+          "position": 3,
+          "name": "Fred Lynch",
+          "club": "red-rose",
+          "seriesRunnerId": 155
+        }
       ]
     },
     {
       "id": "v60",
       "ageCategory": "V60",
       "awards": [
-        { "position": 1, "name": "Henry Minorczyk", "club": "chorley-ac" }
+        {
+          "position": 1,
+          "name": "Henry Minorczyk",
+          "club": "chorley-ac",
+          "seriesRunnerId": 123
+        }
       ]
     },
     {
@@ -47,7 +94,12 @@
       "sex": "F",
       "ageCategory": "V40",
       "awards": [
-        { "position": 1, "name": "Glenda Dobie", "club": "red-rose" }
+        {
+          "position": 1,
+          "name": "Glenda Dobie",
+          "club": "red-rose",
+          "seriesRunnerId": 129
+        }
       ]
     }
   ]

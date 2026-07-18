@@ -1,273 +1,4509 @@
 {
   "provisional": false,
   "maxCountingRaces": 3,
-  "races": ["pendle", "two-lads", "warton-crag", "golf-ball"],
+  "races": [
+    "pendle",
+    "two-lads",
+    "warton-crag",
+    "golf-ball"
+  ],
   "categories": [
     {
       "id": "overall",
       "runners": [
-        { "position": 1, "name": "Nichola Jackson", "club": "preston", "sex": "F", "ageCategory": "SEN", "total": 12, "results": { "pendle": { "points": 3, "counting": true }, "two-lads": { "points": 7, "counting": true }, "golf-ball": { "points": 2, "counting": true } } },
-        { "position": 2, "name": "Gary Johnston", "club": "blackpool", "sex": "M", "ageCategory": "V50", "total": 15, "results": { "pendle": { "points": 6, "counting": true }, "two-lads": { "points": 5, "counting": true }, "golf-ball": { "points": 4, "counting": true } } },
-        { "position": 3, "name": "Ken Addison", "club": "red-rose", "sex": "M", "ageCategory": "V50", "total": 16, "results": { "two-lads": { "points": 9, "counting": true }, "warton-crag": { "points": 4, "counting": true }, "golf-ball": { "points": 3, "counting": true } } },
-        { "position": 4, "name": "Fred Lynch", "club": "red-rose", "sex": "M", "ageCategory": "V50", "total": 20, "results": { "two-lads": { "points": 12, "counting": true }, "warton-crag": { "points": 3, "counting": true }, "golf-ball": { "points": 5, "counting": true } } },
-        { "position": 5, "name": "Philip Butler", "club": "red-rose", "sex": "M", "ageCategory": "V40", "total": 22, "results": { "pendle": { "points": 10, "counting": false }, "two-lads": { "points": 10, "counting": true }, "warton-crag": { "points": 6, "counting": true }, "golf-ball": { "points": 6, "counting": true } } },
-        { "position": 6, "name": "Mark Midgley", "club": "wesham", "sex": "M", "ageCategory": "V40", "total": 28, "results": { "pendle": { "points": 11, "counting": true }, "two-lads": { "points": 8, "counting": true }, "warton-crag": { "points": 9, "counting": true } } },
-        { "position": 7, "name": "Dave Kershaw", "club": "chorley-ac", "sex": "M", "ageCategory": "V50", "total": 34, "results": { "pendle": { "points": 13, "counting": true }, "two-lads": { "points": 11, "counting": true }, "warton-crag": { "points": 10, "counting": true } } },
-        { "position": 8, "name": "Simon Townsend", "club": "chorley-ac", "sex": "M", "ageCategory": "V40", "total": 35, "results": { "pendle": { "points": 12, "counting": true }, "two-lads": { "points": 14, "counting": false }, "warton-crag": { "points": 12, "counting": true }, "golf-ball": { "points": 11, "counting": true } } },
-        { "position": 9, "name": "Melanie Koth", "club": "lytham", "sex": "F", "ageCategory": "SEN", "total": 37, "results": { "pendle": { "points": 17, "counting": false }, "two-lads": { "points": 17, "counting": true }, "warton-crag": { "points": 13, "counting": true }, "golf-ball": { "points": 7, "counting": true } } },
-        { "position": 10, "name": "Sarah Sherratt", "club": "wesham", "sex": "F", "ageCategory": "SEN", "total": 37, "results": { "pendle": { "points": 9, "counting": true }, "two-lads": { "points": 18, "counting": false }, "warton-crag": { "points": 16, "counting": true }, "golf-ball": { "points": 12, "counting": true } } },
-        { "position": 11, "name": "Barry Wheeler", "club": "red-rose", "sex": "M", "ageCategory": "SEN", "total": 39, "results": { "pendle": { "points": 19, "counting": true }, "two-lads": { "points": 27, "counting": false }, "warton-crag": { "points": 11, "counting": true }, "golf-ball": { "points": 9, "counting": true } } },
-        { "position": 12, "name": "Geoffrey Haworth", "club": "red-rose", "sex": "M", "ageCategory": "V40", "total": 46, "results": { "two-lads": { "points": 21, "counting": true }, "warton-crag": { "points": 15, "counting": true }, "golf-ball": { "points": 10, "counting": true } } },
-        { "position": 13, "name": "John Rogerson", "club": "red-rose", "sex": "M", "ageCategory": "V50", "total": 50, "results": { "pendle": { "points": 20, "counting": true }, "two-lads": { "points": 16, "counting": true }, "warton-crag": { "points": 14, "counting": true } } },
-        { "position": 14, "name": "Peter Bolton", "club": "red-rose", "sex": "M", "ageCategory": "V50", "total": 56, "results": { "pendle": { "points": 21, "counting": true }, "two-lads": { "points": 25, "counting": false }, "warton-crag": { "points": 21, "counting": true }, "golf-ball": { "points": 14, "counting": true } } },
-        { "position": 15, "name": "Henry Minorczyk", "club": "chorley-ac", "sex": "M", "ageCategory": "V60", "total": 59, "results": { "pendle": { "points": 24, "counting": false }, "two-lads": { "points": 23, "counting": true }, "warton-crag": { "points": 17, "counting": true }, "golf-ball": { "points": 19, "counting": true } } },
-        { "position": 16, "name": "Colin Nelson", "club": "lytham", "sex": "M", "ageCategory": "SEN", "total": 79, "results": { "two-lads": { "points": 34, "counting": true }, "warton-crag": { "points": 22, "counting": true }, "golf-ball": { "points": 23, "counting": true } } },
-        { "position": 17, "name": "Debbie Cooper", "club": "lytham", "sex": "F", "ageCategory": "SEN", "total": 81, "results": { "pendle": { "points": 32, "counting": true }, "two-lads": { "points": 39, "counting": false }, "warton-crag": { "points": 27, "counting": true }, "golf-ball": { "points": 22, "counting": true } } },
-        { "position": 18, "name": "Glenda Dobie", "club": "red-rose", "sex": "F", "ageCategory": "V50", "total": 82, "results": { "pendle": { "points": 30, "counting": true }, "two-lads": { "points": 31, "counting": true }, "golf-ball": { "points": 21, "counting": true } } },
-        { "position": 19, "name": "John Minton", "club": "chorley-ac", "sex": "M", "ageCategory": "V70", "total": 90, "results": { "pendle": { "points": 37, "counting": true }, "two-lads": { "points": 43, "counting": false }, "warton-crag": { "points": 29, "counting": true }, "golf-ball": { "points": 24, "counting": true } } },
-        { "position": 20, "name": "Paula Plowman", "club": "red-rose", "sex": "F", "ageCategory": "V40", "total": 94, "results": { "two-lads": { "points": 41, "counting": true }, "warton-crag": { "points": 28, "counting": true }, "golf-ball": { "points": 25, "counting": true } } },
-        { "position": 21, "name": "George Fletcher", "club": "red-rose", "sex": "M", "ageCategory": "V60", "total": 98, "results": { "pendle": { "points": 40, "counting": true }, "two-lads": { "points": 50, "counting": false }, "warton-crag": { "points": 30, "counting": true }, "golf-ball": { "points": 28, "counting": true } } },
-        { "position": 22, "name": "Roger Johnson", "club": "red-rose", "sex": "M", "ageCategory": "V50", "total": 106, "results": { "pendle": { "points": 44, "counting": true }, "two-lads": { "points": 52, "counting": false }, "warton-crag": { "points": 31, "counting": true }, "golf-ball": { "points": 31, "counting": true } } },
-        { "position": 23, "name": "David Roberts", "club": "preston", "sex": "M", "ageCategory": "V60", "total": 115, "results": { "pendle": { "points": 38, "counting": true }, "two-lads": { "points": 48, "counting": true }, "golf-ball": { "points": 29, "counting": true } } },
-        { "position": 24, "name": "Melanie Haworth", "club": "preston", "sex": "F", "ageCategory": "SEN", "total": 120, "results": { "pendle": { "points": 39, "counting": true }, "two-lads": { "points": 51, "counting": true }, "golf-ball": { "points": 30, "counting": true } } },
-        { "position": 25, "name": "Dawn Lock", "club": "lytham", "sex": "F", "ageCategory": "V60", "total": 142, "results": { "pendle": { "points": 48, "counting": true }, "two-lads": { "points": 56, "counting": true }, "golf-ball": { "points": 38, "counting": true } } },
-        { "position": 26, "name": "Charlie Pass", "club": "wesham", "sex": "M", "ageCategory": "SEN", "total": 2, "results": { "pendle": { "points": 1, "counting": true }, "two-lads": { "points": 1, "counting": true } } },
-        { "position": 27, "name": "Steve Myerscough", "club": "wesham", "sex": "M", "ageCategory": "SEN", "total": 5, "results": { "two-lads": { "points": 3, "counting": true }, "warton-crag": { "points": 2, "counting": true } } },
-        { "position": 28, "name": "John Griffiths", "club": "preston", "sex": "M", "ageCategory": "V40", "total": 9, "results": { "pendle": { "points": 4, "counting": true }, "warton-crag": { "points": 5, "counting": true } } },
-        { "position": 29, "name": "John Shepherd", "club": "red-rose", "sex": "M", "ageCategory": "V40", "total": 11, "results": { "two-lads": { "points": 4, "counting": true }, "warton-crag": { "points": 7, "counting": true } } },
-        { "position": 30, "name": "Lindsey Berends", "club": "preston", "sex": "F", "ageCategory": "SEN", "total": 22, "results": { "pendle": { "points": 14, "counting": true }, "golf-ball": { "points": 8, "counting": true } } },
-        { "position": 31, "name": "Shane Cliffe", "club": "red-rose", "sex": "M", "ageCategory": "V40", "total": 24, "results": { "pendle": { "points": 16, "counting": true }, "warton-crag": { "points": 8, "counting": true } } },
-        { "position": 32, "name": "Stuart Tunney", "club": "chorley-ac", "sex": "M", "ageCategory": "SEN", "total": 30, "results": { "pendle": { "points": 15, "counting": true }, "two-lads": { "points": 15, "counting": true } } },
-        { "position": 33, "name": "John Hyde", "club": "red-rose", "sex": "M", "ageCategory": "V50", "total": 37, "results": { "warton-crag": { "points": 19, "counting": true }, "golf-ball": { "points": 18, "counting": true } } },
-        { "position": 34, "name": "William Johnstone", "club": "preston", "sex": "M", "ageCategory": "V40", "total": 44, "results": { "pendle": { "points": 22, "counting": true }, "two-lads": { "points": 22, "counting": true } } },
-        { "position": 35, "name": "Alison John-Haslam", "club": "red-rose", "sex": "F", "ageCategory": "V40", "total": 44, "results": { "two-lads": { "points": 26, "counting": true }, "warton-crag": { "points": 18, "counting": true } } },
-        { "position": 36, "name": "Kath Hoyer", "club": "wesham", "sex": "F", "ageCategory": "V50", "total": 45, "results": { "warton-crag": { "points": 25, "counting": true }, "golf-ball": { "points": 20, "counting": true } } },
-        { "position": 37, "name": "Nigel Shepherd", "club": "wesham", "sex": "M", "ageCategory": "V50", "total": 49, "results": { "pendle": { "points": 29, "counting": true }, "warton-crag": { "points": 20, "counting": true } } },
-        { "position": 38, "name": "Mark Haworth", "club": "red-rose", "sex": "M", "ageCategory": "SEN", "total": 63, "results": { "two-lads": { "points": 37, "counting": true }, "warton-crag": { "points": 26, "counting": true } } },
-        { "position": 39, "name": "Jenny Salt", "club": "wesham", "sex": "F", "ageCategory": "SEN", "total": 64, "results": { "pendle": { "points": 26, "counting": true }, "two-lads": { "points": 38, "counting": true } } },
-        { "position": 40, "name": "Barry Chester", "club": "chorley-ac", "sex": "M", "ageCategory": "V60", "total": 69, "results": { "pendle": { "points": 33, "counting": true }, "two-lads": { "points": 36, "counting": true } } },
-        { "position": 41, "name": "Debbie Kirkham", "club": "red-rose", "sex": "F", "ageCategory": "V40", "total": 72, "results": { "two-lads": { "points": 46, "counting": true }, "golf-ball": { "points": 26, "counting": true } } },
-        { "position": 42, "name": "Pete McDermott", "club": "preston", "sex": "M", "ageCategory": "V60", "total": 74, "results": { "pendle": { "points": 34, "counting": true }, "two-lads": { "points": 40, "counting": true } } },
-        { "position": 43, "name": "Joe Howard", "club": "preston", "sex": "M", "ageCategory": "V60", "total": 76, "results": { "pendle": { "points": 43, "counting": true }, "golf-ball": { "points": 33, "counting": true } } },
-        { "position": 44, "name": "Brian Dearnaley", "club": "preston", "sex": "M", "ageCategory": "V60", "total": 78, "results": { "pendle": { "points": 41, "counting": true }, "golf-ball": { "points": 37, "counting": true } } },
-        { "position": 45, "name": "Eileen Dearnaley", "club": "preston", "sex": "F", "ageCategory": "V60", "total": 78, "results": { "pendle": { "points": 42, "counting": true }, "golf-ball": { "points": 36, "counting": true } } },
-        { "position": 46, "name": "Tom Hilton", "club": "chorley-ac", "sex": "M", "ageCategory": "V60", "total": 80, "results": { "pendle": { "points": 47, "counting": true }, "warton-crag": { "points": 33, "counting": true } } },
-        { "position": 47, "name": "Phil McCullagh", "club": "chorley-ac", "sex": "M", "ageCategory": "V50", "total": 98, "results": { "pendle": { "points": 45, "counting": true }, "two-lads": { "points": 53, "counting": true } } },
-        { "position": 48, "name": "Mike Coppin", "club": "chorley-ac", "sex": "M", "ageCategory": "V60", "total": 104, "results": { "pendle": { "points": 49, "counting": true }, "two-lads": { "points": 55, "counting": true } } },
-        { "position": 49, "name": "Sam Banner", "club": "lytham", "sex": "M", "ageCategory": "JUN", "total": 1, "results": { "golf-ball": { "points": 1, "counting": true } } },
-        { "position": 50, "name": "Jon Green", "club": "preston", "sex": "M", "ageCategory": "SEN", "total": 1, "results": { "warton-crag": { "points": 1, "counting": true } } },
-        { "position": 51, "name": "Lee Barlow", "club": "wesham", "sex": "M", "ageCategory": "SEN", "total": 2, "results": { "two-lads": { "points": 2, "counting": true } } },
-        { "position": 52, "name": "Darren McDermott", "club": "preston", "sex": "M", "ageCategory": "V40", "total": 2, "results": { "pendle": { "points": 2, "counting": true } } },
-        { "position": 53, "name": "Kingsley Judd", "club": "preston", "sex": "M", "ageCategory": "JUN", "total": 5, "results": { "pendle": { "points": 5, "counting": true } } },
-        { "position": 54, "name": "Mark Belfield", "club": "wesham", "sex": "M", "ageCategory": "SEN", "total": 6, "results": { "two-lads": { "points": 6, "counting": true } } },
-        { "position": 55, "name": "Gary Moore", "club": "wesham", "sex": "M", "ageCategory": "V50", "total": 7, "results": { "pendle": { "points": 7, "counting": true } } },
-        { "position": 56, "name": "Chris Whitlock", "club": "wesham", "sex": "M", "ageCategory": "V40", "total": 8, "results": { "pendle": { "points": 8, "counting": true } } },
-        { "position": 57, "name": "Paul Woan", "club": "red-rose", "sex": "M", "ageCategory": "V40", "total": 13, "results": { "two-lads": { "points": 13, "counting": true } } },
-        { "position": 58, "name": "Michael McLoughlin", "club": "preston", "sex": "M", "ageCategory": "V50", "total": 13, "results": { "golf-ball": { "points": 13, "counting": true } } },
-        { "position": 59, "name": "Jim Doherty", "club": "preston", "sex": "M", "ageCategory": "V40", "total": 15, "results": { "golf-ball": { "points": 15, "counting": true } } },
-        { "position": 60, "name": "Steven Jackson", "club": "preston", "sex": "M", "ageCategory": "V50", "total": 16, "results": { "golf-ball": { "points": 16, "counting": true } } },
-        { "position": 61, "name": "Peter Carter", "club": "preston", "sex": "M", "ageCategory": "V40", "total": 17, "results": { "golf-ball": { "points": 17, "counting": true } } },
-        { "position": 62, "name": "Mark Willett", "club": "lytham", "sex": "M", "ageCategory": "SEN", "total": 18, "results": { "pendle": { "points": 18, "counting": true } } },
-        { "position": 63, "name": "Tony Thornley", "club": "red-rose", "sex": "M", "ageCategory": "V40", "total": 19, "results": { "two-lads": { "points": 19, "counting": true } } },
-        { "position": 64, "name": "Cliff Utting", "club": "red-rose", "sex": "M", "ageCategory": "V50", "total": 20, "results": { "two-lads": { "points": 20, "counting": true } } },
-        { "position": 65, "name": "Claire McDermott", "club": "preston", "sex": "F", "ageCategory": "V40", "total": 23, "results": { "pendle": { "points": 23, "counting": true } } },
-        { "position": 66, "name": "Alistair Morris", "club": "wesham", "sex": "M", "ageCategory": "V50", "total": 23, "results": { "warton-crag": { "points": 23, "counting": true } } },
-        { "position": 67, "name": "Helen Lawrenson", "club": "wesham", "sex": "F", "ageCategory": "V40", "total": 24, "results": { "two-lads": { "points": 24, "counting": true } } },
-        { "position": 68, "name": "Dave Earnshaw", "club": "red-rose", "sex": "M", "ageCategory": "V50", "total": 24, "results": { "warton-crag": { "points": 24, "counting": true } } },
-        { "position": 69, "name": "Jeffrey Wright", "club": "blackpool", "sex": "M", "ageCategory": "V50", "total": 25, "results": { "pendle": { "points": 25, "counting": true } } },
-        { "position": 70, "name": "Paul Wareing", "club": "chorley-ac", "sex": "M", "ageCategory": "V40", "total": 27, "results": { "pendle": { "points": 27, "counting": true } } },
-        { "position": 71, "name": "Julia Rolfe", "club": "lytham", "sex": "F", "ageCategory": "V40", "total": 27, "results": { "golf-ball": { "points": 27, "counting": true } } },
-        { "position": 72, "name": "David Brooks", "club": "blackpool", "sex": "M", "ageCategory": "SEN", "total": 28, "results": { "two-lads": { "points": 28, "counting": true } } },
-        { "position": 73, "name": "Ian France", "club": "wesham", "sex": "M", "ageCategory": "V40", "total": 28, "results": { "pendle": { "points": 28, "counting": true } } },
-        { "position": 74, "name": "Peter Bartlett", "club": "wesham", "sex": "M", "ageCategory": "V60", "total": 29, "results": { "two-lads": { "points": 29, "counting": true } } },
-        { "position": 75, "name": "John Sharples", "club": "wesham", "sex": "M", "ageCategory": "V50", "total": 30, "results": { "two-lads": { "points": 30, "counting": true } } },
-        { "position": 76, "name": "Steve Coey", "club": "red-rose", "sex": "M", "ageCategory": "V50", "total": 31, "results": { "pendle": { "points": 31, "counting": true } } },
-        { "position": 77, "name": "Steve Quarmby", "club": "lytham", "sex": "M", "ageCategory": "V40", "total": 32, "results": { "two-lads": { "points": 32, "counting": true } } },
-        { "position": 78, "name": "Alan Raby", "club": "preston", "sex": "M", "ageCategory": "SEN", "total": 32, "results": { "golf-ball": { "points": 32, "counting": true } } },
-        { "position": 79, "name": "Bernard Elkington", "club": "red-rose", "sex": "M", "ageCategory": "V70", "total": 32, "results": { "warton-crag": { "points": 32, "counting": true } } },
-        { "position": 80, "name": "Kevin Ashworth", "club": "lytham", "sex": "M", "ageCategory": "V40", "total": 33, "results": { "two-lads": { "points": 33, "counting": true } } },
-        { "position": 81, "name": "Tony Rudd", "club": "lytham", "sex": "M", "ageCategory": "SEN", "total": 34, "results": { "golf-ball": { "points": 34, "counting": true } } },
-        { "position": 82, "name": "Janine Needham", "club": "red-rose", "sex": "F", "ageCategory": "SEN", "total": 35, "results": { "two-lads": { "points": 35, "counting": true } } },
-        { "position": 83, "name": "Peter Gibson", "club": "blackpool", "sex": "M", "ageCategory": "V50", "total": 35, "results": { "pendle": { "points": 35, "counting": true } } },
-        { "position": 84, "name": "Emma Cowie-Shaw", "club": "red-rose", "sex": "F", "ageCategory": "SEN", "total": 35, "results": { "golf-ball": { "points": 35, "counting": true } } },
-        { "position": 85, "name": "Sally Cape", "club": "red-rose", "sex": "F", "ageCategory": "V40", "total": 36, "results": { "pendle": { "points": 36, "counting": true } } },
-        { "position": 86, "name": "Lauren Caton", "club": "chorley-ac", "sex": "F", "ageCategory": "SEN", "total": 42, "results": { "two-lads": { "points": 42, "counting": true } } },
-        { "position": 87, "name": "Eddie Stewart", "club": "preston", "sex": "M", "ageCategory": "V60", "total": 44, "results": { "two-lads": { "points": 44, "counting": true } } },
-        { "position": 88, "name": "Laura Ashworth", "club": "lytham", "sex": "F", "ageCategory": "SEN", "total": 45, "results": { "two-lads": { "points": 45, "counting": true } } },
-        { "position": 89, "name": "Les Paul", "club": "chorley-ac", "sex": "M", "ageCategory": "V60", "total": 46, "results": { "pendle": { "points": 46, "counting": true } } },
-        { "position": 90, "name": "Bec Willetts", "club": "lytham", "sex": "F", "ageCategory": "V40", "total": 47, "results": { "two-lads": { "points": 47, "counting": true } } },
-        { "position": 91, "name": "Pamela Hardman", "club": "lytham", "sex": "F", "ageCategory": "V50", "total": 49, "results": { "two-lads": { "points": 49, "counting": true } } },
-        { "position": 92, "name": "Karen Woan", "club": "red-rose", "sex": "F", "ageCategory": "SEN", "total": 54, "results": { "two-lads": { "points": 54, "counting": true } } }
+        {
+          "position": 1,
+          "name": "Nichola Jackson",
+          "club": "preston",
+          "sex": "F",
+          "ageCategory": "SEN",
+          "total": 12,
+          "results": {
+            "pendle": {
+              "points": 3,
+              "counting": true
+            },
+            "two-lads": {
+              "points": 7,
+              "counting": true
+            },
+            "golf-ball": {
+              "points": 2,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 102
+        },
+        {
+          "position": 2,
+          "name": "Gary Johnston",
+          "club": "blackpool",
+          "sex": "M",
+          "ageCategory": "V50",
+          "total": 15,
+          "results": {
+            "pendle": {
+              "points": 6,
+              "counting": true
+            },
+            "two-lads": {
+              "points": 5,
+              "counting": true
+            },
+            "golf-ball": {
+              "points": 4,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 152
+        },
+        {
+          "position": 3,
+          "name": "Ken Addison",
+          "club": "red-rose",
+          "sex": "M",
+          "ageCategory": "V50",
+          "total": 16,
+          "results": {
+            "two-lads": {
+              "points": 9,
+              "counting": true
+            },
+            "warton-crag": {
+              "points": 4,
+              "counting": true
+            },
+            "golf-ball": {
+              "points": 3,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 154
+        },
+        {
+          "position": 4,
+          "name": "Fred Lynch",
+          "club": "red-rose",
+          "sex": "M",
+          "ageCategory": "V50",
+          "total": 20,
+          "results": {
+            "two-lads": {
+              "points": 12,
+              "counting": true
+            },
+            "warton-crag": {
+              "points": 3,
+              "counting": true
+            },
+            "golf-ball": {
+              "points": 5,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 155
+        },
+        {
+          "position": 5,
+          "name": "Philip Butler",
+          "club": "red-rose",
+          "sex": "M",
+          "ageCategory": "V40",
+          "total": 22,
+          "results": {
+            "pendle": {
+              "points": 10,
+              "counting": false
+            },
+            "two-lads": {
+              "points": 10,
+              "counting": true
+            },
+            "warton-crag": {
+              "points": 6,
+              "counting": true
+            },
+            "golf-ball": {
+              "points": 6,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 109
+        },
+        {
+          "position": 6,
+          "name": "Mark Midgley",
+          "club": "wesham",
+          "sex": "M",
+          "ageCategory": "V40",
+          "total": 28,
+          "results": {
+            "pendle": {
+              "points": 11,
+              "counting": true
+            },
+            "two-lads": {
+              "points": 8,
+              "counting": true
+            },
+            "warton-crag": {
+              "points": 9,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 110
+        },
+        {
+          "position": 7,
+          "name": "Dave Kershaw",
+          "club": "chorley-ac",
+          "sex": "M",
+          "ageCategory": "V50",
+          "total": 34,
+          "results": {
+            "pendle": {
+              "points": 13,
+              "counting": true
+            },
+            "two-lads": {
+              "points": 11,
+              "counting": true
+            },
+            "warton-crag": {
+              "points": 10,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 112
+        },
+        {
+          "position": 8,
+          "name": "Simon Townsend",
+          "club": "chorley-ac",
+          "sex": "M",
+          "ageCategory": "V40",
+          "total": 35,
+          "results": {
+            "pendle": {
+              "points": 12,
+              "counting": true
+            },
+            "two-lads": {
+              "points": 14,
+              "counting": false
+            },
+            "warton-crag": {
+              "points": 12,
+              "counting": true
+            },
+            "golf-ball": {
+              "points": 11,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 111
+        },
+        {
+          "position": 9,
+          "name": "Melanie Koth",
+          "club": "lytham",
+          "sex": "F",
+          "ageCategory": "SEN",
+          "total": 37,
+          "results": {
+            "pendle": {
+              "points": 17,
+              "counting": false
+            },
+            "two-lads": {
+              "points": 17,
+              "counting": true
+            },
+            "warton-crag": {
+              "points": 13,
+              "counting": true
+            },
+            "golf-ball": {
+              "points": 7,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 116
+        },
+        {
+          "position": 10,
+          "name": "Sarah Sherratt",
+          "club": "wesham",
+          "sex": "F",
+          "ageCategory": "SEN",
+          "total": 37,
+          "results": {
+            "pendle": {
+              "points": 9,
+              "counting": true
+            },
+            "two-lads": {
+              "points": 18,
+              "counting": false
+            },
+            "warton-crag": {
+              "points": 16,
+              "counting": true
+            },
+            "golf-ball": {
+              "points": 12,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 108
+        },
+        {
+          "position": 11,
+          "name": "Barry Wheeler",
+          "club": "red-rose",
+          "sex": "M",
+          "ageCategory": "SEN",
+          "total": 39,
+          "results": {
+            "pendle": {
+              "points": 19,
+              "counting": true
+            },
+            "two-lads": {
+              "points": 27,
+              "counting": false
+            },
+            "warton-crag": {
+              "points": 11,
+              "counting": true
+            },
+            "golf-ball": {
+              "points": 9,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 118
+        },
+        {
+          "position": 12,
+          "name": "Geoffrey Haworth",
+          "club": "red-rose",
+          "sex": "M",
+          "ageCategory": "V40",
+          "total": 46,
+          "results": {
+            "two-lads": {
+              "points": 21,
+              "counting": true
+            },
+            "warton-crag": {
+              "points": 15,
+              "counting": true
+            },
+            "golf-ball": {
+              "points": 10,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 159
+        },
+        {
+          "position": 13,
+          "name": "John Rogerson",
+          "club": "red-rose",
+          "sex": "M",
+          "ageCategory": "V50",
+          "total": 50,
+          "results": {
+            "pendle": {
+              "points": 20,
+              "counting": true
+            },
+            "two-lads": {
+              "points": 16,
+              "counting": true
+            },
+            "warton-crag": {
+              "points": 14,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 119
+        },
+        {
+          "position": 14,
+          "name": "Peter Bolton",
+          "club": "red-rose",
+          "sex": "M",
+          "ageCategory": "V50",
+          "total": 56,
+          "results": {
+            "pendle": {
+              "points": 21,
+              "counting": true
+            },
+            "two-lads": {
+              "points": 25,
+              "counting": false
+            },
+            "warton-crag": {
+              "points": 21,
+              "counting": true
+            },
+            "golf-ball": {
+              "points": 14,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 120
+        },
+        {
+          "position": 15,
+          "name": "Henry Minorczyk",
+          "club": "chorley-ac",
+          "sex": "M",
+          "ageCategory": "V60",
+          "total": 59,
+          "results": {
+            "pendle": {
+              "points": 24,
+              "counting": false
+            },
+            "two-lads": {
+              "points": 23,
+              "counting": true
+            },
+            "warton-crag": {
+              "points": 17,
+              "counting": true
+            },
+            "golf-ball": {
+              "points": 19,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 123
+        },
+        {
+          "position": 16,
+          "name": "Colin Nelson",
+          "club": "lytham",
+          "sex": "M",
+          "ageCategory": "SEN",
+          "total": 79,
+          "results": {
+            "two-lads": {
+              "points": 34,
+              "counting": true
+            },
+            "warton-crag": {
+              "points": 22,
+              "counting": true
+            },
+            "golf-ball": {
+              "points": 23,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 185
+        },
+        {
+          "position": 17,
+          "name": "Debbie Cooper",
+          "club": "lytham",
+          "sex": "F",
+          "ageCategory": "SEN",
+          "total": 81,
+          "results": {
+            "pendle": {
+              "points": 32,
+              "counting": true
+            },
+            "two-lads": {
+              "points": 39,
+              "counting": false
+            },
+            "warton-crag": {
+              "points": 27,
+              "counting": true
+            },
+            "golf-ball": {
+              "points": 22,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 131
+        },
+        {
+          "position": 18,
+          "name": "Glenda Dobie",
+          "club": "red-rose",
+          "sex": "F",
+          "ageCategory": "V50",
+          "total": 82,
+          "results": {
+            "pendle": {
+              "points": 30,
+              "counting": true
+            },
+            "two-lads": {
+              "points": 31,
+              "counting": true
+            },
+            "golf-ball": {
+              "points": 21,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 129
+        },
+        {
+          "position": 19,
+          "name": "John Minton",
+          "club": "chorley-ac",
+          "sex": "M",
+          "ageCategory": "V70",
+          "total": 90,
+          "results": {
+            "pendle": {
+              "points": 37,
+              "counting": true
+            },
+            "two-lads": {
+              "points": 43,
+              "counting": false
+            },
+            "warton-crag": {
+              "points": 29,
+              "counting": true
+            },
+            "golf-ball": {
+              "points": 24,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 136
+        },
+        {
+          "position": 20,
+          "name": "Paula Plowman",
+          "club": "red-rose",
+          "sex": "F",
+          "ageCategory": "V40",
+          "total": 94,
+          "results": {
+            "two-lads": {
+              "points": 41,
+              "counting": true
+            },
+            "warton-crag": {
+              "points": 28,
+              "counting": true
+            },
+            "golf-ball": {
+              "points": 25,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 172
+        },
+        {
+          "position": 21,
+          "name": "George Fletcher",
+          "club": "red-rose",
+          "sex": "M",
+          "ageCategory": "V60",
+          "total": 98,
+          "results": {
+            "pendle": {
+              "points": 40,
+              "counting": true
+            },
+            "two-lads": {
+              "points": 50,
+              "counting": false
+            },
+            "warton-crag": {
+              "points": 30,
+              "counting": true
+            },
+            "golf-ball": {
+              "points": 28,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 139
+        },
+        {
+          "position": 22,
+          "name": "Roger Johnson",
+          "club": "red-rose",
+          "sex": "M",
+          "ageCategory": "V50",
+          "total": 106,
+          "results": {
+            "pendle": {
+              "points": 44,
+              "counting": true
+            },
+            "two-lads": {
+              "points": 52,
+              "counting": false
+            },
+            "warton-crag": {
+              "points": 31,
+              "counting": true
+            },
+            "golf-ball": {
+              "points": 31,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 143
+        },
+        {
+          "position": 23,
+          "name": "David Roberts",
+          "club": "preston",
+          "sex": "M",
+          "ageCategory": "V60",
+          "total": 115,
+          "results": {
+            "pendle": {
+              "points": 38,
+              "counting": true
+            },
+            "two-lads": {
+              "points": 48,
+              "counting": true
+            },
+            "golf-ball": {
+              "points": 29,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 178
+        },
+        {
+          "position": 24,
+          "name": "Melanie Haworth",
+          "club": "preston",
+          "sex": "F",
+          "ageCategory": "SEN",
+          "total": 120,
+          "results": {
+            "pendle": {
+              "points": 39,
+              "counting": true
+            },
+            "two-lads": {
+              "points": 51,
+              "counting": true
+            },
+            "golf-ball": {
+              "points": 30,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 138
+        },
+        {
+          "position": 25,
+          "name": "Dawn Lock",
+          "club": "lytham",
+          "sex": "F",
+          "ageCategory": "V60",
+          "total": 142,
+          "results": {
+            "pendle": {
+              "points": 48,
+              "counting": true
+            },
+            "two-lads": {
+              "points": 56,
+              "counting": true
+            },
+            "golf-ball": {
+              "points": 38,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 147
+        },
+        {
+          "position": 26,
+          "name": "Charlie Pass",
+          "club": "wesham",
+          "sex": "M",
+          "ageCategory": "SEN",
+          "total": 2,
+          "results": {
+            "pendle": {
+              "points": 1,
+              "counting": true
+            },
+            "two-lads": {
+              "points": 1,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 100
+        },
+        {
+          "position": 27,
+          "name": "Steve Myerscough",
+          "club": "wesham",
+          "sex": "M",
+          "ageCategory": "SEN",
+          "total": 5,
+          "results": {
+            "two-lads": {
+              "points": 3,
+              "counting": true
+            },
+            "warton-crag": {
+              "points": 2,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 150
+        },
+        {
+          "position": 28,
+          "name": "John Griffiths",
+          "club": "preston",
+          "sex": "M",
+          "ageCategory": "V40",
+          "total": 9,
+          "results": {
+            "pendle": {
+              "points": 4,
+              "counting": true
+            },
+            "warton-crag": {
+              "points": 5,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 103
+        },
+        {
+          "position": 29,
+          "name": "John Shepherd",
+          "club": "red-rose",
+          "sex": "M",
+          "ageCategory": "V40",
+          "total": 11,
+          "results": {
+            "two-lads": {
+              "points": 4,
+              "counting": true
+            },
+            "warton-crag": {
+              "points": 7,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 151
+        },
+        {
+          "position": 30,
+          "name": "Lindsey Berends",
+          "club": "preston",
+          "sex": "F",
+          "ageCategory": "SEN",
+          "total": 22,
+          "results": {
+            "pendle": {
+              "points": 14,
+              "counting": true
+            },
+            "golf-ball": {
+              "points": 8,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 113
+        },
+        {
+          "position": 31,
+          "name": "Shane Cliffe",
+          "club": "red-rose",
+          "sex": "M",
+          "ageCategory": "V40",
+          "total": 24,
+          "results": {
+            "pendle": {
+              "points": 16,
+              "counting": true
+            },
+            "warton-crag": {
+              "points": 8,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 115
+        },
+        {
+          "position": 32,
+          "name": "Stuart Tunney",
+          "club": "chorley-ac",
+          "sex": "M",
+          "ageCategory": "SEN",
+          "total": 30,
+          "results": {
+            "pendle": {
+              "points": 15,
+              "counting": true
+            },
+            "two-lads": {
+              "points": 15,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 114
+        },
+        {
+          "position": 33,
+          "name": "John Hyde",
+          "club": "red-rose",
+          "sex": "M",
+          "ageCategory": "V50",
+          "total": 37,
+          "results": {
+            "warton-crag": {
+              "points": 19,
+              "counting": true
+            },
+            "golf-ball": {
+              "points": 18,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 184
+        },
+        {
+          "position": 34,
+          "name": "William Johnstone",
+          "club": "preston",
+          "sex": "M",
+          "ageCategory": "V40",
+          "total": 44,
+          "results": {
+            "pendle": {
+              "points": 22,
+              "counting": true
+            },
+            "two-lads": {
+              "points": 22,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 121
+        },
+        {
+          "position": 35,
+          "name": "Alison John-Haslam",
+          "club": "red-rose",
+          "sex": "F",
+          "ageCategory": "V40",
+          "total": 44,
+          "results": {
+            "two-lads": {
+              "points": 26,
+              "counting": true
+            },
+            "warton-crag": {
+              "points": 18,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 162
+        },
+        {
+          "position": 36,
+          "name": "Kath Hoyer",
+          "club": "wesham",
+          "sex": "F",
+          "ageCategory": "V50",
+          "total": 45,
+          "results": {
+            "warton-crag": {
+              "points": 25,
+              "counting": true
+            },
+            "golf-ball": {
+              "points": 20,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 188
+        },
+        {
+          "position": 37,
+          "name": "Nigel Shepherd",
+          "club": "wesham",
+          "sex": "M",
+          "ageCategory": "V50",
+          "total": 49,
+          "results": {
+            "pendle": {
+              "points": 29,
+              "counting": true
+            },
+            "warton-crag": {
+              "points": 20,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 128
+        },
+        {
+          "position": 38,
+          "name": "Mark Haworth",
+          "club": "red-rose",
+          "sex": "M",
+          "ageCategory": "SEN",
+          "total": 63,
+          "results": {
+            "two-lads": {
+              "points": 37,
+              "counting": true
+            },
+            "warton-crag": {
+              "points": 26,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 170
+        },
+        {
+          "position": 39,
+          "name": "Jenny Salt",
+          "club": "wesham",
+          "sex": "F",
+          "ageCategory": "SEN",
+          "total": 64,
+          "results": {
+            "pendle": {
+              "points": 26,
+              "counting": true
+            },
+            "two-lads": {
+              "points": 38,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 125
+        },
+        {
+          "position": 40,
+          "name": "Barry Chester",
+          "club": "chorley-ac",
+          "sex": "M",
+          "ageCategory": "V60",
+          "total": 69,
+          "results": {
+            "pendle": {
+              "points": 33,
+              "counting": true
+            },
+            "two-lads": {
+              "points": 36,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 132
+        },
+        {
+          "position": 41,
+          "name": "Debbie Kirkham",
+          "club": "red-rose",
+          "sex": "F",
+          "ageCategory": "V40",
+          "total": 72,
+          "results": {
+            "two-lads": {
+              "points": 46,
+              "counting": true
+            },
+            "golf-ball": {
+              "points": 26,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 176
+        },
+        {
+          "position": 42,
+          "name": "Pete McDermott",
+          "club": "preston",
+          "sex": "M",
+          "ageCategory": "V60",
+          "total": 74,
+          "results": {
+            "pendle": {
+              "points": 34,
+              "counting": true
+            },
+            "two-lads": {
+              "points": 40,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 133
+        },
+        {
+          "position": 43,
+          "name": "Joe Howard",
+          "club": "preston",
+          "sex": "M",
+          "ageCategory": "V60",
+          "total": 76,
+          "results": {
+            "pendle": {
+              "points": 43,
+              "counting": true
+            },
+            "golf-ball": {
+              "points": 33,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 142
+        },
+        {
+          "position": 44,
+          "name": "Brian Dearnaley",
+          "club": "preston",
+          "sex": "M",
+          "ageCategory": "V60",
+          "total": 78,
+          "results": {
+            "pendle": {
+              "points": 41,
+              "counting": true
+            },
+            "golf-ball": {
+              "points": 37,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 140
+        },
+        {
+          "position": 45,
+          "name": "Eileen Dearnaley",
+          "club": "preston",
+          "sex": "F",
+          "ageCategory": "V60",
+          "total": 78,
+          "results": {
+            "pendle": {
+              "points": 42,
+              "counting": true
+            },
+            "golf-ball": {
+              "points": 36,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 200
+        },
+        {
+          "position": 46,
+          "name": "Tom Hilton",
+          "club": "chorley-ac",
+          "sex": "M",
+          "ageCategory": "V60",
+          "total": 80,
+          "results": {
+            "pendle": {
+              "points": 47,
+              "counting": true
+            },
+            "warton-crag": {
+              "points": 33,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 146
+        },
+        {
+          "position": 47,
+          "name": "Phil McCullagh",
+          "club": "chorley-ac",
+          "sex": "M",
+          "ageCategory": "V50",
+          "total": 98,
+          "results": {
+            "pendle": {
+              "points": 45,
+              "counting": true
+            },
+            "two-lads": {
+              "points": 53,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 144
+        },
+        {
+          "position": 48,
+          "name": "Mike Coppin",
+          "club": "chorley-ac",
+          "sex": "M",
+          "ageCategory": "V60",
+          "total": 104,
+          "results": {
+            "pendle": {
+              "points": 49,
+              "counting": true
+            },
+            "two-lads": {
+              "points": 55,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 148
+        },
+        {
+          "position": 49,
+          "name": "Sam Banner",
+          "club": "lytham",
+          "sex": "M",
+          "ageCategory": "JUN",
+          "total": 1,
+          "results": {
+            "golf-ball": {
+              "points": 1,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 190
+        },
+        {
+          "position": 50,
+          "name": "Jon Green",
+          "club": "preston",
+          "sex": "M",
+          "ageCategory": "SEN",
+          "total": 1,
+          "results": {
+            "warton-crag": {
+              "points": 1,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 182
+        },
+        {
+          "position": 51,
+          "name": "Lee Barlow",
+          "club": "wesham",
+          "sex": "M",
+          "ageCategory": "SEN",
+          "total": 2,
+          "results": {
+            "two-lads": {
+              "points": 2,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 149
+        },
+        {
+          "position": 52,
+          "name": "Darren McDermott",
+          "club": "preston",
+          "sex": "M",
+          "ageCategory": "V40",
+          "total": 2,
+          "results": {
+            "pendle": {
+              "points": 2,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 101
+        },
+        {
+          "position": 53,
+          "name": "Kingsley Judd",
+          "club": "preston",
+          "sex": "M",
+          "ageCategory": "JUN",
+          "total": 5,
+          "results": {
+            "pendle": {
+              "points": 5,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 104
+        },
+        {
+          "position": 54,
+          "name": "Mark Belfield",
+          "club": "wesham",
+          "sex": "M",
+          "ageCategory": "SEN",
+          "total": 6,
+          "results": {
+            "two-lads": {
+              "points": 6,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 153
+        },
+        {
+          "position": 55,
+          "name": "Gary Moore",
+          "club": "wesham",
+          "sex": "M",
+          "ageCategory": "V50",
+          "total": 7,
+          "results": {
+            "pendle": {
+              "points": 7,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 106
+        },
+        {
+          "position": 56,
+          "name": "Chris Whitlock",
+          "club": "wesham",
+          "sex": "M",
+          "ageCategory": "V40",
+          "total": 8,
+          "results": {
+            "pendle": {
+              "points": 8,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 107
+        },
+        {
+          "position": 57,
+          "name": "Paul Woan",
+          "club": "red-rose",
+          "sex": "M",
+          "ageCategory": "V40",
+          "total": 13,
+          "results": {
+            "two-lads": {
+              "points": 13,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 156
+        },
+        {
+          "position": 58,
+          "name": "Michael McLoughlin",
+          "club": "preston",
+          "sex": "M",
+          "ageCategory": "V50",
+          "total": 13,
+          "results": {
+            "golf-ball": {
+              "points": 13,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 191
+        },
+        {
+          "position": 59,
+          "name": "Jim Doherty",
+          "club": "preston",
+          "sex": "M",
+          "ageCategory": "V40",
+          "total": 15,
+          "results": {
+            "golf-ball": {
+              "points": 15,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 192
+        },
+        {
+          "position": 60,
+          "name": "Steven Jackson",
+          "club": "preston",
+          "sex": "M",
+          "ageCategory": "V50",
+          "total": 16,
+          "results": {
+            "golf-ball": {
+              "points": 16,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 193
+        },
+        {
+          "position": 61,
+          "name": "Peter Carter",
+          "club": "preston",
+          "sex": "M",
+          "ageCategory": "V40",
+          "total": 17,
+          "results": {
+            "golf-ball": {
+              "points": 17,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 194
+        },
+        {
+          "position": 62,
+          "name": "Mark Willett",
+          "club": "lytham",
+          "sex": "M",
+          "ageCategory": "SEN",
+          "total": 18,
+          "results": {
+            "pendle": {
+              "points": 18,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 117
+        },
+        {
+          "position": 63,
+          "name": "Tony Thornley",
+          "club": "red-rose",
+          "sex": "M",
+          "ageCategory": "V40",
+          "total": 19,
+          "results": {
+            "two-lads": {
+              "points": 19,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 157
+        },
+        {
+          "position": 64,
+          "name": "Cliff Utting",
+          "club": "red-rose",
+          "sex": "M",
+          "ageCategory": "V50",
+          "total": 20,
+          "results": {
+            "two-lads": {
+              "points": 20,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 158
+        },
+        {
+          "position": 65,
+          "name": "Claire McDermott",
+          "club": "preston",
+          "sex": "F",
+          "ageCategory": "V40",
+          "total": 23,
+          "results": {
+            "pendle": {
+              "points": 23,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 122
+        },
+        {
+          "position": 66,
+          "name": "Alistair Morris",
+          "club": "wesham",
+          "sex": "M",
+          "ageCategory": "V50",
+          "total": 23,
+          "results": {
+            "warton-crag": {
+              "points": 23,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 186
+        },
+        {
+          "position": 67,
+          "name": "Helen Lawrenson",
+          "club": "wesham",
+          "sex": "F",
+          "ageCategory": "V40",
+          "total": 24,
+          "results": {
+            "two-lads": {
+              "points": 24,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 161
+        },
+        {
+          "position": 68,
+          "name": "Dave Earnshaw",
+          "club": "red-rose",
+          "sex": "M",
+          "ageCategory": "V50",
+          "total": 24,
+          "results": {
+            "warton-crag": {
+              "points": 24,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 187
+        },
+        {
+          "position": 69,
+          "name": "Jeffrey Wright",
+          "club": "blackpool",
+          "sex": "M",
+          "ageCategory": "V50",
+          "total": 25,
+          "results": {
+            "pendle": {
+              "points": 25,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 124
+        },
+        {
+          "position": 70,
+          "name": "Paul Wareing",
+          "club": "chorley-ac",
+          "sex": "M",
+          "ageCategory": "V40",
+          "total": 27,
+          "results": {
+            "pendle": {
+              "points": 27,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 126
+        },
+        {
+          "position": 71,
+          "name": "Julia Rolfe",
+          "club": "lytham",
+          "sex": "F",
+          "ageCategory": "V40",
+          "total": 27,
+          "results": {
+            "golf-ball": {
+              "points": 27,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 196
+        },
+        {
+          "position": 72,
+          "name": "David Brooks",
+          "club": "blackpool",
+          "sex": "M",
+          "ageCategory": "SEN",
+          "total": 28,
+          "results": {
+            "two-lads": {
+              "points": 28,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 163
+        },
+        {
+          "position": 73,
+          "name": "Ian France",
+          "club": "wesham",
+          "sex": "M",
+          "ageCategory": "V40",
+          "total": 28,
+          "results": {
+            "pendle": {
+              "points": 28,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 127
+        },
+        {
+          "position": 74,
+          "name": "Peter Bartlett",
+          "club": "wesham",
+          "sex": "M",
+          "ageCategory": "V60",
+          "total": 29,
+          "results": {
+            "two-lads": {
+              "points": 29,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 164
+        },
+        {
+          "position": 75,
+          "name": "John Sharples",
+          "club": "wesham",
+          "sex": "M",
+          "ageCategory": "V50",
+          "total": 30,
+          "results": {
+            "two-lads": {
+              "points": 30,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 165
+        },
+        {
+          "position": 76,
+          "name": "Steve Coey",
+          "club": "red-rose",
+          "sex": "M",
+          "ageCategory": "V50",
+          "total": 31,
+          "results": {
+            "pendle": {
+              "points": 31,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 130
+        },
+        {
+          "position": 77,
+          "name": "Steve Quarmby",
+          "club": "lytham",
+          "sex": "M",
+          "ageCategory": "V40",
+          "total": 32,
+          "results": {
+            "two-lads": {
+              "points": 32,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 166
+        },
+        {
+          "position": 78,
+          "name": "Alan Raby",
+          "club": "preston",
+          "sex": "M",
+          "ageCategory": "SEN",
+          "total": 32,
+          "results": {
+            "golf-ball": {
+              "points": 32,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 197
+        },
+        {
+          "position": 79,
+          "name": "Bernard Elkington",
+          "club": "red-rose",
+          "sex": "M",
+          "ageCategory": "V70",
+          "total": 32,
+          "results": {
+            "warton-crag": {
+              "points": 32,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 189
+        },
+        {
+          "position": 80,
+          "name": "Kevin Ashworth",
+          "club": "lytham",
+          "sex": "M",
+          "ageCategory": "V40",
+          "total": 33,
+          "results": {
+            "two-lads": {
+              "points": 33,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 167
+        },
+        {
+          "position": 81,
+          "name": "Tony Rudd",
+          "club": "lytham",
+          "sex": "M",
+          "ageCategory": "SEN",
+          "total": 34,
+          "results": {
+            "golf-ball": {
+              "points": 34,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 198
+        },
+        {
+          "position": 82,
+          "name": "Janine Needham",
+          "club": "red-rose",
+          "sex": "F",
+          "ageCategory": "SEN",
+          "total": 35,
+          "results": {
+            "two-lads": {
+              "points": 35,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 169
+        },
+        {
+          "position": 83,
+          "name": "Peter Gibson",
+          "club": "blackpool",
+          "sex": "M",
+          "ageCategory": "V50",
+          "total": 35,
+          "results": {
+            "pendle": {
+              "points": 35,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 134
+        },
+        {
+          "position": 84,
+          "name": "Emma Cowie-Shaw",
+          "club": "red-rose",
+          "sex": "F",
+          "ageCategory": "SEN",
+          "total": 35,
+          "results": {
+            "golf-ball": {
+              "points": 35,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 199
+        },
+        {
+          "position": 85,
+          "name": "Sally Cape",
+          "club": "red-rose",
+          "sex": "F",
+          "ageCategory": "V40",
+          "total": 36,
+          "results": {
+            "pendle": {
+              "points": 36,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 135
+        },
+        {
+          "position": 86,
+          "name": "Lauren Caton",
+          "club": "chorley-ac",
+          "sex": "F",
+          "ageCategory": "SEN",
+          "total": 42,
+          "results": {
+            "two-lads": {
+              "points": 42,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 173
+        },
+        {
+          "position": 87,
+          "name": "Eddie Stewart",
+          "club": "preston",
+          "sex": "M",
+          "ageCategory": "V60",
+          "total": 44,
+          "results": {
+            "two-lads": {
+              "points": 44,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 174
+        },
+        {
+          "position": 88,
+          "name": "Laura Ashworth",
+          "club": "lytham",
+          "sex": "F",
+          "ageCategory": "SEN",
+          "total": 45,
+          "results": {
+            "two-lads": {
+              "points": 45,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 175
+        },
+        {
+          "position": 89,
+          "name": "Les Paul",
+          "club": "chorley-ac",
+          "sex": "M",
+          "ageCategory": "V60",
+          "total": 46,
+          "results": {
+            "pendle": {
+              "points": 46,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 145
+        },
+        {
+          "position": 90,
+          "name": "Bec Willetts",
+          "club": "lytham",
+          "sex": "F",
+          "ageCategory": "V40",
+          "total": 47,
+          "results": {
+            "two-lads": {
+              "points": 47,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 177
+        },
+        {
+          "position": 91,
+          "name": "Pamela Hardman",
+          "club": "lytham",
+          "sex": "F",
+          "ageCategory": "V50",
+          "total": 49,
+          "results": {
+            "two-lads": {
+              "points": 49,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 179
+        },
+        {
+          "position": 92,
+          "name": "Karen Woan",
+          "club": "red-rose",
+          "sex": "F",
+          "ageCategory": "SEN",
+          "total": 54,
+          "results": {
+            "two-lads": {
+              "points": 54,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 181
+        }
       ]
     },
     {
       "id": "v40",
       "ageCategory": "V40",
       "runners": [
-        { "position": 1, "name": "Gary Johnston", "club": "blackpool", "sex": "M", "ageCategory": "V50", "total": 7, "results": { "pendle": { "points": 3, "counting": true }, "two-lads": { "points": 2, "counting": true }, "golf-ball": { "points": 2, "counting": true } } },
-        { "position": 2, "name": "Ken Addison", "club": "red-rose", "sex": "M", "ageCategory": "V50", "total": 7, "results": { "two-lads": { "points": 4, "counting": true }, "warton-crag": { "points": 2, "counting": true }, "golf-ball": { "points": 1, "counting": true } } },
-        { "position": 3, "name": "Fred Lynch", "club": "red-rose", "sex": "M", "ageCategory": "V50", "total": 11, "results": { "two-lads": { "points": 7, "counting": true }, "warton-crag": { "points": 1, "counting": true }, "golf-ball": { "points": 3, "counting": true } } },
-        { "position": 4, "name": "Philip Butler", "club": "red-rose", "sex": "M", "ageCategory": "V40", "total": 13, "results": { "pendle": { "points": 6, "counting": false }, "two-lads": { "points": 5, "counting": true }, "warton-crag": { "points": 4, "counting": true }, "golf-ball": { "points": 4, "counting": true } } },
-        { "position": 5, "name": "Mark Midgley", "club": "wesham", "sex": "M", "ageCategory": "V40", "total": 17, "results": { "pendle": { "points": 7, "counting": true }, "two-lads": { "points": 3, "counting": true }, "warton-crag": { "points": 7, "counting": true } } },
-        { "position": 6, "name": "Dave Kershaw", "club": "chorley-ac", "sex": "M", "ageCategory": "V50", "total": 23, "results": { "pendle": { "points": 9, "counting": true }, "two-lads": { "points": 6, "counting": true }, "warton-crag": { "points": 8, "counting": true } } },
-        { "position": 7, "name": "Simon Townsend", "club": "chorley-ac", "sex": "M", "ageCategory": "V40", "total": 23, "results": { "pendle": { "points": 8, "counting": true }, "two-lads": { "points": 9, "counting": false }, "warton-crag": { "points": 9, "counting": true }, "golf-ball": { "points": 6, "counting": true } } },
-        { "position": 8, "name": "Sarah Sherratt", "club": "wesham", "sex": "F", "ageCategory": "V40", "total": 7, "results": { "golf-ball": { "points": 7, "counting": true } } },
-        { "position": 9, "name": "Geoffrey Haworth", "club": "red-rose", "sex": "M", "ageCategory": "V40", "total": 29, "results": { "two-lads": { "points": 13, "counting": true }, "warton-crag": { "points": 11, "counting": true }, "golf-ball": { "points": 5, "counting": true } } },
-        { "position": 10, "name": "John Rogerson", "club": "red-rose", "sex": "M", "ageCategory": "V50", "total": 31, "results": { "pendle": { "points": 11, "counting": true }, "two-lads": { "points": 10, "counting": true }, "warton-crag": { "points": 10, "counting": true } } },
-        { "position": 11, "name": "Peter Bolton", "club": "red-rose", "sex": "M", "ageCategory": "V50", "total": 37, "results": { "pendle": { "points": 12, "counting": true }, "two-lads": { "points": 17, "counting": false }, "warton-crag": { "points": 16, "counting": true }, "golf-ball": { "points": 9, "counting": true } } },
-        { "position": 12, "name": "Henry Minorczyk", "club": "chorley-ac", "sex": "M", "ageCategory": "V60", "total": 40, "results": { "pendle": { "points": 15, "counting": false }, "two-lads": { "points": 15, "counting": true }, "warton-crag": { "points": 12, "counting": true }, "golf-ball": { "points": 14, "counting": true } } },
-        { "position": 13, "name": "Glenda Dobie", "club": "red-rose", "sex": "F", "ageCategory": "V50", "total": 57, "results": { "pendle": { "points": 20, "counting": true }, "two-lads": { "points": 21, "counting": true }, "golf-ball": { "points": 16, "counting": true } } },
-        { "position": 14, "name": "John Minton", "club": "chorley-ac", "sex": "M", "ageCategory": "V70", "total": 63, "results": { "pendle": { "points": 26, "counting": true }, "two-lads": { "points": 27, "counting": false }, "warton-crag": { "points": 21, "counting": true }, "golf-ball": { "points": 17, "counting": true } } },
-        { "position": 15, "name": "Paula Plowman", "club": "red-rose", "sex": "F", "ageCategory": "V40", "total": 64, "results": { "two-lads": { "points": 26, "counting": true }, "warton-crag": { "points": 20, "counting": true }, "golf-ball": { "points": 18, "counting": true } } },
-        { "position": 16, "name": "George Fletcher", "club": "red-rose", "sex": "M", "ageCategory": "V60", "total": 70, "results": { "pendle": { "points": 28, "counting": true }, "two-lads": { "points": 33, "counting": false }, "warton-crag": { "points": 22, "counting": true }, "golf-ball": { "points": 21, "counting": true } } },
-        { "position": 17, "name": "Roger Johnson", "club": "red-rose", "sex": "M", "ageCategory": "V50", "total": 77, "results": { "pendle": { "points": 32, "counting": true }, "two-lads": { "points": 34, "counting": false }, "warton-crag": { "points": 23, "counting": true }, "golf-ball": { "points": 23, "counting": true } } },
-        { "position": 18, "name": "David Roberts", "club": "preston", "sex": "M", "ageCategory": "V60", "total": 80, "results": { "pendle": { "points": 27, "counting": true }, "two-lads": { "points": 31, "counting": true }, "golf-ball": { "points": 22, "counting": true } } },
-        { "position": 19, "name": "Dawn Lock", "club": "lytham", "sex": "F", "ageCategory": "V60", "total": 100, "results": { "pendle": { "points": 36, "counting": true }, "two-lads": { "points": 37, "counting": true }, "golf-ball": { "points": 27, "counting": true } } },
-        { "position": 20, "name": "John Griffiths", "club": "preston", "sex": "M", "ageCategory": "V40", "total": 5, "results": { "pendle": { "points": 2, "counting": true }, "warton-crag": { "points": 3, "counting": true } } },
-        { "position": 21, "name": "John Shepherd", "club": "red-rose", "sex": "M", "ageCategory": "V40", "total": 6, "results": { "two-lads": { "points": 1, "counting": true }, "warton-crag": { "points": 5, "counting": true } } },
-        { "position": 22, "name": "Shane Cliffe", "club": "red-rose", "sex": "M", "ageCategory": "V40", "total": 16, "results": { "pendle": { "points": 10, "counting": true }, "warton-crag": { "points": 6, "counting": true } } },
-        { "position": 23, "name": "John Hyde", "club": "red-rose", "sex": "M", "ageCategory": "V50", "total": 27, "results": { "warton-crag": { "points": 14, "counting": true }, "golf-ball": { "points": 13, "counting": true } } },
-        { "position": 24, "name": "William Johnstone", "club": "preston", "sex": "M", "ageCategory": "V40", "total": 27, "results": { "pendle": { "points": 13, "counting": true }, "two-lads": { "points": 14, "counting": true } } },
-        { "position": 25, "name": "Alison John-Haslam", "club": "red-rose", "sex": "F", "ageCategory": "V40", "total": 31, "results": { "two-lads": { "points": 18, "counting": true }, "warton-crag": { "points": 13, "counting": true } } },
-        { "position": 26, "name": "Kath Hoyer", "club": "wesham", "sex": "F", "ageCategory": "V50", "total": 34, "results": { "warton-crag": { "points": 19, "counting": true }, "golf-ball": { "points": 15, "counting": true } } },
-        { "position": 27, "name": "Nigel Shepherd", "club": "wesham", "sex": "M", "ageCategory": "V50", "total": 34, "results": { "pendle": { "points": 19, "counting": true }, "warton-crag": { "points": 15, "counting": true } } },
-        { "position": 28, "name": "Barry Chester", "club": "chorley-ac", "sex": "M", "ageCategory": "V60", "total": 46, "results": { "pendle": { "points": 22, "counting": true }, "two-lads": { "points": 24, "counting": true } } },
-        { "position": 29, "name": "Debbie Kirkham", "club": "red-rose", "sex": "F", "ageCategory": "V40", "total": 48, "results": { "two-lads": { "points": 29, "counting": true }, "golf-ball": { "points": 19, "counting": true } } },
-        { "position": 30, "name": "Pete McDermott", "club": "preston", "sex": "M", "ageCategory": "V60", "total": 48, "results": { "pendle": { "points": 23, "counting": true }, "two-lads": { "points": 25, "counting": true } } },
-        { "position": 31, "name": "Joe Howard", "club": "preston", "sex": "M", "ageCategory": "V60", "total": 55, "results": { "pendle": { "points": 31, "counting": true }, "golf-ball": { "points": 24, "counting": true } } },
-        { "position": 32, "name": "Brian Dearnaley", "club": "preston", "sex": "M", "ageCategory": "V60", "total": 55, "results": { "pendle": { "points": 29, "counting": true }, "golf-ball": { "points": 26, "counting": true } } },
-        { "position": 33, "name": "Eileen Dearnaley", "club": "preston", "sex": "F", "ageCategory": "V60", "total": 55, "results": { "pendle": { "points": 30, "counting": true }, "golf-ball": { "points": 25, "counting": true } } },
-        { "position": 34, "name": "Tom Hilton", "club": "chorley-ac", "sex": "M", "ageCategory": "V60", "total": 60, "results": { "pendle": { "points": 35, "counting": true }, "warton-crag": { "points": 25, "counting": true } } },
-        { "position": 35, "name": "Phil McCullagh", "club": "chorley-ac", "sex": "M", "ageCategory": "V50", "total": 68, "results": { "pendle": { "points": 33, "counting": true }, "two-lads": { "points": 35, "counting": true } } },
-        { "position": 36, "name": "Mike Coppin", "club": "chorley-ac", "sex": "M", "ageCategory": "V60", "total": 73, "results": { "pendle": { "points": 37, "counting": true }, "two-lads": { "points": 36, "counting": true } } },
-        { "position": 37, "name": "Darren McDermott", "club": "preston", "sex": "M", "ageCategory": "V40", "total": 1, "results": { "pendle": { "points": 1, "counting": true } } },
-        { "position": 38, "name": "Gary Moore", "club": "wesham", "sex": "M", "ageCategory": "V50", "total": 4, "results": { "pendle": { "points": 4, "counting": true } } },
-        { "position": 39, "name": "Chris Whitlock", "club": "wesham", "sex": "M", "ageCategory": "V40", "total": 5, "results": { "pendle": { "points": 5, "counting": true } } },
-        { "position": 40, "name": "Paul Woan", "club": "red-rose", "sex": "M", "ageCategory": "V40", "total": 8, "results": { "two-lads": { "points": 8, "counting": true } } },
-        { "position": 41, "name": "Michael McLoughlin", "club": "preston", "sex": "M", "ageCategory": "V50", "total": 8, "results": { "golf-ball": { "points": 8, "counting": true } } },
-        { "position": 42, "name": "Jim Doherty", "club": "preston", "sex": "M", "ageCategory": "V40", "total": 10, "results": { "golf-ball": { "points": 10, "counting": true } } },
-        { "position": 43, "name": "Steven Jackson", "club": "preston", "sex": "M", "ageCategory": "V50", "total": 11, "results": { "golf-ball": { "points": 11, "counting": true } } },
-        { "position": 44, "name": "Peter Carter", "club": "preston", "sex": "M", "ageCategory": "V40", "total": 12, "results": { "golf-ball": { "points": 12, "counting": true } } },
-        { "position": 45, "name": "Tony Thornley", "club": "red-rose", "sex": "M", "ageCategory": "V40", "total": 11, "results": { "two-lads": { "points": 11, "counting": true } } },
-        { "position": 46, "name": "Cliff Utting", "club": "red-rose", "sex": "M", "ageCategory": "V50", "total": 12, "results": { "two-lads": { "points": 12, "counting": true } } },
-        { "position": 47, "name": "Claire McDermott", "club": "preston", "sex": "F", "ageCategory": "V40", "total": 14, "results": { "pendle": { "points": 14, "counting": true } } },
-        { "position": 48, "name": "Alistair Morris", "club": "wesham", "sex": "M", "ageCategory": "V50", "total": 17, "results": { "warton-crag": { "points": 17, "counting": true } } },
-        { "position": 49, "name": "Helen Lawrenson", "club": "wesham", "sex": "F", "ageCategory": "V40", "total": 16, "results": { "two-lads": { "points": 16, "counting": true } } },
-        { "position": 50, "name": "Dave Earnshaw", "club": "red-rose", "sex": "M", "ageCategory": "V50", "total": 18, "results": { "warton-crag": { "points": 18, "counting": true } } },
-        { "position": 51, "name": "Jeffrey Wright", "club": "blackpool", "sex": "M", "ageCategory": "V50", "total": 16, "results": { "pendle": { "points": 16, "counting": true } } },
-        { "position": 52, "name": "Paul Wareing", "club": "chorley-ac", "sex": "M", "ageCategory": "V40", "total": 17, "results": { "pendle": { "points": 17, "counting": true } } },
-        { "position": 53, "name": "Julia Rolfe", "club": "lytham", "sex": "F", "ageCategory": "V40", "total": 20, "results": { "golf-ball": { "points": 20, "counting": true } } },
-        { "position": 54, "name": "Ian France", "club": "wesham", "sex": "M", "ageCategory": "V40", "total": 18, "results": { "pendle": { "points": 18, "counting": true } } },
-        { "position": 55, "name": "Peter Bartlett", "club": "wesham", "sex": "M", "ageCategory": "V60", "total": 19, "results": { "two-lads": { "points": 19, "counting": true } } },
-        { "position": 56, "name": "John Sharples", "club": "wesham", "sex": "M", "ageCategory": "V50", "total": 20, "results": { "two-lads": { "points": 20, "counting": true } } },
-        { "position": 57, "name": "Steve Coey", "club": "red-rose", "sex": "M", "ageCategory": "V50", "total": 21, "results": { "pendle": { "points": 21, "counting": true } } },
-        { "position": 58, "name": "Steve Quarmby", "club": "lytham", "sex": "M", "ageCategory": "V40", "total": 22, "results": { "two-lads": { "points": 22, "counting": true } } },
-        { "position": 59, "name": "Bernard Elkington", "club": "red-rose", "sex": "M", "ageCategory": "V70", "total": 24, "results": { "warton-crag": { "points": 24, "counting": true } } },
-        { "position": 60, "name": "Kevin Ashworth", "club": "lytham", "sex": "M", "ageCategory": "V40", "total": 23, "results": { "two-lads": { "points": 23, "counting": true } } },
-        { "position": 61, "name": "Peter Gibson", "club": "blackpool", "sex": "M", "ageCategory": "V50", "total": 24, "results": { "pendle": { "points": 24, "counting": true } } },
-        { "position": 62, "name": "Sally Cape", "club": "red-rose", "sex": "F", "ageCategory": "V40", "total": 25, "results": { "pendle": { "points": 25, "counting": true } } },
-        { "position": 63, "name": "Eddie Stewart", "club": "preston", "sex": "M", "ageCategory": "V60", "total": 28, "results": { "two-lads": { "points": 28, "counting": true } } },
-        { "position": 64, "name": "Les Paul", "club": "chorley-ac", "sex": "M", "ageCategory": "V60", "total": 34, "results": { "pendle": { "points": 34, "counting": true } } },
-        { "position": 65, "name": "Bec Willetts", "club": "lytham", "sex": "F", "ageCategory": "V40", "total": 30, "results": { "two-lads": { "points": 30, "counting": true } } },
-        { "position": 66, "name": "Pamela Hardman", "club": "lytham", "sex": "F", "ageCategory": "V50", "total": 32, "results": { "two-lads": { "points": 32, "counting": true } } }
+        {
+          "position": 1,
+          "name": "Gary Johnston",
+          "club": "blackpool",
+          "sex": "M",
+          "ageCategory": "V50",
+          "total": 7,
+          "results": {
+            "pendle": {
+              "points": 3,
+              "counting": true
+            },
+            "two-lads": {
+              "points": 2,
+              "counting": true
+            },
+            "golf-ball": {
+              "points": 2,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 152
+        },
+        {
+          "position": 2,
+          "name": "Ken Addison",
+          "club": "red-rose",
+          "sex": "M",
+          "ageCategory": "V50",
+          "total": 7,
+          "results": {
+            "two-lads": {
+              "points": 4,
+              "counting": true
+            },
+            "warton-crag": {
+              "points": 2,
+              "counting": true
+            },
+            "golf-ball": {
+              "points": 1,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 154
+        },
+        {
+          "position": 3,
+          "name": "Fred Lynch",
+          "club": "red-rose",
+          "sex": "M",
+          "ageCategory": "V50",
+          "total": 11,
+          "results": {
+            "two-lads": {
+              "points": 7,
+              "counting": true
+            },
+            "warton-crag": {
+              "points": 1,
+              "counting": true
+            },
+            "golf-ball": {
+              "points": 3,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 155
+        },
+        {
+          "position": 4,
+          "name": "Philip Butler",
+          "club": "red-rose",
+          "sex": "M",
+          "ageCategory": "V40",
+          "total": 13,
+          "results": {
+            "pendle": {
+              "points": 6,
+              "counting": false
+            },
+            "two-lads": {
+              "points": 5,
+              "counting": true
+            },
+            "warton-crag": {
+              "points": 4,
+              "counting": true
+            },
+            "golf-ball": {
+              "points": 4,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 109
+        },
+        {
+          "position": 5,
+          "name": "Mark Midgley",
+          "club": "wesham",
+          "sex": "M",
+          "ageCategory": "V40",
+          "total": 17,
+          "results": {
+            "pendle": {
+              "points": 7,
+              "counting": true
+            },
+            "two-lads": {
+              "points": 3,
+              "counting": true
+            },
+            "warton-crag": {
+              "points": 7,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 110
+        },
+        {
+          "position": 6,
+          "name": "Dave Kershaw",
+          "club": "chorley-ac",
+          "sex": "M",
+          "ageCategory": "V50",
+          "total": 23,
+          "results": {
+            "pendle": {
+              "points": 9,
+              "counting": true
+            },
+            "two-lads": {
+              "points": 6,
+              "counting": true
+            },
+            "warton-crag": {
+              "points": 8,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 112
+        },
+        {
+          "position": 7,
+          "name": "Simon Townsend",
+          "club": "chorley-ac",
+          "sex": "M",
+          "ageCategory": "V40",
+          "total": 23,
+          "results": {
+            "pendle": {
+              "points": 8,
+              "counting": true
+            },
+            "two-lads": {
+              "points": 9,
+              "counting": false
+            },
+            "warton-crag": {
+              "points": 9,
+              "counting": true
+            },
+            "golf-ball": {
+              "points": 6,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 111
+        },
+        {
+          "position": 8,
+          "name": "Sarah Sherratt",
+          "club": "wesham",
+          "sex": "F",
+          "ageCategory": "V40",
+          "total": 7,
+          "results": {
+            "golf-ball": {
+              "points": 7,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 108
+        },
+        {
+          "position": 9,
+          "name": "Geoffrey Haworth",
+          "club": "red-rose",
+          "sex": "M",
+          "ageCategory": "V40",
+          "total": 29,
+          "results": {
+            "two-lads": {
+              "points": 13,
+              "counting": true
+            },
+            "warton-crag": {
+              "points": 11,
+              "counting": true
+            },
+            "golf-ball": {
+              "points": 5,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 159
+        },
+        {
+          "position": 10,
+          "name": "John Rogerson",
+          "club": "red-rose",
+          "sex": "M",
+          "ageCategory": "V50",
+          "total": 31,
+          "results": {
+            "pendle": {
+              "points": 11,
+              "counting": true
+            },
+            "two-lads": {
+              "points": 10,
+              "counting": true
+            },
+            "warton-crag": {
+              "points": 10,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 119
+        },
+        {
+          "position": 11,
+          "name": "Peter Bolton",
+          "club": "red-rose",
+          "sex": "M",
+          "ageCategory": "V50",
+          "total": 37,
+          "results": {
+            "pendle": {
+              "points": 12,
+              "counting": true
+            },
+            "two-lads": {
+              "points": 17,
+              "counting": false
+            },
+            "warton-crag": {
+              "points": 16,
+              "counting": true
+            },
+            "golf-ball": {
+              "points": 9,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 120
+        },
+        {
+          "position": 12,
+          "name": "Henry Minorczyk",
+          "club": "chorley-ac",
+          "sex": "M",
+          "ageCategory": "V60",
+          "total": 40,
+          "results": {
+            "pendle": {
+              "points": 15,
+              "counting": false
+            },
+            "two-lads": {
+              "points": 15,
+              "counting": true
+            },
+            "warton-crag": {
+              "points": 12,
+              "counting": true
+            },
+            "golf-ball": {
+              "points": 14,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 123
+        },
+        {
+          "position": 13,
+          "name": "Glenda Dobie",
+          "club": "red-rose",
+          "sex": "F",
+          "ageCategory": "V50",
+          "total": 57,
+          "results": {
+            "pendle": {
+              "points": 20,
+              "counting": true
+            },
+            "two-lads": {
+              "points": 21,
+              "counting": true
+            },
+            "golf-ball": {
+              "points": 16,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 129
+        },
+        {
+          "position": 14,
+          "name": "John Minton",
+          "club": "chorley-ac",
+          "sex": "M",
+          "ageCategory": "V70",
+          "total": 63,
+          "results": {
+            "pendle": {
+              "points": 26,
+              "counting": true
+            },
+            "two-lads": {
+              "points": 27,
+              "counting": false
+            },
+            "warton-crag": {
+              "points": 21,
+              "counting": true
+            },
+            "golf-ball": {
+              "points": 17,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 136
+        },
+        {
+          "position": 15,
+          "name": "Paula Plowman",
+          "club": "red-rose",
+          "sex": "F",
+          "ageCategory": "V40",
+          "total": 64,
+          "results": {
+            "two-lads": {
+              "points": 26,
+              "counting": true
+            },
+            "warton-crag": {
+              "points": 20,
+              "counting": true
+            },
+            "golf-ball": {
+              "points": 18,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 172
+        },
+        {
+          "position": 16,
+          "name": "George Fletcher",
+          "club": "red-rose",
+          "sex": "M",
+          "ageCategory": "V60",
+          "total": 70,
+          "results": {
+            "pendle": {
+              "points": 28,
+              "counting": true
+            },
+            "two-lads": {
+              "points": 33,
+              "counting": false
+            },
+            "warton-crag": {
+              "points": 22,
+              "counting": true
+            },
+            "golf-ball": {
+              "points": 21,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 139
+        },
+        {
+          "position": 17,
+          "name": "Roger Johnson",
+          "club": "red-rose",
+          "sex": "M",
+          "ageCategory": "V50",
+          "total": 77,
+          "results": {
+            "pendle": {
+              "points": 32,
+              "counting": true
+            },
+            "two-lads": {
+              "points": 34,
+              "counting": false
+            },
+            "warton-crag": {
+              "points": 23,
+              "counting": true
+            },
+            "golf-ball": {
+              "points": 23,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 143
+        },
+        {
+          "position": 18,
+          "name": "David Roberts",
+          "club": "preston",
+          "sex": "M",
+          "ageCategory": "V60",
+          "total": 80,
+          "results": {
+            "pendle": {
+              "points": 27,
+              "counting": true
+            },
+            "two-lads": {
+              "points": 31,
+              "counting": true
+            },
+            "golf-ball": {
+              "points": 22,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 178
+        },
+        {
+          "position": 19,
+          "name": "Dawn Lock",
+          "club": "lytham",
+          "sex": "F",
+          "ageCategory": "V60",
+          "total": 100,
+          "results": {
+            "pendle": {
+              "points": 36,
+              "counting": true
+            },
+            "two-lads": {
+              "points": 37,
+              "counting": true
+            },
+            "golf-ball": {
+              "points": 27,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 147
+        },
+        {
+          "position": 20,
+          "name": "John Griffiths",
+          "club": "preston",
+          "sex": "M",
+          "ageCategory": "V40",
+          "total": 5,
+          "results": {
+            "pendle": {
+              "points": 2,
+              "counting": true
+            },
+            "warton-crag": {
+              "points": 3,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 103
+        },
+        {
+          "position": 21,
+          "name": "John Shepherd",
+          "club": "red-rose",
+          "sex": "M",
+          "ageCategory": "V40",
+          "total": 6,
+          "results": {
+            "two-lads": {
+              "points": 1,
+              "counting": true
+            },
+            "warton-crag": {
+              "points": 5,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 151
+        },
+        {
+          "position": 22,
+          "name": "Shane Cliffe",
+          "club": "red-rose",
+          "sex": "M",
+          "ageCategory": "V40",
+          "total": 16,
+          "results": {
+            "pendle": {
+              "points": 10,
+              "counting": true
+            },
+            "warton-crag": {
+              "points": 6,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 115
+        },
+        {
+          "position": 23,
+          "name": "John Hyde",
+          "club": "red-rose",
+          "sex": "M",
+          "ageCategory": "V50",
+          "total": 27,
+          "results": {
+            "warton-crag": {
+              "points": 14,
+              "counting": true
+            },
+            "golf-ball": {
+              "points": 13,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 184
+        },
+        {
+          "position": 24,
+          "name": "William Johnstone",
+          "club": "preston",
+          "sex": "M",
+          "ageCategory": "V40",
+          "total": 27,
+          "results": {
+            "pendle": {
+              "points": 13,
+              "counting": true
+            },
+            "two-lads": {
+              "points": 14,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 121
+        },
+        {
+          "position": 25,
+          "name": "Alison John-Haslam",
+          "club": "red-rose",
+          "sex": "F",
+          "ageCategory": "V40",
+          "total": 31,
+          "results": {
+            "two-lads": {
+              "points": 18,
+              "counting": true
+            },
+            "warton-crag": {
+              "points": 13,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 162
+        },
+        {
+          "position": 26,
+          "name": "Kath Hoyer",
+          "club": "wesham",
+          "sex": "F",
+          "ageCategory": "V50",
+          "total": 34,
+          "results": {
+            "warton-crag": {
+              "points": 19,
+              "counting": true
+            },
+            "golf-ball": {
+              "points": 15,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 188
+        },
+        {
+          "position": 27,
+          "name": "Nigel Shepherd",
+          "club": "wesham",
+          "sex": "M",
+          "ageCategory": "V50",
+          "total": 34,
+          "results": {
+            "pendle": {
+              "points": 19,
+              "counting": true
+            },
+            "warton-crag": {
+              "points": 15,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 128
+        },
+        {
+          "position": 28,
+          "name": "Barry Chester",
+          "club": "chorley-ac",
+          "sex": "M",
+          "ageCategory": "V60",
+          "total": 46,
+          "results": {
+            "pendle": {
+              "points": 22,
+              "counting": true
+            },
+            "two-lads": {
+              "points": 24,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 132
+        },
+        {
+          "position": 29,
+          "name": "Debbie Kirkham",
+          "club": "red-rose",
+          "sex": "F",
+          "ageCategory": "V40",
+          "total": 48,
+          "results": {
+            "two-lads": {
+              "points": 29,
+              "counting": true
+            },
+            "golf-ball": {
+              "points": 19,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 176
+        },
+        {
+          "position": 30,
+          "name": "Pete McDermott",
+          "club": "preston",
+          "sex": "M",
+          "ageCategory": "V60",
+          "total": 48,
+          "results": {
+            "pendle": {
+              "points": 23,
+              "counting": true
+            },
+            "two-lads": {
+              "points": 25,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 133
+        },
+        {
+          "position": 31,
+          "name": "Joe Howard",
+          "club": "preston",
+          "sex": "M",
+          "ageCategory": "V60",
+          "total": 55,
+          "results": {
+            "pendle": {
+              "points": 31,
+              "counting": true
+            },
+            "golf-ball": {
+              "points": 24,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 142
+        },
+        {
+          "position": 32,
+          "name": "Brian Dearnaley",
+          "club": "preston",
+          "sex": "M",
+          "ageCategory": "V60",
+          "total": 55,
+          "results": {
+            "pendle": {
+              "points": 29,
+              "counting": true
+            },
+            "golf-ball": {
+              "points": 26,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 140
+        },
+        {
+          "position": 33,
+          "name": "Eileen Dearnaley",
+          "club": "preston",
+          "sex": "F",
+          "ageCategory": "V60",
+          "total": 55,
+          "results": {
+            "pendle": {
+              "points": 30,
+              "counting": true
+            },
+            "golf-ball": {
+              "points": 25,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 200
+        },
+        {
+          "position": 34,
+          "name": "Tom Hilton",
+          "club": "chorley-ac",
+          "sex": "M",
+          "ageCategory": "V60",
+          "total": 60,
+          "results": {
+            "pendle": {
+              "points": 35,
+              "counting": true
+            },
+            "warton-crag": {
+              "points": 25,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 146
+        },
+        {
+          "position": 35,
+          "name": "Phil McCullagh",
+          "club": "chorley-ac",
+          "sex": "M",
+          "ageCategory": "V50",
+          "total": 68,
+          "results": {
+            "pendle": {
+              "points": 33,
+              "counting": true
+            },
+            "two-lads": {
+              "points": 35,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 144
+        },
+        {
+          "position": 36,
+          "name": "Mike Coppin",
+          "club": "chorley-ac",
+          "sex": "M",
+          "ageCategory": "V60",
+          "total": 73,
+          "results": {
+            "pendle": {
+              "points": 37,
+              "counting": true
+            },
+            "two-lads": {
+              "points": 36,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 148
+        },
+        {
+          "position": 37,
+          "name": "Darren McDermott",
+          "club": "preston",
+          "sex": "M",
+          "ageCategory": "V40",
+          "total": 1,
+          "results": {
+            "pendle": {
+              "points": 1,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 101
+        },
+        {
+          "position": 38,
+          "name": "Gary Moore",
+          "club": "wesham",
+          "sex": "M",
+          "ageCategory": "V50",
+          "total": 4,
+          "results": {
+            "pendle": {
+              "points": 4,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 106
+        },
+        {
+          "position": 39,
+          "name": "Chris Whitlock",
+          "club": "wesham",
+          "sex": "M",
+          "ageCategory": "V40",
+          "total": 5,
+          "results": {
+            "pendle": {
+              "points": 5,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 107
+        },
+        {
+          "position": 40,
+          "name": "Paul Woan",
+          "club": "red-rose",
+          "sex": "M",
+          "ageCategory": "V40",
+          "total": 8,
+          "results": {
+            "two-lads": {
+              "points": 8,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 156
+        },
+        {
+          "position": 41,
+          "name": "Michael McLoughlin",
+          "club": "preston",
+          "sex": "M",
+          "ageCategory": "V50",
+          "total": 8,
+          "results": {
+            "golf-ball": {
+              "points": 8,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 191
+        },
+        {
+          "position": 42,
+          "name": "Jim Doherty",
+          "club": "preston",
+          "sex": "M",
+          "ageCategory": "V40",
+          "total": 10,
+          "results": {
+            "golf-ball": {
+              "points": 10,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 192
+        },
+        {
+          "position": 43,
+          "name": "Steven Jackson",
+          "club": "preston",
+          "sex": "M",
+          "ageCategory": "V50",
+          "total": 11,
+          "results": {
+            "golf-ball": {
+              "points": 11,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 193
+        },
+        {
+          "position": 44,
+          "name": "Peter Carter",
+          "club": "preston",
+          "sex": "M",
+          "ageCategory": "V40",
+          "total": 12,
+          "results": {
+            "golf-ball": {
+              "points": 12,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 194
+        },
+        {
+          "position": 45,
+          "name": "Tony Thornley",
+          "club": "red-rose",
+          "sex": "M",
+          "ageCategory": "V40",
+          "total": 11,
+          "results": {
+            "two-lads": {
+              "points": 11,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 157
+        },
+        {
+          "position": 46,
+          "name": "Cliff Utting",
+          "club": "red-rose",
+          "sex": "M",
+          "ageCategory": "V50",
+          "total": 12,
+          "results": {
+            "two-lads": {
+              "points": 12,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 158
+        },
+        {
+          "position": 47,
+          "name": "Claire McDermott",
+          "club": "preston",
+          "sex": "F",
+          "ageCategory": "V40",
+          "total": 14,
+          "results": {
+            "pendle": {
+              "points": 14,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 122
+        },
+        {
+          "position": 48,
+          "name": "Alistair Morris",
+          "club": "wesham",
+          "sex": "M",
+          "ageCategory": "V50",
+          "total": 17,
+          "results": {
+            "warton-crag": {
+              "points": 17,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 186
+        },
+        {
+          "position": 49,
+          "name": "Helen Lawrenson",
+          "club": "wesham",
+          "sex": "F",
+          "ageCategory": "V40",
+          "total": 16,
+          "results": {
+            "two-lads": {
+              "points": 16,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 161
+        },
+        {
+          "position": 50,
+          "name": "Dave Earnshaw",
+          "club": "red-rose",
+          "sex": "M",
+          "ageCategory": "V50",
+          "total": 18,
+          "results": {
+            "warton-crag": {
+              "points": 18,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 187
+        },
+        {
+          "position": 51,
+          "name": "Jeffrey Wright",
+          "club": "blackpool",
+          "sex": "M",
+          "ageCategory": "V50",
+          "total": 16,
+          "results": {
+            "pendle": {
+              "points": 16,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 124
+        },
+        {
+          "position": 52,
+          "name": "Paul Wareing",
+          "club": "chorley-ac",
+          "sex": "M",
+          "ageCategory": "V40",
+          "total": 17,
+          "results": {
+            "pendle": {
+              "points": 17,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 126
+        },
+        {
+          "position": 53,
+          "name": "Julia Rolfe",
+          "club": "lytham",
+          "sex": "F",
+          "ageCategory": "V40",
+          "total": 20,
+          "results": {
+            "golf-ball": {
+              "points": 20,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 196
+        },
+        {
+          "position": 54,
+          "name": "Ian France",
+          "club": "wesham",
+          "sex": "M",
+          "ageCategory": "V40",
+          "total": 18,
+          "results": {
+            "pendle": {
+              "points": 18,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 127
+        },
+        {
+          "position": 55,
+          "name": "Peter Bartlett",
+          "club": "wesham",
+          "sex": "M",
+          "ageCategory": "V60",
+          "total": 19,
+          "results": {
+            "two-lads": {
+              "points": 19,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 164
+        },
+        {
+          "position": 56,
+          "name": "John Sharples",
+          "club": "wesham",
+          "sex": "M",
+          "ageCategory": "V50",
+          "total": 20,
+          "results": {
+            "two-lads": {
+              "points": 20,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 165
+        },
+        {
+          "position": 57,
+          "name": "Steve Coey",
+          "club": "red-rose",
+          "sex": "M",
+          "ageCategory": "V50",
+          "total": 21,
+          "results": {
+            "pendle": {
+              "points": 21,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 130
+        },
+        {
+          "position": 58,
+          "name": "Steve Quarmby",
+          "club": "lytham",
+          "sex": "M",
+          "ageCategory": "V40",
+          "total": 22,
+          "results": {
+            "two-lads": {
+              "points": 22,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 166
+        },
+        {
+          "position": 59,
+          "name": "Bernard Elkington",
+          "club": "red-rose",
+          "sex": "M",
+          "ageCategory": "V70",
+          "total": 24,
+          "results": {
+            "warton-crag": {
+              "points": 24,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 189
+        },
+        {
+          "position": 60,
+          "name": "Kevin Ashworth",
+          "club": "lytham",
+          "sex": "M",
+          "ageCategory": "V40",
+          "total": 23,
+          "results": {
+            "two-lads": {
+              "points": 23,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 167
+        },
+        {
+          "position": 61,
+          "name": "Peter Gibson",
+          "club": "blackpool",
+          "sex": "M",
+          "ageCategory": "V50",
+          "total": 24,
+          "results": {
+            "pendle": {
+              "points": 24,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 134
+        },
+        {
+          "position": 62,
+          "name": "Sally Cape",
+          "club": "red-rose",
+          "sex": "F",
+          "ageCategory": "V40",
+          "total": 25,
+          "results": {
+            "pendle": {
+              "points": 25,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 135
+        },
+        {
+          "position": 63,
+          "name": "Eddie Stewart",
+          "club": "preston",
+          "sex": "M",
+          "ageCategory": "V60",
+          "total": 28,
+          "results": {
+            "two-lads": {
+              "points": 28,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 174
+        },
+        {
+          "position": 64,
+          "name": "Les Paul",
+          "club": "chorley-ac",
+          "sex": "M",
+          "ageCategory": "V60",
+          "total": 34,
+          "results": {
+            "pendle": {
+              "points": 34,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 145
+        },
+        {
+          "position": 65,
+          "name": "Bec Willetts",
+          "club": "lytham",
+          "sex": "F",
+          "ageCategory": "V40",
+          "total": 30,
+          "results": {
+            "two-lads": {
+              "points": 30,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 177
+        },
+        {
+          "position": 66,
+          "name": "Pamela Hardman",
+          "club": "lytham",
+          "sex": "F",
+          "ageCategory": "V50",
+          "total": 32,
+          "results": {
+            "two-lads": {
+              "points": 32,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 179
+        }
       ]
     },
     {
       "id": "v50",
       "ageCategory": "V50",
       "runners": [
-        { "position": 1, "name": "Gary Johnston", "club": "blackpool", "sex": "M", "ageCategory": "V50", "total": 4, "results": { "pendle": { "points": 1, "counting": true }, "two-lads": { "points": 1, "counting": true }, "golf-ball": { "points": 2, "counting": true } } },
-        { "position": 2, "name": "Ken Addison", "club": "red-rose", "sex": "M", "ageCategory": "V50", "total": 5, "results": { "two-lads": { "points": 2, "counting": true }, "warton-crag": { "points": 2, "counting": true }, "golf-ball": { "points": 1, "counting": true } } },
-        { "position": 3, "name": "Fred Lynch", "club": "red-rose", "sex": "M", "ageCategory": "V50", "total": 8, "results": { "two-lads": { "points": 4, "counting": true }, "warton-crag": { "points": 1, "counting": true }, "golf-ball": { "points": 3, "counting": true } } },
-        { "position": 4, "name": "Dave Kershaw", "club": "chorley-ac", "sex": "M", "ageCategory": "V50", "total": 9, "results": { "pendle": { "points": 3, "counting": true }, "two-lads": { "points": 3, "counting": true }, "warton-crag": { "points": 3, "counting": true } } },
-        { "position": 5, "name": "John Rogerson", "club": "red-rose", "sex": "M", "ageCategory": "V50", "total": 13, "results": { "pendle": { "points": 4, "counting": true }, "two-lads": { "points": 5, "counting": true }, "warton-crag": { "points": 4, "counting": true } } },
-        { "position": 6, "name": "Peter Bolton", "club": "red-rose", "sex": "M", "ageCategory": "V50", "total": 18, "results": { "pendle": { "points": 5, "counting": true }, "two-lads": { "points": 8, "counting": false }, "warton-crag": { "points": 8, "counting": true }, "golf-ball": { "points": 5, "counting": true } } },
-        { "position": 7, "name": "Henry Minorczyk", "club": "chorley-ac", "sex": "M", "ageCategory": "V60", "total": 18, "results": { "pendle": { "points": 6, "counting": true }, "two-lads": { "points": 7, "counting": true }, "warton-crag": { "points": 5, "counting": true }, "golf-ball": { "points": 8, "counting": false } } },
-        { "position": 8, "name": "Glenda Dobie", "club": "red-rose", "sex": "F", "ageCategory": "V50", "total": 30, "results": { "pendle": { "points": 9, "counting": true }, "two-lads": { "points": 11, "counting": true }, "golf-ball": { "points": 10, "counting": true } } },
-        { "position": 9, "name": "John Minton", "club": "chorley-ac", "sex": "M", "ageCategory": "V70", "total": 37, "results": { "pendle": { "points": 14, "counting": false }, "two-lads": { "points": 14, "counting": true }, "warton-crag": { "points": 12, "counting": true }, "golf-ball": { "points": 11, "counting": true } } },
-        { "position": 10, "name": "George Fletcher", "club": "red-rose", "sex": "M", "ageCategory": "V60", "total": 41, "results": { "pendle": { "points": 16, "counting": true }, "two-lads": { "points": 18, "counting": false }, "warton-crag": { "points": 13, "counting": true }, "golf-ball": { "points": 12, "counting": true } } },
-        { "position": 11, "name": "Roger Johnson", "club": "red-rose", "sex": "M", "ageCategory": "V50", "total": 47, "results": { "pendle": { "points": 20, "counting": false }, "two-lads": { "points": 19, "counting": true }, "warton-crag": { "points": 14, "counting": true }, "golf-ball": { "points": 14, "counting": true } } },
-        { "position": 12, "name": "David Roberts", "club": "preston", "sex": "M", "ageCategory": "V60", "total": 44, "results": { "pendle": { "points": 15, "counting": true }, "two-lads": { "points": 16, "counting": true }, "golf-ball": { "points": 13, "counting": true } } },
-        { "position": 13, "name": "Dawn Lock", "club": "lytham", "sex": "F", "ageCategory": "V60", "total": 64, "results": { "pendle": { "points": 24, "counting": true }, "two-lads": { "points": 22, "counting": true }, "golf-ball": { "points": 18, "counting": true } } },
-        { "position": 14, "name": "John Hyde", "club": "red-rose", "sex": "M", "ageCategory": "V50", "total": 13, "results": { "warton-crag": { "points": 6, "counting": true }, "golf-ball": { "points": 7, "counting": true } } },
-        { "position": 15, "name": "Kath Hoyer", "club": "wesham", "sex": "F", "ageCategory": "V50", "total": 20, "results": { "warton-crag": { "points": 11, "counting": true }, "golf-ball": { "points": 9, "counting": true } } },
-        { "position": 16, "name": "Nigel Shepherd", "club": "wesham", "sex": "M", "ageCategory": "V50", "total": 15, "results": { "pendle": { "points": 8, "counting": true }, "warton-crag": { "points": 7, "counting": true } } },
-        { "position": 17, "name": "Barry Chester", "club": "chorley-ac", "sex": "M", "ageCategory": "V60", "total": 23, "results": { "pendle": { "points": 11, "counting": true }, "two-lads": { "points": 12, "counting": true } } },
-        { "position": 18, "name": "Pete McDermott", "club": "preston", "sex": "M", "ageCategory": "V60", "total": 25, "results": { "pendle": { "points": 12, "counting": true }, "two-lads": { "points": 13, "counting": true } } },
-        { "position": 19, "name": "Joe Howard", "club": "preston", "sex": "M", "ageCategory": "V60", "total": 34, "results": { "pendle": { "points": 19, "counting": true }, "golf-ball": { "points": 15, "counting": true } } },
-        { "position": 20, "name": "Brian Dearnaley", "club": "preston", "sex": "M", "ageCategory": "V60", "total": 34, "results": { "pendle": { "points": 17, "counting": true }, "golf-ball": { "points": 17, "counting": true } } },
-        { "position": 21, "name": "Eileen Dearnaley", "club": "preston", "sex": "F", "ageCategory": "V60", "total": 34, "results": { "pendle": { "points": 18, "counting": true }, "golf-ball": { "points": 16, "counting": true } } },
-        { "position": 22, "name": "Tom Hilton", "club": "chorley-ac", "sex": "M", "ageCategory": "V60", "total": 39, "results": { "pendle": { "points": 23, "counting": true }, "warton-crag": { "points": 16, "counting": true } } },
-        { "position": 23, "name": "Phil McCullagh", "club": "chorley-ac", "sex": "M", "ageCategory": "V50", "total": 41, "results": { "pendle": { "points": 21, "counting": true }, "two-lads": { "points": 20, "counting": true } } },
-        { "position": 24, "name": "Mike Coppin", "club": "chorley-ac", "sex": "M", "ageCategory": "V60", "total": 46, "results": { "pendle": { "points": 25, "counting": true }, "two-lads": { "points": 21, "counting": true } } },
-        { "position": 25, "name": "Gary Moore", "club": "wesham", "sex": "M", "ageCategory": "V50", "total": 2, "results": { "pendle": { "points": 2, "counting": true } } },
-        { "position": 26, "name": "Michael McLoughlin", "club": "preston", "sex": "M", "ageCategory": "V50", "total": 4, "results": { "golf-ball": { "points": 4, "counting": true } } },
-        { "position": 27, "name": "Steven Jackson", "club": "preston", "sex": "M", "ageCategory": "V50", "total": 6, "results": { "golf-ball": { "points": 6, "counting": true } } },
-        { "position": 28, "name": "Cliff Utting", "club": "red-rose", "sex": "M", "ageCategory": "V50", "total": 6, "results": { "two-lads": { "points": 6, "counting": true } } },
-        { "position": 29, "name": "Alistair Morris", "club": "wesham", "sex": "M", "ageCategory": "V50", "total": 9, "results": { "warton-crag": { "points": 9, "counting": true } } },
-        { "position": 30, "name": "Dave Earnshaw", "club": "red-rose", "sex": "M", "ageCategory": "V50", "total": 10, "results": { "warton-crag": { "points": 10, "counting": true } } },
-        { "position": 31, "name": "Jeffrey Wright", "club": "blackpool", "sex": "M", "ageCategory": "V50", "total": 7, "results": { "pendle": { "points": 7, "counting": true } } },
-        { "position": 32, "name": "Peter Bartlett", "club": "wesham", "sex": "M", "ageCategory": "V60", "total": 9, "results": { "two-lads": { "points": 9, "counting": true } } },
-        { "position": 33, "name": "John Sharples", "club": "wesham", "sex": "M", "ageCategory": "V50", "total": 10, "results": { "two-lads": { "points": 10, "counting": true } } },
-        { "position": 34, "name": "Steve Coey", "club": "red-rose", "sex": "M", "ageCategory": "V50", "total": 10, "results": { "pendle": { "points": 10, "counting": true } } },
-        { "position": 35, "name": "Bernard Elkington", "club": "red-rose", "sex": "M", "ageCategory": "V70", "total": 15, "results": { "warton-crag": { "points": 15, "counting": true } } },
-        { "position": 36, "name": "Peter Gibson", "club": "blackpool", "sex": "M", "ageCategory": "V50", "total": 13, "results": { "pendle": { "points": 13, "counting": true } } },
-        { "position": 37, "name": "Eddie Stewart", "club": "preston", "sex": "M", "ageCategory": "V60", "total": 15, "results": { "two-lads": { "points": 15, "counting": true } } },
-        { "position": 38, "name": "Les Paul", "club": "chorley-ac", "sex": "M", "ageCategory": "V60", "total": 22, "results": { "pendle": { "points": 22, "counting": true } } },
-        { "position": 39, "name": "Pamela Hardman", "club": "lytham", "sex": "F", "ageCategory": "V50", "total": 17, "results": { "two-lads": { "points": 17, "counting": true } } }
+        {
+          "position": 1,
+          "name": "Gary Johnston",
+          "club": "blackpool",
+          "sex": "M",
+          "ageCategory": "V50",
+          "total": 4,
+          "results": {
+            "pendle": {
+              "points": 1,
+              "counting": true
+            },
+            "two-lads": {
+              "points": 1,
+              "counting": true
+            },
+            "golf-ball": {
+              "points": 2,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 152
+        },
+        {
+          "position": 2,
+          "name": "Ken Addison",
+          "club": "red-rose",
+          "sex": "M",
+          "ageCategory": "V50",
+          "total": 5,
+          "results": {
+            "two-lads": {
+              "points": 2,
+              "counting": true
+            },
+            "warton-crag": {
+              "points": 2,
+              "counting": true
+            },
+            "golf-ball": {
+              "points": 1,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 154
+        },
+        {
+          "position": 3,
+          "name": "Fred Lynch",
+          "club": "red-rose",
+          "sex": "M",
+          "ageCategory": "V50",
+          "total": 8,
+          "results": {
+            "two-lads": {
+              "points": 4,
+              "counting": true
+            },
+            "warton-crag": {
+              "points": 1,
+              "counting": true
+            },
+            "golf-ball": {
+              "points": 3,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 155
+        },
+        {
+          "position": 4,
+          "name": "Dave Kershaw",
+          "club": "chorley-ac",
+          "sex": "M",
+          "ageCategory": "V50",
+          "total": 9,
+          "results": {
+            "pendle": {
+              "points": 3,
+              "counting": true
+            },
+            "two-lads": {
+              "points": 3,
+              "counting": true
+            },
+            "warton-crag": {
+              "points": 3,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 112
+        },
+        {
+          "position": 5,
+          "name": "John Rogerson",
+          "club": "red-rose",
+          "sex": "M",
+          "ageCategory": "V50",
+          "total": 13,
+          "results": {
+            "pendle": {
+              "points": 4,
+              "counting": true
+            },
+            "two-lads": {
+              "points": 5,
+              "counting": true
+            },
+            "warton-crag": {
+              "points": 4,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 119
+        },
+        {
+          "position": 6,
+          "name": "Peter Bolton",
+          "club": "red-rose",
+          "sex": "M",
+          "ageCategory": "V50",
+          "total": 18,
+          "results": {
+            "pendle": {
+              "points": 5,
+              "counting": true
+            },
+            "two-lads": {
+              "points": 8,
+              "counting": false
+            },
+            "warton-crag": {
+              "points": 8,
+              "counting": true
+            },
+            "golf-ball": {
+              "points": 5,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 120
+        },
+        {
+          "position": 7,
+          "name": "Henry Minorczyk",
+          "club": "chorley-ac",
+          "sex": "M",
+          "ageCategory": "V60",
+          "total": 18,
+          "results": {
+            "pendle": {
+              "points": 6,
+              "counting": true
+            },
+            "two-lads": {
+              "points": 7,
+              "counting": true
+            },
+            "warton-crag": {
+              "points": 5,
+              "counting": true
+            },
+            "golf-ball": {
+              "points": 8,
+              "counting": false
+            }
+          },
+          "seriesRunnerId": 123
+        },
+        {
+          "position": 8,
+          "name": "Glenda Dobie",
+          "club": "red-rose",
+          "sex": "F",
+          "ageCategory": "V50",
+          "total": 30,
+          "results": {
+            "pendle": {
+              "points": 9,
+              "counting": true
+            },
+            "two-lads": {
+              "points": 11,
+              "counting": true
+            },
+            "golf-ball": {
+              "points": 10,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 129
+        },
+        {
+          "position": 9,
+          "name": "John Minton",
+          "club": "chorley-ac",
+          "sex": "M",
+          "ageCategory": "V70",
+          "total": 37,
+          "results": {
+            "pendle": {
+              "points": 14,
+              "counting": false
+            },
+            "two-lads": {
+              "points": 14,
+              "counting": true
+            },
+            "warton-crag": {
+              "points": 12,
+              "counting": true
+            },
+            "golf-ball": {
+              "points": 11,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 136
+        },
+        {
+          "position": 10,
+          "name": "George Fletcher",
+          "club": "red-rose",
+          "sex": "M",
+          "ageCategory": "V60",
+          "total": 41,
+          "results": {
+            "pendle": {
+              "points": 16,
+              "counting": true
+            },
+            "two-lads": {
+              "points": 18,
+              "counting": false
+            },
+            "warton-crag": {
+              "points": 13,
+              "counting": true
+            },
+            "golf-ball": {
+              "points": 12,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 139
+        },
+        {
+          "position": 11,
+          "name": "Roger Johnson",
+          "club": "red-rose",
+          "sex": "M",
+          "ageCategory": "V50",
+          "total": 47,
+          "results": {
+            "pendle": {
+              "points": 20,
+              "counting": false
+            },
+            "two-lads": {
+              "points": 19,
+              "counting": true
+            },
+            "warton-crag": {
+              "points": 14,
+              "counting": true
+            },
+            "golf-ball": {
+              "points": 14,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 143
+        },
+        {
+          "position": 12,
+          "name": "David Roberts",
+          "club": "preston",
+          "sex": "M",
+          "ageCategory": "V60",
+          "total": 44,
+          "results": {
+            "pendle": {
+              "points": 15,
+              "counting": true
+            },
+            "two-lads": {
+              "points": 16,
+              "counting": true
+            },
+            "golf-ball": {
+              "points": 13,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 178
+        },
+        {
+          "position": 13,
+          "name": "Dawn Lock",
+          "club": "lytham",
+          "sex": "F",
+          "ageCategory": "V60",
+          "total": 64,
+          "results": {
+            "pendle": {
+              "points": 24,
+              "counting": true
+            },
+            "two-lads": {
+              "points": 22,
+              "counting": true
+            },
+            "golf-ball": {
+              "points": 18,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 147
+        },
+        {
+          "position": 14,
+          "name": "John Hyde",
+          "club": "red-rose",
+          "sex": "M",
+          "ageCategory": "V50",
+          "total": 13,
+          "results": {
+            "warton-crag": {
+              "points": 6,
+              "counting": true
+            },
+            "golf-ball": {
+              "points": 7,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 184
+        },
+        {
+          "position": 15,
+          "name": "Kath Hoyer",
+          "club": "wesham",
+          "sex": "F",
+          "ageCategory": "V50",
+          "total": 20,
+          "results": {
+            "warton-crag": {
+              "points": 11,
+              "counting": true
+            },
+            "golf-ball": {
+              "points": 9,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 188
+        },
+        {
+          "position": 16,
+          "name": "Nigel Shepherd",
+          "club": "wesham",
+          "sex": "M",
+          "ageCategory": "V50",
+          "total": 15,
+          "results": {
+            "pendle": {
+              "points": 8,
+              "counting": true
+            },
+            "warton-crag": {
+              "points": 7,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 128
+        },
+        {
+          "position": 17,
+          "name": "Barry Chester",
+          "club": "chorley-ac",
+          "sex": "M",
+          "ageCategory": "V60",
+          "total": 23,
+          "results": {
+            "pendle": {
+              "points": 11,
+              "counting": true
+            },
+            "two-lads": {
+              "points": 12,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 132
+        },
+        {
+          "position": 18,
+          "name": "Pete McDermott",
+          "club": "preston",
+          "sex": "M",
+          "ageCategory": "V60",
+          "total": 25,
+          "results": {
+            "pendle": {
+              "points": 12,
+              "counting": true
+            },
+            "two-lads": {
+              "points": 13,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 133
+        },
+        {
+          "position": 19,
+          "name": "Joe Howard",
+          "club": "preston",
+          "sex": "M",
+          "ageCategory": "V60",
+          "total": 34,
+          "results": {
+            "pendle": {
+              "points": 19,
+              "counting": true
+            },
+            "golf-ball": {
+              "points": 15,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 142
+        },
+        {
+          "position": 20,
+          "name": "Brian Dearnaley",
+          "club": "preston",
+          "sex": "M",
+          "ageCategory": "V60",
+          "total": 34,
+          "results": {
+            "pendle": {
+              "points": 17,
+              "counting": true
+            },
+            "golf-ball": {
+              "points": 17,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 140
+        },
+        {
+          "position": 21,
+          "name": "Eileen Dearnaley",
+          "club": "preston",
+          "sex": "F",
+          "ageCategory": "V60",
+          "total": 34,
+          "results": {
+            "pendle": {
+              "points": 18,
+              "counting": true
+            },
+            "golf-ball": {
+              "points": 16,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 200
+        },
+        {
+          "position": 22,
+          "name": "Tom Hilton",
+          "club": "chorley-ac",
+          "sex": "M",
+          "ageCategory": "V60",
+          "total": 39,
+          "results": {
+            "pendle": {
+              "points": 23,
+              "counting": true
+            },
+            "warton-crag": {
+              "points": 16,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 146
+        },
+        {
+          "position": 23,
+          "name": "Phil McCullagh",
+          "club": "chorley-ac",
+          "sex": "M",
+          "ageCategory": "V50",
+          "total": 41,
+          "results": {
+            "pendle": {
+              "points": 21,
+              "counting": true
+            },
+            "two-lads": {
+              "points": 20,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 144
+        },
+        {
+          "position": 24,
+          "name": "Mike Coppin",
+          "club": "chorley-ac",
+          "sex": "M",
+          "ageCategory": "V60",
+          "total": 46,
+          "results": {
+            "pendle": {
+              "points": 25,
+              "counting": true
+            },
+            "two-lads": {
+              "points": 21,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 148
+        },
+        {
+          "position": 25,
+          "name": "Gary Moore",
+          "club": "wesham",
+          "sex": "M",
+          "ageCategory": "V50",
+          "total": 2,
+          "results": {
+            "pendle": {
+              "points": 2,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 106
+        },
+        {
+          "position": 26,
+          "name": "Michael McLoughlin",
+          "club": "preston",
+          "sex": "M",
+          "ageCategory": "V50",
+          "total": 4,
+          "results": {
+            "golf-ball": {
+              "points": 4,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 191
+        },
+        {
+          "position": 27,
+          "name": "Steven Jackson",
+          "club": "preston",
+          "sex": "M",
+          "ageCategory": "V50",
+          "total": 6,
+          "results": {
+            "golf-ball": {
+              "points": 6,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 193
+        },
+        {
+          "position": 28,
+          "name": "Cliff Utting",
+          "club": "red-rose",
+          "sex": "M",
+          "ageCategory": "V50",
+          "total": 6,
+          "results": {
+            "two-lads": {
+              "points": 6,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 158
+        },
+        {
+          "position": 29,
+          "name": "Alistair Morris",
+          "club": "wesham",
+          "sex": "M",
+          "ageCategory": "V50",
+          "total": 9,
+          "results": {
+            "warton-crag": {
+              "points": 9,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 186
+        },
+        {
+          "position": 30,
+          "name": "Dave Earnshaw",
+          "club": "red-rose",
+          "sex": "M",
+          "ageCategory": "V50",
+          "total": 10,
+          "results": {
+            "warton-crag": {
+              "points": 10,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 187
+        },
+        {
+          "position": 31,
+          "name": "Jeffrey Wright",
+          "club": "blackpool",
+          "sex": "M",
+          "ageCategory": "V50",
+          "total": 7,
+          "results": {
+            "pendle": {
+              "points": 7,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 124
+        },
+        {
+          "position": 32,
+          "name": "Peter Bartlett",
+          "club": "wesham",
+          "sex": "M",
+          "ageCategory": "V60",
+          "total": 9,
+          "results": {
+            "two-lads": {
+              "points": 9,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 164
+        },
+        {
+          "position": 33,
+          "name": "John Sharples",
+          "club": "wesham",
+          "sex": "M",
+          "ageCategory": "V50",
+          "total": 10,
+          "results": {
+            "two-lads": {
+              "points": 10,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 165
+        },
+        {
+          "position": 34,
+          "name": "Steve Coey",
+          "club": "red-rose",
+          "sex": "M",
+          "ageCategory": "V50",
+          "total": 10,
+          "results": {
+            "pendle": {
+              "points": 10,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 130
+        },
+        {
+          "position": 35,
+          "name": "Bernard Elkington",
+          "club": "red-rose",
+          "sex": "M",
+          "ageCategory": "V70",
+          "total": 15,
+          "results": {
+            "warton-crag": {
+              "points": 15,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 189
+        },
+        {
+          "position": 36,
+          "name": "Peter Gibson",
+          "club": "blackpool",
+          "sex": "M",
+          "ageCategory": "V50",
+          "total": 13,
+          "results": {
+            "pendle": {
+              "points": 13,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 134
+        },
+        {
+          "position": 37,
+          "name": "Eddie Stewart",
+          "club": "preston",
+          "sex": "M",
+          "ageCategory": "V60",
+          "total": 15,
+          "results": {
+            "two-lads": {
+              "points": 15,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 174
+        },
+        {
+          "position": 38,
+          "name": "Les Paul",
+          "club": "chorley-ac",
+          "sex": "M",
+          "ageCategory": "V60",
+          "total": 22,
+          "results": {
+            "pendle": {
+              "points": 22,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 145
+        },
+        {
+          "position": 39,
+          "name": "Pamela Hardman",
+          "club": "lytham",
+          "sex": "F",
+          "ageCategory": "V50",
+          "total": 17,
+          "results": {
+            "two-lads": {
+              "points": 17,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 179
+        }
       ]
     },
     {
       "id": "v60",
       "ageCategory": "V60",
       "runners": [
-        { "position": 1, "name": "Henry Minorczyk", "club": "chorley-ac", "sex": "M", "ageCategory": "V60", "total": 3, "results": { "pendle": { "points": 1, "counting": false }, "two-lads": { "points": 1, "counting": true }, "warton-crag": { "points": 1, "counting": true }, "golf-ball": { "points": 1, "counting": true } } },
-        { "position": 2, "name": "John Minton", "club": "chorley-ac", "sex": "M", "ageCategory": "V70", "total": 8, "results": { "pendle": { "points": 4, "counting": true }, "two-lads": { "points": 5, "counting": false }, "warton-crag": { "points": 2, "counting": true }, "golf-ball": { "points": 2, "counting": true } } },
-        { "position": 3, "name": "George Fletcher", "club": "red-rose", "sex": "M", "ageCategory": "V60", "total": 12, "results": { "pendle": { "points": 6, "counting": true }, "two-lads": { "points": 8, "counting": false }, "warton-crag": { "points": 3, "counting": true }, "golf-ball": { "points": 3, "counting": true } } },
-        { "position": 4, "name": "David Roberts", "club": "preston", "sex": "M", "ageCategory": "V60", "total": 16, "results": { "pendle": { "points": 5, "counting": true }, "two-lads": { "points": 7, "counting": true }, "golf-ball": { "points": 4, "counting": true } } },
-        { "position": 5, "name": "Dawn Lock", "club": "lytham", "sex": "F", "ageCategory": "V60", "total": 30, "results": { "pendle": { "points": 12, "counting": true }, "two-lads": { "points": 10, "counting": true }, "golf-ball": { "points": 8, "counting": true } } },
-        { "position": 6, "name": "Barry Chester", "club": "chorley-ac", "sex": "M", "ageCategory": "V60", "total": 5, "results": { "pendle": { "points": 2, "counting": true }, "two-lads": { "points": 3, "counting": true } } },
-        { "position": 7, "name": "Pete McDermott", "club": "preston", "sex": "M", "ageCategory": "V60", "total": 7, "results": { "pendle": { "points": 3, "counting": true }, "two-lads": { "points": 4, "counting": true } } },
-        { "position": 8, "name": "Joe Howard", "club": "preston", "sex": "M", "ageCategory": "V60", "total": 14, "results": { "pendle": { "points": 9, "counting": true }, "golf-ball": { "points": 5, "counting": true } } },
-        { "position": 9, "name": "Brian Dearnaley", "club": "preston", "sex": "M", "ageCategory": "V60", "total": 14, "results": { "pendle": { "points": 7, "counting": true }, "golf-ball": { "points": 7, "counting": true } } },
-        { "position": 10, "name": "Eileen Dearnaley", "club": "preston", "sex": "F", "ageCategory": "V60", "total": 14, "results": { "pendle": { "points": 8, "counting": true }, "golf-ball": { "points": 6, "counting": true } } },
-        { "position": 11, "name": "Tom Hilton", "club": "chorley-ac", "sex": "M", "ageCategory": "V60", "total": 16, "results": { "pendle": { "points": 11, "counting": true }, "warton-crag": { "points": 5, "counting": true } } },
-        { "position": 12, "name": "Mike Coppin", "club": "chorley-ac", "sex": "M", "ageCategory": "V60", "total": 22, "results": { "pendle": { "points": 13, "counting": true }, "two-lads": { "points": 9, "counting": true } } },
-        { "position": 13, "name": "Peter Bartlett", "club": "wesham", "sex": "M", "ageCategory": "V60", "total": 2, "results": { "two-lads": { "points": 2, "counting": true } } },
-        { "position": 14, "name": "Bernard Elkington", "club": "red-rose", "sex": "M", "ageCategory": "V70", "total": 4, "results": { "warton-crag": { "points": 4, "counting": true } } },
-        { "position": 15, "name": "Eddie Stewart", "club": "preston", "sex": "M", "ageCategory": "V60", "total": 6, "results": { "two-lads": { "points": 6, "counting": true } } },
-        { "position": 16, "name": "Les Paul", "club": "chorley-ac", "sex": "M", "ageCategory": "V60", "total": 10, "results": { "pendle": { "points": 10, "counting": true } } }
+        {
+          "position": 1,
+          "name": "Henry Minorczyk",
+          "club": "chorley-ac",
+          "sex": "M",
+          "ageCategory": "V60",
+          "total": 3,
+          "results": {
+            "pendle": {
+              "points": 1,
+              "counting": false
+            },
+            "two-lads": {
+              "points": 1,
+              "counting": true
+            },
+            "warton-crag": {
+              "points": 1,
+              "counting": true
+            },
+            "golf-ball": {
+              "points": 1,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 123
+        },
+        {
+          "position": 2,
+          "name": "John Minton",
+          "club": "chorley-ac",
+          "sex": "M",
+          "ageCategory": "V70",
+          "total": 8,
+          "results": {
+            "pendle": {
+              "points": 4,
+              "counting": true
+            },
+            "two-lads": {
+              "points": 5,
+              "counting": false
+            },
+            "warton-crag": {
+              "points": 2,
+              "counting": true
+            },
+            "golf-ball": {
+              "points": 2,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 136
+        },
+        {
+          "position": 3,
+          "name": "George Fletcher",
+          "club": "red-rose",
+          "sex": "M",
+          "ageCategory": "V60",
+          "total": 12,
+          "results": {
+            "pendle": {
+              "points": 6,
+              "counting": true
+            },
+            "two-lads": {
+              "points": 8,
+              "counting": false
+            },
+            "warton-crag": {
+              "points": 3,
+              "counting": true
+            },
+            "golf-ball": {
+              "points": 3,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 139
+        },
+        {
+          "position": 4,
+          "name": "David Roberts",
+          "club": "preston",
+          "sex": "M",
+          "ageCategory": "V60",
+          "total": 16,
+          "results": {
+            "pendle": {
+              "points": 5,
+              "counting": true
+            },
+            "two-lads": {
+              "points": 7,
+              "counting": true
+            },
+            "golf-ball": {
+              "points": 4,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 178
+        },
+        {
+          "position": 5,
+          "name": "Dawn Lock",
+          "club": "lytham",
+          "sex": "F",
+          "ageCategory": "V60",
+          "total": 30,
+          "results": {
+            "pendle": {
+              "points": 12,
+              "counting": true
+            },
+            "two-lads": {
+              "points": 10,
+              "counting": true
+            },
+            "golf-ball": {
+              "points": 8,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 147
+        },
+        {
+          "position": 6,
+          "name": "Barry Chester",
+          "club": "chorley-ac",
+          "sex": "M",
+          "ageCategory": "V60",
+          "total": 5,
+          "results": {
+            "pendle": {
+              "points": 2,
+              "counting": true
+            },
+            "two-lads": {
+              "points": 3,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 132
+        },
+        {
+          "position": 7,
+          "name": "Pete McDermott",
+          "club": "preston",
+          "sex": "M",
+          "ageCategory": "V60",
+          "total": 7,
+          "results": {
+            "pendle": {
+              "points": 3,
+              "counting": true
+            },
+            "two-lads": {
+              "points": 4,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 133
+        },
+        {
+          "position": 8,
+          "name": "Joe Howard",
+          "club": "preston",
+          "sex": "M",
+          "ageCategory": "V60",
+          "total": 14,
+          "results": {
+            "pendle": {
+              "points": 9,
+              "counting": true
+            },
+            "golf-ball": {
+              "points": 5,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 142
+        },
+        {
+          "position": 9,
+          "name": "Brian Dearnaley",
+          "club": "preston",
+          "sex": "M",
+          "ageCategory": "V60",
+          "total": 14,
+          "results": {
+            "pendle": {
+              "points": 7,
+              "counting": true
+            },
+            "golf-ball": {
+              "points": 7,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 140
+        },
+        {
+          "position": 10,
+          "name": "Eileen Dearnaley",
+          "club": "preston",
+          "sex": "F",
+          "ageCategory": "V60",
+          "total": 14,
+          "results": {
+            "pendle": {
+              "points": 8,
+              "counting": true
+            },
+            "golf-ball": {
+              "points": 6,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 200
+        },
+        {
+          "position": 11,
+          "name": "Tom Hilton",
+          "club": "chorley-ac",
+          "sex": "M",
+          "ageCategory": "V60",
+          "total": 16,
+          "results": {
+            "pendle": {
+              "points": 11,
+              "counting": true
+            },
+            "warton-crag": {
+              "points": 5,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 146
+        },
+        {
+          "position": 12,
+          "name": "Mike Coppin",
+          "club": "chorley-ac",
+          "sex": "M",
+          "ageCategory": "V60",
+          "total": 22,
+          "results": {
+            "pendle": {
+              "points": 13,
+              "counting": true
+            },
+            "two-lads": {
+              "points": 9,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 148
+        },
+        {
+          "position": 13,
+          "name": "Peter Bartlett",
+          "club": "wesham",
+          "sex": "M",
+          "ageCategory": "V60",
+          "total": 2,
+          "results": {
+            "two-lads": {
+              "points": 2,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 164
+        },
+        {
+          "position": 14,
+          "name": "Bernard Elkington",
+          "club": "red-rose",
+          "sex": "M",
+          "ageCategory": "V70",
+          "total": 4,
+          "results": {
+            "warton-crag": {
+              "points": 4,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 189
+        },
+        {
+          "position": 15,
+          "name": "Eddie Stewart",
+          "club": "preston",
+          "sex": "M",
+          "ageCategory": "V60",
+          "total": 6,
+          "results": {
+            "two-lads": {
+              "points": 6,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 174
+        },
+        {
+          "position": 16,
+          "name": "Les Paul",
+          "club": "chorley-ac",
+          "sex": "M",
+          "ageCategory": "V60",
+          "total": 10,
+          "results": {
+            "pendle": {
+              "points": 10,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 145
+        }
       ]
     },
     {
       "id": "female",
       "sex": "F",
       "runners": [
-        { "position": 1, "name": "Nichola Jackson", "club": "preston", "ageCategory": "SEN", "total": 3, "results": { "pendle": { "points": 1, "counting": true }, "two-lads": { "points": 1, "counting": true }, "golf-ball": { "points": 1, "counting": true } } },
-        { "position": 2, "name": "Melanie Koth", "club": "lytham", "ageCategory": "SEN", "total": 5, "results": { "pendle": { "points": 4, "counting": false }, "two-lads": { "points": 2, "counting": true }, "warton-crag": { "points": 1, "counting": true }, "golf-ball": { "points": 2, "counting": true } } },
-        { "position": 3, "name": "Sarah Sherratt", "club": "wesham", "ageCategory": "SEN", "total": 7, "results": { "pendle": { "points": 2, "counting": true }, "two-lads": { "points": 3, "counting": true }, "warton-crag": { "points": 2, "counting": true }, "golf-ball": { "points": 4, "counting": false } } },
-        { "position": 4, "name": "Debbie Cooper", "club": "lytham", "ageCategory": "SEN", "total": 20, "results": { "pendle": { "points": 8, "counting": true }, "two-lads": { "points": 9, "counting": false }, "warton-crag": { "points": 5, "counting": true }, "golf-ball": { "points": 7, "counting": true } } },
-        { "position": 5, "name": "Glenda Dobie", "club": "red-rose", "ageCategory": "V50", "total": 19, "results": { "pendle": { "points": 7, "counting": true }, "two-lads": { "points": 6, "counting": true }, "golf-ball": { "points": 6, "counting": true } } },
-        { "position": 6, "name": "Paula Plowman", "club": "red-rose", "ageCategory": "V40", "total": 24, "results": { "two-lads": { "points": 10, "counting": true }, "warton-crag": { "points": 6, "counting": true }, "golf-ball": { "points": 8, "counting": true } } },
-        { "position": 7, "name": "Melanie Haworth", "club": "preston", "ageCategory": "SEN", "total": 37, "results": { "pendle": { "points": 10, "counting": true }, "two-lads": { "points": 16, "counting": true }, "golf-ball": { "points": 11, "counting": true } } },
-        { "position": 8, "name": "Dawn Lock", "club": "lytham", "ageCategory": "V60", "total": 44, "results": { "pendle": { "points": 12, "counting": true }, "two-lads": { "points": 18, "counting": true }, "golf-ball": { "points": 14, "counting": true } } },
-        { "position": 9, "name": "Lindsey Berends", "club": "preston", "ageCategory": "SEN", "total": 6, "results": { "pendle": { "points": 3, "counting": true }, "golf-ball": { "points": 3, "counting": true } } },
-        { "position": 10, "name": "Alison John-Haslam", "club": "red-rose", "ageCategory": "V40", "total": 8, "results": { "two-lads": { "points": 5, "counting": true }, "warton-crag": { "points": 3, "counting": true } } },
-        { "position": 11, "name": "Kath Hoyer", "club": "wesham", "ageCategory": "V50", "total": 9, "results": { "warton-crag": { "points": 4, "counting": true }, "golf-ball": { "points": 5, "counting": true } } },
-        { "position": 12, "name": "Jenny Salt", "club": "wesham", "ageCategory": "SEN", "total": 14, "results": { "pendle": { "points": 6, "counting": true }, "two-lads": { "points": 8, "counting": true } } },
-        { "position": 13, "name": "Debbie Kirkham", "club": "red-rose", "ageCategory": "V40", "total": 22, "results": { "two-lads": { "points": 13, "counting": true }, "golf-ball": { "points": 9, "counting": true } } },
-        { "position": 14, "name": "Eileen Dearnaley", "club": "preston", "ageCategory": "V60", "total": 24, "results": { "pendle": { "points": 11, "counting": true }, "golf-ball": { "points": 13, "counting": true } } },
-        { "position": 15, "name": "Claire McDermott", "club": "preston", "ageCategory": "V40", "total": 5, "results": { "pendle": { "points": 5, "counting": true } } },
-        { "position": 16, "name": "Helen Lawrenson", "club": "wesham", "ageCategory": "V40", "total": 4, "results": { "two-lads": { "points": 4, "counting": true } } },
-        { "position": 17, "name": "Julia Rolfe", "club": "lytham", "ageCategory": "V40", "total": 10, "results": { "golf-ball": { "points": 10, "counting": true } } },
-        { "position": 18, "name": "Janine Needham", "club": "red-rose", "ageCategory": "SEN", "total": 7, "results": { "two-lads": { "points": 7, "counting": true } } },
-        { "position": 19, "name": "Emma Cowie-Shaw", "club": "red-rose", "ageCategory": "SEN", "total": 12, "results": { "golf-ball": { "points": 12, "counting": true } } },
-        { "position": 20, "name": "Sally Cape", "club": "red-rose", "ageCategory": "V40", "total": 9, "results": { "pendle": { "points": 9, "counting": true } } },
-        { "position": 21, "name": "Lauren Caton", "club": "chorley-ac", "ageCategory": "SEN", "total": 11, "results": { "two-lads": { "points": 11, "counting": true } } },
-        { "position": 22, "name": "Laura Ashworth", "club": "lytham", "ageCategory": "SEN", "total": 12, "results": { "two-lads": { "points": 12, "counting": true } } },
-        { "position": 23, "name": "Bec Willetts", "club": "lytham", "ageCategory": "V40", "total": 14, "results": { "two-lads": { "points": 14, "counting": true } } },
-        { "position": 24, "name": "Pamela Hardman", "club": "lytham", "ageCategory": "V50", "total": 15, "results": { "two-lads": { "points": 15, "counting": true } } },
-        { "position": 25, "name": "Karen Woan", "club": "red-rose", "ageCategory": "SEN", "total": 17, "results": { "two-lads": { "points": 17, "counting": true } } }
+        {
+          "position": 1,
+          "name": "Nichola Jackson",
+          "club": "preston",
+          "ageCategory": "SEN",
+          "total": 3,
+          "results": {
+            "pendle": {
+              "points": 1,
+              "counting": true
+            },
+            "two-lads": {
+              "points": 1,
+              "counting": true
+            },
+            "golf-ball": {
+              "points": 1,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 102
+        },
+        {
+          "position": 2,
+          "name": "Melanie Koth",
+          "club": "lytham",
+          "ageCategory": "SEN",
+          "total": 5,
+          "results": {
+            "pendle": {
+              "points": 4,
+              "counting": false
+            },
+            "two-lads": {
+              "points": 2,
+              "counting": true
+            },
+            "warton-crag": {
+              "points": 1,
+              "counting": true
+            },
+            "golf-ball": {
+              "points": 2,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 116
+        },
+        {
+          "position": 3,
+          "name": "Sarah Sherratt",
+          "club": "wesham",
+          "ageCategory": "SEN",
+          "total": 7,
+          "results": {
+            "pendle": {
+              "points": 2,
+              "counting": true
+            },
+            "two-lads": {
+              "points": 3,
+              "counting": true
+            },
+            "warton-crag": {
+              "points": 2,
+              "counting": true
+            },
+            "golf-ball": {
+              "points": 4,
+              "counting": false
+            }
+          },
+          "seriesRunnerId": 108
+        },
+        {
+          "position": 4,
+          "name": "Debbie Cooper",
+          "club": "lytham",
+          "ageCategory": "SEN",
+          "total": 20,
+          "results": {
+            "pendle": {
+              "points": 8,
+              "counting": true
+            },
+            "two-lads": {
+              "points": 9,
+              "counting": false
+            },
+            "warton-crag": {
+              "points": 5,
+              "counting": true
+            },
+            "golf-ball": {
+              "points": 7,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 131
+        },
+        {
+          "position": 5,
+          "name": "Glenda Dobie",
+          "club": "red-rose",
+          "ageCategory": "V50",
+          "total": 19,
+          "results": {
+            "pendle": {
+              "points": 7,
+              "counting": true
+            },
+            "two-lads": {
+              "points": 6,
+              "counting": true
+            },
+            "golf-ball": {
+              "points": 6,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 129
+        },
+        {
+          "position": 6,
+          "name": "Paula Plowman",
+          "club": "red-rose",
+          "ageCategory": "V40",
+          "total": 24,
+          "results": {
+            "two-lads": {
+              "points": 10,
+              "counting": true
+            },
+            "warton-crag": {
+              "points": 6,
+              "counting": true
+            },
+            "golf-ball": {
+              "points": 8,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 172
+        },
+        {
+          "position": 7,
+          "name": "Melanie Haworth",
+          "club": "preston",
+          "ageCategory": "SEN",
+          "total": 37,
+          "results": {
+            "pendle": {
+              "points": 10,
+              "counting": true
+            },
+            "two-lads": {
+              "points": 16,
+              "counting": true
+            },
+            "golf-ball": {
+              "points": 11,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 138
+        },
+        {
+          "position": 8,
+          "name": "Dawn Lock",
+          "club": "lytham",
+          "ageCategory": "V60",
+          "total": 44,
+          "results": {
+            "pendle": {
+              "points": 12,
+              "counting": true
+            },
+            "two-lads": {
+              "points": 18,
+              "counting": true
+            },
+            "golf-ball": {
+              "points": 14,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 147
+        },
+        {
+          "position": 9,
+          "name": "Lindsey Berends",
+          "club": "preston",
+          "ageCategory": "SEN",
+          "total": 6,
+          "results": {
+            "pendle": {
+              "points": 3,
+              "counting": true
+            },
+            "golf-ball": {
+              "points": 3,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 113
+        },
+        {
+          "position": 10,
+          "name": "Alison John-Haslam",
+          "club": "red-rose",
+          "ageCategory": "V40",
+          "total": 8,
+          "results": {
+            "two-lads": {
+              "points": 5,
+              "counting": true
+            },
+            "warton-crag": {
+              "points": 3,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 162
+        },
+        {
+          "position": 11,
+          "name": "Kath Hoyer",
+          "club": "wesham",
+          "ageCategory": "V50",
+          "total": 9,
+          "results": {
+            "warton-crag": {
+              "points": 4,
+              "counting": true
+            },
+            "golf-ball": {
+              "points": 5,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 188
+        },
+        {
+          "position": 12,
+          "name": "Jenny Salt",
+          "club": "wesham",
+          "ageCategory": "SEN",
+          "total": 14,
+          "results": {
+            "pendle": {
+              "points": 6,
+              "counting": true
+            },
+            "two-lads": {
+              "points": 8,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 125
+        },
+        {
+          "position": 13,
+          "name": "Debbie Kirkham",
+          "club": "red-rose",
+          "ageCategory": "V40",
+          "total": 22,
+          "results": {
+            "two-lads": {
+              "points": 13,
+              "counting": true
+            },
+            "golf-ball": {
+              "points": 9,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 176
+        },
+        {
+          "position": 14,
+          "name": "Eileen Dearnaley",
+          "club": "preston",
+          "ageCategory": "V60",
+          "total": 24,
+          "results": {
+            "pendle": {
+              "points": 11,
+              "counting": true
+            },
+            "golf-ball": {
+              "points": 13,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 200
+        },
+        {
+          "position": 15,
+          "name": "Claire McDermott",
+          "club": "preston",
+          "ageCategory": "V40",
+          "total": 5,
+          "results": {
+            "pendle": {
+              "points": 5,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 122
+        },
+        {
+          "position": 16,
+          "name": "Helen Lawrenson",
+          "club": "wesham",
+          "ageCategory": "V40",
+          "total": 4,
+          "results": {
+            "two-lads": {
+              "points": 4,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 161
+        },
+        {
+          "position": 17,
+          "name": "Julia Rolfe",
+          "club": "lytham",
+          "ageCategory": "V40",
+          "total": 10,
+          "results": {
+            "golf-ball": {
+              "points": 10,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 196
+        },
+        {
+          "position": 18,
+          "name": "Janine Needham",
+          "club": "red-rose",
+          "ageCategory": "SEN",
+          "total": 7,
+          "results": {
+            "two-lads": {
+              "points": 7,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 169
+        },
+        {
+          "position": 19,
+          "name": "Emma Cowie-Shaw",
+          "club": "red-rose",
+          "ageCategory": "SEN",
+          "total": 12,
+          "results": {
+            "golf-ball": {
+              "points": 12,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 199
+        },
+        {
+          "position": 20,
+          "name": "Sally Cape",
+          "club": "red-rose",
+          "ageCategory": "V40",
+          "total": 9,
+          "results": {
+            "pendle": {
+              "points": 9,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 135
+        },
+        {
+          "position": 21,
+          "name": "Lauren Caton",
+          "club": "chorley-ac",
+          "ageCategory": "SEN",
+          "total": 11,
+          "results": {
+            "two-lads": {
+              "points": 11,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 173
+        },
+        {
+          "position": 22,
+          "name": "Laura Ashworth",
+          "club": "lytham",
+          "ageCategory": "SEN",
+          "total": 12,
+          "results": {
+            "two-lads": {
+              "points": 12,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 175
+        },
+        {
+          "position": 23,
+          "name": "Bec Willetts",
+          "club": "lytham",
+          "ageCategory": "V40",
+          "total": 14,
+          "results": {
+            "two-lads": {
+              "points": 14,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 177
+        },
+        {
+          "position": 24,
+          "name": "Pamela Hardman",
+          "club": "lytham",
+          "ageCategory": "V50",
+          "total": 15,
+          "results": {
+            "two-lads": {
+              "points": 15,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 179
+        },
+        {
+          "position": 25,
+          "name": "Karen Woan",
+          "club": "red-rose",
+          "ageCategory": "SEN",
+          "total": 17,
+          "results": {
+            "two-lads": {
+              "points": 17,
+              "counting": true
+            }
+          },
+          "seriesRunnerId": 181
+        }
       ]
     }
   ]
