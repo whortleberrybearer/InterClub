@@ -93,7 +93,7 @@ function Get-NameSplits {
 }
 
 $seriesRunners = [System.Collections.Generic.List[object]]::new()
-foreach ($r in (Get-Content $runnersFile -Raw | ConvertFrom-Json)) { $seriesRunners.Add($r) }
+foreach ($r in (Get-Content $runnersFile -Raw -Encoding UTF8 | ConvertFrom-Json)) { $seriesRunners.Add($r) }
 Write-Host "Loaded $($seriesRunners.Count) series runner(s)." -ForegroundColor DarkGray
 
 # Exact index: "first|last|club|ageCategory" -> runner
@@ -119,7 +119,7 @@ foreach ($r in $seriesRunners) {
     $nameIndex[$key].Add($r)
 }
 
-$standings = Get-Content $standingsFile -Raw | ConvertFrom-Json
+$standings = Get-Content $standingsFile -Raw -Encoding UTF8 | ConvertFrom-Json
 
 $matched     = 0
 $skipped     = 0

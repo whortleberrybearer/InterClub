@@ -114,7 +114,7 @@ Write-Host ""
 
 $seriesRunners = [System.Collections.Generic.List[object]]::new()
 if (Test-Path $seriesRunnersFile) {
-    foreach ($r in (Get-Content $seriesRunnersFile -Raw | ConvertFrom-Json)) { $seriesRunners.Add($r) }
+    foreach ($r in (Get-Content $seriesRunnersFile -Raw -Encoding UTF8 | ConvertFrom-Json)) { $seriesRunners.Add($r) }
 }
 Write-Host "Loaded $($seriesRunners.Count) series runner(s)." -ForegroundColor DarkGray
 
@@ -132,7 +132,7 @@ foreach ($r in $seriesRunners) {
 # --- Load team results JSON ---------------------------------------------------
 
 Write-Host "Loading team results JSON..." -ForegroundColor DarkGray
-$teamData = Get-Content $JsonFile -Raw | ConvertFrom-Json
+$teamData = Get-Content $JsonFile -Raw -Encoding UTF8 | ConvertFrom-Json
 
 # --- Correlate scorers --------------------------------------------------------
 

@@ -68,7 +68,7 @@ Write-Host "========================" -ForegroundColor Cyan
 Write-Host ""
 
 $globalRunners = [System.Collections.Generic.List[object]]::new()
-foreach ($r in (Get-Content $globalRunnersFile -Raw | ConvertFrom-Json)) { $globalRunners.Add($r) }
+foreach ($r in (Get-Content $globalRunnersFile -Raw -Encoding UTF8 | ConvertFrom-Json)) { $globalRunners.Add($r) }
 
 function Format-Runner {
     param($R)
@@ -127,7 +127,7 @@ $touchedFiles = 0
 
 foreach ($file in $seriesRunnerFiles) {
     $entries = [System.Collections.Generic.List[object]]::new()
-    foreach ($r in (Get-Content $file.FullName -Raw | ConvertFrom-Json)) { $entries.Add($r) }
+    foreach ($r in (Get-Content $file.FullName -Raw -Encoding UTF8 | ConvertFrom-Json)) { $entries.Add($r) }
 
     $fileRepointed = 0
     foreach ($e in $entries) {

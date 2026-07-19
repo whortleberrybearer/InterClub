@@ -477,9 +477,9 @@ Write-Host "  Output:      $outputFile"
 if ($DryRun) { Write-Host "  *** DRY RUN - no files written ***" -ForegroundColor Magenta }
 Write-Host ""
 
-$config      = Get-Content $configFile -Raw | ConvertFrom-Json
+$config      = Get-Content $configFile -Raw -Encoding UTF8 | ConvertFrom-Json
 $maxCounting = if ($config.maxCountingRaces) { [int]$config.maxCountingRaces } else { 4 }
-$races       = Get-Content $racesFile -Raw | ConvertFrom-Json
+$races       = Get-Content $racesFile -Raw -Encoding UTF8 | ConvertFrom-Json
 $raceIds     = @($races | ForEach-Object { $_.id })
 
 Write-Host "Series config" -ForegroundColor Yellow

@@ -1327,7 +1327,7 @@ function Update-TeamStandings {
 
     # Load existing standings or start fresh
     if (Test-Path $StandingsPath) {
-        $existing = Get-Content $StandingsPath -Raw | ConvertFrom-Json
+        $existing = Get-Content $StandingsPath -Raw -Encoding UTF8 | ConvertFrom-Json
         $races = [System.Collections.Generic.List[string]]@($existing.races)
     } else {
         $existing = $null
@@ -1480,9 +1480,9 @@ foreach ($outFile in @($csvFile, $teamsFile)) {
 }
 
 # Load config
-$config       = Get-Content $configFile -Raw | ConvertFrom-Json
+$config       = Get-Content $configFile -Raw -Encoding UTF8 | ConvertFrom-Json
 $categoryIds  = @($config.teamCategories | ForEach-Object { $_.id })
-$clubs        = Get-Content $clubsFile -Raw | ConvertFrom-Json
+$clubs        = Get-Content $clubsFile -Raw -Encoding UTF8 | ConvertFrom-Json
 $clubIds      = @($clubs | ForEach-Object { $_.id })
 
 # Build dynamic category map from config so Excel display names resolve to correct config IDs

@@ -38,7 +38,7 @@ Write-Output "Reading CSV: $CsvPath"
 Write-Output "Reading JSON: $JsonPath"
 if (-not (Test-Path $CsvPath))  { throw "CSV file not found: $CsvPath" }
 if (-not (Test-Path $JsonPath)) { throw "Team results JSON not found: $JsonPath" }
-$csvContent=Get-Content $CsvPath -Raw
+$csvContent=Get-Content $CsvPath -Raw -Encoding UTF8
 $lines=$csvContent-split "`n"
 $headers=$lines[0]-split','
 $runners=@()
@@ -89,7 +89,7 @@ if($candidates.Count-eq 0){return $null}
 if($candidates.Count-eq 1){return $candidates[0]}
 return $candidates[0]
 }
-$teamResults=Get-Content $JsonPath -Raw|ConvertFrom-Json
+$teamResults=Get-Content $JsonPath -Raw -Encoding UTF8|ConvertFrom-Json
 $updateCount=0
 $errorCount=0
 foreach($categoryGroup in $teamResults.categories){

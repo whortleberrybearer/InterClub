@@ -93,7 +93,7 @@ Write-Host ""
 
 $seriesRunners = [System.Collections.Generic.List[object]]::new()
 if (Test-Path $seriesRunnersFile) {
-    foreach ($r in (Get-Content $seriesRunnersFile -Raw | ConvertFrom-Json)) { $seriesRunners.Add($r) }
+    foreach ($r in (Get-Content $seriesRunnersFile -Raw -Encoding UTF8 | ConvertFrom-Json)) { $seriesRunners.Add($r) }
 }
 
 Write-Host "Loaded $($seriesRunners.Count) series runner(s)." -ForegroundColor DarkGray
