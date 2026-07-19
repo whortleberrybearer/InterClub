@@ -96,10 +96,10 @@ if (-not (Test-Path $globalRunnersFile)) { throw "Global runners.json not found:
 if (-not (Test-Path $seriesRunnersFile)) { throw "Series runners.json not found: $seriesRunnersFile" }
 
 $globalRunners = [System.Collections.Generic.List[object]]::new()
-foreach ($r in (Get-Content $globalRunnersFile -Raw | ConvertFrom-Json)) { $globalRunners.Add($r) }
+foreach ($r in (Get-Content $globalRunnersFile -Raw -Encoding UTF8 | ConvertFrom-Json)) { $globalRunners.Add($r) }
 
 $seriesRunners = [System.Collections.Generic.List[object]]::new()
-foreach ($r in (Get-Content $seriesRunnersFile -Raw | ConvertFrom-Json)) { $seriesRunners.Add($r) }
+foreach ($r in (Get-Content $seriesRunnersFile -Raw -Encoding UTF8 | ConvertFrom-Json)) { $seriesRunners.Add($r) }
 
 Write-Host "Loaded $($globalRunners.Count) global runner(s) and $($seriesRunners.Count) series runner(s)." -ForegroundColor DarkGray
 Write-Host ""
