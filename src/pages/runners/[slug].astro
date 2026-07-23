@@ -4,7 +4,7 @@ import PageHeader from '../../components/PageHeader.astro';
 import TrophyIcon from '../../components/TrophyIcon.astro';
 import { getRunnerProfileStaticPaths, resolveClubName } from '../../lib/runners';
 import { siteUrl } from '../../lib/url';
-import { formatTime, positionLabel, formatRaceDateShort } from '../../lib/format';
+import { formatTime, positionLabel, formatRaceDateShort, formatDistance } from '../../lib/format';
 import type { GlobalRunner, RunnerYearBlock, RunnerClubHistory, RunnerAwardSummary } from '../../lib/types';
 
 export async function getStaticPaths() {
@@ -258,7 +258,7 @@ const totalRaces  = totalRoadGp + totalFell;
                           data-year={String(block.year)}
                           data-time={race.time ?? ''}
                           data-results-url={race.hasResults ? siteUrl(`/road-gp/${block.year}/${race.raceId}/results`) : ''}
-                          data-distance={race.distance ?? ''}
+                          data-distance={formatDistance(race.distance) ?? ''}
                           class="border-b border-line last:border-b-0"
                         >
                           <td class="py-2 pr-3 font-mono text-xs text-muted w-12 shrink-0 tabular-nums align-middle">
@@ -268,10 +268,10 @@ const totalRaces  = totalRoadGp + totalFell;
                             {race.hasResults
                               ? <a href={siteUrl(`/road-gp/${block.year}/${race.raceId}/results`)} class="link link-hover">{race.raceName}</a>
                               : <span class="text-muted">{race.raceName}</span>}
-                            {race.distance && <div class="sm:hidden font-mono text-xs text-muted mt-0.5">{race.distance}</div>}
+                            {race.distance && <div class="sm:hidden font-mono text-xs text-muted mt-0.5">{formatDistance(race.distance)}</div>}
                           </td>
-                          <td class="hidden sm:table-cell py-2 px-3 font-mono text-xs text-muted text-left align-middle w-32">
-                            {race.distance ?? ''}
+                          <td class="hidden sm:table-cell py-2 px-3 font-mono text-xs text-muted text-left align-middle w-40 whitespace-nowrap">
+                            {formatDistance(race.distance) ?? ''}
                           </td>
                           <td class:list={[
                             'py-2 text-right font-mono text-sm tabular-nums align-middle w-16',
@@ -316,10 +316,10 @@ const totalRaces  = totalRoadGp + totalFell;
                             {race.hasResults
                               ? <a href={siteUrl(`/fell/${block.year}/${race.raceId}/results`)} class="link link-hover">{race.raceName}</a>
                               : <span class="text-muted">{race.raceName}</span>}
-                            {race.distance && <div class="sm:hidden font-mono text-xs text-muted mt-0.5">{race.distance}</div>}
+                            {race.distance && <div class="sm:hidden font-mono text-xs text-muted mt-0.5">{formatDistance(race.distance)}</div>}
                           </td>
-                          <td class="hidden sm:table-cell py-2 px-3 font-mono text-xs text-muted text-left align-middle w-32">
-                            {race.distance ?? ''}
+                          <td class="hidden sm:table-cell py-2 px-3 font-mono text-xs text-muted text-left align-middle w-40 whitespace-nowrap">
+                            {formatDistance(race.distance) ?? ''}
                           </td>
                           <td class:list={[
                             'py-2 text-right font-mono text-sm tabular-nums align-middle w-16',
@@ -345,7 +345,7 @@ const totalRaces  = totalRoadGp + totalFell;
           <thead>
             <tr class="border-b-2 border-content">
               <th class="pb-1.5 text-left font-head font-bold text-xs uppercase tracking-widest text-muted w-16">Year</th>
-              <th class="pb-1.5 px-3 text-left font-head font-bold text-xs uppercase tracking-widest text-muted w-32">Distance</th>
+              <th class="pb-1.5 px-3 text-left font-head font-bold text-xs uppercase tracking-widest text-muted w-40">Distance</th>
               <th class="pb-1.5 text-right font-head font-bold text-xs uppercase tracking-widest text-muted w-16">Time</th>
             </tr>
           </thead>
