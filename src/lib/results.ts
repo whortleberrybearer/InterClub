@@ -410,7 +410,7 @@ export interface YearlyResolvedIndividual {
       position: number;
       name: string;
       clubName: string;
-      clubVest?: string;
+      clubVest: string;
       runnerUrl?: string;
     }>;
   }>;
@@ -419,7 +419,7 @@ export interface YearlyResolvedIndividual {
 export interface CategoryHistoryEntry {
   name: string;
   clubName: string;
-  clubVest?: string;
+  clubVest: string;
   runnerUrl?: string;
 }
 

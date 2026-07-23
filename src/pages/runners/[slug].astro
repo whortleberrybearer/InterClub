@@ -56,13 +56,11 @@ const totalRaces  = totalRoadGp + totalFell;
         <div class="space-y-3">
           {clubHistory.map(ch => (
             <div class="flex items-center gap-3 text-sm">
-              {ch.vest && (
-                <img
-                  src={siteUrl(`/images/vests/${ch.vest}`)}
-                  alt=""
-                  class="h-10 w-auto shrink-0 object-contain"
-                />
-              )}
+              <img
+                src={siteUrl(`/images/vests/${ch.vest}`)}
+                alt=""
+                class="h-10 w-auto shrink-0 object-contain"
+              />
               <div class="min-w-0">
                 <div class="font-semibold">{ch.clubName}</div>
                 <div class="font-mono text-xs text-muted">{ch.yearRanges}</div>
@@ -153,13 +151,11 @@ const totalRaces  = totalRoadGp + totalFell;
           <div class="flex flex-col xs:flex-row xs:flex-wrap gap-x-6 gap-y-3">
             {clubHistory.map(ch => (
               <div class="flex items-center gap-3 text-sm">
-                {ch.vest && (
-                  <img
-                    src={siteUrl(`/images/vests/${ch.vest}`)}
-                    alt=""
-                    class="h-10 w-auto shrink-0 object-contain"
-                  />
-                )}
+                <img
+                  src={siteUrl(`/images/vests/${ch.vest}`)}
+                  alt=""
+                  class="h-10 w-auto shrink-0 object-contain"
+                />
                 <div class="min-w-0">
                   <div class="font-semibold">{ch.clubName}</div>
                   <div class="font-mono text-xs text-muted">{ch.yearRanges}</div>

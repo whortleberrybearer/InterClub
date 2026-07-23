@@ -27,7 +27,7 @@ const { allCategories, fullYearList } = type === 'teams'
   ? buildTeamHistory(series, CANONICAL_IDS[series], ID_ALIASES, clubMeta)
   : { allCategories: [], fullYearList: [] };
 
-const categoryData = type === 'individuals' ? buildIndividualHistoryData(series) : [];
+const categoryData = type === 'individuals' ? buildIndividualHistoryData(series, clubMeta) : [];
 
 const historyBase = import.meta.env.BASE_URL.replace(/\/$/, '');
 const historyYears = type === 'individuals'

@@ -151,7 +151,10 @@ export function buildTeamHistory(
   return { allCategories, fullYearList };
 }
 
-export function buildIndividualHistoryData(series: Series): CategoryHistoryData[] {
+export function buildIndividualHistoryData(
+  series: Series,
+  clubMeta: Record<string, ClubInfo>
+): CategoryHistoryData[] {
   const allYearlyAwards = getAllAwardsByYear(series);
   const noteByYear = new Map(
     getAllSeriesConfigs(series)
@@ -166,13 +169,19 @@ export function buildIndividualHistoryData(series: Series): CategoryHistoryData[
         id: ia.id,
         name: resolveIndividualCategoryName(ia.id, ia.sex, ia.ageCategory, ia.name),
         sex: ia.sex ?? null,
-        awards: ia.awards.map(a => ({
-          position: a.position,
-          name: a.name,
-          clubName: yearly.clubs.find(c => c.id === a.club)?.name ?? a.club ?? '',
-          clubVest: yearly.clubs.find(c => c.id === a.club)?.vest,
-          runnerUrl: a.seriesRunnerId != null ? runnerUrlMap[a.seriesRunnerId] : undefined,
-        })),
+        awards: ia.awards.map(a => {
+          // Prefer that year's club roster (captures the vest in use at the time), falling
+          // back to clubMeta for clubs no longer in a current clubs.json (e.g. defunct clubs).
+          const yearClub = yearly.clubs.find(c => c.id === a.club);
+          const meta = clubMeta[a.club];
+          return {
+            position: a.position,
+            name: a.name,
+            clubName: yearClub?.name ?? meta?.name ?? a.club ?? '',
+            clubVest: yearClub?.vest ?? meta?.vest ?? 'unknown.png',
+            runnerUrl: a.seriesRunnerId != null ? runnerUrlMap[a.seriesRunnerId] : undefined,
+          };
+        }),
       })),
     };
   });

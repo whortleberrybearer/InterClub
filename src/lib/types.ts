@@ -105,7 +105,7 @@ export interface RunnerClubHistory {
   clubId: string;
   clubName: string;
   yearRanges: string;   // pre-formatted, e.g. "2019–2021, 2025"
-  vest?: string;        // vest filename e.g. "blackpool.png" from clubs.json
+  vest: string;         // vest filename e.g. "blackpool.png" from clubs.json; "unknown.png" when club has no vest configured
 }
 
 export interface RunnerAwardSummaryEntry {
