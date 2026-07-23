@@ -88,6 +88,8 @@ export interface RunnerProfileRace {
 export interface RunnerProfileAward {
   categoryName: string;
   position: number;
+  sex?: 'M' | 'F';
+  ageCategory?: string;
 }
 
 export interface RunnerYearSeries {
@@ -112,6 +114,8 @@ export interface RunnerAwardSummaryEntry {
   categoryName: string;
   position: number;
   count: number;
+  sex?: 'M' | 'F';
+  ageCategory?: string;
 }
 
 export interface RunnerAwardSummary {

@@ -370,7 +370,15 @@ describe('resolveIndividualCategoryName', () => {
     expect(resolveIndividualCategoryName('female', 'F')).toBe('Female');
   });
 
-  it('falls back to raw id when no sex, ageCategory, or name', () => {
-    expect(resolveIndividualCategoryName('something-custom')).toBe('something-custom');
+  it('falls back to capitalized id when no sex, ageCategory, or name', () => {
+    expect(resolveIndividualCategoryName('something-custom')).toBe('Something-custom');
+  });
+
+  it('derives ageCategory label alone when ageCategory present but sex missing', () => {
+    expect(resolveIndividualCategoryName('v60', undefined, 'V60')).toBe('V60');
+  });
+
+  it('derives Senior when ageCategory is SEN but sex missing', () => {
+    expect(resolveIndividualCategoryName('sen', undefined, 'SEN')).toBe('Senior');
   });
 });

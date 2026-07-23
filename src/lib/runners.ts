@@ -87,6 +87,18 @@ export function buildRunnerUrlMap(year: number, series: Series): Record<number, 
   return map;
 }
 
+/** Maps series-local runner ID → sex ('M'/'F'), for attributing sex-agnostic (overall) awards. */
+export function buildRunnerSexMap(year: number, series: Series): Record<number, string> {
+  const seriesRunners = getSeriesRunners(year, series);
+  const globalById = Object.fromEntries(getGlobalRunners().map(r => [r.id, r]));
+  const map: Record<number, string> = {};
+  for (const sr of seriesRunners) {
+    const global = globalById[sr.runnerId];
+    if (global) map[sr.id] = global.sex;
+  }
+  return map;
+}
+
 // --- Profile page data aggregation ---
 
 function parseCsvPath(path: string, series: Series, year: number): { raceId: string; provisional: boolean } | null {
@@ -141,10 +153,17 @@ function getAwardsForRunner(year: number, series: Series, seriesLocalId: number)
     const entry = ia.awards.find(a => a.seriesRunnerId === seriesLocalId);
     if (entry) {
       const categoryName = resolveIndividualCategoryName(ia.id, ia.sex, ia.ageCategory, ia.name);
-      found.push({ categoryName, position: entry.position });
+      found.push({ categoryName, position: entry.position, sex: ia.sex, ageCategory: ia.ageCategory });
     }
   }
-  return found;
+  return found.sort((a, b) => {
+    const ka = awardCategorySortKey(a.sex, a.ageCategory);
+    const kb = awardCategorySortKey(b.sex, b.ageCategory);
+    for (let i = 0; i < ka.length; i++) {
+      if (ka[i] !== kb[i]) return ka[i] - kb[i];
+    }
+    return a.position - b.position;
+  });
 }
 
 export function resolveClubName(clubId: string): string {
@@ -210,13 +229,34 @@ function buildClubHistory(entries: Array<{ year: number; club: string }>): Runne
   }));
 }
 
+// Ordered: overall (no sex, no age) first, then sex-only (Male/Female), then age
+// categories (no-sex variant before the sex-specific variant), sorted youngest to oldest.
+const AGE_CAT_SORT: Record<string, number> = {
+  JUN: 1, SEN: 2,
+  V35: 3, V40: 4, V45: 5, V50: 6, V55: 7,
+  V60: 8, V65: 9, V70: 10, V75: 11, V80: 12, V85: 13, V90: 14, V95: 15, V100: 16,
+};
+
+function awardCategorySortKey(sex?: string, ageCategory?: string): [number, number, number, number] {
+  const hasSex = sex != null;
+  const hasAge = ageCategory != null;
+  const tier = hasAge ? 2 : hasSex ? 1 : 0;
+  const ageRank = hasAge ? (AGE_CAT_SORT[ageCategory!] ?? 99) : 0;
+  const sexPresence = hasSex ? 1 : 0;
+  const sexRank = sex === 'F' ? 1 : 0;
+  return [tier, ageRank, sexPresence, sexRank];
+}
+
 function buildAwardSummary(yearBlocks: RunnerYearBlock[]): RunnerAwardSummary {
   const roadGpCounts = new Map<string, RunnerAwardSummaryEntry>();
   const fellCounts = new Map<string, RunnerAwardSummaryEntry>();
 
   function tally(map: Map<string, RunnerAwardSummaryEntry>, award: RunnerProfileAward) {
     const key = `${award.categoryName}|${award.position}`;
-    const entry = map.get(key) ?? { categoryName: award.categoryName, position: award.position, count: 0 };
+    const entry = map.get(key) ?? {
+      categoryName: award.categoryName, position: award.position, count: 0,
+      sex: award.sex, ageCategory: award.ageCategory,
+    };
     entry.count++;
     map.set(key, entry);
   }
@@ -227,7 +267,14 @@ function buildAwardSummary(yearBlocks: RunnerYearBlock[]): RunnerAwardSummary {
   }
 
   const sortEntries = (entries: RunnerAwardSummaryEntry[]) =>
-    entries.sort((a, b) => a.position !== b.position ? a.position - b.position : a.categoryName.localeCompare(b.categoryName));
+    entries.sort((a, b) => {
+      const ka = awardCategorySortKey(a.sex, a.ageCategory);
+      const kb = awardCategorySortKey(b.sex, b.ageCategory);
+      for (let i = 0; i < ka.length; i++) {
+        if (ka[i] !== kb[i]) return ka[i] - kb[i];
+      }
+      return a.position - b.position;
+    });
 
   return {
     roadGp: sortEntries([...roadGpCounts.values()]),

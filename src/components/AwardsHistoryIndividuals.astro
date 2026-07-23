@@ -86,18 +86,27 @@ for (const cat of categories) {
 
 // ── Cross-category "The Greats" ─────────────────────────────────────────
 interface GreatsEntry extends HofEntry {
-  catCounts: Record<string, { gold: number; silver: number; bronze: number; sex?: string }>;
+  catCounts: Record<string, { gold: number; silver: number; bronze: number; sex?: string | null; label: string }>;
   total: number;
 }
 
-function buildGreats(cats: CategoryHistoryData[]): GreatsEntry[] {
+function buildGreats(cats: CategoryHistoryData[], targetSex: 'M' | 'F'): GreatsEntry[] {
   const tally: Record<string, GreatsEntry> = {};
   for (const cat of cats) {
     const lbl = chipLabel(cat);
+    // chipLabel collapses both a plain (no-age) sex-specific category and the
+    // true sex-agnostic "Overall" category down to the same "Overall" text.
+    // Key them separately so a runner's cross-sex Overall wins never get folded
+    // into their Male/Female tally (their display label is still just "Overall").
+    const catKey = lbl === 'Overall' ? `Overall::${cat.sex ?? 'null'}` : lbl;
     for (const row of cat.rows) {
       for (const pos of [1, 2, 3] as const) {
         const entry = row.positions[pos];
         if (!entry || !entry.runnerUrl) continue; // skip entries with no runner ID
+        // Sex-agnostic (overall) categories carry no cat.sex — fall back to the
+        // runner's actual sex so their wins still count toward the right leaderboard.
+        const resolvedSex = cat.sex ?? entry.sex;
+        if (resolvedSex !== targetSex) continue;
         const key = entry.runnerUrl;
         if (!tally[key]) {
           tally[key] = { name: entry.name, clubName: entry.clubName, clubVest: entry.clubVest, runnerUrl: entry.runnerUrl, gold: 0, silver: 0, bronze: 0, catCounts: {}, total: 0 };
@@ -105,10 +114,10 @@ function buildGreats(cats: CategoryHistoryData[]): GreatsEntry[] {
           if (entry.name.length > tally[key].name.length) tally[key].name = entry.name;
           if (entry.clubVest && !tally[key].clubVest) tally[key].clubVest = entry.clubVest;
         }
-        if (!tally[key].catCounts[lbl]) tally[key].catCounts[lbl] = { gold: 0, silver: 0, bronze: 0, sex: cat.sex };
-        if (pos === 1) { tally[key].gold++; tally[key].catCounts[lbl].gold++; }
-        else if (pos === 2) { tally[key].silver++; tally[key].catCounts[lbl].silver++; }
-        else { tally[key].bronze++; tally[key].catCounts[lbl].bronze++; }
+        if (!tally[key].catCounts[catKey]) tally[key].catCounts[catKey] = { gold: 0, silver: 0, bronze: 0, sex: cat.sex, label: lbl };
+        if (pos === 1) { tally[key].gold++; tally[key].catCounts[catKey].gold++; }
+        else if (pos === 2) { tally[key].silver++; tally[key].catCounts[catKey].silver++; }
+        else { tally[key].bronze++; tally[key].catCounts[catKey].bronze++; }
       }
     }
   }
@@ -129,8 +138,26 @@ function greatsLabel(lbl: string, sex?: string): string {
   return lbl;
 }
 
-const greatsM = buildGreats(mCats);
-const greatsF = buildGreats(fCats);
+// Display order for a runner's per-category breakdown: overall (no sex, no age)
+// first, then sex-only (Male/Female), then age categories, youngest to oldest.
+const CAT_LABEL_AGE_ORDER: Record<string, number> = {
+  Junior: 1, Senior: 2,
+  V35: 3, V40: 4, V45: 5, V50: 6, V55: 7,
+  V60: 8, V65: 9, V70: 10, V75: 11, V80: 12, V85: 13, V90: 14, V95: 15, V100: 16,
+};
+function sortedCatCounts(catCounts: GreatsEntry['catCounts']) {
+  return Object.values(catCounts).sort((a, b) => {
+    const tierA = a.label !== 'Overall' ? 2 : a.sex == null ? 0 : 1;
+    const tierB = b.label !== 'Overall' ? 2 : b.sex == null ? 0 : 1;
+    if (tierA !== tierB) return tierA - tierB;
+    return (CAT_LABEL_AGE_ORDER[a.label] ?? 99) - (CAT_LABEL_AGE_ORDER[b.label] ?? 99);
+  });
+}
+
+// Include sex-agnostic (overall) categories in both leaderboards — buildGreats
+// attributes each entry using the runner's actual sex, not the category's.
+const greatsM = buildGreats(sortedCats, 'M');
+const greatsF = buildGreats(sortedCats, 'F');
 
 
 
@@ -633,9 +660,9 @@ const MEDAL_FG = ['', '#3d2300', '#1f2733', '#ffffff'];
                 </thead>
                 <tbody>
                   {greatsM.map((w, i) => {
-                    const goldCats = Object.entries(w.catCounts).filter(([,c]) => c.gold > 0).map(([lbl,c]) => `${c.gold} × ${greatsLabel(lbl, c.sex)}`);
-                    const silverCats = Object.entries(w.catCounts).filter(([,c]) => c.silver > 0).map(([lbl,c]) => `${c.silver} × ${greatsLabel(lbl, c.sex)}`);
-                    const bronzeCats = Object.entries(w.catCounts).filter(([,c]) => c.bronze > 0).map(([lbl,c]) => `${c.bronze} × ${greatsLabel(lbl, c.sex)}`);
+                    const goldCats = sortedCatCounts(w.catCounts).filter(c => c.gold > 0).map(c => `${c.gold} × ${greatsLabel(c.label, c.sex)}`);
+                    const silverCats = sortedCatCounts(w.catCounts).filter(c => c.silver > 0).map(c => `${c.silver} × ${greatsLabel(c.label, c.sex)}`);
+                    const bronzeCats = sortedCatCounts(w.catCounts).filter(c => c.bronze > 0).map(c => `${c.bronze} × ${greatsLabel(c.label, c.sex)}`);
                     return (
                     <tr class="border-b border-line last:border-0">
                       <td class="hidden xs:table-cell py-3 pl-4 pr-1 font-mono text-xs font-medium text-muted align-middle">{i + 1}</td>
@@ -698,9 +725,9 @@ const MEDAL_FG = ['', '#3d2300', '#1f2733', '#ffffff'];
               <div class="flex flex-col">
                 {greatsM.map((w, wi) => {
                   const total = w.gold + w.silver + w.bronze;
-                  const goldCats = Object.entries(w.catCounts).filter(([,c]) => c.gold > 0).map(([lbl,c]) => `${c.gold} × ${greatsLabel(lbl, c.sex)}`);
-                  const silverCats = Object.entries(w.catCounts).filter(([,c]) => c.silver > 0).map(([lbl,c]) => `${c.silver} × ${greatsLabel(lbl, c.sex)}`);
-                  const bronzeCats = Object.entries(w.catCounts).filter(([,c]) => c.bronze > 0).map(([lbl,c]) => `${c.bronze} × ${greatsLabel(lbl, c.sex)}`);
+                  const goldCats = sortedCatCounts(w.catCounts).filter(c => c.gold > 0).map(c => `${c.gold} × ${greatsLabel(c.label, c.sex)}`);
+                  const silverCats = sortedCatCounts(w.catCounts).filter(c => c.silver > 0).map(c => `${c.silver} × ${greatsLabel(c.label, c.sex)}`);
+                  const bronzeCats = sortedCatCounts(w.catCounts).filter(c => c.bronze > 0).map(c => `${c.bronze} × ${greatsLabel(c.label, c.sex)}`);
                   return (
                     <div class="bg-surface border border-line rounded-xl mb-2 overflow-hidden relative ih-hof-accordion">
                       <button class="ih-hof-toggle w-full flex items-center gap-3 py-3 pl-3 pr-3 text-left cursor-pointer bg-transparent border-0">
@@ -806,9 +833,9 @@ const MEDAL_FG = ['', '#3d2300', '#1f2733', '#ffffff'];
                 </thead>
                 <tbody>
                   {greatsF.map((w, i) => {
-                    const goldCats = Object.entries(w.catCounts).filter(([,c]) => c.gold > 0).map(([lbl,c]) => `${c.gold} × ${greatsLabel(lbl, c.sex)}`);
-                    const silverCats = Object.entries(w.catCounts).filter(([,c]) => c.silver > 0).map(([lbl,c]) => `${c.silver} × ${greatsLabel(lbl, c.sex)}`);
-                    const bronzeCats = Object.entries(w.catCounts).filter(([,c]) => c.bronze > 0).map(([lbl,c]) => `${c.bronze} × ${greatsLabel(lbl, c.sex)}`);
+                    const goldCats = sortedCatCounts(w.catCounts).filter(c => c.gold > 0).map(c => `${c.gold} × ${greatsLabel(c.label, c.sex)}`);
+                    const silverCats = sortedCatCounts(w.catCounts).filter(c => c.silver > 0).map(c => `${c.silver} × ${greatsLabel(c.label, c.sex)}`);
+                    const bronzeCats = sortedCatCounts(w.catCounts).filter(c => c.bronze > 0).map(c => `${c.bronze} × ${greatsLabel(c.label, c.sex)}`);
                     return (
                     <tr class="border-b border-line last:border-0">
                       <td class="hidden xs:table-cell py-3 pl-4 pr-1 font-mono text-xs font-medium text-muted align-middle">{i + 1}</td>
@@ -871,9 +898,9 @@ const MEDAL_FG = ['', '#3d2300', '#1f2733', '#ffffff'];
               <div class="flex flex-col">
                 {greatsF.map((w, wi) => {
                   const total = w.gold + w.silver + w.bronze;
-                  const goldCats = Object.entries(w.catCounts).filter(([,c]) => c.gold > 0).map(([lbl,c]) => `${c.gold} × ${greatsLabel(lbl, c.sex)}`);
-                  const silverCats = Object.entries(w.catCounts).filter(([,c]) => c.silver > 0).map(([lbl,c]) => `${c.silver} × ${greatsLabel(lbl, c.sex)}`);
-                  const bronzeCats = Object.entries(w.catCounts).filter(([,c]) => c.bronze > 0).map(([lbl,c]) => `${c.bronze} × ${greatsLabel(lbl, c.sex)}`);
+                  const goldCats = sortedCatCounts(w.catCounts).filter(c => c.gold > 0).map(c => `${c.gold} × ${greatsLabel(c.label, c.sex)}`);
+                  const silverCats = sortedCatCounts(w.catCounts).filter(c => c.silver > 0).map(c => `${c.silver} × ${greatsLabel(c.label, c.sex)}`);
+                  const bronzeCats = sortedCatCounts(w.catCounts).filter(c => c.bronze > 0).map(c => `${c.bronze} × ${greatsLabel(c.label, c.sex)}`);
                   return (
                     <div class="bg-surface border border-line rounded-xl mb-2 overflow-hidden relative ih-hof-accordion">
                       <button class="ih-hof-toggle w-full flex items-center gap-3 py-3 pl-3 pr-3 text-left cursor-pointer bg-transparent border-0">

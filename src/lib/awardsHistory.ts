@@ -5,7 +5,7 @@ import {
   pivotIndividualAwardsByCategory,
   resolveIndividualCategoryName,
 } from './results';
-import { buildRunnerUrlMap } from './runners';
+import { buildRunnerUrlMap, buildRunnerSexMap } from './runners';
 import type { Series, TeamCategory } from './types';
 import type { CategoryHistoryData } from './results';
 
@@ -163,6 +163,7 @@ export function buildIndividualHistoryData(
   );
   const yearlyResolved = allYearlyAwards.map(yearly => {
     const runnerUrlMap = buildRunnerUrlMap(yearly.year, series);
+    const runnerSexMap = buildRunnerSexMap(yearly.year, series);
     return {
       year: yearly.year,
       categories: yearly.awards.individualAwards.map(ia => ({
@@ -180,6 +181,9 @@ export function buildIndividualHistoryData(
             clubName: yearClub?.name ?? meta?.name ?? a.club ?? '',
             clubVest: yearClub?.vest ?? meta?.vest ?? 'unknown.png',
             runnerUrl: a.seriesRunnerId != null ? runnerUrlMap[a.seriesRunnerId] : undefined,
+            // Sex-agnostic (overall) categories need the runner's actual sex to be
+            // attributed to the correct Men's/Women's cross-category leaderboard.
+            sex: a.seriesRunnerId != null ? runnerSexMap[a.seriesRunnerId] : undefined,
           };
         }),
       })),

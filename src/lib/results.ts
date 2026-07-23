@@ -42,14 +42,12 @@ export function resolveIndividualCategoryName(
   name?: string,
 ): string {
   if (name) return name;
-  if (!sex) return id;
+  const ageLabel = ageCategory
+    ? (ageCategory === 'SEN' ? 'Senior' : ageCategory === 'JUN' ? 'Junior' : ageCategory)
+    : undefined;
+  if (!sex) return ageLabel ?? (id.charAt(0).toUpperCase() + id.slice(1));
   const sexLabel = sex === 'M' ? 'Male' : 'Female';
-  if (!ageCategory) return sexLabel;
-  const ageLabel =
-    ageCategory === 'SEN' ? 'Senior' :
-    ageCategory === 'JUN' ? 'Junior' :
-    ageCategory;
-  return `${ageLabel} ${sexLabel}`;
+  return ageLabel ? `${ageLabel} ${sexLabel}` : sexLabel;
 }
 
 const csvFiles = import.meta.glob<string>('../data/*/road-gp/results/*.csv', {
@@ -412,6 +410,7 @@ export interface YearlyResolvedIndividual {
       clubName: string;
       clubVest: string;
       runnerUrl?: string;
+      sex?: string;
     }>;
   }>;
 }
@@ -421,6 +420,7 @@ export interface CategoryHistoryEntry {
   clubName: string;
   clubVest: string;
   runnerUrl?: string;
+  sex?: string;
 }
 
 export interface CategoryHistoryRow {
@@ -501,7 +501,7 @@ export function pivotIndividualAwardsByCategory(
         const cat = yearly.categories.find(c => c.id === id)!;
         const findPos = (pos: number) => cat.awards.find(a => a.position === pos);
         const mapEntry = (a: ReturnType<typeof findPos>): CategoryHistoryEntry | null =>
-          a ? { name: a.name, clubName: a.clubName, clubVest: a.clubVest, runnerUrl: a.runnerUrl } : null;
+          a ? { name: a.name, clubName: a.clubName, clubVest: a.clubVest, runnerUrl: a.runnerUrl, sex: a.sex } : null;
         return {
           year: yearly.year,
           positions: {
