@@ -78,6 +78,17 @@ export function positionLabel(pos: number): string {
   return `${pos}${suffix}`;
 }
 
+const MILES_TO_KM = 1.60934;
+
+/** Append a km conversion to a "X mi" distance string, e.g. "4.5 mi" -> "4.5 mi (7.2 km)". */
+export function formatDistance(distance: string | null | undefined): string | null {
+  if (!distance) return distance ?? null;
+  const match = distance.match(/^([\d.]+)\s*mi$/);
+  if (!match) return distance;
+  const km = Math.round(parseFloat(match[1]) * MILES_TO_KM * 10) / 10;
+  return `${distance} / ${km} km`;
+}
+
 export function getSeriesLabel(series: Series): string {
   return series === 'road-gp' ? 'Road GP' : 'Fell Championship';
 }

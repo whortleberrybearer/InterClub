@@ -1,7 +1,7 @@
 ---
 // src/components/RaceCard.astro
 import type { Race, Series } from '../lib/types';
-import { formatRaceDate } from '../lib/format';
+import { formatRaceDate, formatDistance } from '../lib/format';
 import { siteUrl } from '../lib/url';
 
 interface Props {
@@ -13,6 +13,7 @@ interface Props {
 const { race, year, series } = Astro.props;
 const { id, name, date, time, location, distance, detailsUrl, image } = race;
 
+const distanceDisplay = formatDistance(distance);
 const formattedDate = date ? formatRaceDate(date, time) : '';
 const isFell = series === 'fell';
 const href = isFell
@@ -40,7 +41,7 @@ const linkClasses = `${cardClasses} hover:shadow-md transition-shadow`;
       <h2 class="card-title text-base font-bold">{name}</h2>
       {(location || distance) && (
         <p class="text-sm text-content/70">
-          {location}{location && distance && ' · '}{distance}
+          {location}{location && distance && ' · '}{distanceDisplay}
         </p>
       )}
       {detailsUrl && !isFell && (
@@ -70,7 +71,7 @@ const linkClasses = `${cardClasses} hover:shadow-md transition-shadow`;
       <h2 class="card-title text-base font-bold">{name}</h2>
       {(location || distance) && (
         <p class="text-sm text-content/70">
-          {location}{location && distance && ' · '}{distance}
+          {location}{location && distance && ' · '}{distanceDisplay}
         </p>
       )}
       {detailsUrl && !isFell && (

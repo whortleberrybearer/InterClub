@@ -4,6 +4,7 @@ import Layout from '../components/Layout.astro';
 import RaceListRow from '../components/home/RaceListRow.astro';
 import { getCurrentYear, getRaces } from '../lib/data';
 import { hasResults } from '../lib/results';
+import { formatDistance } from '../lib/format';
 import { siteUrl } from '../lib/url';
 import type { Race } from '../lib/types';
 
@@ -32,7 +33,7 @@ const roadRaceData = roadRaces.map(r => ({
   date: r.date,
   time: r.time ?? null,
   location: r.location ?? null,
-  distance: r.distance ?? null,
+  distance: formatDistance(r.distance),
   hasResults: hasResults(currentYear, 'road-gp', r.id),
   resultsUrl: siteUrl(`/road-gp/${currentYear}/${r.id}/results`),
   infoUrl: siteUrl(`/road-gp/${currentYear}/${r.id}`),
@@ -44,7 +45,7 @@ const fellRaceData = fellRaces.map(r => ({
   name: r.name,
   date: r.date,
   time: r.time ?? null,
-  distance: r.distance ?? null,
+  distance: formatDistance(r.distance),
   ascent: r.ascent ?? null,
   hasResults: hasResults(currentYear, 'fell', r.id),
   resultsUrl: siteUrl(`/fell/${currentYear}/${r.id}/results`),
@@ -129,7 +130,7 @@ const nextFellId = fellRaces.find(r => !isPast(r))?.id ?? null;
               ? (rslt ? siteUrl(`/fell/${currentYear}/${race.id}/results`) : undefined)
               : (race.detailsUrl ?? siteUrl(`/fell/${currentYear}/${race.id}`));
             const isExternal = !past && !!race.detailsUrl;
-            const subtitle   = [race.distance, race.ascent].filter(Boolean).join(' · ') || undefined;
+            const subtitle   = [formatDistance(race.distance), race.ascent].filter(Boolean).join(' · ') || undefined;
             return (
               <RaceListRow
                 accent="teal"

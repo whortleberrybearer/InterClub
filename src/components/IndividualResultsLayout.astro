@@ -8,7 +8,7 @@ import { CLUB_COLORS } from '../lib/clubColors';
 import { getRace, getRaces } from '../lib/data';
 import { hasTeamResults } from '../lib/results';
 import { siteUrl } from '../lib/url';
-import { formatRaceDate, formatTime, getSeriesLabel, seriesAccent } from '../lib/format';
+import { formatRaceDate, formatDistance, formatTime, getSeriesLabel, seriesAccent } from '../lib/format';
 import type { Club, RaceResult, Series, SeriesConfig } from '../lib/types';
 
 export interface Props {
@@ -86,7 +86,7 @@ const clubTurnout = [...clubCountMap.entries()]
 const raceMeta = [
   race?.date ? formatRaceDate(race.date, race?.time) : null,
   race?.location ?? null,
-  race?.distance ?? null,
+  formatDistance(race?.distance),
 ].filter(Boolean) as string[];
 
 const showTeamResults = hasTeamResults(year, series, raceId);

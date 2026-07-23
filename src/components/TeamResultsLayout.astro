@@ -12,7 +12,7 @@ import PageHeader from './PageHeader.astro';
 import TeamClubCard from './TeamClubCard.astro';
 import { getRace, getRaces } from '../lib/data';
 import { siteUrl } from '../lib/url';
-import { formatRaceDate, getSeriesLabel, seriesAccent } from '../lib/format';
+import { formatRaceDate, formatDistance, getSeriesLabel, seriesAccent } from '../lib/format';
 import type { Club, Series, SeriesConfig, TeamResults } from '../lib/types';
 
 export interface Props {
@@ -41,7 +41,7 @@ const raceTotal  = allRaces.length;
 const raceMeta = [
   race?.date ? formatRaceDate(race.date, race?.time) : null,
   race?.location ?? null,
-  race?.distance ?? null,
+  formatDistance(race?.distance),
 ].filter(Boolean) as string[];
 
 const clubById     = Object.fromEntries(clubs.map(c => [c.id, c]));

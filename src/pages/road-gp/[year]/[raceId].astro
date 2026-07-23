@@ -4,7 +4,7 @@ import Layout from '../../../components/Layout.astro';
 import PageHeader from '../../../components/PageHeader.astro';
 import DecadeGrid from '../../../components/DecadeGrid.astro';
 import { getAvailableYears, getRaces, getCurrentYear } from '../../../lib/data';
-import { formatRaceDate } from '../../../lib/format';
+import { formatRaceDate, formatDistance } from '../../../lib/format';
 import { hasResults } from '../../../lib/results';
 import { getGlobalRunners, runnerSlug } from '../../../lib/runners';
 import { siteUrl } from '../../../lib/url';
@@ -49,17 +49,18 @@ const {
 const formattedDate = formatRaceDate(date, time);
 const hasGettingHere = !!(startAddress || mapEmbedUrl || parking);
 const hasCourse = !!(routeDescription || routeImage || (courseRecords && courseRecords.length > 0));
+const distanceDisplay = formatDistance(distance);
 
 const raceMeta = [
   formattedDate || null,
   location     || null,
-  distance     || null,
+  distanceDisplay || null,
   ascent       ? `↑ ${ascent}` : null,
 ].filter(Boolean) as string[];
 
 // "At a glance" facts for the sidebar
 const glanceFacts = [
-  distance      ? { k: 'Distance', v: distance + (ascent ? ` · ↑ ${ascent}` : '') } : null,
+  distance      ? { k: 'Distance', v: distanceDisplay + (ascent ? ` · ↑ ${ascent}` : '') } : null,
   formattedDate ? { k: 'Date',     v: formattedDate } : null,
   location      ? { k: 'Location', v: location }      : null,
   { k: 'Series', v: `Road GP · Race ${raceIndex} of ${totalRaces}` },

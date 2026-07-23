@@ -8,7 +8,7 @@
  * guarantees both separators sit at the same vertical position within the
  * shared grid row regardless of which card has more content above the separator.
  */
-import { formatRaceDate } from '../../lib/format';
+import { formatRaceDate, formatDistance } from '../../lib/format';
 import type { Race } from '../../lib/types';
 
 interface Props {
@@ -54,6 +54,7 @@ const {
   showLocation = false,
 } = Astro.props;
 
+const distanceDisplay = formatDistance(race.distance);
 const bgClass    = accent === 'amber' ? 'bg-amber'   : 'bg-teal';
 const textAccent = accent === 'amber' ? 'text-amber' : 'text-teal';
 const nameClass  = size === 'large'
@@ -101,7 +102,7 @@ const nameClass  = size === 'large'
   <div class="flex items-end gap-[18px] pt-3 border-t border-white/25">
     {race.distance && (
       <div>
-        <div class="font-mono text-[14px] font-medium">{race.distance}</div>
+        <div class="font-mono text-[14px] font-medium">{distanceDisplay}</div>
         <div class="font-head text-[9px] font-bold tracking-[0.14em] uppercase opacity-70">Distance</div>
       </div>
     )}
