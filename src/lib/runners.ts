@@ -156,12 +156,29 @@ export function resolveClubName(clubId: string): string {
   return clubId;
 }
 
-function resolveClubVest(clubId: string): string | undefined {
-  for (const clubs of Object.values(allClubFiles)) {
+// Resolves the vest as of `year` — clubs can change vest design over time, so this
+// finds the most recent clubs.json at or before `year` that has a vest for this club,
+// falling back to any year's vest if none exists at or before `year`.
+function resolveClubVest(clubId: string, year: number): string {
+  let bestYear = -Infinity;
+  let bestVest: string | undefined;
+  let fallbackVest: string | undefined;
+
+  for (const [path, clubs] of Object.entries(allClubFiles)) {
+    const match = path.match(/\/(\d{4})\/clubs\.json$/);
+    if (!match) continue;
+    const fileYear = Number(match[1]);
     const club = clubs.default.find(c => c.id === clubId);
-    if (club?.vest) return club.vest;
+    if (!club?.vest) continue;
+
+    fallbackVest ??= club.vest;
+    if (fileYear <= year && fileYear > bestYear) {
+      bestYear = fileYear;
+      bestVest = club.vest;
+    }
   }
-  return undefined;
+
+  return bestVest ?? fallbackVest ?? 'unknown.png';
 }
 
 function buildClubHistory(entries: Array<{ year: number; club: string }>): RunnerClubHistory[] {
@@ -189,7 +206,7 @@ function buildClubHistory(entries: Array<{ year: number; club: string }>): Runne
     clubId,
     clubName: resolveClubName(clubId),
     yearRanges: formatYearRanges(years),
-    vest: resolveClubVest(clubId),
+    vest: resolveClubVest(clubId, Math.max(...years)),
   }));
 }
 
